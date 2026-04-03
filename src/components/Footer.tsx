@@ -1,0 +1,54 @@
+import Link from "next/link";
+
+export default function Footer() {
+  return (
+    <footer className="bg-gray-50 border-t border-gray-200 mt-auto">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="col-span-2 md:col-span-1">
+            <div className="flex items-center gap-2 font-bold text-lg text-indigo-600 mb-3">
+              <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+                <rect width="28" height="28" rx="6" fill="#4f46e5" />
+                <path d="M7 10h14M7 14h10M7 18h12" stroke="white" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+              BuyWhere
+            </div>
+            <p className="text-sm text-gray-500 leading-relaxed">
+              The product catalog API built for AI agent commerce in Southeast Asia.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold text-gray-900 mb-3">Product</h4>
+            <ul className="space-y-2 text-sm text-gray-500">
+              <li><Link href="/developers" className="hover:text-indigo-600">Developers</Link></li>
+              <li><Link href="/pricing" className="hover:text-indigo-600">Pricing</Link></li>
+              <li><Link href="/contact" className="hover:text-indigo-600">Get API Key</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold text-gray-900 mb-3">Company</h4>
+            <ul className="space-y-2 text-sm text-gray-500">
+              <li><Link href="/about" className="hover:text-indigo-600">About</Link></li>
+              <li><Link href="/contact" className="hover:text-indigo-600">Contact</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold text-gray-900 mb-3">Legal</h4>
+            <ul className="space-y-2 text-sm text-gray-500">
+              <li><Link href="/terms" className="hover:text-indigo-600">Terms of Service</Link></li>
+              <li><Link href="/privacy" className="hover:text-indigo-600">Privacy Policy</Link></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-10 pt-6 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-gray-400">
+          <span>© {new Date().getFullYear()} BuyWhere Pte. Ltd. All rights reserved.</span>
+          <span>Made in Singapore 🇸🇬</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
