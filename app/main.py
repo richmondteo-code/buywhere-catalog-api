@@ -8,7 +8,7 @@ from slowapi.middleware import SlowAPIMiddleware
 
 from app.config import get_settings
 from app.rate_limit import limiter
-from app.routers import products, categories, keys
+from app.routers import products, categories, keys, deals
 
 settings = get_settings()
 
@@ -41,6 +41,7 @@ app.add_middleware(SlowAPIMiddleware)
 app.include_router(products.router)
 app.include_router(categories.router)
 app.include_router(keys.router)
+app.include_router(deals.router)
 
 
 @app.get("/health", tags=["system"])
@@ -55,8 +56,10 @@ async def api_root():
         "version": "v1",
         "endpoints": {
             "search": "GET /v1/products",
+            "best_price": "GET /v1/products/best-price",
             "product": "GET /v1/products/{id}",
             "categories": "GET /v1/categories",
+            "deals": "GET /v1/deals",
         },
         "auth": "Bearer token required (API key)",
         "docs": "/docs",

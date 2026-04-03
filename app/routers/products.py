@@ -91,6 +91,51 @@ async def search_products(
     )
 
 
+@router.get("/best-price", response_model=ProductResponse, summary="Find cheapest product across all platforms")
+@limiter.limit("1000/minute")
+async def best_price(
+    request: Request,
+    q: str = Query(..., min_length=1, description="Product name to search for"),
+    category: Optional[str] = Query(None, description="Optional category filter"),
+    db: AsyncSession = Depends(get_db),
+    api_key: ApiKey = Depends(get_current_api_key),
+) -> ProductResponse:
+    """Return the single cheapest listing for a product across all platforms."""
+    request.state.api_key = api_key
+
+    base_query = (
+        select(Product)
+        .where(Product.is_active == True)
+        .where(
+            text("to_tsvector('english', title) @@ plainto_tsquery('english', :q)").bindparams(q=q)
+        )
+    )
+    if category:
+        base_query = base_query.where(Product.category.ilike(f"%{category}%"))
+
+    base_query = base_query.order_by(Product.price.asc()).limit(1)
+    result = await db.execute(base_query)
+    product = result.scalar_one_or_none()
+
+    if not product:
+        # Fallback: ILIKE search for broader matching
+        fallback = (
+            select(Product)
+            .where(Product.is_active == True)
+            .where(Product.title.ilike(f"%{q}%"))
+        )
+        if category:
+            fallback = fallback.where(Product.category.ilike(f"%{category}%"))
+        fallback = fallback.order_by(Product.price.asc()).limit(1)
+        result2 = await db.execute(fallback)
+        product = result2.scalar_one_or_none()
+
+    if not product:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"No products found for: {q!r}")
+
+    return _map_product(product)
+
+
 @router.get("/{product_id}", response_model=ProductResponse, summary="Get product by ID")
 @limiter.limit("1000/minute")
 async def get_product(
