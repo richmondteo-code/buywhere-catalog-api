@@ -89,7 +89,7 @@ const plans = [
 const faqs = [
   {
     q: "What counts as a query?",
-    a: "Each API request to /v1/products/search or /v1/products/{id} counts as one query. Batch requests count as one query per product returned.",
+    a: "Each API request to /v1/search or /v1/products/{id} counts as one query. Batch requests count as one query per product returned.",
   },
   {
     q: "Can I switch plans mid-month?",

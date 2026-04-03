@@ -58,18 +58,17 @@ const codeSnippet = `import requests
 API_KEY = "bw_live_your_key_here"
 
 response = requests.get(
-    "https://api.buywhere.ai/v1/products/search",
+    "https://api.buywhere.ai/v1/search",
     headers={"Authorization": f"Bearer {API_KEY}"},
     params={
         "q": "wireless noise-cancelling headphones",
-        "country": "SG",
         "limit": 5
     }
 )
 
-products = response.json()["products"]
+products = response.json()["items"]
 for p in products:
-    print(f"{p['name']} — S$\{p['price']} at {p['retailer']}")`;
+    print(f"{p['name']} — S$\{p['price']} at {p['source']}")`;
 
 export default function HomePage() {
   return (
