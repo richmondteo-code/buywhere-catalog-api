@@ -8,7 +8,7 @@ from slowapi.middleware import SlowAPIMiddleware
 
 from app.config import get_settings
 from app.rate_limit import limiter
-from app.routers import products, categories, keys, deals
+from app.routers import products, categories, keys, deals, ingestion, ingest, search, status, catalog
 
 settings = get_settings()
 
@@ -39,9 +39,14 @@ app.add_middleware(SlowAPIMiddleware)
 
 # Routers
 app.include_router(products.router)
+app.include_router(search.router)
 app.include_router(categories.router)
 app.include_router(keys.router)
 app.include_router(deals.router)
+app.include_router(ingestion.router)
+app.include_router(ingest.router)
+app.include_router(status.router)
+app.include_router(catalog.router)
 
 
 @app.get("/health", tags=["system"])
@@ -55,11 +60,19 @@ async def api_root():
         "api": "BuyWhere Catalog API",
         "version": "v1",
         "endpoints": {
-            "search": "GET /v1/products",
+            "search": "GET /v1/search",
+            "products": "GET /v1/products",
             "best_price": "GET /v1/products/best-price",
+            "compare_single": "GET /v1/products/compare",
+            "compare_matrix": "POST /v1/products/compare",
+            "trending": "GET /v1/products/trending",
             "product": "GET /v1/products/{id}",
             "categories": "GET /v1/categories",
             "deals": "GET /v1/deals",
+            "ingestion": "POST /v1/ingestion",
+            "ingest": "POST /v1/ingest/products",
+            "status": "GET /v1/status",
+            "catalog_health": "GET /v1/catalog/health",
         },
         "auth": "Bearer token required (API key)",
         "docs": "/docs",
