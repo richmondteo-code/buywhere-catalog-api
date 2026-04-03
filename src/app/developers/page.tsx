@@ -109,17 +109,23 @@ crew = Crew(
 result = crew.kickoff()
 print(result)`;
 
-const tsExample = `import BuyWhere from "@buywhere/sdk";
+const tsExample = `const BW_API_KEY = process.env.BUYWHERE_API_KEY ?? "bw_live_your_key_here";
+const BASE_URL = "https://api.buywhere.ai/v1";
 
-const client = new BuyWhere({ apiKey: process.env.BUYWHERE_API_KEY });
+async function searchProducts(query: string, limit = 5) {
+  const params = new URLSearchParams({
+    q: query,
+    country: "SG",
+    limit: String(limit),
+  });
+  const res = await fetch(\`\${BASE_URL}/products/search?\${params}\`, {
+    headers: { Authorization: \`Bearer \${BW_API_KEY}\` },
+  });
+  if (!res.ok) throw new Error(\`BuyWhere API error: \${res.status}\`);
+  return res.json() as Promise<{ products: Array<{ name: string; price: number; currency: string }> }>;
+}
 
-// Search products
-const { products } = await client.products.search({
-  q: "wireless headphones",
-  country: "SG",
-  limit: 5,
-});
-
+const { products } = await searchProducts("wireless headphones");
 for (const product of products) {
   console.log(product.name, product.price, product.currency);
 }`;
@@ -249,18 +255,59 @@ export default function DevelopersPage() {
               <h3 className="font-semibold text-gray-700 mb-3">TypeScript / Node.js</h3>
               <CodeBlock code={tsExample} lang="typescript" />
               <p className="text-xs text-gray-400 mt-2">
-                Install: <code className="bg-gray-100 px-1 rounded font-mono">npm install @buywhere/sdk</code> (SDK v0.1 — beta)
+                No dependencies — uses the native <code className="bg-gray-100 px-1 rounded font-mono">fetch</code> API (Node 18+ / all modern runtimes)
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Auth */}
+      {/* MCP */}
       <section className="py-16 bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            <span className="text-indigo-600 mr-2">03.</span>MCP Integration
+          </h2>
+          <p className="text-gray-600 mb-6 leading-relaxed">
+            BuyWhere ships a <a href="https://modelcontextprotocol.io" className="text-indigo-600 hover:underline" target="_blank" rel="noopener noreferrer">Model Context Protocol</a> server, so any MCP-compatible AI host (Claude Desktop, Continue, Cursor, custom agents) can search Singapore products without writing any code.
+          </p>
+          <div className="space-y-6">
+            <div>
+              <h3 className="font-semibold text-gray-700 mb-2">Run the MCP server</h3>
+              <CodeBlock code={`pip install buywhere-mcp\nBUYWHERE_API_KEY=bw_live_your_key_here python -m buywhere_mcp`} lang="bash" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-700 mb-2">Claude Desktop config (<code className="bg-gray-100 px-1 rounded text-xs font-mono">claude_desktop_config.json</code>)</h3>
+              <CodeBlock code={`{
+  "mcpServers": {
+    "buywhere": {
+      "command": "python",
+      "args": ["-m", "buywhere_mcp"],
+      "env": {
+        "BUYWHERE_API_KEY": "bw_live_your_key_here"
+      }
+    }
+  }
+}`} lang="json" />
+            </div>
+            <div className="bg-gray-50 rounded-xl p-5 text-sm text-gray-700">
+              <p className="font-semibold mb-2">Available MCP tools</p>
+              <ul className="space-y-1 text-gray-600">
+                <li><code className="font-mono text-xs bg-white border border-gray-200 px-1.5 py-0.5 rounded mr-2">search_products</code>Keyword search across Lazada, Shopee, Qoo10</li>
+                <li><code className="font-mono text-xs bg-white border border-gray-200 px-1.5 py-0.5 rounded mr-2">get_product</code>Full details for a product by ID</li>
+                <li><code className="font-mono text-xs bg-white border border-gray-200 px-1.5 py-0.5 rounded mr-2">find_best_price</code>Cheapest listing for a product name across all platforms</li>
+                <li><code className="font-mono text-xs bg-white border border-gray-200 px-1.5 py-0.5 rounded mr-2">get_deals</code>Products with significant price drops, sorted by discount</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Auth */}
+      <section className="py-16 bg-gray-50 border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            <span className="text-indigo-600 mr-2">03.</span>Authentication
+            <span className="text-indigo-600 mr-2">04.</span>Authentication
           </h2>
           <p className="text-gray-600 mb-4 leading-relaxed">
             All API requests must include your API key in the <code className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">Authorization</code> header:
@@ -273,10 +320,10 @@ export default function DevelopersPage() {
       </section>
 
       {/* Endpoints */}
-      <section className="py-16 bg-gray-50 border-b border-gray-100">
+      <section className="py-16 bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-8">
-            <span className="text-indigo-600 mr-2">04.</span>API Reference
+            <span className="text-indigo-600 mr-2">05.</span>API Reference
           </h2>
           <div className="space-y-4">
             {endpoints.map((ep) => (
@@ -305,7 +352,7 @@ export default function DevelopersPage() {
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            <span className="text-indigo-600 mr-2">05.</span>Rate Limits &amp; Errors
+            <span className="text-indigo-600 mr-2">06.</span>Rate Limits &amp; Errors
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
