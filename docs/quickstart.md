@@ -24,7 +24,7 @@ Search Singapore products using the `/v1/search` endpoint. Filter by country usi
 ### Using curl
 
 ```bash
-curl -X GET "https://api.buywhere.com/v1/search?q=wireless+headphones&source=shopee_sg&limit=5" \
+curl -X GET "https://api.buywhere.ai/v1/search?q=wireless+headphones&source=shopee_sg&limit=5" \
   -H "Authorization: Bearer bw_live_xxxxx" \
   -H "Accept: application/json"
 ```
@@ -159,7 +159,7 @@ Buy URL: https://shopee.sg/product/12345
 ## Step 4: Find the Best Price
 
 ```bash
-curl -X GET "https://api.buywhere.com/v1/products/best-price?q=nintendo%20switch%20oled" \
+curl -X GET "https://api.buywhere.ai/v1/products/best-price?q=nintendo%20switch%20oled" \
   -H "Authorization: Bearer bw_live_xxxxx"
 ```
 
@@ -172,7 +172,7 @@ print(f"From: {cheapest.source}")
 ## Step 5: Compare Prices Across Platforms
 
 ```bash
-curl -X GET "https://api.buywhere.com/v1/products/compare?product_id=12345" \
+curl -X GET "https://api.buywhere.ai/v1/products/compare?product_id=12345" \
   -H "Authorization: Bearer bw_live_xxxxx"
 ```
 
@@ -187,7 +187,7 @@ for match in comparison.matches:
 ## Step 6: Browse Categories
 
 ```bash
-curl -X GET "https://api.buywhere.com/v1/categories" \
+curl -X GET "https://api.buywhere.ai/v1/categories" \
   -H "Authorization: Bearer bw_live_xxxxx"
 ```
 
@@ -203,21 +203,21 @@ for cat in categories.categories[:10]:
 ### Filter by Price Range
 
 ```bash
-curl "https://api.buywhere.com/v1/search?q=laptop&min_price=500&max_price=2000" \
+curl "https://api.buywhere.ai/v1/search?q=laptop&min_price=500&max_price=2000" \
   -H "Authorization: Bearer bw_live_xxxxx"
 ```
 
 ### Filter by Platform
 
 ```bash
-curl "https://api.buywhere.com/v1/search?q=iphone&source=shopee_sg" \
+curl "https://api.buywhere.ai/v1/search?q=iphone&source=shopee_sg" \
   -H "Authorization: Bearer bw_live_xxxxx"
 ```
 
 ### Filter by Category
 
 ```bash
-curl "https://api.buywhere.com/v1/search?q=camera&category=Electronics" \
+curl "https://api.buywhere.ai/v1/search?q=camera&category=Electronics" \
   -H "Authorization: Bearer bw_live_xxxxx"
 ```
 

@@ -16,7 +16,7 @@ BuyWhere provides a unified API to search, compare, and purchase products across
 ## Base URL
 
 ```
-https://api.buywhere.com
+https://api.buywhere.ai
 ```
 
 ## Core Features
