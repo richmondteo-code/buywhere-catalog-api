@@ -20,6 +20,7 @@ export default function Nav() {
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
           <Link href="/developers" className="hover:text-indigo-600 transition-colors">Developers</Link>
+          <Link href="/use-cases" className="hover:text-indigo-600 transition-colors">Use Cases</Link>
           <Link href="/pricing" className="hover:text-indigo-600 transition-colors">Pricing</Link>
           <Link href="/about" className="hover:text-indigo-600 transition-colors">About</Link>
           <Link href="/contact" className="ml-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
@@ -47,6 +48,7 @@ export default function Nav() {
       {open && (
         <div className="md:hidden border-t border-gray-100 bg-white px-4 pb-4 flex flex-col gap-3 text-sm font-medium text-gray-700">
           <Link href="/developers" onClick={() => setOpen(false)} className="py-2 hover:text-indigo-600">Developers</Link>
+          <Link href="/use-cases" onClick={() => setOpen(false)} className="py-2 hover:text-indigo-600">Use Cases</Link>
           <Link href="/pricing" onClick={() => setOpen(false)} className="py-2 hover:text-indigo-600">Pricing</Link>
           <Link href="/about" onClick={() => setOpen(false)} className="py-2 hover:text-indigo-600">About</Link>
           <Link href="/contact" onClick={() => setOpen(false)} className="py-2 text-indigo-600 font-semibold">Get API Key</Link>
