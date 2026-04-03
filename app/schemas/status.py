@@ -117,3 +117,30 @@ class CatalogStatsReport(BaseModel):
     total_products: int
     by_platform: dict[str, int]
     by_category: dict[str, int]
+
+
+class DBConnectionHealth(BaseModel):
+    ok: bool
+    latency_ms: float
+    error: Optional[str] = None
+
+
+class DBPoolHealth(BaseModel):
+    size: int
+    checked_in: int
+    checked_out: int
+    overflow: int
+    invalid: int = 0
+
+
+class DBHealthReport(BaseModel):
+    ok: bool
+    connection: DBConnectionHealth
+    pool: DBPoolHealth
+    checked_at: datetime
+
+
+class SystemHealthReport(BaseModel):
+    generated_at: datetime
+    db: DBHealthReport
+    scrapers: ScraperHealthReport
