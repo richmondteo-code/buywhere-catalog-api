@@ -71,8 +71,8 @@ curl -X GET "https://api.buywhere.ai/v1/products/search" \
 
 - Quickstart guide: https://buywhere.ai/developers
 - Full API docs: https://richmondteo-code.github.io/buywhere-catalog-api/
-- SDK (Python): `pip install buywhere-sdk`
-- SDK (TypeScript): `npm install @buywhere/sdk`
+- SDK (Python): `pip install langchain langchain-openai requests` (see quickstart for LangChain/CrewAI integration examples)
+- SDK (TypeScript): `npm install @buywhere/sdk` (beta)
 
 ## Rate Limits
 
