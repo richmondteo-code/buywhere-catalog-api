@@ -8,10 +8,11 @@ BuyWhere indexes products from Singapore's major e-commerce platforms (Lazada, S
 
 ## API Endpoints
 
-- **Product Search**: `GET https://api.buywhere.ai/v1/products/search?q={query}&country=SG`
+- **Product Search**: `GET https://api.buywhere.ai/v1/search?q={query}&limit=10`
 - **Product Detail**: `GET https://api.buywhere.ai/v1/products/{id}`
-- **Batch Fetch**: `GET https://api.buywhere.ai/v1/products/batch?ids={id1,id2,...}`
-- **Categories**: `GET https://api.buywhere.ai/v1/categories?country=SG`
+- **Best Price**: `GET https://api.buywhere.ai/v1/products/best-price?product_name={name}`
+- **Deals**: `GET https://api.buywhere.ai/v1/deals`
+- **Categories**: `GET https://api.buywhere.ai/v1/categories`
 
 All endpoints return JSON. Authentication uses Bearer tokens via the `Authorization` header.
 
@@ -26,11 +27,10 @@ Get an API key at: https://buywhere.ai/developers
 ## Example: Search Products
 
 ```bash
-curl -X GET "https://api.buywhere.ai/v1/products/search" \
+curl -X GET "https://api.buywhere.ai/v1/search" \
   -H "Authorization: Bearer bw_live_YOUR_API_KEY" \
   -G \
   --data-urlencode "q=wireless headphones under $150" \
-  --data-urlencode "country=SG" \
   --data-urlencode "limit=5"
 ```
 
@@ -38,25 +38,25 @@ curl -X GET "https://api.buywhere.ai/v1/products/search" \
 
 ```json
 {
-  "products": [
+  "total": 47,
+  "limit": 5,
+  "offset": 0,
+  "has_more": true,
+  "items": [
     {
-      "id": "sg_lazada_B09X12345",
+      "id": 12345,
       "name": "Sony WH-1000XM5 Wireless Headphones",
       "price": 429.00,
       "currency": "SGD",
-      "retailer": "Lazada SG",
-      "retailer_url": "https://lazada.sg/...",
-      "affiliate_url": "https://buywhere.ai/go/sg_lazada_B09X12345",
+      "source": "lazada_sg",
+      "buy_url": "https://lazada.sg/products/...",
+      "affiliate_url": "https://api.buywhere.ai/v1/track/12345",
       "image_url": "https://img.lazcdn.com/...",
-      "availability": "in_stock",
+      "is_available": true,
       "rating": 4.8,
-      "review_count": 1243,
       "category": "Electronics > Audio > Headphones"
     }
-  ],
-  "total": 47,
-  "page": 1,
-  "limit": 5
+  ]
 }
 ```
 
@@ -72,14 +72,14 @@ curl -X GET "https://api.buywhere.ai/v1/products/search" \
 - Quickstart guide: https://buywhere.ai/developers
 - Full API docs: https://richmondteo-code.github.io/buywhere-catalog-api/
 - SDK (Python): `pip install langchain langchain-openai requests` (see quickstart for LangChain/CrewAI integration examples)
-- SDK (TypeScript): `npm install @buywhere/sdk` (beta)
+- TypeScript/Node: native `fetch` API, no dependencies (Node 18+)
 
 ## Rate Limits
 
-- Free tier: 100 requests/day
-- Developer: 10,000 requests/day
-- Pro: 100,000 requests/day
-- Enterprise: Custom
+- Free: 10 req/min, 1,000 queries/month
+- Starter: 60 req/min, 100,000 queries/month
+- Growth: 300 req/min, 1,000,000 queries/month
+- Scale: 1,000 req/min, unlimited
 
 ## Company
 

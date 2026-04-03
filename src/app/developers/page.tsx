@@ -2,11 +2,10 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
-const curlExample = `curl -X GET "https://api.buywhere.ai/v1/products/search" \\
+const curlExample = `curl -X GET "https://api.buywhere.ai/v1/search" \\
   -H "Authorization: Bearer bw_live_your_key_here" \\
   -G \\
   --data-urlencode "q=wireless headphones" \\
-  --data-urlencode "country=SG" \\
   --data-urlencode "limit=5"`;
 
 const pythonExample = `import requests
@@ -15,14 +14,13 @@ client = requests.Session()
 client.headers["Authorization"] = "Bearer bw_live_your_key_here"
 
 # Search products
-resp = client.get("https://api.buywhere.ai/v1/products/search", params={
+resp = client.get("https://api.buywhere.ai/v1/search", params={
     "q": "wireless headphones",
-    "country": "SG",
     "limit": 5,
 })
 data = resp.json()
 
-for product in data["products"]:
+for product in data["items"]:
     print(product["name"], product["price"], product["currency"])`;
 
 const langchainExample = `from langchain.tools import tool
@@ -36,14 +34,14 @@ API_KEY = "bw_live_your_key_here"
 def search_buywhere(query: str) -> str:
     """Search the BuyWhere product catalog for Singapore products."""
     resp = requests.get(
-        "https://api.buywhere.ai/v1/products/search",
+        "https://api.buywhere.ai/v1/search",
         headers={"Authorization": f"Bearer {API_KEY}"},
-        params={"q": query, "country": "SG", "limit": 5},
+        params={"q": query, "limit": 5},
     )
-    products = resp.json().get("products", [])
+    products = resp.json().get("items", [])
     if not products:
         return "No products found."
-    return "\\n".join([f"- {p['name']} | {p['retailer']} | SGD {p['price']}" for p in products])
+    return "\\n".join([f"- {p['name']} | {p['source']} | SGD {p['price']}" for p in products])
 
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 agent = initialize_agent(
@@ -66,14 +64,14 @@ API_KEY = "bw_live_your_key_here"
 def search_products(query: str) -> str:
     """Search BuyWhere for products in Singapore."""
     resp = requests.get(
-        "https://api.buywhere.ai/v1/products/search",
+        "https://api.buywhere.ai/v1/search",
         headers={"Authorization": f"Bearer {API_KEY}"},
-        params={"q": query, "country": "SG", "limit": 10},
+        params={"q": query, "limit": 10},
     )
-    products = resp.json().get("products", [])
+    products = resp.json().get("items", [])
     if not products:
         return "No products found."
-    return "\\n".join([f"- {p['name']} | {p['retailer']} | SGD {p['price']}" for p in products])
+    return "\\n".join([f"- {p['name']} | {p['source']} | SGD {p['price']}" for p in products])
 
 researcher = Agent(
     role="Singapore Shopping Researcher",
@@ -113,50 +111,47 @@ const tsExample = `const BW_API_KEY = process.env.BUYWHERE_API_KEY ?? "bw_live_y
 const BASE_URL = "https://api.buywhere.ai/v1";
 
 async function searchProducts(query: string, limit = 5) {
-  const params = new URLSearchParams({
-    q: query,
-    country: "SG",
-    limit: String(limit),
-  });
-  const res = await fetch(\`\${BASE_URL}/products/search?\${params}\`, {
+  const params = new URLSearchParams({ q: query, limit: String(limit) });
+  const res = await fetch(\`\${BASE_URL}/search?\${params}\`, {
     headers: { Authorization: \`Bearer \${BW_API_KEY}\` },
   });
   if (!res.ok) throw new Error(\`BuyWhere API error: \${res.status}\`);
-  return res.json() as Promise<{ products: Array<{ name: string; price: number; currency: string }> }>;
+  return res.json() as Promise<{ items: Array<{ name: string; price: number; currency: string }> }>;
 }
 
-const { products } = await searchProducts("wireless headphones");
-for (const product of products) {
+const { items } = await searchProducts("wireless headphones");
+for (const product of items) {
   console.log(product.name, product.price, product.currency);
 }`;
 
 const responseExample = `{
-  "products": [
+  "total": 47,
+  "limit": 5,
+  "offset": 0,
+  "has_more": true,
+  "items": [
     {
-      "id": "sg_lazada_B09X12345",
+      "id": 12345,
       "name": "Sony WH-1000XM5 Wireless Headphones",
       "price": 429.00,
       "currency": "SGD",
-      "retailer": "Lazada SG",
-      "retailer_url": "https://lazada.sg/...",
+      "source": "lazada_sg",
+      "buy_url": "https://lazada.sg/products/...",
+      "affiliate_url": "https://api.buywhere.ai/v1/track/12345",
       "image_url": "https://img.lazcdn.com/...",
-      "availability": "in_stock",
+      "is_available": true,
       "rating": 4.8,
-      "review_count": 1243,
       "category": "Electronics > Audio > Headphones"
     }
-  ],
-  "total": 47,
-  "page": 1,
-  "limit": 5
+  ]
 }`;
 
 const endpoints = [
   {
     method: "GET",
-    path: "/v1/products/search",
-    desc: "Semantic product search across retailers",
-    params: ["q (required)", "country", "limit", "offset", "min_price", "max_price", "category"],
+    path: "/v1/search",
+    desc: "Full-text product search across Singapore retailers",
+    params: ["q", "category", "min_price", "max_price", "platform", "in_stock", "limit", "offset"],
   },
   {
     method: "GET",
@@ -166,15 +161,21 @@ const endpoints = [
   },
   {
     method: "GET",
-    path: "/v1/products/batch",
-    desc: "Fetch multiple products by ID",
-    params: ["ids (required, comma-separated)"],
+    path: "/v1/products/best-price",
+    desc: "Find the cheapest listing for a product name across all platforms",
+    params: ["product_name (required)", "category"],
+  },
+  {
+    method: "GET",
+    path: "/v1/deals",
+    desc: "Products with significant price drops, sorted by discount percentage",
+    params: ["category", "min_discount", "limit"],
   },
   {
     method: "GET",
     path: "/v1/categories",
     desc: "List all supported product categories",
-    params: ["country"],
+    params: [],
   },
 ];
 
@@ -274,7 +275,10 @@ export default function DevelopersPage() {
           <div className="space-y-6">
             <div>
               <h3 className="font-semibold text-gray-700 mb-2">Run the MCP server</h3>
-              <CodeBlock code={`pip install buywhere-mcp\nBUYWHERE_API_KEY=bw_live_your_key_here python -m buywhere_mcp`} lang="bash" />
+              <p className="text-sm text-gray-500 mb-3">
+                The <code className="bg-gray-100 px-1 rounded font-mono text-xs">mcp_server.py</code> file is included with your API key. Install dependencies and run:
+              </p>
+              <CodeBlock code={`pip install "mcp[cli]" httpx\nBUYWHERE_API_KEY=bw_live_your_key_here python mcp_server.py`} lang="bash" />
             </div>
             <div>
               <h3 className="font-semibold text-gray-700 mb-2">Claude Desktop config (<code className="bg-gray-100 px-1 rounded text-xs font-mono">claude_desktop_config.json</code>)</h3>
@@ -282,7 +286,7 @@ export default function DevelopersPage() {
   "mcpServers": {
     "buywhere": {
       "command": "python",
-      "args": ["-m", "buywhere_mcp"],
+      "args": ["/path/to/mcp_server.py"],
       "env": {
         "BUYWHERE_API_KEY": "bw_live_your_key_here"
       }
