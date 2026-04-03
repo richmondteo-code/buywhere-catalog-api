@@ -25,6 +25,25 @@ data = resp.json()
 for product in data["products"]:
     print(product["name"], product["price"], product["currency"])`;
 
+const langchainExample = `from langchain.agents import initialize_agent, AgentType
+from langchain_openai import ChatOpenAI
+from buywhere_sdk.langchain import BuyWhereToolkit
+
+# Give your LangChain agent access to BuyWhere
+toolkit = BuyWhereToolkit(api_key="bw_live_your_key_here")
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+
+agent = initialize_agent(
+    toolkit.get_tools(),
+    llm,
+    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    verbose=True,
+)
+
+# Ask the agent in plain English
+result = agent.run("Find the cheapest wireless headphones under $150 in Singapore")
+print(result)`;
+
 const tsExample = `import BuyWhere from "@buywhere/sdk";
 
 const client = new BuyWhere({ apiKey: process.env.BUYWHERE_API_KEY });
@@ -146,6 +165,13 @@ export default function DevelopersPage() {
             <div>
               <h3 className="font-semibold text-gray-700 mb-3">Python</h3>
               <CodeBlock code={pythonExample} lang="python" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-700 mb-3">LangChain Agent</h3>
+              <CodeBlock code={langchainExample} lang="python" />
+              <p className="text-xs text-gray-400 mt-2">
+                Install: <code className="bg-gray-100 px-1 rounded font-mono">pip install buywhere-sdk langchain langchain-openai</code>
+              </p>
             </div>
             <div>
               <h3 className="font-semibold text-gray-700 mb-3">TypeScript / Node.js</h3>
