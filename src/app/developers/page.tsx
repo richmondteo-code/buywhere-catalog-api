@@ -227,7 +227,7 @@ export default function DevelopersPage() {
             <div>
               <h3 className="font-semibold text-gray-700 mb-2">1. Get your API key</h3>
               <p className="text-sm text-gray-500 mb-3">
-                <Link href="/contact" className="text-indigo-600 hover:underline">Request API access</Link> — you&apos;ll receive a key like <code className="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono">bw_live_xxxx</code> within minutes.
+                <Link href="/api-keys" className="text-indigo-600 hover:underline">Get your API key instantly</Link> — free during beta, no credit card required. You&apos;ll receive a key like <code className="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono">bw_beta_xxxx</code> on the next screen.
               </p>
             </div>
 
@@ -432,7 +432,7 @@ export default function DevelopersPage() {
           <p className="text-indigo-200 mb-6">Get your API key and make your first query in under 5 minutes.</p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Link
-              href="/contact"
+              href="/api-keys"
               className="inline-flex items-center justify-center px-6 py-3 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors"
             >
               Get API Key →
