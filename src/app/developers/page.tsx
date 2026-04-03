@@ -44,6 +44,59 @@ agent = initialize_agent(
 result = agent.run("Find the cheapest wireless headphones under $150 in Singapore")
 print(result)`;
 
+const crewaiExample = `from crewai import Agent, Task, Crew, Process
+from crewai_tools import tool
+import requests
+
+API_KEY = "bw_live_your_key_here"
+
+@tool("BuyWhere Product Search")
+def search_products(query: str) -> str:
+    """Search BuyWhere for products in Singapore."""
+    resp = requests.get(
+        "https://api.buywhere.ai/v1/products/search",
+        headers={"Authorization": f"Bearer {API_KEY}"},
+        params={"q": query, "country": "SG", "limit": 10},
+    )
+    products = resp.json().get("products", [])
+    if not products:
+        return "No products found."
+    return "\\n".join([f"- {p['name']} | {p['retailer']} | SGD {p['price']}" for p in products])
+
+researcher = Agent(
+    role="Singapore Shopping Researcher",
+    goal="Find the best products and prices across Singapore retailers",
+    backstory="Expert at Lazada, Shopee, Qoo10, and Singapore e-commerce.",
+    tools=[search_products],
+    verbose=True,
+)
+advisor = Agent(
+    role="Personal Shopping Advisor",
+    goal="Recommend the best options with clear reasoning",
+    backstory="Experienced personal shopper who turns data into decisions.",
+    verbose=True,
+)
+
+crew = Crew(
+    agents=[researcher, advisor],
+    tasks=[
+        Task(
+            description="Find wireless headphones under SGD 300 in Singapore",
+            expected_output="List of matching products with prices and retailers.",
+            agent=researcher,
+        ),
+        Task(
+            description="Recommend the top 3 picks with pros and cons",
+            expected_output="Top 3 recommendations with reasoning.",
+            agent=advisor,
+        ),
+    ],
+    process=Process.sequential,
+)
+
+result = crew.kickoff()
+print(result)`;
+
 const tsExample = `import BuyWhere from "@buywhere/sdk";
 
 const client = new BuyWhere({ apiKey: process.env.BUYWHERE_API_KEY });
@@ -171,6 +224,13 @@ export default function DevelopersPage() {
               <CodeBlock code={langchainExample} lang="python" />
               <p className="text-xs text-gray-400 mt-2">
                 Install: <code className="bg-gray-100 px-1 rounded font-mono">pip install buywhere-sdk langchain langchain-openai</code>
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-700 mb-3">CrewAI Agent</h3>
+              <CodeBlock code={crewaiExample} lang="python" />
+              <p className="text-xs text-gray-400 mt-2">
+                Install: <code className="bg-gray-100 px-1 rounded font-mono">pip install crewai crewai-tools requests</code>
               </p>
             </div>
             <div>
