@@ -1,7 +1,11 @@
+import csv
+import io
+import json
 from decimal import Decimal
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from fastapi.responses import StreamingResponse
 from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -13,7 +17,8 @@ from app.rate_limit import limiter, rate_limit_from_request
 from app.schemas.product import (
     ProductListResponse, ProductResponse, CompareResponse, CompareMatch,
     CompareMatrixRequest, CompareMatrixResponse, CompareMatrixEntry,
-    TrendingResponse, TrendingMatch
+    TrendingResponse, TrendingMatch,
+    CompareDiffRequest, CompareDiffResponse, CompareDiffEntry, FieldDiff,
 )
 from app import cache
 
@@ -33,9 +38,12 @@ def _map_product(p: Product) -> ProductResponse:
         buy_url=p.url,
         affiliate_url=get_affiliate_url(p.source, p.url) if p.url else None,
         image_url=p.image_url,
+        brand=p.brand,
         category=p.category,
         category_path=p.category_path,
-        availability=p.is_active,
+        rating=p.rating,
+        is_available=p.is_available,
+        last_checked=p.last_checked,
         metadata=p.metadata_,
         updated_at=p.updated_at,
     )
@@ -123,6 +131,15 @@ async def best_price(
     """Return the single cheapest listing for a product across all platforms."""
     request.state.api_key = api_key
 
+    cache_key = cache.build_cache_key(
+        "products:best_price",
+        q=q,
+        category=category,
+    )
+    cached = await cache.cache_get(cache_key)
+    if cached:
+        return ProductResponse(**cached)
+
     base_query = (
         select(Product)
         .where(Product.is_active == True)
@@ -153,7 +170,9 @@ async def best_price(
     if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"No products found for: {q!r}")
 
-    return _map_product(product)
+    response = _map_product(product)
+    await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
+    return response
 
 
 @router.get("/compare", response_model=CompareResponse, summary="Compare same product across platforms")
@@ -205,9 +224,12 @@ async def compare_product(
             buy_url=matched_product.url,
             affiliate_url=get_affiliate_url(matched_product.source, matched_product.url) if matched_product.url else None,
             image_url=matched_product.image_url,
+            brand=matched_product.brand,
             category=matched_product.category,
             category_path=matched_product.category_path,
-            availability=matched_product.is_active,
+            rating=matched_product.rating,
+            is_available=matched_product.is_available,
+            last_checked=matched_product.last_checked,
             metadata=matched_product.metadata_,
             updated_at=matched_product.updated_at,
             match_score=round(score, 3),
@@ -277,9 +299,12 @@ async def compare_products_matrix(
                 buy_url=matched_product.url,
                 affiliate_url=get_affiliate_url(matched_product.source, matched_product.url) if matched_product.url else None,
                 image_url=matched_product.image_url,
+                brand=matched_product.brand,
                 category=matched_product.category,
                 category_path=matched_product.category_path,
-                availability=matched_product.is_active,
+                rating=matched_product.rating,
+                is_available=matched_product.is_available,
+                last_checked=matched_product.last_checked,
                 metadata=matched_product.metadata_,
                 updated_at=matched_product.updated_at,
                 match_score=round(score, 3),
@@ -297,6 +322,119 @@ async def compare_products_matrix(
     response = CompareMatrixResponse(
         comparisons=comparisons,
         total_products=len(comparisons),
+    )
+
+    await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
+
+    return response
+
+
+@router.post("/compare/diff", response_model=CompareDiffResponse, summary="Compare 2-5 products directly — returns structured diff")
+@limiter.limit(rate_limit_from_request)
+async def compare_products_diff(
+    request: Request,
+    body: CompareDiffRequest,
+    db: AsyncSession = Depends(get_db),
+    api_key: ApiKey = Depends(get_current_api_key),
+) -> CompareDiffResponse:
+    request.state.api_key = api_key
+
+    cache_key = cache.build_cache_key(
+        "products:compare_diff",
+        product_ids=sorted(body.product_ids),
+        include_image=body.include_image_similarity,
+    )
+    cached = await cache.cache_get(cache_key)
+    if cached:
+        return CompareDiffResponse(**cached)
+
+    if len(body.product_ids) < 2 or len(body.product_ids) > 5:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="product_ids must contain between 2 and 5 IDs",
+        )
+
+    result = await db.execute(
+        select(Product).where(
+            Product.id.in_(body.product_ids),
+            Product.is_active == True,
+        )
+    )
+    products = result.scalars().all()
+
+    if len(products) != len(body.product_ids):
+        found_ids = {p.id for p in products}
+        missing = [id for id in body.product_ids if id not in found_ids]
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Products not found: {missing}",
+        )
+
+    sorted_products = sorted(products, key=lambda p: p.price)
+    price_ranks = {p.id: i + 1 for i, p in enumerate(sorted_products)}
+
+    entries = []
+    for p in products:
+        entries.append(CompareDiffEntry(
+            id=p.id,
+            sku=p.sku,
+            source=p.source,
+            merchant_id=p.merchant_id,
+            name=p.title,
+            description=p.description,
+            price=p.price,
+            currency=p.currency,
+            buy_url=p.url,
+            affiliate_url=get_affiliate_url(p.source, p.url) if p.url else None,
+            image_url=p.image_url,
+            brand=p.brand,
+            category=p.category,
+            category_path=p.category_path,
+            rating=p.rating,
+            is_available=p.is_available,
+            last_checked=p.last_checked,
+            metadata=p.metadata_,
+            updated_at=p.updated_at,
+            price_rank=price_ranks[p.id],
+        ))
+
+    compared_fields = [
+        ("price", lambda p: p.price),
+        ("currency", lambda p: p.currency),
+        ("brand", lambda p: p.brand),
+        ("category", lambda p: p.category),
+        ("source", lambda p: p.source),
+        ("availability", lambda p: p.is_available),
+    ]
+
+    field_diffs = []
+    identical_fields = []
+
+    for field_name, accessor in compared_fields:
+        values = [accessor(p) for p in products]
+        all_identical = len(set(str(v) for v in values)) <= 1
+        if all_identical:
+            identical_fields.append(field_name)
+        else:
+            field_diffs.append(FieldDiff(
+                field=field_name,
+                values=values,
+                all_identical=False,
+            ))
+
+    cheapest = sorted_products[0]
+    most_expensive = sorted_products[-1]
+    spread = most_expensive.price - cheapest.price
+    spread_pct = float(spread / cheapest.price * 100) if cheapest.price > 0 else 0.0
+
+    response = CompareDiffResponse(
+        products=entries,
+        field_diffs=field_diffs,
+        identical_fields=identical_fields,
+        cheapest_product_id=cheapest.id,
+        most_expensive_product_id=most_expensive.id,
+        price_spread=spread,
+        price_spread_pct=round(spread_pct, 2),
     )
 
     await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
@@ -350,9 +488,12 @@ async def get_trending_products(
             buy_url=p.url,
             affiliate_url=get_affiliate_url(p.source, p.url) if p.url else None,
             image_url=p.image_url,
+            brand=p.brand,
             category=p.category,
             category_path=p.category_path,
-            availability=p.is_active,
+            rating=p.rating,
+            is_available=p.is_available,
+            last_checked=p.last_checked,
             metadata=p.metadata_,
             updated_at=p.updated_at,
         ))

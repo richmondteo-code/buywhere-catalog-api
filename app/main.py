@@ -65,6 +65,7 @@ async def api_root():
             "best_price": "GET /v1/products/best-price",
             "compare_single": "GET /v1/products/compare",
             "compare_matrix": "POST /v1/products/compare",
+            "compare_diff": "POST /v1/products/compare/diff",
             "trending": "GET /v1/products/trending",
             "product": "GET /v1/products/{id}",
             "categories": "GET /v1/categories",
