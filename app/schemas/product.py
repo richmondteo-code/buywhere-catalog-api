@@ -14,6 +14,7 @@ class ProductResponse(BaseModel):
     price: Decimal
     currency: str
     buy_url: str = Field(..., description="Direct purchase URL")
+    affiliate_url: Optional[str] = Field(None, description="Tracked affiliate URL (use this to send traffic)")
     image_url: Optional[str] = None
     category: Optional[str] = None
     category_path: Optional[List[str]] = None

@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.affiliate_links import get_affiliate_url
 from app.auth import get_current_api_key
 from app.database import get_db
 from app.models.product import ApiKey, Product
@@ -25,6 +26,7 @@ def _map_product(p: Product) -> ProductResponse:
         price=p.price,
         currency=p.currency,
         buy_url=p.url,
+        affiliate_url=get_affiliate_url(p.source, p.url) if p.url else None,
         image_url=p.image_url,
         category=p.category,
         category_path=p.category_path,
