@@ -509,6 +509,124 @@ async def get_trending_products(
     return response
 
 
+@router.get("/export", summary="Export products as CSV or JSON")
+@limiter.limit(rate_limit_from_request)
+async def export_products(
+    request: Request,
+    format: str = Query("json", regex="^(csv|json)$", description="Export format: csv or json"),
+    category: Optional[str] = Query(None, description="Filter by category"),
+    source: Optional[str] = Query(None, description="Filter by source/platform"),
+    min_price: Optional[Decimal] = Query(None, ge=0),
+    max_price: Optional[Decimal] = Query(None, ge=0),
+    limit: int = Query(1000, ge=1, le=10000, description="Max records to export (up to 10K)"),
+    offset: int = Query(0, ge=0),
+    db: AsyncSession = Depends(get_db),
+    api_key: ApiKey = Depends(get_current_api_key),
+) -> StreamingResponse:
+    request.state.api_key = api_key
+
+    base_query = select(Product).where(Product.is_active == True)
+
+    if category:
+        base_query = base_query.where(Product.category.ilike(f"%{category}%"))
+    if source:
+        base_query = base_query.where(Product.source == source)
+    if min_price is not None:
+        base_query = base_query.where(Product.price >= min_price)
+    if max_price is not None:
+        base_query = base_query.where(Product.price <= max_price)
+
+    base_query = base_query.order_by(Product.id).limit(limit).offset(offset)
+
+    results = await db.execute(base_query)
+    products = results.scalars().all()
+
+    if format == "csv":
+        async def csv_stream():
+            output = io.StringIO()
+            fieldnames = [
+                "id", "sku", "source", "merchant_id", "title", "description",
+                "price", "currency", "url", "brand", "category", "image_url",
+                "is_active", "rating", "updated_at"
+            ]
+            await output.write(",".join(fieldnames) + "\n")
+
+            for p in products:
+                row = {
+                    "id": p.id,
+                    "sku": p.sku or "",
+                    "source": p.source or "",
+                    "merchant_id": p.merchant_id or "",
+                    "title": (p.title or "").replace('"', '""'),
+                    "description": (p.description or "").replace("\n", " ").replace("\r", "").replace('"', '""'),
+                    "price": str(p.price) if p.price else "",
+                    "currency": p.currency or "SGD",
+                    "url": p.url or "",
+                    "brand": p.brand or "",
+                    "category": p.category or "",
+                    "image_url": p.image_url or "",
+                    "is_active": str(p.is_active) if p.is_active is not None else "",
+                    "rating": str(p.rating) if p.rating else "",
+                    "updated_at": p.updated_at.isoformat() if p.updated_at else "",
+                }
+                await output.write(",".join(f'"{v}"' if '"' in str(v) or ',' in str(v) else str(v) for v in row.values()) + "\n")
+                if output.tell() > 65536:
+                    yield output.getvalue().encode("utf-8")
+                    output.truncate(0)
+                    output.seek(0)
+            yield output.getvalue().encode("utf-8")
+
+        return StreamingResponse(
+            csv_stream(),
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": f"attachment; filename=products_export_{offset}-{offset + len(products)}.csv"
+            }
+        )
+    else:
+        async def json_stream():
+            buffer = io.BytesIO()
+            await buffer.write(b"[")
+            first = True
+            for p in products:
+                if not first:
+                    await buffer.write(b",")
+                first = False
+                obj = {
+                    "id": p.id,
+                    "sku": p.sku,
+                    "source": p.source,
+                    "merchant_id": p.merchant_id,
+                    "name": p.title,
+                    "description": p.description,
+                    "price": str(p.price) if p.price else None,
+                    "currency": p.currency or "SGD",
+                    "buy_url": p.url,
+                    "brand": p.brand,
+                    "category": p.category,
+                    "category_path": p.category_path,
+                    "image_url": p.image_url,
+                    "availability": p.is_active,
+                    "rating": str(p.rating) if p.rating else None,
+                    "updated_at": p.updated_at.isoformat() if p.updated_at else None,
+                }
+                await buffer.write(json.dumps(obj, ensure_ascii=False).encode("utf-8"))
+                if buffer.tell() > 65536:
+                    yield buffer.getvalue()
+                    buffer.truncate(0)
+                    buffer.seek(0)
+            await buffer.write(b"]")
+            yield buffer.getvalue()
+
+        return StreamingResponse(
+            json_stream(),
+            media_type="application/json",
+            headers={
+                "Content-Disposition": f"attachment; filename=products_export_{offset}-{offset + len(products)}.json"
+            }
+        )
+
+
 @router.get("/{product_id}", response_model=ProductResponse, summary="Get product by ID")
 @limiter.limit(rate_limit_from_request)
 async def get_product(

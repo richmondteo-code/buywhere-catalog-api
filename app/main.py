@@ -67,6 +67,7 @@ async def api_root():
             "compare_matrix": "POST /v1/products/compare",
             "compare_diff": "POST /v1/products/compare/diff",
             "trending": "GET /v1/products/trending",
+            "export": "GET /v1/products/export?format=csv|json",
             "product": "GET /v1/products/{id}",
             "categories": "GET /v1/categories",
             "deals": "GET /v1/deals",
