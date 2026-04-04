@@ -12,6 +12,8 @@ from scrapers.watsons_sg import WatsonsSGScraper
 from scrapers.guardian_sg import GuardianSGScraper
 from scrapers.decathlon_sg import DecathlonScraper
 from scrapers.nike_sg import NikeScraper
+from scrapers.lazada_ph import LazadaPHScraper
+from scrapers.zalora_sg import ZaloraScraper
 
 __all__ = [
     "SephoraScraper",
@@ -28,4 +30,6 @@ __all__ = [
     "GuardianSGScraper",
     "DecathlonScraper",
     "NikeScraper",
+    "LazadaPHScraper",
+    "ZaloraScraper",
 ]
