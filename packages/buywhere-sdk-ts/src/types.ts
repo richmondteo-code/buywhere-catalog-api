@@ -19,6 +19,8 @@ export interface Product {
   price_rank?: number;
   original_price?: number;
   discount_pct?: number;
+  savings_vs_most_expensive?: number;
+  savings_pct?: number;
 }
 
 export interface ProductListResponse {
@@ -48,11 +50,43 @@ export interface ProductResponse {
   updated_at: string;
 }
 
+export interface CompareMatch {
+  id: number;
+  sku: string;
+  source: string;
+  merchant_id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  currency: string;
+  buy_url: string;
+  affiliate_url: string | null;
+  image_url: string | null;
+  brand: string | null;
+  category: string | null;
+  category_path: string[] | null;
+  rating: number | null;
+  is_available: boolean;
+  last_checked: string | null;
+  metadata: Record<string, unknown> | null;
+  updated_at: string;
+  match_score: number;
+  savings_vs_most_expensive?: number;
+  savings_pct?: number;
+}
+
+export interface CompareHighlights {
+  cheapest: CompareMatch | null;
+  best_rated: CompareMatch | null;
+  fastest_shipping: CompareMatch | null;
+}
+
 export interface CompareResponse {
   source_product_id: number;
   source_product_name: string;
   total_matches: number;
-  matches: Product[];
+  matches: CompareMatch[];
+  highlights: CompareHighlights | null;
 }
 
 export interface CompareMatrixResponse {
@@ -191,6 +225,11 @@ export interface SearchOptions {
 
 export interface CompareOptions {
   product_id: number;
+  min_price?: number;
+  max_price?: number;
+}
+
+export interface CompareByIdOptions {
   min_price?: number;
   max_price?: number;
 }
