@@ -4,6 +4,7 @@ import uuid
 from datetime import datetime, timezone
 from typing import Optional
 
+import bcrypt
 from fastapi import Depends, HTTPException, Security, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
@@ -20,6 +21,14 @@ bearer_scheme = HTTPBearer()
 
 def hash_key(raw_key: str) -> str:
     return hashlib.sha256(raw_key.encode()).hexdigest()
+
+
+def _is_bcrypt_hash(h: str) -> bool:
+    return h.startswith("$2b$") or h.startswith("$2a$")
+
+
+def _verify_key_bcrypt(raw_key: str, hashed: str) -> bool:
+    return bcrypt.checkpw(raw_key.encode(), hashed.encode())
 
 
 def generate_api_key() -> tuple[str, str]:
@@ -55,11 +64,26 @@ async def get_current_api_key(
         api_key = result.scalar_one_or_none()
     else:
         # Fall back to raw key hash lookup (for direct bw_ keys)
+        # First try SHA-256 exact match (fast path for legacy keys)
         key_hash = hash_key(token)
         result = await db.execute(
             select(ApiKey).where(ApiKey.key_hash == key_hash, ApiKey.is_active == True)
         )
         api_key = result.scalar_one_or_none()
+
+        # If not found, try bcrypt verification (new keys use bcrypt)
+        if api_key is None:
+            result = await db.execute(
+                select(ApiKey).where(
+                    ApiKey.is_active == True,
+                    ApiKey.key_hash.like("$2%"),
+                )
+            )
+            candidates = result.scalars().all()
+            for candidate in candidates:
+                if _verify_key_bcrypt(token, candidate.key_hash):
+                    api_key = candidate
+                    break
 
     if not api_key:
         raise HTTPException(
@@ -83,6 +107,8 @@ async def provision_api_key(
     name: str,
     tier: str = "basic",
     db: AsyncSession = None,
+    rate_limit: int = None,
+    allowed_origins: list = None,
 ) -> tuple[str, ApiKey]:
     """Create a new API key. Returns (raw_key, ApiKey record)."""
     raw_key, key_hash = generate_api_key()
@@ -95,6 +121,8 @@ async def provision_api_key(
         name=name,
         tier=tier,
         is_active=True,
+        rate_limit=rate_limit,
+        allowed_origins=allowed_origins,
     )
     db.add(api_key)
     await db.flush()
