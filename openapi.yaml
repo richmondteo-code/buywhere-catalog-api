@@ -1,25 +1,22 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: BuyWhere Catalog API
   description: |
     Agent-native product catalog API for AI agent commerce.
     Query millions of products across Southeast Asia.
-  version: "1.0.0"
+  version: 1.0.0
   contact:
     name: BuyWhere Engineering
     url: https://buywhere.ai
   license:
     name: Proprietary
-
 servers:
   - url: https://api.buywhere.ai
     description: Production
   - url: https://staging-api.buywhere.ai
     description: Staging
-
 security:
   - BearerAuth: []
-
 tags:
   - name: products
     description: Product search and retrieval
@@ -37,9 +34,12 @@ tags:
     description: Catalog and scraper health status
   - name: catalog
     description: Catalog quality, health, and statistics
+  - name: changelog
+    description: Structured API release history for agent consumers
+  - name: alerts
+    description: Price alert registration and management
   - name: system
     description: Health and API info
-
 paths:
   /health:
     get:
@@ -48,7 +48,7 @@ paths:
       summary: Health check
       operationId: healthCheck
       responses:
-        "200":
+        '200':
           description: Service is healthy
           content:
             application/json:
@@ -60,11 +60,10 @@ paths:
                     example: ok
                   version:
                     type: string
-                    example: "1.0.0"
+                    example: 1.0.0
                   environment:
                     type: string
                     example: production
-
   /v1:
     get:
       tags:
@@ -72,7 +71,7 @@ paths:
       summary: API root with endpoint listing
       operationId: apiRoot
       responses:
-        "200":
+        '200':
           description: API root information
           content:
             application/json:
@@ -95,7 +94,193 @@ paths:
                   docs:
                     type: string
                     example: /docs
-
+  /v1/changelog:
+    get:
+      tags:
+        - changelog
+      summary: Get structured API changelog
+      description: |
+        Returns the parsed release history from `CHANGELOG.md` as JSON.
+        Intended for agent frameworks and SDKs that need to detect API updates programmatically.
+      operationId: getApiChangelog
+      responses:
+        '200':
+          description: Structured API release history
+          headers:
+            X-API-Version:
+              description: API version serving the response
+              schema:
+                type: string
+                example: '1.0'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangelogResponse'
+              example:
+                api_version: '1.0'
+                releases:
+                  - version: 1.0.0
+                    date: '2026-04-04'
+                    changes:
+                      - category: Added
+                        group: Product Search & Discovery
+                        description: '**`GET /v1/search`** — Full-text product search with filtering and pagination.'
+                      - category: Changed
+                        group: null
+                        description: Search ranking improved from `plainto_tsquery` to `websearch_to_tsquery`.
+        '400':
+          description: Unsupported version requested
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: UNSUPPORTED_VERSION
+                      message:
+                        type: string
+                        example: 'Version ''2'' is not supported. Supported versions: 1.0, 1, v1'
+                      details:
+                        type: object
+                        properties:
+                          supported_versions:
+                            type: array
+                            items:
+                              type: string
+                            example:
+                              - '1.0'
+                              - '1'
+                              - v1
+  /v1/alerts:
+    post:
+      tags:
+        - alerts
+      summary: Create a price alert
+      operationId: createAlert
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertCreateRequest'
+      responses:
+        '201':
+          description: Price alert created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: NOT_FOUND
+                      message:
+                        type: string
+                        example: The requested resource was not found
+                      details:
+                        type: object
+                        additionalProperties: true
+        '409':
+          description: Duplicate active alert
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: An active alert with the same product, target price, direction, and callback URL already exists
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    get:
+      tags:
+        - alerts
+      summary: List price alerts
+      operationId: listAlerts
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Price alerts for the authenticated developer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v1/alerts/{alert_id}:
+    delete:
+      tags:
+        - alerts
+      summary: Cancel a price alert
+      operationId: deleteAlert
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: alert_id
+          in: path
+          required: true
+          description: Price alert identifier
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Alert deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                example: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: NOT_FOUND
+                      message:
+                        type: string
+                        example: The requested resource was not found
+                      details:
+                        type: object
+                        additionalProperties: true
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/search:
     get:
       tags:
@@ -132,7 +317,7 @@ paths:
             type: number
             format: decimal
             minimum: 0
-            example: 100.00
+            example: 100
         - name: max_price
           in: query
           description: Maximum price filter
@@ -141,14 +326,18 @@ paths:
             type: number
             format: decimal
             minimum: 0
-            example: 999.00
+            example: 999
         - name: platform
           in: query
           description: Filter by platform/source
           required: false
           schema:
             type: string
-            enum: [lazada_sg, shopee_sg, carousell, qoo10]
+            enum:
+              - lazada_sg
+              - shopee_sg
+              - carousell
+              - qoo10
             example: shopee_sg
         - name: in_stock
           in: query
@@ -177,7 +366,7 @@ paths:
             default: 0
             example: 0
       responses:
-        "200":
+        '200':
           description: Product search results
           headers:
             X-RateLimit-Limit:
@@ -198,7 +387,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductListResponse"
+                $ref: '#/components/schemas/ProductListResponse'
               example:
                 total: 1523
                 limit: 20
@@ -206,30 +395,32 @@ paths:
                 has_more: true
                 items:
                   - id: 12345
-                    sku: "SHOPEE-SG-IPHONE15PRO-256-BLK"
+                    sku: SHOPEE-SG-IPHONE15PRO-256-BLK
                     source: shopee_sg
-                    merchant_id: "shop_abc123"
-                    name: "Apple iPhone 15 Pro 256GB Black"
-                    description: "Latest Apple iPhone 15 Pro with A17 Pro chip"
-                    price: 1499.00
+                    merchant_id: shop_abc123
+                    name: Apple iPhone 15 Pro 256GB Black
+                    description: Latest Apple iPhone 15 Pro with A17 Pro chip
+                    price: 1499
                     currency: SGD
-                    buy_url: "https://shopee.sg/iphone-15-pro"
-                    affiliate_url: "https://affiliate.buywhere.ai/track/123"
-                    image_url: "https://cf.shopee.sg/file/abc123"
-                    category: "Electronics"
-                    category_path: ["Electronics", "Phones", "Smartphones"]
-                    availability: true
+                    buy_url: https://shopee.sg/iphone-15-pro
+                    affiliate_url: https://affiliate.buywhere.ai/track/123
+                    image_url: https://cf.shopee.sg/file/abc123
+                    category: Electronics
+                    category_path:
+                      - Electronics
+                      - Phones
+                      - Smartphones
+                    is_available: true
                     metadata:
                       brand: Apple
                       model: iPhone 15 Pro
-                    updated_at: "2026-04-03T10:30:00Z"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+                    updated_at: '2026-04-03T10:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/products:
     get:
       tags:
@@ -265,7 +456,7 @@ paths:
             type: number
             format: decimal
             minimum: 0
-            example: 100.00
+            example: 100
         - name: max_price
           in: query
           description: Maximum price filter
@@ -274,14 +465,18 @@ paths:
             type: number
             format: decimal
             minimum: 0
-            example: 999.00
+            example: 999
         - name: source
           in: query
           description: Filter by source platform
           required: false
           schema:
             type: string
-            enum: [lazada_sg, shopee_sg, carousell, qoo10]
+            enum:
+              - lazada_sg
+              - shopee_sg
+              - carousell
+              - qoo10
             example: shopee_sg
         - name: limit
           in: query
@@ -303,7 +498,7 @@ paths:
             default: 0
             example: 0
       responses:
-        "200":
+        '200':
           description: Product search results
           headers:
             X-RateLimit-Limit:
@@ -324,37 +519,39 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductListResponse"
+                $ref: '#/components/schemas/ProductListResponse'
               example:
                 total: 1523
                 limit: 20
                 offset: 0
                 items:
                   - id: 12345
-                    sku: "SHOPEE-SG-IPHONE15PRO-256-BLK"
+                    sku: SHOPEE-SG-IPHONE15PRO-256-BLK
                     source: shopee_sg
-                    merchant_id: "shop_abc123"
-                    name: "Apple iPhone 15 Pro 256GB Black"
-                    description: "Latest Apple iPhone 15 Pro with A17 Pro chip"
-                    price: 1499.00
+                    merchant_id: shop_abc123
+                    name: Apple iPhone 15 Pro 256GB Black
+                    description: Latest Apple iPhone 15 Pro with A17 Pro chip
+                    price: 1499
                     currency: SGD
-                    buy_url: "https://shopee.sg/iphone-15-pro"
-                    affiliate_url: "https://affiliate.buywhere.ai/track/123"
-                    image_url: "https://cf.shopee.sg/file/abc123"
-                    category: "Electronics"
-                    category_path: ["Electronics", "Phones", "Smartphones"]
-                    availability: true
+                    buy_url: https://shopee.sg/iphone-15-pro
+                    affiliate_url: https://affiliate.buywhere.ai/track/123
+                    image_url: https://cf.shopee.sg/file/abc123
+                    category: Electronics
+                    category_path:
+                      - Electronics
+                      - Phones
+                      - Smartphones
+                    is_available: true
                     metadata:
                       brand: Apple
                       model: iPhone 15 Pro
-                    updated_at: "2026-04-03T10:30:00Z"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+                    updated_at: '2026-04-03T10:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/products/best-price:
     get:
       tags:
@@ -384,7 +581,7 @@ paths:
             type: string
             example: Electronics
       responses:
-        "200":
+        '200':
           description: Lowest priced product match
           headers:
             X-RateLimit-Limit:
@@ -402,29 +599,32 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductResponse"
+                $ref: '#/components/schemas/ProductResponse'
               example:
                 id: 12345
-                sku: "SHOPEE-SG-IPHONE15PRO-256-BLK"
+                sku: SHOPEE-SG-IPHONE15PRO-256-BLK
                 source: shopee_sg
-                merchant_id: "shop_abc123"
-                name: "Apple iPhone 15 Pro 256GB Black"
-                description: "Latest Apple iPhone 15 Pro with A17 Pro chip"
-                price: 1499.00
+                merchant_id: shop_abc123
+                name: Apple iPhone 15 Pro 256GB Black
+                description: Latest Apple iPhone 15 Pro with A17 Pro chip
+                price: 1499
                 currency: SGD
-                buy_url: "https://shopee.sg/iphone-15-pro"
-                affiliate_url: "https://affiliate.buywhere.ai/track/123"
-                image_url: "https://cf.shopee.sg/file/abc123"
-                category: "Electronics"
-                category_path: ["Electronics", "Phones", "Smartphones"]
-                availability: true
+                buy_url: https://shopee.sg/iphone-15-pro
+                affiliate_url: https://affiliate.buywhere.ai/track/123
+                image_url: https://cf.shopee.sg/file/abc123
+                category: Electronics
+                category_path:
+                  - Electronics
+                  - Phones
+                  - Smartphones
+                is_available: true
                 metadata:
                   brand: Apple
                   model: iPhone 15 Pro
-                updated_at: "2026-04-03T10:30:00Z"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
+                updated_at: '2026-04-03T10:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
           description: No products found for query
           content:
             application/json:
@@ -433,12 +633,11 @@ paths:
                 properties:
                   detail:
                     type: string
-                    example: "No products found for: 'iphone 15 pro'"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+                    example: 'No products found for: ''iphone 15 pro'''
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/products/compare:
     get:
       tags:
@@ -468,7 +667,7 @@ paths:
             type: number
             format: decimal
             minimum: 0
-            example: 100.00
+            example: 100
         - name: max_price
           in: query
           description: Maximum price filter for matches
@@ -477,9 +676,9 @@ paths:
             type: number
             format: decimal
             minimum: 0
-            example: 999.00
+            example: 999
       responses:
-        "200":
+        '200':
           description: Product comparison results
           headers:
             X-RateLimit-Limit:
@@ -497,34 +696,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CompareResponse"
+                $ref: '#/components/schemas/CompareResponse'
               example:
                 source_product_id: 12345
-                source_product_name: "Apple iPhone 15 Pro 256GB Black"
+                source_product_name: Apple iPhone 15 Pro 256GB Black
                 total_matches: 4
                 matches:
                   - id: 12345
-                    sku: "SHOPEE-SG-IPHONE15PRO-256-BLK"
+                    sku: SHOPEE-SG-IPHONE15PRO-256-BLK
                     source: shopee_sg
-                    merchant_id: "shop_abc123"
-                    name: "Apple iPhone 15 Pro 256GB Black"
-                    description: "Latest Apple iPhone 15 Pro with A17 Pro chip"
-                    price: 1499.00
+                    merchant_id: shop_abc123
+                    name: Apple iPhone 15 Pro 256GB Black
+                    description: Latest Apple iPhone 15 Pro with A17 Pro chip
+                    price: 1499
                     currency: SGD
-                    buy_url: "https://shopee.sg/iphone-15-pro"
-                    affiliate_url: "https://affiliate.buywhere.ai/track/123"
-                    image_url: "https://cf.shopee.sg/file/abc123"
-                    category: "Electronics"
-                    category_path: ["Electronics", "Phones", "Smartphones"]
-                    availability: true
+                    buy_url: https://shopee.sg/iphone-15-pro
+                    affiliate_url: https://affiliate.buywhere.ai/track/123
+                    image_url: https://cf.shopee.sg/file/abc123
+                    category: Electronics
+                    category_path:
+                      - Electronics
+                      - Phones
+                      - Smartphones
+                    is_available: true
                     metadata:
                       brand: Apple
                       model: iPhone 15 Pro
-                    updated_at: "2026-04-03T10:30:00Z"
+                    updated_at: '2026-04-03T10:30:00Z'
                     match_score: 0.95
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
           description: Source product not found
           content:
             application/json:
@@ -534,10 +736,10 @@ paths:
                   detail:
                     type: string
                     example: Product not found
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
     post:
       tags:
         - products
@@ -555,51 +757,193 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CompareMatrixRequest"
+              $ref: '#/components/schemas/CompareMatrixRequest'
             example:
-              product_ids: [12345, 12346, 12347]
-              min_price: 100.00
-              max_price: 2000.00
+              product_ids:
+                - 12345
+                - 12346
+                - 12347
+              min_price: 100
+              max_price: 2000
       responses:
-        "200":
+        '200':
           description: Matrix comparison results
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CompareMatrixResponse"
+                $ref: '#/components/schemas/CompareMatrixResponse'
               example:
                 total_products: 3
                 comparisons:
                   - source_product_id: 12345
-                    source_product_name: "Apple iPhone 15 Pro 256GB Black"
+                    source_product_name: Apple iPhone 15 Pro 256GB Black
                     total_matches: 4
                     matches:
                       - id: 12345
-                        sku: "SHOPEE-SG-IPHONE15PRO-256-BLK"
+                        sku: SHOPEE-SG-IPHONE15PRO-256-BLK
                         source: shopee_sg
-                        merchant_id: "shop_abc123"
-                        name: "Apple iPhone 15 Pro 256GB Black"
-                        description: "Latest Apple iPhone 15 Pro with A17 Pro chip"
-                        price: 1499.00
+                        merchant_id: shop_abc123
+                        name: Apple iPhone 15 Pro 256GB Black
+                        description: Latest Apple iPhone 15 Pro with A17 Pro chip
+                        price: 1499
                         currency: SGD
-                        buy_url: "https://shopee.sg/iphone-15-pro"
-                        affiliate_url: "https://affiliate.buywhere.ai/track/123"
-                        image_url: "https://cf.shopee.sg/file/abc123"
-                        category: "Electronics"
-                        category_path: ["Electronics", "Phones", "Smartphones"]
-                        availability: true
+                        buy_url: https://shopee.sg/iphone-15-pro
+                        affiliate_url: https://affiliate.buywhere.ai/track/123
+                        image_url: https://cf.shopee.sg/file/abc123
+                        category: Electronics
+                        category_path:
+                          - Electronics
+                          - Phones
+                          - Smartphones
+                        is_available: true
                         metadata:
                           brand: Apple
                           model: iPhone 15 Pro
-                        updated_at: "2026-04-03T10:30:00Z"
+                        updated_at: '2026-04-03T10:30:00Z'
                         match_score: 0.95
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v1/products/compare/diff:
+    post:
+      tags:
+        - products
+      summary: Compare 2-5 products directly — returns structured diff
+      description: |
+        Compare 2-5 products directly and return a structured field-level diff.
+        Shows which fields are identical vs different across products.
+        Includes price ranking (cheapest/most expensive).
+        Rate limit: 1000 requests/minute per API key.
+      operationId: compareProductsDiff
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompareDiffRequest'
+            example:
+              product_ids:
+                - 12345
+                - 12346
+                - 12347
+              include_image_similarity: false
+      responses:
+        '200':
+          description: Structured product diff
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: 1000
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: 999
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+                example: 1709568060
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompareDiffResponse'
+              example:
+                products:
+                  - id: 12345
+                    sku: SHOPEE-SG-IPHONE15PRO-256-BLK
+                    source: shopee_sg
+                    merchant_id: shop_abc123
+                    name: Apple iPhone 15 Pro 256GB Black
+                    description: Latest Apple iPhone 15 Pro with A17 Pro chip
+                    price: 1499
+                    currency: SGD
+                    buy_url: https://shopee.sg/iphone-15-pro
+                    affiliate_url: https://affiliate.buywhere.ai/track/123
+                    image_url: https://cf.shopee.sg/file/abc123
+                    category: Electronics
+                    category_path:
+                      - Electronics
+                      - Phones
+                      - Smartphones
+                    is_available: true
+                    metadata:
+                      brand: Apple
+                      model: iPhone 15 Pro
+                    updated_at: '2026-04-03T10:30:00Z'
+                    price_rank: 2
+                  - id: 12346
+                    sku: LAZADA-SG-IPHONE15PRO-256-BLK
+                    source: lazada_sg
+                    merchant_id: lazada_xyz
+                    name: Apple iPhone 15 Pro 256GB Black
+                    description: Apple iPhone 15 Pro 256GB Black
+                    price: 1399
+                    currency: SGD
+                    buy_url: https://lazada.sg/iphone-15-pro
+                    affiliate_url: https://affiliate.buywhere.ai/track/124
+                    image_url: https://cf.lazada.sg/file/def456
+                    category: Electronics
+                    category_path:
+                      - Electronics
+                      - Phones
+                      - Smartphones
+                    is_available: true
+                    metadata:
+                      brand: Apple
+                      model: iPhone 15 Pro
+                    updated_at: '2026-04-03T10:30:00Z'
+                    price_rank: 1
+                field_diffs:
+                  - field: price
+                    values:
+                      - 1499
+                      - 1399
+                    all_identical: false
+                  - field: buy_url
+                    values:
+                      - https://shopee.sg/iphone-15-pro
+                      - https://lazada.sg/iphone-15-pro
+                    all_identical: false
+                identical_fields:
+                  - name
+                  - description
+                  - brand
+                  - category
+                cheapest_product_id: 12346
+                most_expensive_product_id: 12345
+                price_spread: 100
+                price_spread_pct: 7.15
+        '400':
+          description: Invalid request (must provide 2-5 product IDs)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: product_ids must contain between 2 and 5 IDs
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: One or more products not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: 'Products not found: [99999]'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/products/trending:
     get:
       tags:
@@ -632,7 +976,7 @@ paths:
             default: 50
             example: 50
       responses:
-        "200":
+        '200':
           description: Trending products
           headers:
             X-RateLimit-Limit:
@@ -650,36 +994,161 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TrendingResponse"
+                $ref: '#/components/schemas/TrendingResponse'
               example:
                 category: Electronics
                 total: 50
                 items:
                   - id: 12345
-                    sku: "SHOPEE-SG-IPHONE15PRO-256-BLK"
+                    sku: SHOPEE-SG-IPHONE15PRO-256-BLK
                     source: shopee_sg
-                    merchant_id: "shop_abc123"
-                    name: "Apple iPhone 15 Pro 256GB Black"
-                    description: "Latest Apple iPhone 15 Pro with A17 Pro chip"
-                    price: 1499.00
+                    merchant_id: shop_abc123
+                    name: Apple iPhone 15 Pro 256GB Black
+                    description: Latest Apple iPhone 15 Pro with A17 Pro chip
+                    price: 1499
                     currency: SGD
-                    buy_url: "https://shopee.sg/iphone-15-pro"
-                    affiliate_url: "https://affiliate.buywhere.ai/track/123"
-                    image_url: "https://cf.shopee.sg/file/abc123"
-                    category: "Electronics"
-                    category_path: ["Electronics", "Phones", "Smartphones"]
-                    availability: true
+                    buy_url: https://shopee.sg/iphone-15-pro
+                    affiliate_url: https://affiliate.buywhere.ai/track/123
+                    image_url: https://cf.shopee.sg/file/abc123
+                    category: Electronics
+                    category_path:
+                      - Electronics
+                      - Phones
+                      - Smartphones
+                    is_available: true
                     metadata:
                       brand: Apple
                       model: iPhone 15 Pro
-                    updated_at: "2026-04-03T10:30:00Z"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+                    updated_at: '2026-04-03T10:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v1/products/export:
+    get:
+      tags:
+        - products
+      summary: Export products as CSV or JSON
+      description: |
+        Bulk export products in CSV or JSON format.
+        Supports filtering by category, source, and price range.
+        Results are streamed for large exports.
+        Rate limit: 100 requests/minute per API key.
+      operationId: exportProducts
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: format
+          in: query
+          description: Export format
+          required: false
+          schema:
+            type: string
+            enum:
+              - csv
+              - json
+            default: json
+            example: csv
+        - name: category
+          in: query
+          description: Filter by category
+          required: false
+          schema:
+            type: string
+            example: Electronics
+        - name: source
+          in: query
+          description: Filter by source/platform
+          required: false
+          schema:
+            type: string
+            enum:
+              - lazada_sg
+              - shopee_sg
+              - carousell
+              - qoo10
+            example: shopee_sg
+        - name: min_price
+          in: query
+          description: Minimum price filter
+          required: false
+          schema:
+            type: number
+            format: decimal
+            minimum: 0
+            example: 100
+        - name: max_price
+          in: query
+          description: Maximum price filter
+          required: false
+          schema:
+            type: number
+            format: decimal
+            minimum: 0
+            example: 999
+        - name: limit
+          in: query
+          description: Max records to export (up to 10000)
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10000
+            default: 1000
+            example: 1000
+        - name: offset
+          in: query
+          description: Pagination offset
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+            example: 0
+      responses:
+        '200':
+          description: Exported products
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+              example: |
+                id,sku,source,merchant_id,title,description,price,currency,url,brand,category,image_url,is_active,rating,updated_at
+                12345,SHOPEE-SG-IPHONE15PRO-256-BLK,shopee_sg,shop_abc123,"Apple iPhone 15 Pro 256GB Black","Latest Apple iPhone 15 Pro with A17 Pro chip",1499.00,SGD,https://shopee.sg/iphone-15-pro,Apple,Electronics,https://cf.shopee.sg/file/abc123,true,4.5,2026-04-03T10:30:00Z
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+              example:
+                - id: 12345
+                  sku: SHOPEE-SG-IPHONE15PRO-256-BLK
+                  source: shopee_sg
+                  merchant_id: shop_abc123
+                  name: Apple iPhone 15 Pro 256GB Black
+                  description: Latest Apple iPhone 15 Pro with A17 Pro chip
+                  price: 1499
+                  currency: SGD
+                  buy_url: https://shopee.sg/iphone-15-pro
+                  brand: Apple
+                  category: Electronics
+                  category_path:
+                    - Electronics
+                    - Phones
+                    - Smartphones
+                  image_url: https://cf.shopee.sg/file/abc123
+                  availability: true
+                  rating: '4.5'
+                  updated_at: '2026-04-03T10:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/products/{product_id}:
     get:
       tags:
@@ -701,7 +1170,7 @@ paths:
             type: integer
             example: 12345
       responses:
-        "200":
+        '200':
           description: Product details
           headers:
             X-RateLimit-Limit:
@@ -719,29 +1188,32 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductResponse"
+                $ref: '#/components/schemas/ProductResponse'
               example:
                 id: 12345
-                sku: "SHOPEE-SG-IPHONE15PRO-256-BLK"
+                sku: SHOPEE-SG-IPHONE15PRO-256-BLK
                 source: shopee_sg
-                merchant_id: "shop_abc123"
-                name: "Apple iPhone 15 Pro 256GB Black"
-                description: "Latest Apple iPhone 15 Pro with A17 Pro chip"
-                price: 1499.00
+                merchant_id: shop_abc123
+                name: Apple iPhone 15 Pro 256GB Black
+                description: Latest Apple iPhone 15 Pro with A17 Pro chip
+                price: 1499
                 currency: SGD
-                buy_url: "https://shopee.sg/iphone-15-pro"
-                affiliate_url: "https://affiliate.buywhere.ai/track/123"
-                image_url: "https://cf.shopee.sg/file/abc123"
-                category: "Electronics"
-                category_path: ["Electronics", "Phones", "Smartphones"]
-                availability: true
+                buy_url: https://shopee.sg/iphone-15-pro
+                affiliate_url: https://affiliate.buywhere.ai/track/123
+                image_url: https://cf.shopee.sg/file/abc123
+                category: Electronics
+                category_path:
+                  - Electronics
+                  - Phones
+                  - Smartphones
+                is_available: true
                 metadata:
                   brand: Apple
                   model: iPhone 15 Pro
-                updated_at: "2026-04-03T10:30:00Z"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
+                updated_at: '2026-04-03T10:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
           description: Product not found
           content:
             application/json:
@@ -751,11 +1223,100 @@ paths:
                   detail:
                     type: string
                     example: Product not found
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v1/products/{product_id}/reviews:
+    get:
+      tags:
+        - products
+      summary: Get product reviews aggregation across platforms
+      description: |
+        Aggregate review data for a product across all platforms.
+        Returns aggregated avgRating, totalReviews, ratingDistribution (1-5 stars),
+        sentimentScore, and per-platform breakdown.
+        Uses canonical_id to find the same product on different platforms.
+        Results cached for 10 minutes.
+        Rate limit: 1000 requests/minute per API key.
+      operationId: getProductReviews
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: product_id
+          in: path
+          description: Unique product ID
+          required: true
+          schema:
+            type: integer
+            example: 12345
+      responses:
+        '200':
+          description: Product reviews aggregation
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: 1000
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: 999
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+                example: 1709568060
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductReviewsResponse'
+              example:
+                product_id: 12345
+                review_count: 1250
+                avg_rating: 4.3
+                rating_source: shopee_sg
+                sentiment_score: 0.86
+                rating_distribution:
+                  - stars: 5
+                    count: 750
+                    percentage: 60
+                  - stars: 4
+                    count: 250
+                    percentage: 20
+                  - stars: 3
+                    count: 125
+                    percentage: 10
+                  - stars: 2
+                    count: 75
+                    percentage: 6
+                  - stars: 1
+                    count: 50
+                    percentage: 4
+                sources:
+                  - source: shopee_sg
+                    review_count: 800
+                    avg_rating: 4.5
+                    last_scraped: '2026-04-03T10:30:00Z'
+                  - source: lazada_sg
+                    review_count: 450
+                    avg_rating: 4
+                    last_scraped: '2026-04-03T09:15:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Product not found
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/categories:
     get:
       tags:
@@ -769,7 +1330,7 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        "200":
+        '200':
           description: Category list with product counts
           headers:
             X-RateLimit-Limit:
@@ -787,7 +1348,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CategoryResponse"
+                $ref: '#/components/schemas/CategoryResponse'
               example:
                 categories:
                   - name: Electronics
@@ -800,13 +1361,12 @@ paths:
                     count: 21500
                     children: []
                 total: 48
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/deals:
     get:
       tags:
@@ -838,8 +1398,8 @@ paths:
             format: float
             minimum: 0
             maximum: 100
-            default: 10.0
-            example: 10.0
+            default: 10
+            example: 10
         - name: limit
           in: query
           description: Max results (1-100, default 20)
@@ -860,7 +1420,7 @@ paths:
             default: 0
             example: 0
       responses:
-        "200":
+        '200':
           description: Discounted products
           headers:
             X-RateLimit-Limit:
@@ -878,32 +1438,31 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DealsResponse"
+                $ref: '#/components/schemas/DealsResponse'
               example:
                 total: 5
                 limit: 20
                 offset: 0
                 items:
                   - id: 42
-                    name: "Apple iPhone 15 Pro 256GB Black"
-                    price: 49.90
-                    original_price: 79.00
+                    name: Apple iPhone 15 Pro 256GB Black
+                    price: 49.9
+                    original_price: 79
                     discount_pct: 36.8
                     currency: SGD
                     source: shopee_sg
-                    category: "Electronics"
-                    buy_url: "https://shopee.sg/iphone-15-pro"
-                    affiliate_url: "https://affiliate.buywhere.ai/track/123"
-                    image_url: "https://cf.shopee.sg/file/abc123"
+                    category: Electronics
+                    buy_url: https://shopee.sg/iphone-15-pro
+                    affiliate_url: https://affiliate.buywhere.ai/track/123
+                    image_url: https://cf.shopee.sg/file/abc123
                     metadata:
                       brand: Apple
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/ingest/products:
     post:
       tags:
@@ -923,27 +1482,30 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/IngestRequest"
+              $ref: '#/components/schemas/IngestRequest'
             example:
               source: shopee_sg
               products:
-                - sku: "SHOPEE-SG-IPHONE15PRO-256-BLK"
-                  merchant_id: "shop_abc123"
-                  title: "Apple iPhone 15 Pro 256GB Black"
-                  description: "Latest Apple iPhone 15 Pro with A17 Pro chip"
-                  price: 1499.00
+                - sku: SHOPEE-SG-IPHONE15PRO-256-BLK
+                  merchant_id: shop_abc123
+                  title: Apple iPhone 15 Pro 256GB Black
+                  description: Latest Apple iPhone 15 Pro with A17 Pro chip
+                  price: 1499
                   currency: SGD
-                  url: "https://shopee.sg/iphone-15-pro"
-                  image_url: "https://cf.shopee.sg/file/abc123"
-                  category: "Electronics"
-                  category_path: ["Electronics", "Phones", "Smartphones"]
+                  url: https://shopee.sg/iphone-15-pro
+                  image_url: https://cf.shopee.sg/file/abc123
+                  category: Electronics
+                  category_path:
+                    - Electronics
+                    - Phones
+                    - Smartphones
                   brand: Apple
                   is_active: true
                   metadata:
                     model: iPhone 15 Pro
                     storage: 256GB
       responses:
-        "200":
+        '200':
           description: Ingestion completed
           headers:
             X-RateLimit-Limit:
@@ -961,7 +1523,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/IngestResponse"
+                $ref: '#/components/schemas/IngestResponse'
               example:
                 run_id: 42
                 status: completed
@@ -970,14 +1532,14 @@ paths:
                 rows_failed: 2
                 errors:
                   - index: 15
-                    sku: "INVALID-SKU"
-                    error: "Unique constraint violation"
+                    sku: INVALID-SKU
+                    error: Unique constraint violation
                   - index: 87
-                    sku: "MISSING-PRICE"
-                    error: "Price cannot be null"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "422":
+                    sku: MISSING-PRICE
+                    error: Price cannot be null
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
           description: Validation error
           content:
             application/json:
@@ -988,11 +1550,10 @@ paths:
                     type: array
                     items:
                       type: object
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/ingest/runs:
     get:
       tags:
@@ -1023,7 +1584,7 @@ paths:
             minimum: 0
             default: 0
       responses:
-        "200":
+        '200':
           description: List of ingestion runs
           headers:
             X-RateLimit-Limit:
@@ -1055,14 +1616,13 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: "#/components/schemas/IngestionRunSummary"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+                      $ref: '#/components/schemas/IngestionRunSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/ingest/runs/{run_id}:
     get:
       tags:
@@ -1083,7 +1643,7 @@ paths:
             type: integer
             example: 42
       responses:
-        "200":
+        '200':
           description: Ingestion run details
           headers:
             X-RateLimit-Limit:
@@ -1101,7 +1661,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/IngestionRunDetail"
+                $ref: '#/components/schemas/IngestionRunDetail'
               example:
                 id: 42
                 source: shopee_sg
@@ -1110,11 +1670,11 @@ paths:
                 rows_updated: 48
                 rows_failed: 2
                 error_message: null
-                started_at: "2026-04-03T10:00:00Z"
-                finished_at: "2026-04-03T10:05:30Z"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
+                started_at: '2026-04-03T10:00:00Z'
+                finished_at: '2026-04-03T10:05:30Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
           description: Ingestion run not found
           content:
             application/json:
@@ -1124,11 +1684,10 @@ paths:
                   detail:
                     type: string
                     example: Ingestion run not found
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/ingestion:
     post:
       tags:
@@ -1147,11 +1706,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/IngestionRunCreate"
+              $ref: '#/components/schemas/IngestionRunCreate'
             example:
               source: shopee_sg
       responses:
-        "201":
+        '201':
           description: Ingestion run registered
           headers:
             X-RateLimit-Limit:
@@ -1169,23 +1728,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/IngestionRunResponse"
+                $ref: '#/components/schemas/IngestionRunResponse'
               example:
                 id: 42
                 source: shopee_sg
                 status: running
-                started_at: "2026-04-03T10:00:00Z"
+                started_at: '2026-04-03T10:00:00Z'
                 finished_at: null
                 rows_inserted: null
                 rows_updated: null
                 rows_failed: null
                 error_message: null
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
     get:
       tags:
         - ingestion
@@ -1211,7 +1770,11 @@ paths:
           required: false
           schema:
             type: string
-            enum: [running, completed, failed, cancelled]
+            enum:
+              - running
+              - completed
+              - failed
+              - cancelled
             example: completed
         - name: limit
           in: query
@@ -1231,7 +1794,7 @@ paths:
             minimum: 0
             default: 0
       responses:
-        "200":
+        '200':
           description: List of ingestion runs
           headers:
             X-RateLimit-Limit:
@@ -1263,14 +1826,13 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: "#/components/schemas/IngestionRunResponse"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+                      $ref: '#/components/schemas/IngestionRunResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/ingestion/stats:
     get:
       tags:
@@ -1285,7 +1847,7 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        "200":
+        '200':
           description: Ingestion statistics
           headers:
             X-RateLimit-Limit:
@@ -1303,7 +1865,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/IngestionStats"
+                $ref: '#/components/schemas/IngestionStats'
               example:
                 total_runs: 1250
                 completed_runs: 1180
@@ -1312,13 +1874,12 @@ paths:
                 total_rows_inserted: 4500000
                 total_rows_updated: 1200000
                 total_rows_failed: 8500
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/ingestion/{run_id}:
     get:
       tags:
@@ -1339,7 +1900,7 @@ paths:
             type: integer
             example: 42
       responses:
-        "200":
+        '200':
           description: Ingestion run details
           headers:
             X-RateLimit-Limit:
@@ -1357,7 +1918,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/IngestionRunResponse"
+                $ref: '#/components/schemas/IngestionRunResponse'
               example:
                 id: 42
                 source: shopee_sg
@@ -1366,11 +1927,11 @@ paths:
                 rows_updated: 48
                 rows_failed: 2
                 error_message: null
-                started_at: "2026-04-03T10:00:00Z"
-                finished_at: "2026-04-03T10:05:30Z"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
+                started_at: '2026-04-03T10:00:00Z'
+                finished_at: '2026-04-03T10:05:30Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
           description: Ingestion run not found
           content:
             application/json:
@@ -1380,10 +1941,10 @@ paths:
                   detail:
                     type: string
                     example: Ingestion run not found
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
     patch:
       tags:
         - ingestion
@@ -1408,13 +1969,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/IngestionRunUpdate"
+              $ref: '#/components/schemas/IngestionRunUpdate'
             example:
               rows_inserted: 500
               rows_updated: 25
               rows_failed: 0
       responses:
-        "200":
+        '200':
           description: Updated ingestion run
           headers:
             X-RateLimit-Limit:
@@ -1432,7 +1993,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/IngestionRunResponse"
+                $ref: '#/components/schemas/IngestionRunResponse'
               example:
                 id: 42
                 source: shopee_sg
@@ -1440,12 +2001,12 @@ paths:
                 rows_inserted: 500
                 rows_updated: 25
                 rows_failed: 0
-                started_at: "2026-04-03T10:00:00Z"
+                started_at: '2026-04-03T10:00:00Z'
                 finished_at: null
                 error_message: null
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
           description: Ingestion run not found
           content:
             application/json:
@@ -1455,7 +2016,7 @@ paths:
                   detail:
                     type: string
                     example: Ingestion run not found
-        "409":
+        '409':
           description: Run cannot be updated (not in running status)
           content:
             application/json:
@@ -1464,12 +2025,11 @@ paths:
                 properties:
                   detail:
                     type: string
-                    example: "Cannot update run with status 'completed' — only running runs can be updated"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+                    example: Cannot update run with status 'completed' — only running runs can be updated
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/ingestion/{run_id}/complete:
     post:
       tags:
@@ -1495,14 +2055,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/IngestionRunComplete"
+              $ref: '#/components/schemas/IngestionRunComplete'
             example:
               status: completed
               rows_inserted: 950
               rows_updated: 48
               rows_failed: 2
       responses:
-        "200":
+        '200':
           description: Completed ingestion run
           headers:
             X-RateLimit-Limit:
@@ -1520,7 +2080,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/IngestionRunResponse"
+                $ref: '#/components/schemas/IngestionRunResponse'
               example:
                 id: 42
                 source: shopee_sg
@@ -1529,11 +2089,11 @@ paths:
                 rows_updated: 48
                 rows_failed: 2
                 error_message: null
-                started_at: "2026-04-03T10:00:00Z"
-                finished_at: "2026-04-03T10:05:30Z"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
+                started_at: '2026-04-03T10:00:00Z'
+                finished_at: '2026-04-03T10:05:30Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
           description: Ingestion run not found
           content:
             application/json:
@@ -1543,7 +2103,7 @@ paths:
                   detail:
                     type: string
                     example: Ingestion run not found
-        "409":
+        '409':
           description: Run already finished
           content:
             application/json:
@@ -1552,12 +2112,11 @@ paths:
                 properties:
                   detail:
                     type: string
-                    example: "Run already finished with status 'completed'"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+                    example: Run already finished with status 'completed'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/status:
     get:
       tags:
@@ -1571,7 +2130,7 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        "200":
+        '200':
           description: Catalog status
           headers:
             X-RateLimit-Limit:
@@ -1589,31 +2148,30 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CatalogStatus"
+                $ref: '#/components/schemas/CatalogStatus'
               example:
                 total_unique_products: 452300
-                goal_million: 1.0
+                goal_million: 1
                 progress_percent: 45.23
                 platforms:
                   - source: shopee_sg
                     product_count: 150000
-                    last_updated: "2026-04-03T10:30:00Z"
+                    last_updated: '2026-04-03T10:30:00Z'
                   - source: lazada_sg
                     product_count: 120000
-                    last_updated: "2026-04-03T09:15:00Z"
+                    last_updated: '2026-04-03T09:15:00Z'
                 ingestion_runs:
                   - source: shopee_sg
-                    last_run_at: "2026-04-03T10:00:00Z"
+                    last_run_at: '2026-04-03T10:00:00Z'
                     last_run_status: completed
                     last_rows_inserted: 950
                     last_rows_updated: 48
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/status/scrapers:
     get:
       tags:
@@ -1627,7 +2185,7 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        "200":
+        '200':
           description: Scraper health report
           headers:
             X-RateLimit-Limit:
@@ -1645,15 +2203,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ScraperHealthReport"
+                $ref: '#/components/schemas/ScraperHealthReport'
               example:
-                generated_at: "2026-04-03T10:30:00Z"
+                generated_at: '2026-04-03T10:30:00Z'
                 total_scrapers: 6
                 healthy_count: 5
                 unhealthy_count: 1
                 scrapers:
                   - source: shopee_sg
-                    last_run_at: "2026-04-03T10:00:00Z"
+                    last_run_at: '2026-04-03T10:00:00Z'
                     last_run_status: completed
                     last_rows_inserted: 950
                     last_rows_updated: 48
@@ -1662,13 +2220,74 @@ paths:
                     is_healthy: true
                     hours_since_last_run: 0.5
                     error_message: null
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /v1/status/health:
+    get:
+      tags:
+        - status
+      summary: Get system health — DB latency, pool, and scraper status
+      description: |
+        Returns system health information including database latency,
+        connection pool status, and scraper health for all platforms.
+        Rate limit: 100 requests/minute per API key.
+      operationId: getSystemHealth
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: System health report
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: 100
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: 99
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+                example: 1709568060
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemHealthReport'
+              example:
+                db:
+                  latency_ms: 2.5
+                  pool_size: 10
+                  pool_used: 3
+                  pool_available: 7
+                  pool_waiting: 0
+                  is_healthy: true
+                scrapers:
+                  generated_at: '2026-04-03T10:30:00Z'
+                  total_scrapers: 6
+                  healthy_count: 5
+                  unhealthy_count: 1
+                  scrapers:
+                    - source: shopee_sg
+                      last_run_at: '2026-04-03T10:00:00Z'
+                      last_run_status: completed
+                      last_rows_inserted: 950
+                      last_rows_updated: 48
+                      last_rows_failed: 2
+                      product_count: 150000
+                      is_healthy: true
+                      hours_since_last_run: 0.5
+                      error_message: null
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/catalog/health:
     get:
       tags:
@@ -1686,7 +2305,7 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        "200":
+        '200':
           description: Catalog health report
           headers:
             X-RateLimit-Limit:
@@ -1704,9 +2323,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CatalogHealthReport"
+                $ref: '#/components/schemas/CatalogHealthReport'
               example:
-                generated_at: "2026-04-03T10:30:00Z"
+                generated_at: '2026-04-03T10:30:00Z'
                 total_indexed: 452300
                 by_platform:
                   shopee_sg: 150000
@@ -1740,13 +2359,12 @@ paths:
                   by_platform:
                     shopee_sg: 5000
                   sample_stale: []
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/catalog/incomplete:
     get:
       tags:
@@ -1786,7 +2404,7 @@ paths:
             minimum: 0
             default: 0
       responses:
-        "200":
+        '200':
           description: Incomplete products list
           headers:
             X-RateLimit-Limit:
@@ -1828,39 +2446,40 @@ paths:
                           example: 12345
                         sku:
                           type: string
-                          example: "SHOPEE-SG-IPHONE15PRO-256-BLK"
+                          example: SHOPEE-SG-IPHONE15PRO-256-BLK
                         source:
                           type: string
                           example: shopee_sg
                         title:
                           type: string
-                          example: ""
+                          example: ''
                         price:
                           type: string
                           nullable: true
                           example: null
                         url:
                           type: string
-                          example: ""
+                          example: ''
                         is_active:
                           type: boolean
                           example: true
                         updated_at:
                           type: string
                           format: date-time
-                          example: "2026-04-03T10:30:00Z"
+                          example: '2026-04-03T10:30:00Z'
                         missing_fields:
                           type: array
                           items:
                             type: string
-                          example: ["title", "price"]
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+                          example:
+                            - title
+                            - price
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /v1/catalog/stats:
     get:
       tags:
@@ -1874,7 +2493,7 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        "200":
+        '200':
           description: Catalog statistics
           headers:
             X-RateLimit-Limit:
@@ -1892,9 +2511,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CatalogStatsReport"
+                $ref: '#/components/schemas/CatalogStatsReport'
               example:
-                generated_at: "2026-04-03T10:30:00Z"
+                generated_at: '2026-04-03T10:30:00Z'
                 total_products: 452300
                 by_platform:
                   shopee_sg: 150000
@@ -1905,13 +2524,12 @@ paths:
                   Electronics: 180000
                   Fashion: 90000
                   Home & Living: 60000
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-        "500":
-          $ref: "#/components/responses/InternalError"
-
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
 components:
   securitySchemes:
     BearerAuth:
@@ -1923,8 +2541,161 @@ components:
         - For direct API keys: use the key prefixed with `bw_` as-is
         - For JWT tokens: obtain via OAuth flow, contains `key_id` claim
         All API requests must include this header.
-
   schemas:
+    AlertCreateRequest:
+      type: object
+      required:
+        - product_id
+        - target_price
+        - callback_url
+      properties:
+        product_id:
+          type: integer
+          description: Product ID to monitor
+          example: 12345
+        target_price:
+          type: number
+          format: decimal
+          minimum: 0.01
+          description: Trigger threshold price
+          example: 999.99
+        direction:
+          type: string
+          enum:
+            - below
+            - above
+          default: below
+          description: Trigger when the live price crosses the target in this direction
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+          default: SGD
+          description: ISO-4217 currency code
+          example: SGD
+        callback_url:
+          type: string
+          format: uri
+          description: Webhook URL called when the alert triggers
+          example: https://example.com/hooks/price-alert
+    AlertResponse:
+      type: object
+      required:
+        - id
+        - product_id
+        - target_price
+        - direction
+        - currency
+        - callback_url
+        - is_active
+        - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 650c9d87-fb77-45d2-80f9-875c1c932d57
+        product_id:
+          type: integer
+          example: 12345
+        target_price:
+          type: number
+          format: decimal
+          example: 999.99
+        direction:
+          type: string
+          enum:
+            - below
+            - above
+          example: below
+        currency:
+          type: string
+          example: SGD
+        callback_url:
+          type: string
+          format: uri
+          example: https://example.com/hooks/price-alert
+        is_active:
+          type: boolean
+          example: true
+        triggered_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2026-04-04T14:00:00Z'
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-04-04T13:55:00Z'
+    AlertListResponse:
+      type: object
+      required:
+        - alerts
+        - total
+        - limit
+      properties:
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertResponse'
+        total:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 100
+    ChangelogChange:
+      type: object
+      required:
+        - category
+        - description
+      properties:
+        category:
+          type: string
+          description: Changelog section heading
+          example: Added
+        group:
+          type: string
+          nullable: true
+          description: Optional subgroup heading under the section
+          example: Product Search & Discovery
+        description:
+          type: string
+          description: Raw changelog bullet text
+          example: '**`GET /v1/search`** — Full-text product search with filtering and pagination.'
+    ChangelogRelease:
+      type: object
+      required:
+        - version
+        - date
+        - changes
+      properties:
+        version:
+          type: string
+          description: Semantic API release version
+          example: 1.0.0
+        date:
+          type: string
+          format: date
+          description: Release date in ISO-8601 format
+          example: '2026-04-04'
+        changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChangelogChange'
+    ChangelogResponse:
+      type: object
+      required:
+        - api_version
+        - releases
+      properties:
+        api_version:
+          type: string
+          description: Current API version emitted in response headers
+          example: '1.0'
+        releases:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChangelogRelease'
     ProductResponse:
       type: object
       required:
@@ -1936,7 +2707,7 @@ components:
         - price
         - currency
         - buy_url
-        - availability
+        - is_available
         - updated_at
       properties:
         id:
@@ -1946,30 +2717,34 @@ components:
         sku:
           type: string
           description: Unique product identifier within the source
-          example: "SHOPEE-SG-IPHONE15PRO-256-BLK"
+          example: SHOPEE-SG-IPHONE15PRO-256-BLK
         source:
           type: string
           description: Source platform
-          enum: [lazada_sg, shopee_sg, carousell, qoo10]
+          enum:
+            - lazada_sg
+            - shopee_sg
+            - carousell
+            - qoo10
           example: shopee_sg
         merchant_id:
           type: string
           description: Merchant/platform shop identifier
-          example: "shop_abc123"
+          example: shop_abc123
         name:
           type: string
           description: Product title
-          example: "Apple iPhone 15 Pro 256GB Black"
+          example: Apple iPhone 15 Pro 256GB Black
         description:
           type: string
           nullable: true
           description: Product description
-          example: "Latest Apple iPhone 15 Pro with A17 Pro chip"
+          example: Latest Apple iPhone 15 Pro with A17 Pro chip
         price:
           type: number
           format: decimal
           description: Product price
-          example: 1499.00
+          example: 1499
         currency:
           type: string
           description: Currency code
@@ -1978,32 +2753,35 @@ components:
           type: string
           format: uri
           description: Direct purchase URL
-          example: "https://shopee.sg/iphone-15-pro"
+          example: https://shopee.sg/iphone-15-pro
         affiliate_url:
           type: string
           format: uri
           nullable: true
           description: Tracked affiliate URL for revenue tracking
-          example: "https://affiliate.buywhere.ai/track/123"
+          example: https://affiliate.buywhere.ai/track/123
         image_url:
           type: string
           format: uri
           nullable: true
           description: Product image URL
-          example: "https://cf.shopee.sg/file/abc123"
+          example: https://cf.shopee.sg/file/abc123
         category:
           type: string
           nullable: true
           description: Primary category name
-          example: "Electronics"
+          example: Electronics
         category_path:
           type: array
           items:
             type: string
           nullable: true
           description: Category hierarchy from root to leaf
-          example: ["Electronics", "Phones", "Smartphones"]
-        availability:
+          example:
+            - Electronics
+            - Phones
+            - Smartphones
+        is_available:
           type: boolean
           description: Whether product is currently active/available
           example: true
@@ -2020,8 +2798,7 @@ components:
           type: string
           format: date-time
           description: Last update timestamp
-          example: "2026-04-03T10:30:00Z"
-
+          example: '2026-04-03T10:30:00Z'
     ProductListResponse:
       type: object
       required:
@@ -2029,6 +2806,7 @@ components:
         - limit
         - offset
         - items
+        - has_more
       properties:
         total:
           type: integer
@@ -2042,11 +2820,14 @@ components:
           type: integer
           description: Pagination offset
           example: 0
+        has_more:
+          type: boolean
+          description: Whether there are more results available
+          example: true
         items:
           type: array
           items:
-            $ref: "#/components/schemas/ProductResponse"
-
+            $ref: '#/components/schemas/ProductResponse'
     CategoryNode:
       type: object
       required:
@@ -2056,7 +2837,7 @@ components:
         name:
           type: string
           description: Category name
-          example: "Electronics"
+          example: Electronics
         count:
           type: integer
           description: Number of active products in this category
@@ -2064,9 +2845,8 @@ components:
         children:
           type: array
           items:
-            $ref: "#/components/schemas/CategoryNode"
+            $ref: '#/components/schemas/CategoryNode'
           default: []
-
     CategoryResponse:
       type: object
       required:
@@ -2076,12 +2856,11 @@ components:
         categories:
           type: array
           items:
-            $ref: "#/components/schemas/CategoryNode"
+            $ref: '#/components/schemas/CategoryNode'
         total:
           type: integer
           description: Total number of categories
           example: 48
-
     IngestProductItem:
       type: object
       required:
@@ -2094,26 +2873,26 @@ components:
         sku:
           type: string
           description: Unique product SKU within the source
-          example: "SHOPEE-SG-IPHONE15PRO-256-BLK"
+          example: SHOPEE-SG-IPHONE15PRO-256-BLK
         merchant_id:
           type: string
           description: Merchant/platform shop identifier
-          example: "shop_abc123"
+          example: shop_abc123
         title:
           type: string
           description: Product title/name
-          example: "Apple iPhone 15 Pro 256GB Black"
+          example: Apple iPhone 15 Pro 256GB Black
         description:
           type: string
           nullable: true
           description: Product description
-          example: "Latest Apple iPhone 15 Pro with A17 Pro chip"
+          example: Latest Apple iPhone 15 Pro with A17 Pro chip
         price:
           type: number
           format: decimal
           minimum: 0
           description: Product price
-          example: 1499.00
+          example: 1499
         currency:
           type: string
           default: SGD
@@ -2123,25 +2902,28 @@ components:
           type: string
           format: uri
           description: Direct product URL
-          example: "https://shopee.sg/iphone-15-pro"
+          example: https://shopee.sg/iphone-15-pro
         image_url:
           type: string
           format: uri
           nullable: true
           description: Product image URL
-          example: "https://cf.shopee.sg/file/abc123"
+          example: https://cf.shopee.sg/file/abc123
         category:
           type: string
           nullable: true
           description: Primary category
-          example: "Electronics"
+          example: Electronics
         category_path:
           type: array
           items:
             type: string
           nullable: true
           description: Category hierarchy
-          example: ["Electronics", "Phones", "Smartphones"]
+          example:
+            - Electronics
+            - Phones
+            - Smartphones
         brand:
           type: string
           nullable: true
@@ -2150,14 +2932,34 @@ components:
         is_active:
           type: boolean
           default: true
-          description: Whether product is active
+          description: Whether product is active/listed
           example: true
+        is_available:
+          type: boolean
+          nullable: true
+          description: Whether product is in stock and available for purchase (null=infer from in_stock)
+          example: true
+        last_checked:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp when availability was last checked
+          example: '2026-04-03T10:30:00Z'
+        in_stock:
+          type: boolean
+          nullable: true
+          description: Whether product is currently in stock
+          example: true
+        availability:
+          type: string
+          nullable: true
+          description: Raw availability string (in_stock, out_of_stock, pre_order, etc.)
+          example: in_stock
         metadata:
           type: object
           nullable: true
           description: Additional product metadata
           additionalProperties: true
-
     IngestRequest:
       type: object
       required:
@@ -2167,15 +2969,18 @@ components:
         source:
           type: string
           description: Source platform
-          enum: [lazada_sg, shopee_sg, carousell, qoo10]
+          enum:
+            - lazada_sg
+            - shopee_sg
+            - carousell
+            - qoo10
           example: shopee_sg
         products:
           type: array
           minItems: 1
           maxItems: 1000
           items:
-            $ref: "#/components/schemas/IngestProductItem"
-
+            $ref: '#/components/schemas/IngestProductItem'
     IngestError:
       type: object
       required:
@@ -2190,12 +2995,11 @@ components:
         sku:
           type: string
           description: SKU of the failed product
-          example: "INVALID-SKU"
+          example: INVALID-SKU
         error:
           type: string
           description: Error message
-          example: "Unique constraint violation"
-
+          example: Unique constraint violation
     IngestResponse:
       type: object
       required:
@@ -2212,7 +3016,11 @@ components:
           example: 42
         status:
           type: string
-          enum: [completed, completed_with_errors, failed, running]
+          enum:
+            - completed
+            - completed_with_errors
+            - failed
+            - running
           description: Overall run status
           example: completed
         rows_inserted:
@@ -2230,9 +3038,8 @@ components:
         errors:
           type: array
           items:
-            $ref: "#/components/schemas/IngestError"
+            $ref: '#/components/schemas/IngestError'
           default: []
-
     IngestionRunSummary:
       type: object
       required:
@@ -2253,7 +3060,11 @@ components:
           example: shopee_sg
         status:
           type: string
-          enum: [running, completed, failed, cancelled]
+          enum:
+            - running
+            - completed
+            - failed
+            - cancelled
           example: completed
         rows_inserted:
           type: integer
@@ -2267,16 +3078,15 @@ components:
         started_at:
           type: string
           format: date-time
-          example: "2026-04-03T10:00:00Z"
+          example: '2026-04-03T10:00:00Z'
         finished_at:
           type: string
           format: date-time
           nullable: true
-          example: "2026-04-03T10:05:30Z"
-
+          example: '2026-04-03T10:05:30Z'
     IngestionRunDetail:
       allOf:
-        - $ref: "#/components/schemas/IngestionRunSummary"
+        - $ref: '#/components/schemas/IngestionRunSummary'
         - type: object
           properties:
             error_message:
@@ -2284,7 +3094,54 @@ components:
               nullable: true
               description: Error message if run failed
               example: null
-
+    IngestionRunResponse:
+      type: object
+      required:
+        - id
+        - source
+        - started_at
+        - status
+      properties:
+        id:
+          type: integer
+          example: 42
+        source:
+          type: string
+          example: shopee_sg
+        started_at:
+          type: string
+          format: date-time
+          example: '2026-04-03T10:00:00Z'
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2026-04-03T10:05:30Z'
+        rows_inserted:
+          type: integer
+          nullable: true
+          example: 950
+        rows_updated:
+          type: integer
+          nullable: true
+          example: 48
+        rows_failed:
+          type: integer
+          nullable: true
+          example: 2
+        status:
+          type: string
+          enum:
+            - running
+            - completed
+            - failed
+            - cancelled
+          example: completed
+        error_message:
+          type: string
+          nullable: true
+          description: Error message if run failed
+          example: null
     CompareMatch:
       type: object
       required:
@@ -2296,7 +3153,7 @@ components:
         - price
         - currency
         - buy_url
-        - availability
+        - is_available
         - updated_at
         - match_score
       properties:
@@ -2307,30 +3164,34 @@ components:
         sku:
           type: string
           description: Unique product identifier within the source
-          example: "SHOPEE-SG-IPHONE15PRO-256-BLK"
+          example: SHOPEE-SG-IPHONE15PRO-256-BLK
         source:
           type: string
           description: Source platform
-          enum: [lazada_sg, shopee_sg, carousell, qoo10]
+          enum:
+            - lazada_sg
+            - shopee_sg
+            - carousell
+            - qoo10
           example: shopee_sg
         merchant_id:
           type: string
           description: Merchant/platform shop identifier
-          example: "shop_abc123"
+          example: shop_abc123
         name:
           type: string
           description: Product title
-          example: "Apple iPhone 15 Pro 256GB Black"
+          example: Apple iPhone 15 Pro 256GB Black
         description:
           type: string
           nullable: true
           description: Product description
-          example: "Latest Apple iPhone 15 Pro with A17 Pro chip"
+          example: Latest Apple iPhone 15 Pro with A17 Pro chip
         price:
           type: number
           format: decimal
           description: Product price
-          example: 1499.00
+          example: 1499
         currency:
           type: string
           description: Currency code
@@ -2339,32 +3200,35 @@ components:
           type: string
           format: uri
           description: Direct purchase URL
-          example: "https://shopee.sg/iphone-15-pro"
+          example: https://shopee.sg/iphone-15-pro
         affiliate_url:
           type: string
           format: uri
           nullable: true
           description: Tracked affiliate URL
-          example: "https://affiliate.buywhere.ai/track/123"
+          example: https://affiliate.buywhere.ai/track/123
         image_url:
           type: string
           format: uri
           nullable: true
           description: Product image URL
-          example: "https://cf.shopee.sg/file/abc123"
+          example: https://cf.shopee.sg/file/abc123
         category:
           type: string
           nullable: true
           description: Primary category name
-          example: "Electronics"
+          example: Electronics
         category_path:
           type: array
           items:
             type: string
           nullable: true
           description: Category hierarchy from root to leaf
-          example: ["Electronics", "Phones", "Smartphones"]
-        availability:
+          example:
+            - Electronics
+            - Phones
+            - Smartphones
+        is_available:
           type: boolean
           description: Whether product is currently active/available
           example: true
@@ -2377,13 +3241,12 @@ components:
           type: string
           format: date-time
           description: Last update timestamp
-          example: "2026-04-03T10:30:00Z"
+          example: '2026-04-03T10:30:00Z'
         match_score:
           type: number
           format: float
           description: Similarity score (0-1, higher is better match)
           example: 0.95
-
     CompareResponse:
       type: object
       required:
@@ -2399,16 +3262,15 @@ components:
         source_product_name:
           type: string
           description: Name of the source product
-          example: "Apple iPhone 15 Pro 256GB Black"
+          example: Apple iPhone 15 Pro 256GB Black
         matches:
           type: array
           items:
-            $ref: "#/components/schemas/CompareMatch"
+            $ref: '#/components/schemas/CompareMatch'
         total_matches:
           type: integer
           description: Total number of matching products found
           example: 4
-
     CompareMatrixRequest:
       type: object
       required:
@@ -2421,22 +3283,24 @@ components:
           minItems: 2
           maxItems: 20
           description: List of product IDs to compare (2-20 products)
-          example: [12345, 12346, 12347]
+          example:
+            - 12345
+            - 12346
+            - 12347
         min_price:
           type: number
           format: decimal
           minimum: 0
           nullable: true
           description: Minimum price filter for matches
-          example: 100.00
+          example: 100
         max_price:
           type: number
           format: decimal
           minimum: 0
           nullable: true
           description: Maximum price filter for matches
-          example: 2000.00
-
+          example: 2000
     CompareMatrixEntry:
       type: object
       required:
@@ -2450,15 +3314,14 @@ components:
           example: 12345
         source_product_name:
           type: string
-          example: "Apple iPhone 15 Pro 256GB Black"
+          example: Apple iPhone 15 Pro 256GB Black
         matches:
           type: array
           items:
-            $ref: "#/components/schemas/CompareMatch"
+            $ref: '#/components/schemas/CompareMatch'
         total_matches:
           type: integer
           example: 4
-
     CompareMatrixResponse:
       type: object
       required:
@@ -2468,13 +3331,56 @@ components:
         comparisons:
           type: array
           items:
-            $ref: "#/components/schemas/CompareMatrixEntry"
+            $ref: '#/components/schemas/CompareMatrixEntry'
         total_products:
           type: integer
           description: Number of products in the comparison
           example: 3
-
-    TrendingMatch:
+    CompareDiffRequest:
+      type: object
+      required:
+        - product_ids
+      properties:
+        product_ids:
+          type: array
+          items:
+            type: integer
+          minItems: 2
+          maxItems: 5
+          description: List of 2-5 product IDs to compare directly
+          example:
+            - 12345
+            - 12346
+            - 12347
+        include_image_similarity:
+          type: boolean
+          default: false
+          description: Include image similarity computation
+          example: false
+    FieldDiff:
+      type: object
+      required:
+        - field
+        - values
+        - all_identical
+      properties:
+        field:
+          type: string
+          description: Field name that differs
+          example: price
+        values:
+          type: array
+          items:
+            type: string
+          description: Value per product in order provided
+          example:
+            - 1499
+            - 1399
+        all_identical:
+          type: boolean
+          description: True if all products have the same value for this field
+          example: false
+    CompareDiffEntry:
       type: object
       required:
         - id
@@ -2485,8 +3391,9 @@ components:
         - price
         - currency
         - buy_url
-        - availability
+        - is_available
         - updated_at
+        - price_rank
       properties:
         id:
           type: integer
@@ -2495,30 +3402,34 @@ components:
         sku:
           type: string
           description: Unique product identifier within the source
-          example: "SHOPEE-SG-IPHONE15PRO-256-BLK"
+          example: SHOPEE-SG-IPHONE15PRO-256-BLK
         source:
           type: string
           description: Source platform
-          enum: [lazada_sg, shopee_sg, carousell, qoo10]
+          enum:
+            - lazada_sg
+            - shopee_sg
+            - carousell
+            - qoo10
           example: shopee_sg
         merchant_id:
           type: string
           description: Merchant/platform shop identifier
-          example: "shop_abc123"
+          example: shop_abc123
         name:
           type: string
           description: Product title
-          example: "Apple iPhone 15 Pro 256GB Black"
+          example: Apple iPhone 15 Pro 256GB Black
         description:
           type: string
           nullable: true
           description: Product description
-          example: "Latest Apple iPhone 15 Pro with A17 Pro chip"
+          example: Latest Apple iPhone 15 Pro with A17 Pro chip
         price:
           type: number
           format: decimal
           description: Product price
-          example: 1499.00
+          example: 1499
         currency:
           type: string
           description: Currency code
@@ -2527,32 +3438,40 @@ components:
           type: string
           format: uri
           description: Direct purchase URL
-          example: "https://shopee.sg/iphone-15-pro"
+          example: https://shopee.sg/iphone-15-pro
         affiliate_url:
           type: string
           format: uri
           nullable: true
           description: Tracked affiliate URL
-          example: "https://affiliate.buywhere.ai/track/123"
+          example: https://affiliate.buywhere.ai/track/123
         image_url:
           type: string
           format: uri
           nullable: true
           description: Product image URL
-          example: "https://cf.shopee.sg/file/abc123"
+          example: https://cf.shopee.sg/file/abc123
+        brand:
+          type: string
+          nullable: true
+          description: Brand name
+          example: Apple
         category:
           type: string
           nullable: true
           description: Primary category name
-          example: "Electronics"
+          example: Electronics
         category_path:
           type: array
           items:
             type: string
           nullable: true
           description: Category hierarchy from root to leaf
-          example: ["Electronics", "Phones", "Smartphones"]
-        availability:
+          example:
+            - Electronics
+            - Phones
+            - Smartphones
+        is_available:
           type: boolean
           description: Whether product is currently active/available
           example: true
@@ -2565,8 +3484,243 @@ components:
           type: string
           format: date-time
           description: Last update timestamp
-          example: "2026-04-03T10:30:00Z"
-
+          example: '2026-04-03T10:30:00Z'
+        price_rank:
+          type: integer
+          description: Price rank among the compared products (1 = cheapest)
+          example: 1
+    CompareDiffResponse:
+      type: object
+      required:
+        - products
+        - field_diffs
+        - identical_fields
+        - cheapest_product_id
+        - most_expensive_product_id
+        - price_spread
+        - price_spread_pct
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompareDiffEntry'
+        field_diffs:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldDiff'
+          description: Fields that differ across products
+        identical_fields:
+          type: array
+          items:
+            type: string
+          description: Fields that are identical across all products
+          example:
+            - name
+            - description
+            - brand
+            - category
+        cheapest_product_id:
+          type: integer
+          description: ID of the cheapest product
+          example: 12346
+        most_expensive_product_id:
+          type: integer
+          description: ID of the most expensive product
+          example: 12345
+        price_spread:
+          type: number
+          format: decimal
+          description: Price difference between cheapest and most expensive
+          example: 100
+        price_spread_pct:
+          type: number
+          format: float
+          description: Price spread as percentage of cheapest price
+          example: 7.15
+    DBConnectionHealth:
+      type: object
+      required:
+        - ok
+        - latency_ms
+      properties:
+        ok:
+          type: boolean
+          description: Whether database connection is healthy
+          example: true
+        latency_ms:
+          type: number
+          format: float
+          description: Database latency in milliseconds
+          example: 2.5
+        error:
+          type: string
+          nullable: true
+          description: Error message if connection failed
+          example: null
+    DBPoolHealth:
+      type: object
+      required:
+        - size
+        - checked_in
+        - checked_out
+        - overflow
+      properties:
+        size:
+          type: integer
+          description: Total pool size
+          example: 10
+        checked_in:
+          type: integer
+          description: Connections checked in
+          example: 7
+        checked_out:
+          type: integer
+          description: Connections checked out
+          example: 3
+        overflow:
+          type: integer
+          description: Overflow pool size
+          example: 0
+        invalid:
+          type: integer
+          description: Invalid connections
+          example: 0
+    DBHealthReport:
+      type: object
+      required:
+        - ok
+        - connection
+        - pool
+        - checked_at
+      properties:
+        ok:
+          type: boolean
+          description: Whether database health check passed
+          example: true
+        connection:
+          $ref: '#/components/schemas/DBConnectionHealth'
+        pool:
+          $ref: '#/components/schemas/DBPoolHealth'
+        checked_at:
+          type: string
+          format: date-time
+          description: Health check timestamp
+          example: '2026-04-03T10:30:00Z'
+    SystemHealthReport:
+      type: object
+      required:
+        - generated_at
+        - db
+        - scrapers
+      properties:
+        generated_at:
+          type: string
+          format: date-time
+          description: Report generation timestamp
+          example: '2026-04-03T10:30:00Z'
+        db:
+          $ref: '#/components/schemas/DBHealthReport'
+        scrapers:
+          $ref: '#/components/schemas/ScraperHealthReport'
+    TrendingMatch:
+      type: object
+      required:
+        - id
+        - sku
+        - source
+        - merchant_id
+        - name
+        - price
+        - currency
+        - buy_url
+        - is_available
+        - updated_at
+      properties:
+        id:
+          type: integer
+          description: Unique product ID
+          example: 12345
+        sku:
+          type: string
+          description: Unique product identifier within the source
+          example: SHOPEE-SG-IPHONE15PRO-256-BLK
+        source:
+          type: string
+          description: Source platform
+          enum:
+            - lazada_sg
+            - shopee_sg
+            - carousell
+            - qoo10
+          example: shopee_sg
+        merchant_id:
+          type: string
+          description: Merchant/platform shop identifier
+          example: shop_abc123
+        name:
+          type: string
+          description: Product title
+          example: Apple iPhone 15 Pro 256GB Black
+        description:
+          type: string
+          nullable: true
+          description: Product description
+          example: Latest Apple iPhone 15 Pro with A17 Pro chip
+        price:
+          type: number
+          format: decimal
+          description: Product price
+          example: 1499
+        currency:
+          type: string
+          description: Currency code
+          example: SGD
+        buy_url:
+          type: string
+          format: uri
+          description: Direct purchase URL
+          example: https://shopee.sg/iphone-15-pro
+        affiliate_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Tracked affiliate URL
+          example: https://affiliate.buywhere.ai/track/123
+        image_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Product image URL
+          example: https://cf.shopee.sg/file/abc123
+        category:
+          type: string
+          nullable: true
+          description: Primary category name
+          example: Electronics
+        category_path:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Category hierarchy from root to leaf
+          example:
+            - Electronics
+            - Phones
+            - Smartphones
+        is_available:
+          type: boolean
+          description: Whether product is currently active/available
+          example: true
+        metadata:
+          type: object
+          nullable: true
+          description: Additional product metadata
+          additionalProperties: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update timestamp
+          example: '2026-04-03T10:30:00Z'
     TrendingResponse:
       type: object
       required:
@@ -2582,12 +3736,11 @@ components:
         items:
           type: array
           items:
-            $ref: "#/components/schemas/TrendingMatch"
+            $ref: '#/components/schemas/TrendingMatch'
         total:
           type: integer
           description: Total number of items returned
           example: 50
-
     DealItem:
       type: object
       required:
@@ -2605,18 +3758,18 @@ components:
         name:
           type: string
           description: Product title
-          example: "Apple iPhone 15 Pro 256GB Black"
+          example: Apple iPhone 15 Pro 256GB Black
         price:
           type: number
           format: decimal
           description: Current price
-          example: 49.90
+          example: 49.9
         original_price:
           type: number
           format: decimal
           nullable: true
           description: Original/historical price
-          example: 79.00
+          example: 79
         discount_pct:
           type: number
           format: float
@@ -2635,30 +3788,29 @@ components:
           type: string
           nullable: true
           description: Primary category name
-          example: "Electronics"
+          example: Electronics
         buy_url:
           type: string
           format: uri
           description: Direct purchase URL
-          example: "https://shopee.sg/iphone-15-pro"
+          example: https://shopee.sg/iphone-15-pro
         affiliate_url:
           type: string
           format: uri
           nullable: true
           description: Tracked affiliate URL
-          example: "https://affiliate.buywhere.ai/track/123"
+          example: https://affiliate.buywhere.ai/track/123
         image_url:
           type: string
           format: uri
           nullable: true
           description: Product image URL
-          example: "https://cf.shopee.sg/file/abc123"
+          example: https://cf.shopee.sg/file/abc123
         metadata:
           type: object
           nullable: true
           description: Additional product metadata
           additionalProperties: true
-
     DealsResponse:
       type: object
       required:
@@ -2682,8 +3834,7 @@ components:
         items:
           type: array
           items:
-            $ref: "#/components/schemas/DealItem"
-
+            $ref: '#/components/schemas/DealItem'
     IngestionRunCreate:
       type: object
       required:
@@ -2693,7 +3844,6 @@ components:
           type: string
           description: Source platform (e.g., lazada_sg, shopee_sg, carousell, qoo10)
           example: shopee_sg
-
     IngestionRunUpdate:
       type: object
       properties:
@@ -2717,7 +3867,11 @@ components:
           example: 0
         status:
           type: string
-          enum: [running, completed, failed, cancelled]
+          enum:
+            - running
+            - completed
+            - failed
+            - cancelled
           nullable: true
           description: Status override
         error_message:
@@ -2725,7 +3879,6 @@ components:
           nullable: true
           description: Error message if status is failed
           example: null
-
     IngestionRunComplete:
       type: object
       required:
@@ -2733,8 +3886,11 @@ components:
       properties:
         status:
           type: string
-          enum: [completed, failed, cancelled]
-          description: "Final status: completed, failed, or cancelled"
+          enum:
+            - completed
+            - failed
+            - cancelled
+          description: 'Final status: completed, failed, or cancelled'
           example: completed
         rows_inserted:
           type: integer
@@ -2759,7 +3915,6 @@ components:
           nullable: true
           description: Error message if failed
           example: null
-
     IngestionStats:
       type: object
       required:
@@ -2799,7 +3954,6 @@ components:
           type: integer
           description: Total rows failed across all runs
           example: 8500
-
     PlatformProductCount:
       type: object
       required:
@@ -2819,8 +3973,7 @@ components:
           format: date-time
           nullable: true
           description: Last product update timestamp
-          example: "2026-04-03T10:30:00Z"
-
+          example: '2026-04-03T10:30:00Z'
     IngestionRunInfo:
       type: object
       properties:
@@ -2834,7 +3987,7 @@ components:
           format: date-time
           nullable: true
           description: Last ingestion run timestamp
-          example: "2026-04-03T10:00:00Z"
+          example: '2026-04-03T10:00:00Z'
         last_run_status:
           type: string
           nullable: true
@@ -2850,7 +4003,6 @@ components:
           nullable: true
           description: Rows updated in last run
           example: 48
-
     CatalogStatus:
       type: object
       required:
@@ -2867,22 +4019,21 @@ components:
         platforms:
           type: array
           items:
-            $ref: "#/components/schemas/PlatformProductCount"
+            $ref: '#/components/schemas/PlatformProductCount'
         ingestion_runs:
           type: array
           items:
-            $ref: "#/components/schemas/IngestionRunInfo"
+            $ref: '#/components/schemas/IngestionRunInfo'
         goal_million:
           type: number
           format: float
           description: Goal in millions of products
-          example: 1.0
+          example: 1
         progress_percent:
           type: number
           format: float
           description: Progress toward goal percentage
           example: 45.23
-
     PlatformCompliance:
       type: object
       required:
@@ -2904,7 +4055,6 @@ components:
           type: number
           format: float
           example: 0.993
-
     SchemaComplianceReport:
       type: object
       required:
@@ -2932,7 +4082,7 @@ components:
         by_platform:
           type: array
           items:
-            $ref: "#/components/schemas/PlatformCompliance"
+            $ref: '#/components/schemas/PlatformCompliance'
         missing_title:
           type: integer
           example: 1200
@@ -2951,7 +4101,6 @@ components:
         incomplete_products:
           type: integer
           example: 4300
-
     DuplicateGroup:
       type: object
       required:
@@ -2970,7 +4119,10 @@ components:
           type: array
           items:
             type: integer
-          example: [12345, 12346, 12347]
+          example:
+            - 12345
+            - 12346
+            - 12347
         source_count:
           type: integer
           example: 3
@@ -2978,19 +4130,21 @@ components:
           type: array
           items:
             type: string
-          example: [shopee_sg, lazada_sg, carousell]
+          example:
+            - shopee_sg
+            - lazada_sg
+            - carousell
         sample_title:
           type: string
-          example: "Apple iPhone 15 Pro 256GB Black"
+          example: Apple iPhone 15 Pro 256GB Black
         price_min:
           type: number
           format: decimal
-          example: 1399.00
+          example: 1399
         price_max:
           type: number
           format: decimal
-          example: 1599.00
-
+          example: 1599
     DeduplicationReport:
       type: object
       required:
@@ -3016,8 +4170,7 @@ components:
         sample_duplicates:
           type: array
           items:
-            $ref: "#/components/schemas/DuplicateGroup"
-
+            $ref: '#/components/schemas/DuplicateGroup'
     StaleProductInfo:
       type: object
       required:
@@ -3032,18 +4185,17 @@ components:
           example: 12345
         title:
           type: string
-          example: "Apple iPhone 15 Pro 256GB Black"
+          example: Apple iPhone 15 Pro 256GB Black
         source:
           type: string
           example: shopee_sg
         last_updated:
           type: string
           format: date-time
-          example: "2026-04-01T10:30:00Z"
+          example: '2026-04-01T10:30:00Z'
         days_stale:
           type: integer
           example: 3
-
     FreshnessReport:
       type: object
       required:
@@ -3077,8 +4229,7 @@ components:
         sample_stale:
           type: array
           items:
-            $ref: "#/components/schemas/StaleProductInfo"
-
+            $ref: '#/components/schemas/StaleProductInfo'
     CatalogHealthReport:
       type: object
       required:
@@ -3092,7 +4243,7 @@ components:
         generated_at:
           type: string
           format: date-time
-          example: "2026-04-03T10:30:00Z"
+          example: '2026-04-03T10:30:00Z'
         total_indexed:
           type: integer
           example: 452300
@@ -3104,12 +4255,11 @@ components:
             shopee_sg: 150000
             lazada_sg: 120000
         compliance:
-          $ref: "#/components/schemas/SchemaComplianceReport"
+          $ref: '#/components/schemas/SchemaComplianceReport'
         deduplication:
-          $ref: "#/components/schemas/DeduplicationReport"
+          $ref: '#/components/schemas/DeduplicationReport'
         freshness:
-          $ref: "#/components/schemas/FreshnessReport"
-
+          $ref: '#/components/schemas/FreshnessReport'
     ScraperHealth:
       type: object
       required:
@@ -3124,7 +4274,7 @@ components:
           type: string
           format: date-time
           nullable: true
-          example: "2026-04-03T10:00:00Z"
+          example: '2026-04-03T10:00:00Z'
         last_run_status:
           type: string
           nullable: true
@@ -3156,7 +4306,6 @@ components:
           type: string
           nullable: true
           example: null
-
     ScraperHealthReport:
       type: object
       required:
@@ -3169,11 +4318,11 @@ components:
         generated_at:
           type: string
           format: date-time
-          example: "2026-04-03T10:30:00Z"
+          example: '2026-04-03T10:30:00Z'
         scrapers:
           type: array
           items:
-            $ref: "#/components/schemas/ScraperHealth"
+            $ref: '#/components/schemas/ScraperHealth'
         total_scrapers:
           type: integer
           example: 6
@@ -3183,7 +4332,6 @@ components:
         unhealthy_count:
           type: integer
           example: 1
-
     CatalogStatsReport:
       type: object
       required:
@@ -3195,7 +4343,7 @@ components:
         generated_at:
           type: string
           format: date-time
-          example: "2026-04-03T10:30:00Z"
+          example: '2026-04-03T10:30:00Z'
         total_products:
           type: integer
           example: 452300
@@ -3215,8 +4363,88 @@ components:
           example:
             Electronics: 180000
             Fashion: 90000
-            "Home & Living": 60000
-
+            Home & Living: 60000
+    RatingDistributionBucket:
+      type: object
+      required:
+        - stars
+        - count
+      properties:
+        stars:
+          type: integer
+          description: Star rating (1-5)
+          example: 5
+        count:
+          type: integer
+          description: Number of reviews with this star rating
+          example: 750
+        percentage:
+          type: number
+          description: Percentage of total reviews
+          example: 60
+    ReviewSource:
+      type: object
+      required:
+        - source
+        - review_count
+        - avg_rating
+      properties:
+        source:
+          type: string
+          description: Source platform identifier
+          example: shopee_sg
+        review_count:
+          type: integer
+          description: Number of reviews from this source
+          example: 500
+        avg_rating:
+          type: number
+          description: Average rating from this source (0-5)
+          example: 4.5
+        last_scraped:
+          type: string
+          format: date-time
+          description: When this review data was last scraped
+          example: '2026-04-04T10:30:00Z'
+    ProductReviewsResponse:
+      type: object
+      required:
+        - product_id
+      properties:
+        product_id:
+          type: integer
+          description: Product ID
+          example: 12345
+        review_count:
+          type: integer
+          nullable: true
+          description: Total aggregated review count
+          example: 1250
+        avg_rating:
+          type: number
+          nullable: true
+          description: Aggregated average rating (0-5)
+          example: 4.3
+        rating_source:
+          type: string
+          nullable: true
+          description: Primary source of rating data
+          example: shopee_sg
+        sentiment_score:
+          type: number
+          nullable: true
+          description: Sentiment score derived from review text (0-1 scale, higher = more positive)
+          example: 0.86
+        rating_distribution:
+          type: array
+          items:
+            $ref: '#/components/schemas/RatingDistributionBucket'
+          description: Star rating distribution (1-5 stars)
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewSource'
+          description: Per-source review breakdown
   responses:
     Unauthorized:
       description: Invalid or missing API key
@@ -3230,7 +4458,6 @@ components:
                 example: Invalid or revoked API key
           example:
             detail: Invalid or revoked API key
-
     RateLimited:
       description: Rate limit exceeded
       headers:
@@ -3246,10 +4473,9 @@ components:
             properties:
               detail:
                 type: string
-                example: "Rate limit exceeded: 1000/minute"
+                example: 'Rate limit exceeded: 1000/minute'
           example:
-            detail: "Rate limit exceeded: 1000/minute"
-
+            detail: 'Rate limit exceeded: 1000/minute'
     InternalError:
       description: Internal server error
       content:
