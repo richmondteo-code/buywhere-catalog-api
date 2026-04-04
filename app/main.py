@@ -15,7 +15,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.config import get_settings
 from app.rate_limit import limiter, RateLimitHeadersMiddleware
 from app.request_logging import RequestLoggingMiddleware
-from app.routers import products, categories, keys, deals, ingestion, ingest, search, status, catalog, agents, analytics, admin, developers, webhooks, metrics, alerts, images, changelog, feed, merchants, trending, export, enrichment, health, brands, watchlist, dedup, compare, billing, countries, sitemap
+from app.routers import products, categories, keys, deals, ingestion, ingest, search, status, catalog, agents, analytics, admin, developers, webhooks, metrics, alerts, images, changelog, feed, merchants, trending, export, enrichment, health, brands, watchlist, dedup, compare, billing, countries, sitemap, v2, merchant_analytics, affiliate
 from app.graphql import graphql_router
 from app.versioning import VersionRoutingMiddleware
 from app.services.health import get_db_health, check_disk_space, check_api_self_test
@@ -41,8 +41,9 @@ app = FastAPI(
         "Query millions of products across Southeast Asia."
     ),
     version=settings.app_version,
-    docs_url="/docs",
-    redoc_url="/redoc",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json",
     lifespan=lifespan,
 )
 
@@ -78,6 +79,7 @@ app.include_router(ingest.router, prefix="/api")
 app.include_router(status.router, prefix="/api")
 app.include_router(catalog.router, prefix="/api")
 app.include_router(merchants.router, prefix="/api")
+app.include_router(merchant_analytics.router, prefix="/api")
 app.include_router(brands.router, prefix="/api")
 app.include_router(brands.sources_router, prefix="/api")
 app.include_router(agents.router)
@@ -98,8 +100,10 @@ app.include_router(countries.router, prefix="/api")
 app.include_router(dedup.router, prefix="/api")
 app.include_router(dedup.dedup_ingest_router, prefix="/api")
 app.include_router(compare.router, prefix="/api")
+app.include_router(affiliate.router, prefix="/api")
 app.include_router(billing.router, prefix="/api")
 app.include_router(sitemap.router)
+app.include_router(v2.router)
 
 
 def error_response(code: str, message: str, details: Union[dict, list, None] = None, status_code: int = 400):
@@ -241,6 +245,8 @@ async def api_root():
             "billing_subscribe": "POST /api/v1/billing/subscribe",
             "billing_status": "GET /api/v1/billing/status",
             "billing_tiers": "GET /api/v1/billing/tiers",
+            "sitemap": "GET /sitemap.xml",
+            "robots": "GET /robots.txt",
         },
         "auth": "Bearer token required (API key)",
         "docs": "/api/docs",
