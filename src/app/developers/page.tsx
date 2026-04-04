@@ -146,6 +146,25 @@ const responseExample = `{
   ]
 }`;
 
+const sdkPythonExample = `# Install (beta — PyPI coming soon, use GitHub for now)
+# pip install git+https://github.com/richmondteo-code/buywhere-agent-examples.git
+# or: pip install buywhere  (coming soon)
+
+from buywhere import BuyWhereClient
+
+client = BuyWhereClient(api_key="YOUR_KEY")
+results = client.search("laptop")
+print(results[0].title, results[0].price)`;
+
+const sdkJsExample = `// Install (beta — npm publish coming soon, use GitHub for now)
+// npm install @buywhere/sdk  (coming soon)
+
+import { BuyWhereClient } from '@buywhere/sdk';
+
+const client = new BuyWhereClient({ apiKey: 'YOUR_KEY' });
+const results = await client.search('laptop');
+console.log(results[0].title, results[0].price);`;
+
 const endpoints = [
   {
     method: "GET",
@@ -245,11 +264,38 @@ export default function DevelopersPage() {
         </div>
       </section>
 
-      {/* Code examples */}
+      {/* SDK Quick-Start */}
       <section className="py-16 bg-gray-50 border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <span className="text-indigo-600 mr-2">02.</span>SDK Quick-Start
+          </h2>
+          <div className="mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+            <strong>Beta:</strong> Python and JS SDKs are in beta — source available on GitHub, npm/PyPI publish coming soon.
+          </div>
+
+          <div className="space-y-8">
+            <div>
+              <h3 className="font-semibold text-gray-700 mb-3">Python SDK</h3>
+              <CodeBlock code={sdkPythonExample} lang="python" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-700 mb-3">JavaScript / TypeScript SDK</h3>
+              <CodeBlock code={sdkJsExample} lang="typescript" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-700 mb-3">Raw curl (works right now — no SDK needed)</h3>
+              <CodeBlock code={curlExample} lang="bash" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Code examples */}
+      <section className="py-16 bg-white border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-8">
-            <span className="text-indigo-600 mr-2">02.</span>Code examples
+            <span className="text-indigo-600 mr-2">03.</span>Code examples
           </h2>
 
           <div className="space-y-8">
@@ -286,7 +332,7 @@ export default function DevelopersPage() {
       <section className="py-16 bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            <span className="text-indigo-600 mr-2">03.</span>MCP Integration
+            <span className="text-indigo-600 mr-2">04.</span>MCP Integration
           </h2>
           <p className="text-gray-600 mb-6 leading-relaxed">
             BuyWhere ships a <a href="https://modelcontextprotocol.io" className="text-indigo-600 hover:underline" target="_blank" rel="noopener noreferrer">Model Context Protocol</a> server, so any MCP-compatible AI host (Claude Desktop, Continue, Cursor, custom agents) can search Singapore products without writing any code.
@@ -330,7 +376,7 @@ export default function DevelopersPage() {
       <section className="py-16 bg-gray-50 border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            <span className="text-indigo-600 mr-2">04.</span>Authentication
+            <span className="text-indigo-600 mr-2">05.</span>Authentication
           </h2>
           <p className="text-gray-600 mb-4 leading-relaxed">
             All API requests must include your API key in the <code className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">Authorization</code> header:
@@ -346,7 +392,7 @@ export default function DevelopersPage() {
       <section className="py-16 bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-8">
-            <span className="text-indigo-600 mr-2">05.</span>API Reference
+            <span className="text-indigo-600 mr-2">06.</span>API Reference
           </h2>
           <div className="space-y-4">
             {endpoints.map((ep) => (
@@ -375,7 +421,7 @@ export default function DevelopersPage() {
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            <span className="text-indigo-600 mr-2">06.</span>Rate Limits &amp; Errors
+            <span className="text-indigo-600 mr-2">07.</span>Rate Limits &amp; Errors
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>

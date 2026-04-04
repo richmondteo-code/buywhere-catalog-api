@@ -5,6 +5,8 @@ import { readFileSync, writeFileSync, existsSync } from "fs";
 
 const SES_REGION = process.env.AWS_REGION ?? "ap-southeast-1";
 const FROM_EMAIL = process.env.SES_FROM_EMAIL ?? "noreply@buywhere.ai";
+const NOTIFY_EMAIL = process.env.SIGNUP_NOTIFY_EMAIL ?? "hello@buywhere.ai";
+const SIGNUP_WEBHOOK_URL = process.env.SIGNUP_WEBHOOK_URL ?? "";
 const KEYS_FILE = "/tmp/bw-api-keys.json";
 
 function generateKey(): string {
@@ -88,8 +90,9 @@ The BuyWhere Team
 Free during beta. Fair-use limits apply. Questions? hello@buywhere.ai
 `;
 
+  const ses = new SESClient({ region: SES_REGION });
+
   try {
-    const ses = new SESClient({ region: SES_REGION });
     await ses.send(
       new SendEmailCommand({
         Source: FROM_EMAIL,
@@ -103,6 +106,46 @@ Free during beta. Fair-use limits apply. Questions? hello@buywhere.ai
   } catch (err) {
     // Email failure is non-fatal — key is still returned in the response
     console.error("SES send failed:", err);
+  }
+
+  // Internal notification — lets the team log and follow up personally
+  try {
+    const notifyBody = `New BuyWhere signup
+
+Name:     ${name}
+Email:    ${email}
+Use case: ${useCase || "(not provided)"}
+Key:      ${key}
+Time:     ${createdAt}
+
+Reply directly to ${email} for personal follow-up.
+`;
+    await ses.send(
+      new SendEmailCommand({
+        Source: FROM_EMAIL,
+        Destination: { ToAddresses: [NOTIFY_EMAIL] },
+        ReplyToAddresses: [email],
+        Message: {
+          Subject: { Data: `[BuyWhere signup] ${name} <${email}>` },
+          Body: { Text: { Data: notifyBody } },
+        },
+      })
+    );
+  } catch (err) {
+    console.error("Internal signup notification failed:", err);
+  }
+
+  // Persistent signup log — POST to webhook if configured
+  if (SIGNUP_WEBHOOK_URL) {
+    try {
+      await fetch(SIGNUP_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, useCase: useCase || null, key, created_at: createdAt }),
+      });
+    } catch (err) {
+      console.error("Signup webhook failed:", err);
+    }
   }
 
   return NextResponse.json({ key });
