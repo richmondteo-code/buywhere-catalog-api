@@ -46,14 +46,24 @@ def sample_product():
     p.description = "Brand new iPhone"
     p.price = Decimal("1999.00")
     p.currency = "SGD"
+    p.price_sgd = None
     p.url = "https://shopee.sg/product/123"
     p.brand = "Apple"
     p.category = "Electronics"
     p.category_path = ["Electronics", "Phones", "Mobile Phones"]
     p.image_url = "https://shopee.sg/image.jpg"
-    p.rating = Decimal("4.5")
+    p.barcode = None
     p.is_active = True
+    p.is_available = True
+    p.in_stock = True
+    p.stock_level = None
+    p.last_checked = datetime(2024, 1, 15, tzinfo=timezone.utc)
+    p.rating = Decimal("4.5")
+    p.review_count = 100
+    p.avg_rating = Decimal("4.5")
+    p.rating_source = "shopee"
     p.metadata_ = {"original_price": Decimal("2499.00"), "condition": "new"}
+    p.specs = None
     p.created_at = datetime(2024, 1, 1, tzinfo=timezone.utc)
     p.updated_at = datetime(2024, 1, 15, tzinfo=timezone.utc)
     return p
@@ -70,13 +80,24 @@ def sample_products(sample_product):
     p1.description = "Brand new iPhone"
     p1.price = Decimal("1999.00")
     p1.currency = "SGD"
+    p1.price_sgd = None
     p1.url = "https://shopee.sg/product/123"
     p1.brand = "Apple"
     p1.category = "Electronics"
     p1.category_path = ["Electronics", "Phones"]
     p1.image_url = "https://shopee.sg/image.jpg"
+    p1.barcode = None
     p1.is_active = True
+    p1.is_available = True
+    p1.in_stock = True
+    p1.stock_level = None
+    p1.last_checked = datetime(2024, 1, 15, tzinfo=timezone.utc)
+    p1.rating = Decimal("4.5")
+    p1.review_count = 100
+    p1.avg_rating = Decimal("4.5")
+    p1.rating_source = "shopee"
     p1.metadata_ = {"original_price": Decimal("2499.00")}
+    p1.specs = None
     p1.created_at = datetime(2024, 1, 1, tzinfo=timezone.utc)
     p1.updated_at = datetime(2024, 1, 15, tzinfo=timezone.utc)
 
@@ -89,13 +110,24 @@ def sample_products(sample_product):
     p2.description = "Samsung flagship phone"
     p2.price = Decimal("1299.00")
     p2.currency = "SGD"
+    p2.price_sgd = None
     p2.url = "https://lazada.sg/product/456"
     p2.brand = "Samsung"
     p2.category = "Electronics"
     p2.category_path = ["Electronics", "Phones"]
     p2.image_url = "https://lazada.sg/image.jpg"
+    p2.barcode = None
     p2.is_active = True
+    p2.is_available = True
+    p2.in_stock = True
+    p2.stock_level = None
+    p2.last_checked = datetime(2024, 1, 16, tzinfo=timezone.utc)
+    p2.rating = Decimal("4.3")
+    p2.review_count = 50
+    p2.avg_rating = Decimal("4.3")
+    p2.rating_source = "lazada"
     p2.metadata_ = {"original_price": Decimal("1599.00")}
+    p2.specs = None
     p2.created_at = datetime(2024, 1, 2, tzinfo=timezone.utc)
     p2.updated_at = datetime(2024, 1, 16, tzinfo=timezone.utc)
 
@@ -108,13 +140,24 @@ def sample_products(sample_product):
     p3.description = "Running shoes"
     p3.price = Decimal("150.00")
     p3.currency = "SGD"
+    p3.price_sgd = None
     p3.url = "https://carousell.com/product/789"
     p3.brand = "Nike"
     p3.category = "Fashion"
     p3.category_path = ["Fashion", "Shoes"]
     p3.image_url = "https://carousell.com/image.jpg"
+    p3.barcode = None
     p3.is_active = True
+    p3.is_available = True
+    p3.in_stock = True
+    p3.stock_level = None
+    p3.last_checked = datetime(2024, 1, 17, tzinfo=timezone.utc)
+    p3.rating = Decimal("4.7")
+    p3.review_count = 200
+    p3.avg_rating = Decimal("4.7")
+    p3.rating_source = "carousell"
     p3.metadata_ = {"original_price": Decimal("200.00")}
+    p3.specs = None
     p3.created_at = datetime(2024, 1, 3, tzinfo=timezone.utc)
     p3.updated_at = datetime(2024, 1, 17, tzinfo=timezone.utc)
 
