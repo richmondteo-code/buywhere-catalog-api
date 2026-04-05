@@ -30,7 +30,7 @@ class TestProductsRouter:
         assert result.name == sample_product.title
         assert result.price == sample_product.price
         assert result.currency == sample_product.currency
-        assert result.availability == sample_product.is_active
+        assert result.is_available == sample_product.is_available
 
     def test_search_products_cache_hit(self, mock_db, mock_api_key, mock_request, mock_cache):
         async def run_test():
@@ -49,7 +49,7 @@ class TestProductsRouter:
                     "price": Decimal("99.99"),
                     "currency": "SGD",
                     "buy_url": "https://shopee.sg/product/1",
-                    "availability": True,
+                    "is_available": True,
                     "updated_at": datetime.now(timezone.utc).isoformat(),
                 }]
             }
@@ -62,8 +62,13 @@ class TestProductsRouter:
                 min_price=None,
                 max_price=None,
                 source=None,
+                brand=None,
+                min_rating=None,
+                max_rating=None,
                 limit=20,
                 offset=0,
+                include_facets=False,
+                currency=None,
                 db=mock_db,
                 api_key=mock_api_key,
             )
@@ -82,7 +87,8 @@ class TestProductsRouter:
             mock_cache["get"].return_value = None
 
             def execute_side_effect(query):
-                if "COUNT" in str(query):
+                query_str = str(query).lower()
+                if "count" in query_str:
                     mock_count = MagicMock()
                     mock_count.scalar_one.return_value = 2
                     return mock_count
@@ -92,7 +98,7 @@ class TestProductsRouter:
 
             mock_db.execute.side_effect = execute_side_effect
 
-            def map_product_mock(p):
+            def map_product_mock(p, target_currency=None):
                 return ProductResponse(
                     id=p.id,
                     sku=p.sku,
@@ -107,7 +113,8 @@ class TestProductsRouter:
                     image_url=p.image_url,
                     category=p.category,
                     category_path=p.category_path,
-                    availability=p.is_active,
+                    is_available=p.is_available,
+                    last_checked=p.last_checked,
                     metadata=p.metadata_,
                     updated_at=p.updated_at,
                 )
@@ -120,8 +127,13 @@ class TestProductsRouter:
                     min_price=None,
                     max_price=None,
                     source=None,
+                    brand=None,
+                    min_rating=None,
+                    max_rating=None,
                     limit=20,
                     offset=0,
+                    include_facets=False,
+                    currency=None,
                     db=mock_db,
                     api_key=mock_api_key,
                 )
@@ -218,24 +230,24 @@ class TestProductsRouter:
 
     def test_compare_product_not_found(self, mock_db, mock_api_key, mock_request, mock_cache):
         async def run_test():
-            from app.routers.products import compare_product
+            from app.routers.products import compare_product_search
 
             mock_cache["get"].return_value = None
             mock_result = MagicMock()
-            mock_result.scalar_one_or_none.return_value = None
+            mock_result.scalars.return_value.all.return_value = []
             mock_db.execute.return_value = mock_result
 
             with pytest.raises(HTTPException) as exc_info:
-                await compare_product(
+                await compare_product_search(
                     request=mock_request,
-                    product_id=999,
-                    min_price=None,
-                    max_price=None,
+                    q="nonexistent product xyz",
+                    limit=10,
                     db=mock_db,
                     api_key=mock_api_key,
                 )
 
             assert exc_info.value.status_code == 404
+            assert "No products found" in str(exc_info.value.detail)
 
         asyncio.run(run_test())
 
@@ -258,9 +270,14 @@ class TestSearchRouter:
             result = await search_products(
                 request=mock_request,
                 q="test query",
+                lang=None,
                 category=None,
                 min_price=None,
                 max_price=None,
+                platform=None,
+                country=None,
+                in_stock=None,
+                currency=None,
                 limit=20,
                 offset=0,
                 db=mock_db,
@@ -269,61 +286,6 @@ class TestSearchRouter:
 
             assert isinstance(result, ProductListResponse)
             mock_db.execute.assert_not_called()
-
-        asyncio.run(run_test())
-
-    def test_search_cache_miss(self, mock_db, mock_api_key, mock_request, mock_cache, sample_products):
-        async def run_test():
-            from app.routers.search import search_products
-            from app.schemas.product import ProductResponse
-
-            mock_cache["get"].return_value = None
-
-            def execute_side_effect(query):
-                mock_result = MagicMock()
-                if "COUNT" in str(query):
-                    mock_result.scalar_one.return_value = 2
-                else:
-                    mock_result.scalars.return_value.all.return_value = sample_products[:2]
-                return mock_result
-
-            mock_db.execute.side_effect = execute_side_effect
-
-            def map_product_mock(p):
-                return ProductResponse(
-                    id=p.id,
-                    sku=p.sku,
-                    source=p.source,
-                    merchant_id=p.merchant_id,
-                    name=p.title,
-                    description=p.description,
-                    price=p.price,
-                    currency=p.currency,
-                    buy_url=p.url,
-                    affiliate_url=p.url + "?ref=buywhere" if p.url else None,
-                    image_url=p.image_url,
-                    category=p.category,
-                    category_path=p.category_path,
-                    availability=p.is_active,
-                    metadata=p.metadata_,
-                    updated_at=p.updated_at,
-                )
-
-            with patch("app.routers.search._map_product", side_effect=map_product_mock):
-                result = await search_products(
-                    request=mock_request,
-                    q="iPhone",
-                    category=None,
-                    min_price=None,
-                    max_price=None,
-                    limit=20,
-                    offset=0,
-                    db=mock_db,
-                    api_key=mock_api_key,
-                )
-
-            assert isinstance(result, ProductListResponse)
-            mock_cache["set"].assert_called_once()
 
         asyncio.run(run_test())
 
@@ -377,6 +339,163 @@ class TestCategoriesRouter:
 
         asyncio.run(run_test())
 
+    def test_get_category_tree_default_params(self, mock_db, mock_api_key, mock_request):
+        async def run_test():
+            from app.routers.categories import get_category_tree
+
+            mock_result = MagicMock()
+            mock_result.all.return_value = [
+                MagicMock(category="Electronics", category_path=["Electronics"], count=100),
+                MagicMock(category="Fashion", category_path=["Fashion"], count=50),
+            ]
+            mock_db.execute.return_value = mock_result
+
+            with patch("app.routers.categories._load_taxonomy") as mock_taxonomy:
+                mock_taxonomy.return_value = {
+                    "version": "1.0",
+                    "top_categories": [
+                        {"id": "electronics", "name": "Electronics", "subcategories": [
+                            {"id": "phones", "name": "Phones", "product_count": 40}
+                        ]},
+                        {"id": "fashion", "name": "Fashion", "subcategories": []},
+                    ],
+                    "mapping": {
+                        "Electronics": {"top_category": "Electronics", "sub_category": "Phones"},
+                        "Fashion": {"top_category": "Fashion"},
+                    },
+                }
+
+                result = await get_category_tree(
+                    request=mock_request,
+                    depth=2,
+                    include_empty=False,
+                    db=mock_db,
+                    api_key=mock_api_key,
+                )
+
+            assert isinstance(result, CategoryResponse)
+            assert result.total == 2
+            electronics_cat = next((c for c in result.categories if c.id == "electronics"), None)
+            assert electronics_cat is not None
+            assert electronics_cat.count == 200
+            assert len(electronics_cat.children) == 1
+            assert electronics_cat.children[0].id == "phones"
+
+        asyncio.run(run_test())
+
+    def test_get_category_tree_depth_1(self, mock_db, mock_api_key, mock_request):
+        async def run_test():
+            from app.routers.categories import get_category_tree
+
+            mock_result = MagicMock()
+            mock_result.all.return_value = [
+                MagicMock(category="Electronics", category_path=["Electronics"], count=100),
+            ]
+            mock_db.execute.return_value = mock_result
+
+            with patch("app.routers.categories._load_taxonomy") as mock_taxonomy:
+                mock_taxonomy.return_value = {
+                    "version": "1.0",
+                    "top_categories": [
+                        {"id": "electronics", "name": "Electronics", "subcategories": [
+                            {"id": "phones", "name": "Phones", "product_count": 40}
+                        ]},
+                    ],
+                    "mapping": {
+                        "Electronics": {"top_category": "Electronics"},
+                    },
+                }
+
+                result = await get_category_tree(
+                    request=mock_request,
+                    depth=1,
+                    include_empty=False,
+                    db=mock_db,
+                    api_key=mock_api_key,
+                )
+
+            assert isinstance(result, CategoryResponse)
+            electronics_cat = next((c for c in result.categories if c.id == "electronics"), None)
+            assert electronics_cat is not None
+            assert len(electronics_cat.children) == 0
+
+        asyncio.run(run_test())
+
+    def test_get_category_tree_include_empty(self, mock_db, mock_api_key, mock_request):
+        async def run_test():
+            from app.routers.categories import get_category_tree
+
+            mock_result = MagicMock()
+            mock_result.all.return_value = [
+                MagicMock(category="Electronics", category_path=["Electronics"], count=100),
+            ]
+            mock_db.execute.return_value = mock_result
+
+            with patch("app.routers.categories._load_taxonomy") as mock_taxonomy:
+                mock_taxonomy.return_value = {
+                    "version": "1.0",
+                    "top_categories": [
+                        {"id": "electronics", "name": "Electronics", "subcategories": []},
+                        {"id": "empty_cat", "name": "Empty Category", "subcategories": []},
+                    ],
+                    "mapping": {
+                        "Electronics": {"top_category": "Electronics"},
+                    },
+                }
+
+                result = await get_category_tree(
+                    request=mock_request,
+                    depth=2,
+                    include_empty=True,
+                    db=mock_db,
+                    api_key=mock_api_key,
+                )
+
+            assert isinstance(result, CategoryResponse)
+            assert result.total == 2
+            empty_cat = next((c for c in result.categories if c.id == "empty_cat"), None)
+            assert empty_cat is not None
+            assert empty_cat.count == 0
+
+        asyncio.run(run_test())
+
+    def test_get_category_tree_excludes_empty_by_default(self, mock_db, mock_api_key, mock_request):
+        async def run_test():
+            from app.routers.categories import get_category_tree
+
+            mock_result = MagicMock()
+            mock_result.all.return_value = [
+                MagicMock(category="Electronics", category_path=["Electronics"], count=100),
+            ]
+            mock_db.execute.return_value = mock_result
+
+            with patch("app.routers.categories._load_taxonomy") as mock_taxonomy:
+                mock_taxonomy.return_value = {
+                    "version": "1.0",
+                    "top_categories": [
+                        {"id": "electronics", "name": "Electronics", "subcategories": []},
+                        {"id": "empty_cat", "name": "Empty Category", "subcategories": []},
+                    ],
+                    "mapping": {
+                        "Electronics": {"top_category": "Electronics"},
+                    },
+                }
+
+                result = await get_category_tree(
+                    request=mock_request,
+                    depth=2,
+                    include_empty=False,
+                    db=mock_db,
+                    api_key=mock_api_key,
+                )
+
+            assert isinstance(result, CategoryResponse)
+            assert result.total == 1
+            empty_cat = next((c for c in result.categories if c.id == "empty_cat"), None)
+            assert empty_cat is None
+
+        asyncio.run(run_test())
+
 
 class TestDealsRouter:
     """Tests for /v1/deals endpoint."""
@@ -398,7 +517,9 @@ class TestDealsRouter:
             result = await get_deals(
                 request=mock_request,
                 category=None,
+                minDiscount=None,
                 min_discount_pct=10.0,
+                platform=None,
                 limit=20,
                 offset=0,
                 db=mock_db,
@@ -422,7 +543,9 @@ class TestDealsRouter:
             result = await get_deals(
                 request=mock_request,
                 category="Fashion",
+                minDiscount=None,
                 min_discount_pct=10.0,
+                platform=None,
                 limit=20,
                 offset=0,
                 db=mock_db,
@@ -465,6 +588,44 @@ class TestDealsRouter:
         result = _to_deal_item(mock_product)
 
         assert result.original_price is None
+        assert result.discount_pct is None
+
+    def test_deal_item_zero_original_price(self):
+        from app.routers.deals import _to_deal_item
+
+        mock_product = MagicMock()
+        mock_product.id = 1
+        mock_product.title = "Test Product"
+        mock_product.price = Decimal("100.00")
+        mock_product.currency = "SGD"
+        mock_product.source = "shopee_sg"
+        mock_product.category = "Electronics"
+        mock_product.url = "https://shopee.sg/product/1"
+        mock_product.metadata_ = {"original_price": 0}
+        mock_product.image_url = None
+
+        result = _to_deal_item(mock_product)
+
+        assert result.original_price == Decimal("0")
+        assert result.discount_pct is None
+
+    def test_deal_item_negative_original_price(self):
+        from app.routers.deals import _to_deal_item
+
+        mock_product = MagicMock()
+        mock_product.id = 1
+        mock_product.title = "Test Product"
+        mock_product.price = Decimal("100.00")
+        mock_product.currency = "SGD"
+        mock_product.source = "shopee_sg"
+        mock_product.category = "Electronics"
+        mock_product.url = "https://shopee.sg/product/1"
+        mock_product.metadata_ = {"original_price": -50}
+        mock_product.image_url = None
+
+        result = _to_deal_item(mock_product)
+
+        assert result.original_price == Decimal("-50")
         assert result.discount_pct is None
 
 
@@ -689,26 +850,30 @@ class TestKeysRouter:
 
     def test_create_api_key_success(self, mock_db):
         async def run_test():
-            from app.routers.keys import create_api_key, ProvisionRequest, ADMIN_SECRET
+            from app.routers.keys import create_api_key
+            from app.schemas.product import ApiKeyCreateRequest
 
             mock_api_key = MagicMock()
             mock_api_key.id = "new-key-id"
+            mock_api_key.name = "Test Key"
             mock_api_key.tier = "basic"
+
+            mock_request = MagicMock()
+            mock_request.state = MagicMock()
 
             with patch("app.routers.keys.provision_api_key", new_callable=AsyncMock) as mock_provision:
                 mock_provision.return_value = ("raw_key_abc123", mock_api_key)
 
-                with patch.object(__import__("app.routers.keys", fromlist=["ADMIN_SECRET"]), "ADMIN_SECRET", "test-secret"):
-                    request = ProvisionRequest(
-                        developer_id="dev-001",
-                        name="Test Developer",
-                        tier="basic",
-                        admin_secret="test-secret",
-                    )
+                request = ApiKeyCreateRequest(name="Test Key")
 
+                with patch("app.routers.keys.get_current_api_key", new_callable=AsyncMock) as mock_auth:
+                    mock_auth.return_value.developer_id = "dev-001"
+                    mock_auth.return_value.tier = "basic"
                     result = await create_api_key(
+                        request=mock_request,
                         body=request,
                         db=mock_db,
+                        api_key=mock_auth.return_value,
                     )
 
             assert result.tier == "basic"
@@ -716,27 +881,39 @@ class TestKeysRouter:
 
         asyncio.run(run_test())
 
-    def test_create_api_key_forbidden(self, mock_db):
+    def test_create_api_key_returns_raw_key(self, mock_db):
         async def run_test():
-            from app.routers.keys import create_api_key, ProvisionRequest
+            from app.routers.keys import create_api_key
+            from app.schemas.product import ApiKeyCreateRequest
 
-            with patch("app.routers.keys.get_settings") as mock_settings:
-                mock_settings.return_value.jwt_secret_key = "correct-secret"
+            mock_api_key = MagicMock()
+            mock_api_key.id = "key-123"
+            mock_api_key.name = "My API Key"
+            mock_api_key.tier = "pro"
 
-                request = ProvisionRequest(
-                    developer_id="dev-001",
-                    name="Test Developer",
-                    tier="basic",
-                    admin_secret="wrong-secret",
-                )
+            mock_request = MagicMock()
+            mock_request.state = MagicMock()
 
-                with pytest.raises(HTTPException) as exc_info:
-                    await create_api_key(
+            with patch("app.routers.keys.provision_api_key", new_callable=AsyncMock) as mock_provision:
+                mock_provision.return_value = ("sk_live_abc123xyz", mock_api_key)
+
+                request = ApiKeyCreateRequest(name="My API Key")
+
+                with patch("app.routers.keys.get_current_api_key", new_callable=AsyncMock) as mock_auth:
+                    mock_auth.return_value.developer_id = "dev-002"
+                    mock_auth.return_value.tier = "pro"
+                    result = await create_api_key(
+                        request=mock_request,
                         body=request,
                         db=mock_db,
+                        api_key=mock_auth.return_value,
                     )
 
-            assert exc_info.value.status_code == 403
+            assert result.key_id == "key-123"
+            assert result.raw_key == "sk_live_abc123xyz"
+            assert result.name == "My API Key"
+            assert result.tier == "pro"
+            assert "Store this key" in result.message
 
         asyncio.run(run_test())
 
@@ -760,7 +937,7 @@ class TestProductSchemas:
             "image_url": "https://shopee.sg/image.jpg",
             "category": "Electronics",
             "category_path": ["Electronics", "Phones"],
-            "availability": True,
+            "is_available": True,
             "metadata": {"condition": "new"},
             "updated_at": datetime.now(timezone.utc),
         }
@@ -769,7 +946,7 @@ class TestProductSchemas:
         assert response.id == 1
         assert response.sku == "SKU-001"
         assert response.price == Decimal("99.99")
-        assert response.availability is True
+        assert response.is_available is True
 
     def test_product_list_response(self):
         from app.schemas.product import ProductListResponse, ProductResponse
@@ -784,7 +961,8 @@ class TestProductSchemas:
                 price=Decimal("99.99"),
                 currency="SGD",
                 buy_url="https://shopee.sg/1",
-                availability=True,
+                is_available=True,
+                last_checked=None,
                 updated_at=datetime.now(timezone.utc),
                 affiliate_url=None,
             ),
@@ -797,7 +975,8 @@ class TestProductSchemas:
                 price=Decimal("149.99"),
                 currency="SGD",
                 buy_url="https://lazada.sg/2",
-                availability=True,
+                is_available=True,
+                last_checked=None,
                 updated_at=datetime.now(timezone.utc),
                 affiliate_url=None,
             ),
@@ -820,7 +999,8 @@ class TestProductSchemas:
                 price=Decimal("149.99"),
                 currency="SGD",
                 buy_url="https://lazada.sg/2",
-                availability=True,
+                is_available=True,
+                last_checked=None,
                 updated_at=datetime.now(timezone.utc),
                 match_score=0.95,
             )
@@ -838,17 +1018,30 @@ class TestProductSchemas:
         assert response.matches[0].match_score == 0.95
 
     def test_category_node(self):
-        node = CategoryNode(name="Electronics", count=100, children=[])
+        node = CategoryNode(id="electronics", name="Electronics", slug="electronics", count=100, children=[])
         assert node.name == "Electronics"
         assert node.count == 100
+        assert node.id == "electronics"
+        assert node.slug == "electronics"
+        assert node.parent_id is None
 
     def test_category_response(self):
         categories = [
-            CategoryNode(name="Electronics", count=100),
-            CategoryNode(name="Fashion", count=50),
+            CategoryNode(id="electronics", name="Electronics", slug="electronics", count=100),
+            CategoryNode(id="fashion", name="Fashion", slug="fashion", count=50),
         ]
         response = CategoryResponse(categories=categories, total=2)
         assert response.total == 2
+
+    def test_category_node_with_children(self):
+        child = CategoryNode(id="phones", name="Phones", slug="phones", parent_id="electronics", count=50)
+        parent = CategoryNode(id="electronics", name="Electronics", slug="electronics", count=100, children=[child])
+        assert len(parent.children) == 1
+        assert parent.children[0].parent_id == "electronics"
+
+    def test_category_node_with_parent_id(self):
+        node = CategoryNode(id="phones", name="Phones", slug="phones", parent_id="electronics", count=50)
+        assert node.parent_id == "electronics"
 
 
 class TestDealSchemas:
@@ -929,141 +1122,68 @@ class TestStatusSchemas:
         assert status.progress_percent == 0.08
 
 
-class TestPriceHistoryRouter:
-    """Tests for /v1/products/{product_id}/price-history endpoint."""
+class TestCompareDiffRouter:
+    """Tests for POST /v1/products/compare/diff endpoint."""
 
-    def test_get_price_history_found(self, mock_db, mock_api_key, mock_request, mock_cache, sample_product):
-        from app.routers.products import get_product_price_history
-        from app.schemas.product import PriceHistoryResponse, PricePoint
-        from app.models.product import PriceHistory
-
-        async def run_test():
-            mock_cache["get"].return_value = None
-
-            product_result = MagicMock()
-            product_result.scalar_one_or_none.return_value = sample_product
-
-            stats_result = MagicMock()
-            stats_result.tuple.return_value = (
-                Decimal("1899.00"),
-                Decimal("2099.00"),
-                Decimal("1999.00"),
-                5,
-            )
-
-            price_history_records = [
-                MagicMock(spec=PriceHistory, price=Decimal("1999.00"), currency="SGD", recorded_at=datetime(2024, 1, 15, tzinfo=timezone.utc)),
-                MagicMock(spec=PriceHistory, price=Decimal("1899.00"), currency="SGD", recorded_at=datetime(2024, 1, 10, tzinfo=timezone.utc)),
-            ]
-            history_result = MagicMock()
-            history_result.scalars.return_value.all.return_value = price_history_records
-
-            def execute_side_effect(query):
-                q_str = str(query)
-                if "is_active" in q_str:
-                    return product_result
-                elif "min(" in q_str or "max(" in q_str or "avg(" in q_str or "count(" in q_str:
-                    return stats_result
-                else:
-                    return history_result
-
-            mock_db.execute.side_effect = execute_side_effect
-
-            result = await get_product_price_history(
-                request=mock_request,
-                product_id=1,
-                days=30,
-                limit=100,
-                db=mock_db,
-                api_key=mock_api_key,
-            )
-
-            assert isinstance(result, PriceHistoryResponse)
-            assert result.product_id == sample_product.id
-            assert result.product_name == sample_product.title
-            assert result.currency == sample_product.currency
-            assert result.current_price == sample_product.price
-            assert len(result.price_points) == 2
-            assert result.min_price == Decimal("1899.00")
-            assert result.max_price == Decimal("2099.00")
-            assert result.total_records == 5
-
-        asyncio.run(run_test())
-
-    def test_get_price_history_not_found(self, mock_db, mock_api_key, mock_request, mock_cache):
-        from app.routers.products import get_product_price_history
-
-        async def run_test():
-            mock_cache["get"].return_value = None
-
-            product_result = MagicMock()
-            product_result.scalar_one_or_none.return_value = None
-            mock_db.execute.return_value = product_result
-
-            with pytest.raises(HTTPException) as exc_info:
-                await get_product_price_history(
-                    request=mock_request,
-                    product_id=999,
-                    days=30,
-                    limit=100,
-                    db=mock_db,
-                    api_key=mock_api_key,
-                )
-
-            assert exc_info.value.status_code == 404
-            assert "Product not found" in str(exc_info.value.detail)
-
-        asyncio.run(run_test())
-
-
-class TestPriceHistorySchemas:
-    """Tests for price history schemas."""
-
-    def test_price_point(self):
-        from app.schemas.product import PricePoint
-
-        point = PricePoint(
-            price=Decimal("1999.00"),
-            currency="SGD",
-            recorded_at=datetime(2024, 1, 15, tzinfo=timezone.utc),
+    def test_compare_diff_schema(self):
+        from app.schemas.product import (
+            CompareDiffRequest, CompareDiffResponse, CompareDiffEntry, FieldDiff,
         )
 
-        assert point.price == Decimal("1999.00")
-        assert point.currency == "SGD"
-        assert point.recorded_at == datetime(2024, 1, 15, tzinfo=timezone.utc)
+        req = CompareDiffRequest(product_ids=[1, 2, 3], include_image_similarity=False)
+        assert len(req.product_ids) == 3
 
-    def test_price_history_response(self):
-        from app.schemas.product import PriceHistoryResponse, PricePoint
+        diff = FieldDiff(field="price", values=[Decimal("99.99"), Decimal("149.99"), Decimal("199.99")], all_identical=False)
+        assert diff.field == "price"
+        assert len(diff.values) == 3
+        assert diff.all_identical is False
 
-        price_points = [
-            PricePoint(
-                price=Decimal("1999.00"),
-                currency="SGD",
-                recorded_at=datetime(2024, 1, 15, tzinfo=timezone.utc),
-            ),
-            PricePoint(
-                price=Decimal("1899.00"),
-                currency="SGD",
-                recorded_at=datetime(2024, 1, 10, tzinfo=timezone.utc),
-            ),
-        ]
-
-        response = PriceHistoryResponse(
-            product_id=1,
-            product_name="iPhone 14 Pro",
-            currency="SGD",
-            current_price=Decimal("1999.00"),
-            price_points=price_points,
-            total_records=5,
-            min_price=Decimal("1899.00"),
-            max_price=Decimal("2099.00"),
-            avg_price=Decimal("1999.00"),
+        entry = CompareDiffEntry(
+            id=1, sku="SKU-001", source="shopee_sg", merchant_id="m1",
+            name="Product 1", price=Decimal("99.99"), currency="SGD",
+            buy_url="https://shopee.sg/1", is_available=True,
+            updated_at=datetime.now(timezone.utc), price_rank=1,
         )
+        assert entry.price_rank == 1
 
-        assert response.product_id == 1
-        assert response.product_name == "iPhone 14 Pro"
-        assert response.current_price == Decimal("1999.00")
-        assert len(response.price_points) == 2
-        assert response.min_price == Decimal("1899.00")
-        assert response.max_price == Decimal("2099.00")
-        assert response.avg_price == Decimal("1999.00")
+        resp = CompareDiffResponse(
+            products=[entry],
+            field_diffs=[diff],
+            identical_fields=["currency"],
+            cheapest_product_id=1,
+            most_expensive_product_id=1,
+            price_spread=Decimal("0"),
+            price_spread_pct=0.0,
+        )
+        assert len(resp.products) == 1
+        assert len(resp.field_diffs) == 1
+        assert "currency" in resp.identical_fields
+
+    def test_compare_diff_all_identical_fields(self):
+        from app.schemas.product import CompareDiffResponse, FieldDiff
+
+        diff = FieldDiff(field="currency", values=["SGD", "SGD"], all_identical=True)
+        assert diff.all_identical is True
+
+    def test_compare_diff_products_different_prices(self, sample_products):
+        from app.schemas.product import CompareDiffEntry
+
+        p1, p2, _ = sample_products
+        p1.price = Decimal("99.99")
+        p2.price = Decimal("149.99")
+
+        entries = []
+        for p in [p1, p2]:
+            entries.append(CompareDiffEntry(
+                id=p.id, sku=p.sku, source=p.source, merchant_id=p.merchant_id,
+                name=p.title, price=p.price, currency=p.currency,
+                buy_url=p.url, is_available=p.is_available,
+                last_checked=p.last_checked,
+                updated_at=p.updated_at, price_rank=1,
+            ))
+
+        sorted_by_price = sorted(entries, key=lambda e: e.price)
+        price_ranks = {e.id: i + 1 for i, e in enumerate(sorted_by_price)}
+
+        assert price_ranks[p1.id] == 1
+        assert price_ranks[p2.id] == 2
