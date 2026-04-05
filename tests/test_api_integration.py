@@ -1193,6 +1193,7 @@ class TestBrandsEndpoint:
         """Test /v1/brands returns correct JSON schema."""
         mock_result = MagicMock()
         mock_result.scalars.return_value.all.return_value = []
+        mock_result.scalar_one.return_value = 0
 
         mock_db.execute.return_value = mock_result
 
@@ -1206,10 +1207,13 @@ class TestBrandsEndpoint:
 
     def test_brands_products_returns_valid_schema(self, client, mock_db, sample_product):
         """Test /v1/brands/{brand}/products returns correct JSON schema."""
-        mock_result = MagicMock()
-        mock_result.scalars.return_value.all.return_value = [sample_product]
+        mock_count_result = MagicMock()
+        mock_count_result.scalar_one.return_value = 1
 
-        mock_db.execute.return_value = mock_result
+        mock_product_result = MagicMock()
+        mock_product_result.scalars.return_value.all.return_value = [sample_product]
+
+        mock_db.execute.side_effect = [mock_count_result, mock_product_result]
 
         response = client.get("/v1/brands/Apple/products")
 
