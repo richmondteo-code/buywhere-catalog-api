@@ -7,7 +7,7 @@ const useCases = [
     number: "01",
     title: "Shopping Assistant",
     description:
-      "Give your AI assistant real product data to back up every recommendation. When a user asks \"find me a wireless keyboard under $80,\" your agent queries BuyWhere, receives structured SKUs with prices, specs, and affiliate links, and returns a ranked shortlist — not a hallucinated product list. No scraping, no stale data.",
+      "Give your AI assistant real product data to back up every recommendation. When a user asks \"find me a wireless keyboard under $80,\" your agent queries BuyWhere, receives structured SKUs with prices, specs, and purchase URLs, and returns a ranked shortlist — not a hallucinated product list. No scraping, no stale data.",
     code: `import requests
 
 API_KEY = "bw_live_your_key_here"
@@ -21,7 +21,7 @@ products = resp.json()["items"]
 
 for p in products:
     print(p["name"], p["price"], p["currency"])
-    print("Buy:", p["affiliate_url"])`,
+    print("Buy:", p["url"])`,
     lang: "python",
   },
   {
@@ -50,7 +50,7 @@ for item in sorted_items:
     number: "03",
     title: "Gift Recommender",
     description:
-      "Context-aware gift finders need catalog depth and attribute richness, not just a list of popular items. Query BuyWhere with intent-style parameters — category, budget, recipient persona — and receive products with enough metadata for your agent to reason about fit. Affiliate links are embedded, so every recommendation is monetisable.",
+      "Context-aware gift finders need catalog depth and attribute richness, not just a list of popular items. Query BuyWhere with intent-style parameters — category, budget, recipient persona — and receive products with enough metadata for your agent to reason about fit. Purchase URLs are included so every recommendation links to a real product.",
     code: `import requests
 
 API_KEY = "bw_live_your_key_here"
@@ -67,9 +67,9 @@ resp = requests.get(
 )
 gifts = resp.json()["items"]
 
-# Return gifts with affiliate URLs — every click is monetisable
+# Return gifts with purchase URLs
 recommendations = [
-    {"name": g["name"], "price": g["price"], "buy": g["affiliate_url"]}
+    {"name": g["name"], "price": g["price"], "buy": g["url"]}
     for g in gifts
     if g["price"] <= 50 and g["is_available"]
 ]`,
@@ -129,7 +129,7 @@ def check_price_drops(queries: list[str]) -> list[dict]:
                 "name": item["name"],
                 "was": prev_price,
                 "now": item["price"],
-                "buy": item["affiliate_url"],
+                "buy": item["url"],
             })
         baseline[item["id"]] = item["price"]
 

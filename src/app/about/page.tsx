@@ -66,7 +66,7 @@ export default function AboutPage() {
                 One API key. One schema. Products from across the market, not just from one platform. Structured metadata — title, price, availability, specs, category, affiliate link — returned in a consistent format that your agent can reason against without preprocessing.
               </p>
               <p className="text-gray-600 leading-relaxed">
-                Every response includes an affiliate-linked purchase URL. When a user clicks through and buys, you earn commission. The catalog is free to query; monetisation comes from the purchase path.
+                BuyWhere monetises through referral fees, merchant partnerships, and demand routing — not API subscription fees. When AI agents match buyers with products through our catalog, we participate in the commerce economics of that transaction.
               </p>
             </div>
             <div className="bg-white rounded-2xl p-8 border border-gray-100">
@@ -83,7 +83,7 @@ export default function AboutPage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
-                  $50,000/month in affiliate commission revenue
+                  $50,000/month in revenue
                 </li>
               </ul>
             </div>
@@ -111,14 +111,14 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-8">Who It&apos;s For</h2>
           <p className="text-gray-600 leading-relaxed mb-8 max-w-3xl">
-            BuyWhere is for developers building AI applications where a user might end up buying something. If you need product data that your agent can use without transformation, and you want that data to cover Singapore&rsquo;s retail market rather than one walled garden, BuyWhere is the shortest path.
+            BuyWhere serves three audiences. Developers are the primary wedge — they build the AI agents that query the catalog. Merchants supply catalog depth and gain a new discovery channel. Partners help solve attribution and demand routing as AI reshapes commerce.
           </p>
           <div className="grid sm:grid-cols-2 gap-4 max-w-3xl">
             {[
-              { label: "AI shopping assistants", desc: "LLM-powered agents that handle product discovery in response to natural language" },
-              { label: "Price comparison tools", desc: "Structured catalog data across merchants, consistent schema, no scraping" },
-              { label: "Gift and recommendation engines", desc: "Attribute-rich product data to match context and intent" },
-              { label: "Commerce-integrated agents", desc: "Any AI application where a user might end up buying something" },
+              { label: "AI agent developers", desc: "Build shopping assistants, comparison tools, and recommendation engines on structured product data" },
+              { label: "Merchants & retailers", desc: "Get your catalog discovered by AI agents without building custom integrations" },
+              { label: "Commerce & attribution partners", desc: "Collaborate on referral, demand routing, and attribution infrastructure for agent commerce" },
+              { label: "Platform builders", desc: "Integrate structured product data into your AI framework, toolchain, or commerce platform" },
             ].map((item) => (
               <div key={item.label} className="bg-white rounded-xl p-5 border border-gray-100">
                 <div className="font-semibold text-gray-900 text-sm mb-1">{item.label}</div>
@@ -156,7 +156,7 @@ export default function AboutPage() {
               We are headquartered in Singapore, embedded in the SEA e-commerce ecosystem. Our team spans Singapore, Indonesia, and Malaysia — building for the region, from the region.
             </p>
             <p className="text-gray-500 text-sm leading-relaxed">
-              We are not affiliated with Shopee, Lazada, or any individual retailer. Our business model is affiliate commission on purchases originated through the API, not platform lock-in.
+              We are not affiliated with Shopee, Lazada, or any individual retailer. Our business model is built on referral fees, merchant partnerships, and demand routing — not platform lock-in or subscription fees.
             </p>
           </div>
         </div>

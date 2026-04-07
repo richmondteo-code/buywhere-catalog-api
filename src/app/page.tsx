@@ -2,6 +2,30 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
+const audiences = [
+  {
+    icon: "🤖",
+    title: "AI Agent Developers",
+    desc: "Query a structured, normalized product catalog from your agent. One API, one schema, every retailer in Singapore.",
+    cta: "Start building",
+    ctaHref: "/developers",
+  },
+  {
+    icon: "🏪",
+    title: "Merchants & Retailers",
+    desc: "Get your catalog discovered by the next wave of AI-powered shopping experiences. No integration work required.",
+    cta: "List your catalog",
+    ctaHref: "/merchants",
+  },
+  {
+    icon: "🤝",
+    title: "Commerce Partners",
+    desc: "Collaborate on attribution, referral, and demand routing as AI reshapes how consumers find and buy products.",
+    cta: "Explore partnerships",
+    ctaHref: "/partners",
+  },
+];
+
 const features = [
   {
     icon: "⚡",
@@ -30,26 +54,8 @@ const features = [
   },
   {
     icon: "🔒",
-    title: "Enterprise-Ready",
-    desc: "SLA guarantees, audit logs, rate limit controls, and PDPA-compliant data handling.",
-  },
-];
-
-const useCases = [
-  {
-    title: "Shopping Assistants",
-    desc: "Let your AI agent find the best deal across dozens of retailers in milliseconds.",
-    example: "\"Find me a Sony mirrorless camera under $1,200 with at least 4K video\"",
-  },
-  {
-    title: "Price Comparison Bots",
-    desc: "Track price history and alert users when products hit their target price.",
-    example: "\"Monitor AirPods Pro and notify me when under $200\"",
-  },
-  {
-    title: "Affiliate Commerce",
-    desc: "Power affiliate recommendation engines with accurate, structured product data.",
-    example: "\"Recommend running shoes for a marathon training plan\"",
+    title: "Production-Ready",
+    desc: "Rate limit controls, audit logs, versioned endpoints, and PDPA-compliant data handling from day one.",
   },
 ];
 
@@ -84,25 +90,83 @@ export default function HomePage() {
               Now in developer beta · Singapore live
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
-              The Product Catalog API for AI Agent Commerce
+              The Product Discovery Infrastructure for AI-Powered Shopping
             </h1>
             <p className="text-xl text-indigo-200 mb-10 leading-relaxed">
-              Query millions of products across Southeast Asia. Structured, normalized, agent-ready.
+              BuyWhere is the neutral catalog layer that AI agents use to find products and route buyers to merchants — starting with Singapore.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/developers"
                 className="inline-flex items-center justify-center px-6 py-3 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors"
               >
-                Start building free →
+                Get API access →
               </Link>
               <Link
-                href="/pricing"
+                href="/merchants"
                 className="inline-flex items-center justify-center px-6 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20"
               >
-                View pricing
+                List your catalog
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Who this is for */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Who BuyWhere is for</h2>
+            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              A two-sided infrastructure layer connecting AI-powered demand with merchant supply.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {audiences.map((a) => (
+              <div
+                key={a.title}
+                className="p-6 rounded-xl border border-gray-100 hover:border-indigo-100 hover:shadow-md transition-all flex flex-col"
+              >
+                <div className="text-3xl mb-4">{a.icon}</div>
+                <h3 className="font-semibold text-gray-900 mb-2">{a.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed flex-1 mb-4">{a.desc}</p>
+                <Link
+                  href={a.ctaHref}
+                  className="text-sm text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
+                >
+                  {a.cta} →
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">How BuyWhere works</h2>
+            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              A neutral product-discovery layer connecting merchant catalogs to AI-driven demand.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { step: "1", title: "Merchant catalogs in", desc: "Retailers submit product feeds or we ingest from existing catalog sources." },
+              { step: "2", title: "Structured discovery layer", desc: "Products are normalized, deduplicated, and indexed for semantic search." },
+              { step: "3", title: "AI agent query & ranking", desc: "Agents search by natural language, filters, or category. Structured JSON back." },
+              { step: "4", title: "Routed buyer demand out", desc: "Matched products route demand back to merchants through attribution and referral." },
+            ].map((s) => (
+              <div key={s.step} className="bg-white rounded-xl p-6 border border-gray-100">
+                <div className="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-sm mb-4">
+                  {s.step}
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">{s.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{s.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -144,9 +208,9 @@ export default function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Everything your agent needs</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Built for agent commerce</h2>
             <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-              Built from the ground up for AI-native commerce workflows — not a retrofitted legacy API.
+              An infrastructure layer designed from the ground up for AI-native commerce workflows.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -164,23 +228,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Use cases */}
+      {/* Why now */}
       <section className="py-20 bg-indigo-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Built for agent commerce use cases</h2>
-            <p className="text-lg text-gray-500">Real-world workflows powered by BuyWhere.</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {useCases.map((uc) => (
-              <div key={uc.title} className="bg-white rounded-xl p-6 shadow-sm border border-indigo-100">
-                <h3 className="font-semibold text-gray-900 mb-2">{uc.title}</h3>
-                <p className="text-sm text-gray-500 mb-4 leading-relaxed">{uc.desc}</p>
-                <div className="bg-indigo-50 rounded-lg p-3 text-sm text-indigo-700 italic">
-                  {uc.example}
-                </div>
-              </div>
-            ))}
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Why AI shopping needs a neutral catalog layer</h2>
+            <p className="text-gray-600 leading-relaxed mb-4">
+              Platform APIs surface their own inventory first. Shopee returns Shopee products. Lazada returns Lazada products. For an AI agent trying to find the best match across the market, that is a sales channel — not a catalog.
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-8">
+              BuyWhere has no inventory to sell and no platform to favour. We index products across Singapore&rsquo;s retail landscape into a single, structured API — so AI agents get the market, not one platform&rsquo;s version of it.
+            </p>
+            <Link
+              href="/about"
+              className="text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
+            >
+              Learn more about our approach →
+            </Link>
           </div>
         </div>
       </section>
@@ -193,7 +257,7 @@ export default function HomePage() {
               { stat: "1M+", label: "Products indexed" },
               { stat: "4+", label: "Retailers connected" },
               { stat: "< 200ms", label: "Median query latency" },
-              { stat: "99.9%", label: "API uptime SLA" },
+              { stat: "99.9%", label: "API uptime target" },
             ].map((s) => (
               <div key={s.label}>
                 <div className="text-3xl font-bold text-indigo-600 mb-1">{s.stat}</div>
@@ -209,14 +273,22 @@ export default function HomePage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to build agent-native commerce?</h2>
           <p className="text-indigo-200 mb-8 text-lg">
-            Get your API key in minutes. First 1,000 queries free, no credit card required.
+            Whether you&rsquo;re building AI agents, listing your catalog, or exploring commerce partnerships — there&rsquo;s a path for you.
           </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center px-8 py-4 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors text-lg"
-          >
-            Get your API key →
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/developers"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors text-lg"
+            >
+              Get API access →
+            </Link>
+            <Link
+              href="/merchants"
+              className="inline-flex items-center justify-center px-8 py-4 border border-indigo-400 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors text-lg"
+            >
+              List your catalog
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -22,8 +22,9 @@ export default function Footer() {
             <h4 className="text-sm font-semibold text-gray-900 mb-3">Product</h4>
             <ul className="space-y-2 text-sm text-gray-500">
               <li><Link href="/developers" className="hover:text-indigo-600">Developers</Link></li>
+              <li><Link href="/merchants" className="hover:text-indigo-600">Merchants</Link></li>
+              <li><Link href="/partners" className="hover:text-indigo-600">Partners</Link></li>
               <li><Link href="/pricing" className="hover:text-indigo-600">Pricing</Link></li>
-              <li><Link href="/contact" className="hover:text-indigo-600">Get API Key</Link></li>
             </ul>
           </div>
 
@@ -31,6 +32,7 @@ export default function Footer() {
             <h4 className="text-sm font-semibold text-gray-900 mb-3">Company</h4>
             <ul className="space-y-2 text-sm text-gray-500">
               <li><Link href="/about" className="hover:text-indigo-600">About</Link></li>
+              <li><Link href="/use-cases" className="hover:text-indigo-600">Use Cases</Link></li>
               <li><Link href="/contact" className="hover:text-indigo-600">Contact</Link></li>
             </ul>
           </div>
