@@ -12,16 +12,16 @@ from app.models.product import ApiKey, Product
 from app.rate_limit import limiter, rate_limit_from_request
 from app.schemas.product import (
     CompareResponse,
-    CompareMatch,
-    CompareHighlights,
 )
+from app.schemas.product import CompareMatch
+from app.schemas.product import CompareHighlights
 from app import cache
 from app.affiliate_links import get_affiliate_url
 from app.compare import ProductMatcher
 
 logger = logging.getLogger("buywhere_api")
 
-router = APIRouter(prefix="/v1/compare", tags=["compare"])
+router = APIRouter(prefix="/compare", tags=["compare"])
 
 
 def _build_compare_match(p: Product, score: float) -> CompareMatch:

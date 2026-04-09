@@ -17,18 +17,21 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.auth import get_current_api_key
 from app.database import get_db
 from app.models.product import ApiKey, Product, ImageHash
+from app.models.search_history import SearchHistory
 from app.rate_limit import limiter, rate_limit_from_request
-from app.schemas.product import ProductListResponse, ProductResponse, SearchSuggestionResponse, SearchSuggestion, AutocompleteResponse, AutocompleteSuggestion
+from app.schemas.product import ProductListResponse, ProductResponse, SearchSuggestionResponse, SearchSuggestion, AutocompleteResponse, AutocompleteSuggestion, FacetBucket, PriceFacetBucket, RatingFacetBucket, SearchFiltersResponse
+from app.schemas.search_history import SearchHistoryListResponse, SearchHistoryEntry
 from app.affiliate_links import get_affiliate_url
 from app.services.currency import SUPPORTED_CURRENCIES, convert_price, get_rate_for_header
 from app import cache
 from app.routers.search_i18n import translate_query
+from app.services.semantic_search import semantic_search_service
 
 SUPPORTED_SEARCH_LANGS = ("ms", "th", "vi", "id", "en")
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/v1/search", tags=["search"])
+router = APIRouter(prefix="/search", tags=["search"])
 
 SOURCE_TO_COUNTRY = {
     "shopee_sg": "SG",
@@ -67,33 +70,48 @@ BENCHMARK_QUERIES = [
 ]
 
 
-def _map_product(p: Product, target_currency: Optional[str] = None) -> ProductResponse:
-    price = p.price
-    currency = p.currency or "SGD"
+def _map_product(p: Product, target_currency: Optional[str] = None, confidence_score: Optional[float] = None) -> ProductResponse:
+    price = float(p.price) if p.price is not None else 0.0
+    currency = str(p.currency) if p.currency is not None else "SGD"
     if target_currency and target_currency != currency:
-        converted = convert_price(price, currency, target_currency)
+        converted = convert_price(Decimal(str(price)), currency, target_currency)
         if converted is not None:
-            price = converted
+            price = float(converted)
             currency = target_currency
     return ProductResponse(
-        id=p.id,
-        sku=p.sku,
-        source=p.source,
-        merchant_id=p.merchant_id,
-        name=p.title,
-        description=p.description,
-        price=price,
+        id=int(p.id) if p.id is not None else 0,
+        sku=str(p.sku) if p.sku is not None else "",
+        source=str(p.source) if p.source is not None else "",
+        merchant_id=str(p.merchant_id) if p.merchant_id is not None else "",
+        name=str(p.title) if p.title is not None else "",
+        description=str(p.description) if p.description is not None else None,
+        price=Decimal(str(price)),
         currency=currency,
-        buy_url=p.url,
-        affiliate_url=get_affiliate_url(p.source, p.url, p.id) if p.url else None,
-        image_url=p.image_url,
-        brand=p.brand,
-        category=p.category,
-        category_path=p.category_path,
-        rating=p.rating,
-        is_available=p.is_active,
+        price_sgd=Decimal(str(p.price_sgd)) if p.price_sgd is not None else None,
+        converted_price=Decimal(str(converted)) if target_currency and target_currency != currency and 'converted' in locals() else None,
+        converted_currency=target_currency if target_currency and target_currency != currency else None,
+        buy_url=str(p.url) if p.url is not None else "",
+        affiliate_url=get_affiliate_url(str(p.source) if p.source else "", str(p.url) if p.url else "", int(p.id) if p.id else 0) if p.url else None,
+        image_url=str(p.image_url) if p.image_url is not None else None,
+        barcode=str(p.barcode) if p.barcode is not None else None,
+        brand=str(p.brand) if p.brand is not None else None,
+        category=str(p.category) if p.category is not None else None,
+        category_path=list(p.category_path) if p.category_path is not None else None,
+        rating=Decimal(str(p.rating)) if p.rating is not None else None,
+        review_count=int(p.review_count) if p.review_count is not None else None,
+        avg_rating=Decimal(str(p.avg_rating)) if p.avg_rating is not None else None,
+        rating_source=str(p.rating_source) if p.rating_source is not None else None,
+        is_available=bool(p.is_active) if p.is_active is not None else False,
+        in_stock=bool(p.in_stock) if p.in_stock is not None else None,
+        stock_level=str(p.stock_level) if p.stock_level is not None else None,
+        last_checked=p.last_checked,
+        data_updated_at=p.data_updated_at,
+        availability_prediction=None,  # Would need to be computed from historical stock patterns
+        competitor_count=None,  # Would need to be computed by counting matching products across sources
         metadata=p.metadata_,
         updated_at=p.updated_at,
+        price_trend=None,  # Would need to be computed from price history
+        confidence_score=confidence_score,
     )
 
 
@@ -118,6 +136,7 @@ async def search_products(
     request.state.api_key = api_key
 
     if q and len(q) > 500:
+        suggested_query = q[:500]
         raise HTTPException(
             status_code=422,
             detail={
@@ -126,6 +145,7 @@ async def search_products(
                 "message": f"Query exceeds maximum length of 500 characters (got {len(q)})",
                 "max_length": 500,
                 "actual_length": len(q),
+                "suggested_query": suggested_query,
             }
         )
 
@@ -192,7 +212,7 @@ async def search_products(
 
     cached = await cache.cache_get(cache_key)
     if cached:
-        response = ProductListResponse(**cached)
+        response = ProductListResponse.model_construct(**cached)
         if currency and currency != default_currency:
             rate_header = get_rate_for_header(default_currency, currency)
             if rate_header:
@@ -208,10 +228,12 @@ async def search_products(
             text("search_vector @@ websearch_to_tsquery('english', :q)").bindparams(q=q)
         )
         bm25_rank = text(
-            "ts_rank_cd(search_vector, websearch_to_tsquery('english', :q_rank), 32) DESC"
+            "ts_rank_cd(search_vector, websearch_to_tsquery('english', :q_rank), 32)"
         ).bindparams(q_rank=q)
-        base_query = base_query.order_by(
-            bm25_rank,
+        base_query = base_query.add_columns(
+            bm25_rank.label("rank")
+        ).order_by(
+            text("ts_rank_cd(search_vector, websearch_to_tsquery('english', :q_rank), 32) DESC").bindparams(q_rank=q),
             Product.updated_at.desc()
         )
     else:
@@ -235,12 +257,28 @@ async def search_products(
             from sqlalchemy import or_
             base_query = base_query.where(or_(*source_conditions))
 
-    count_query = select(func.count()).select_from(base_query.subquery())
-    total_result = await db.execute(count_query)
-    total = total_result.scalar_one()
+    if offset == 0:
+        count_query = select(func.count()).select_from(base_query.subquery())
+        total_result = await db.execute(count_query)
+        total = total_result.scalar_one()
+    else:
+        total = None
 
     results = await db.execute(base_query.limit(limit).offset(offset))
-    products = results.scalars().all()
+    if q:
+        # When q is provided, we have rank column in results
+        product_data = []
+        for row in results:
+            product = row.Product  # Access the Product object from the tuple
+            rank = row.rank if hasattr(row, 'rank') else 0.0
+            # Normalize rank to 0-1 confidence score (ts_rank_cd returns 0-1 typically)
+            confidence_score = min(max(float(rank), 0.0), 1.0)
+            product_data.append((product, confidence_score))
+        products = [p for p, _ in product_data]
+        confidences = [c for _, c in product_data]
+    else:
+        products = results.scalars().all()
+        confidences = [None] * len(products)
 
     elapsed_ms = (time.perf_counter() - start_time) * 1000
 
@@ -251,22 +289,46 @@ async def search_products(
         )
 
     target_currency = currency if currency else default_currency
-    response = ProductListResponse(
-        total=total,
-        limit=limit,
-        offset=offset,
-        items=[_map_product(p, target_currency) for p in products],
-        has_more=(offset + limit) < total,
-    )
+    if q:
+        items = [_map_product(p, target_currency, confidence) for p, confidence in zip(products, confidences)]
+    else:
+        items = [_map_product(p, target_currency) for p in products]
+    has_more = len(items) == limit if total is None else (offset + limit) < total
+    effective_total = total if total is not None else offset + len(items)
 
-    await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=600)
+    response_data = {
+        "total": effective_total,
+        "limit": limit,
+        "offset": offset,
+        "items": items,
+        "has_more": has_more,
+    }
+
+    await cache.cache_set(cache_key, response_data, ttl_seconds=cache.TTL_SEARCH)
 
     if target_currency != default_currency:
         rate_header = get_rate_for_header(default_currency, target_currency)
         if rate_header:
             request.state.response_headers = {"X-Currency-Rate": f"{default_currency}->{target_currency}:{rate_header}"}
 
-    return response
+    search_history_entry = SearchHistory(
+        developer_id=api_key.developer_id,
+        api_key_id=api_key.id,
+        query=q,
+        filters={
+            "category": category,
+            "min_price": str(min_price) if min_price is not None else None,
+            "max_price": str(max_price) if max_price is not None else None,
+            "platform": platform,
+            "country": country,
+            "in_stock": in_stock,
+        },
+        result_count=effective_total,
+    )
+    db.add(search_history_entry)
+    await db.flush()
+
+    return ProductListResponse.model_construct(**response_data)
 
 
 @router.get("/semantic", response_model=ProductListResponse, summary="Semantic search products")
@@ -413,6 +475,7 @@ async def search_suggestions(
     )
 
     response = AutocompleteResponse(
+        query=prefix,
         suggestions=suggestions,
         total=len(suggestions),
     )
@@ -607,4 +670,190 @@ async def search_by_image(
         query_image_url=body.image_url,
         total_matches=len(matches),
         matches=matches,
+    )
+
+
+@router.get("/filters", response_model=SearchFiltersResponse, summary="Get available filter options with counts for building dynamic filter UIs")
+@limiter.limit(rate_limit_from_request)
+async def get_search_filters(
+    request: Request,
+    q: Optional[str] = Query(None, description="Optional search query to get filters scoped to results"),
+    db: AsyncSession = Depends(get_db),
+    api_key: ApiKey = Depends(get_current_api_key),
+):
+    request.state.api_key = api_key
+
+    cache_key = cache.build_cache_key(
+        "search:filters",
+        q=q,
+    )
+    cached = await cache.cache_get(cache_key)
+    if cached:
+        return cached
+
+    base_query = select(Product).where(Product.is_active == True)
+
+    if q:
+        base_query = base_query.where(
+            text("search_vector @@ websearch_to_tsquery('english', :q)").bindparams(q=q)
+        )
+
+    category_query = (
+        select(Product.category, func.count(Product.id))
+        .where(Product.is_active == True)
+        .where(Product.category.isnot(None), Product.category != "")
+        .group_by(Product.category)
+        .order_by(func.count(Product.id).desc())
+        .limit(50)
+    )
+    if q:
+        category_query = category_query.where(
+            text("search_vector @@ websearch_to_tsquery('english', :q_cat)").bindparams(q_cat=q)
+        )
+    cat_result = await db.execute(category_query)
+    categories = [FacetBucket(value=row[0], count=row[1]) for row in cat_result.all() if row[0]]
+
+    brand_query = (
+        select(Product.brand, func.count(Product.id))
+        .where(Product.is_active == True)
+        .where(Product.brand.isnot(None), Product.brand != "")
+        .group_by(Product.brand)
+        .order_by(func.count(Product.id).desc())
+        .limit(50)
+    )
+    if q:
+        brand_query = brand_query.where(
+            text("search_vector @@ websearch_to_tsquery('english', :q_brand)").bindparams(q_brand=q)
+        )
+    brand_result = await db.execute(brand_query)
+    brands = [FacetBucket(value=row[0], count=row[1]) for row in brand_result.all() if row[0]]
+
+    platform_query = (
+        select(Product.source, func.count(Product.id))
+        .where(Product.is_active == True)
+        .group_by(Product.source)
+        .order_by(func.count(Product.id).desc())
+    )
+    if q:
+        platform_query = platform_query.where(
+            text("search_vector @@ websearch_to_tsquery('english', :q_plat)").bindparams(q_plat=q)
+        )
+    platform_result = await db.execute(platform_query)
+    platforms = [FacetBucket(value=row[0], count=row[1]) for row in platform_result.all()]
+
+    price_result = await db.execute(
+        select(
+            func.min(Product.price),
+            func.max(Product.price),
+        ).where(Product.is_active == True)
+    )
+    price_row = price_result.one()
+    price_min = float(price_row[0] or 0)
+    price_max = float(price_row[1] or 1000)
+
+    price_ranges = []
+    if price_max > price_min:
+        bucket_size = 10 ** (len(str(int(price_max))) - 1)
+        if bucket_size < 1:
+            bucket_size = 1
+        current = float(int(price_min / bucket_size) * bucket_size)
+        while current < price_max:
+            next_bucket = current + bucket_size
+            bucket_count_result = await db.execute(
+                select(func.count(Product.id))
+                .where(Product.is_active == True)
+                .where(Product.price >= current, Product.price < next_bucket)
+            )
+            count = bucket_count_result.scalar_one() or 0
+            if count > 0:
+                price_ranges.append(PriceFacetBucket(
+                    min_price=Decimal(str(current)),
+                    max_price=Decimal(str(next_bucket)) if next_bucket <= price_max else None,
+                    count=count,
+                ))
+            current = next_bucket
+
+    country_result = await db.execute(
+        select(Product.source, func.count(Product.id))
+        .where(Product.is_active == True)
+        .group_by(Product.source)
+    )
+    country_counts: dict[str, int] = {code: 0 for code in COUNTRY_NAMES}
+    for source, count in country_result.all():
+        country_code = SOURCE_TO_COUNTRY.get(source)
+        if country_code:
+            country_counts[country_code] = country_counts.get(country_code, 0) + count
+    countries = [
+        FacetBucket(value=code, count=count)
+        for code, count in country_counts.items()
+        if count > 0
+    ]
+    countries.sort(key=lambda x: x.count, reverse=True)
+
+    rating_ranges = []
+    for min_r, max_r in [(4.0, 5.0), (3.0, 4.0), (2.0, 3.0), (1.0, 2.0), (0.0, 1.0)]:
+        rating_count_result = await db.execute(
+            select(func.count(Product.id))
+            .where(Product.is_active == True)
+            .where(Product.rating >= min_r, Product.rating < max_r)
+        )
+        count = rating_count_result.scalar_one() or 0
+        if count > 0:
+            rating_ranges.append(RatingFacetBucket(
+                min_rating=min_r,
+                max_rating=max_r,
+                count=count,
+            ))
+
+    response = SearchFiltersResponse(
+        categories=categories,
+        brands=brands,
+        platforms=platforms,
+        countries=countries,
+        price_ranges=price_ranges,
+        rating_ranges=rating_ranges,
+        price_min=Decimal(str(price_min)),
+        price_max=Decimal(str(price_max)),
+    )
+
+    await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
+    return response
+
+
+MAX_SEARCH_HISTORY = 100
+
+
+@router.get("/history", response_model=SearchHistoryListResponse, summary="Get search history for the authenticated API key")
+@limiter.limit("60/minute")
+async def get_search_history(
+    request: Request,
+    limit: int = Query(20, ge=1, le=100, description="Results per page (1-100)"),
+    offset: int = Query(0, ge=0, description="Pagination offset"),
+    db: AsyncSession = Depends(get_db),
+    api_key: ApiKey = Depends(get_current_api_key),
+) -> SearchHistoryListResponse:
+    request.state.api_key = api_key
+
+    count_result = await db.execute(
+        select(func.count(SearchHistory.id)).where(
+            SearchHistory.developer_id == api_key.developer_id,
+        )
+    )
+    total = count_result.scalar() or 0
+
+    result = await db.execute(
+        select(SearchHistory)
+        .where(SearchHistory.developer_id == api_key.developer_id)
+        .order_by(SearchHistory.created_at.desc())
+        .limit(min(limit, MAX_SEARCH_HISTORY))
+        .offset(offset)
+    )
+    searches = result.scalars().all()
+
+    return SearchHistoryListResponse(
+        searches=[SearchHistoryEntry.model_validate(s) for s in searches],
+        total=total,
+        limit=limit,
+        offset=offset,
+        has_more=(offset + len(searches)) < total,
     )
