@@ -8,7 +8,7 @@ const audiences = [
     title: "AI Agent Developers",
     desc: "Query a structured, normalized product catalog from your agent. One API, one schema, every retailer in Singapore.",
     cta: "Start building",
-    ctaHref: "/developers",
+    ctaHref: "/quickstart",
   },
   {
     icon: "🏪",
@@ -26,38 +26,80 @@ const audiences = [
   },
 ];
 
-const features = [
+const valueProps = [
   {
-    icon: "⚡",
-    title: "Agent-Native API",
-    desc: "Designed for LLM agents and AI pipelines. Structured JSON responses, semantic search, and batch queries out of the box.",
+    title: "Structured for agent reasoning",
+    desc: "Product, merchant, and catalog data is normalized so LLM-powered agents can search, rank, compare, and recommend with less prompt overhead and fewer brittle parsing failures.",
   },
   {
-    icon: "🗂️",
-    title: "Normalized Catalog",
-    desc: "Products across retailers unified into a single schema. No more parsing inconsistent HTML or dealing with schema drift.",
+    title: "Commerce-ready Singapore coverage",
+    desc: "Start with Singapore merchants and catalogs so your agent can answer location-specific shopping and product availability questions with market relevance from day one.",
   },
   {
-    icon: "🌏",
-    title: "Southeast Asia First",
-    desc: "Deep coverage of Singapore, Malaysia, and Thailand marketplaces — Lazada, Shopee, Qoo10, and more.",
+    title: "Faster than scraping",
+    desc: "Skip anti-bot breakage, messy HTML transforms, and one-off merchant adapters. Use a single API designed for repeated product lookups at agent scale.",
   },
   {
-    icon: "🔍",
-    title: "Semantic Search",
-    desc: "Query products in natural language. 'Waterproof hiking boots under $150' just works.",
-  },
-  {
-    icon: "🔄",
-    title: "Real-Time Prices",
-    desc: "Live price and availability data refreshed continuously so your agent always quotes accurate information.",
-  },
-  {
-    icon: "🔒",
-    title: "Production-Ready",
-    desc: "Rate limit controls, audit logs, versioned endpoints, and PDPA-compliant data handling from day one.",
+    title: "Built for developer velocity",
+    desc: "Prototype product-search agents, shopping copilots, and commerce workflows quickly with API-first access and documentation aimed at builders, not enterprise procurement teams.",
   },
 ];
+
+const faqs = [
+  {
+    q: "What is a product catalog API for AI agents?",
+    a: "A product catalog API for AI agents gives assistants structured access to product listings, merchant data, and searchable catalog information so they can answer shopping and commerce questions reliably. Instead of scraping websites, agents can query normalized data and return product matches, comparisons, and purchase paths.",
+  },
+  {
+    q: "Why do AI agents need structured product data instead of web scraping?",
+    a: "Structured product data is more reliable, easier to parse, and cheaper to maintain than scraping HTML pages. AI agents perform better when products, merchants, and attributes are exposed through stable fields rather than inconsistent storefront markup.",
+  },
+  {
+    q: "What is agentic commerce?",
+    a: "Agentic commerce is when AI agents help users discover, compare, and choose products, and can eventually complete commerce workflows on their behalf. It requires product data infrastructure that agents can query in real time.",
+  },
+  {
+    q: "How do you build a shopping assistant with product search?",
+    a: "Start with a product catalog API, then add retrieval, ranking, and conversation logic. The API provides searchable products and merchant data, while the assistant handles user intent, filtering, and recommendations.",
+  },
+  {
+    q: "What makes a good product API for LLM applications?",
+    a: "A strong product API for LLM apps should provide normalized schemas, searchable catalog data, merchant context, availability signals, and predictable responses that are easy for models and tools to consume.",
+  },
+  {
+    q: "What is the best way to power Singapore shopping queries in an AI app?",
+    a: "Use a Singapore-focused product and merchant API so your app can return locally relevant products and sellers. Geography-specific catalog coverage improves answer quality for users asking where to buy items nearby or within-market.",
+  },
+  {
+    q: "How can developers avoid scraping merchant sites for commerce agents?",
+    a: "Developers can avoid scraping by integrating a catalog API that already standardizes merchant and product data. This reduces maintenance load, avoids breakage from site changes, and speeds up agent development.",
+  },
+  {
+    q: "What data does an AI shopping agent need?",
+    a: "An AI shopping agent needs product names, categories, descriptions, pricing when available, merchant identity, search relevance, and links or actions that help users continue the buying journey.",
+  },
+  {
+    q: "How do product APIs improve recommendation quality?",
+    a: "Product APIs improve recommendation quality by giving the model consistent, machine-readable product attributes and merchant context. Better input structure leads to stronger filtering, ranking, and explanation quality.",
+  },
+  {
+    q: "What should a developer landing page for an agentic commerce API include?",
+    a: "It should clearly explain the API's purpose, who it is for, the core use cases, why it is better than scraping, what geography or catalog coverage it offers, and how to get access quickly.",
+  },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
+    },
+  })),
+};
 
 const codeSnippet = `import requests
 
@@ -80,6 +122,10 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Nav />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-900 text-white">
@@ -90,25 +136,31 @@ export default function HomePage() {
               Now in developer beta · Singapore live
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
-              The Product Discovery Infrastructure for AI-Powered Shopping
+              The product catalog API built for AI agents.
             </h1>
             <p className="text-xl text-indigo-200 mb-10 leading-relaxed">
-              BuyWhere is the neutral catalog layer that AI agents use to find products and route buyers to merchants — starting with Singapore.
+              Give your agents real products, live merchant data, and structured catalog search for Singapore commerce workflows with one API.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <p className="text-base text-indigo-100/90 mb-8 leading-relaxed max-w-2xl">
+              BuyWhere helps AI assistants and agentic apps discover products, compare options, and power commerce experiences without scraping storefronts or stitching together unreliable feeds.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <Link
-                href="/developers"
+                href="/api-keys"
                 className="inline-flex items-center justify-center px-6 py-3 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors"
               >
                 Get API access →
               </Link>
               <Link
-                href="/merchants"
+                href="/quickstart"
                 className="inline-flex items-center justify-center px-6 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20"
               >
-                List your catalog
+                View quickstart
               </Link>
             </div>
+            <p className="text-sm text-indigo-100/80">
+              Built for agentic commerce, product search, merchant discovery, and real-world buying workflows in Singapore.
+            </p>
           </div>
         </div>
       </section>
@@ -181,10 +233,10 @@ export default function HomePage() {
                 One API call returns structured product data: name, price, SKU, retailer, image, and availability. No scraping, no parsing.
               </p>
               <Link
-                href="/developers"
+                href="/quickstart"
                 className="inline-flex items-center text-indigo-400 font-medium hover:text-indigo-300 transition-colors"
               >
-                View full documentation →
+                View quickstart →
               </Link>
             </div>
             <div className="flex-1 w-full">
@@ -204,23 +256,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features */}
+      {/* Value props */}
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Built for agent commerce</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why developers use BuyWhere</h2>
             <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-              An infrastructure layer designed from the ground up for AI-native commerce workflows.
+              The approved developer-first positioning, translated directly into the live landing page.
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((f) => (
+          <div className="grid sm:grid-cols-2 gap-6">
+            {valueProps.map((f, index) => (
               <div
                 key={f.title}
                 className="p-6 rounded-xl border border-gray-100 hover:border-indigo-100 hover:shadow-md transition-all"
               >
-                <div className="text-3xl mb-4">{f.icon}</div>
-                <h3 className="font-semibold text-gray-900 mb-2">{f.title}</h3>
+                <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-bold mb-4">
+                  0{index + 1}
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-3">{f.title}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
               </div>
             ))}
@@ -249,6 +303,26 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="py-20 bg-white border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="max-w-3xl mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">FAQ for agent builders</h2>
+            <p className="text-lg text-gray-500">
+              Answer-engine friendly questions and answers based on the approved AEO plan.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {faqs.map((faq) => (
+              <div key={faq.q} className="rounded-2xl border border-gray-100 bg-gray-50 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">{faq.q}</h3>
+                <p className="text-sm leading-relaxed text-gray-600">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Stats */}
       <section className="py-16 bg-white border-y border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -271,22 +345,22 @@ export default function HomePage() {
       {/* CTA */}
       <section className="py-20 bg-indigo-600 text-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to build agent-native commerce?</h2>
+          <h2 className="text-3xl font-bold mb-4">Launch product-aware agents without building a catalog pipeline.</h2>
           <p className="text-indigo-200 mb-8 text-lg">
-            Whether you&rsquo;re building AI agents, listing your catalog, or exploring commerce partnerships — there&rsquo;s a path for you.
+            If your agent needs to answer &ldquo;what should I buy?&rdquo;, &ldquo;where can I get it?&rdquo;, or &ldquo;what are the best options in Singapore?&rdquo; BuyWhere gives you the product layer to ship faster.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/developers"
+              href="/api-keys"
               className="inline-flex items-center justify-center px-8 py-4 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors text-lg"
             >
-              Get API access →
+              Request beta access
             </Link>
             <Link
-              href="/merchants"
+              href="/quickstart"
               className="inline-flex items-center justify-center px-8 py-4 border border-indigo-400 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors text-lg"
             >
-              List your catalog
+              Explore the API
             </Link>
           </div>
         </div>

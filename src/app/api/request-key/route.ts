@@ -81,7 +81,7 @@ Quick start (curl):
   curl "https://api.buywhere.ai/v1/search?q=wireless+headphones&limit=5" \\
     -H "Authorization: Bearer ${key}"
 
-Full documentation: https://buywhere.ai/developers
+Quickstart: https://buywhere.ai/quickstart
 
 Happy building,
 The BuyWhere Team

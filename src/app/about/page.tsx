@@ -168,7 +168,7 @@ export default function AboutPage() {
           <p className="text-gray-500 mb-4">We&rsquo;re hiring engineers, data specialists, and developer advocates.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/developers"
+              href="/quickstart"
               className="inline-flex items-center justify-center px-5 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors text-sm"
             >
               Get API access →

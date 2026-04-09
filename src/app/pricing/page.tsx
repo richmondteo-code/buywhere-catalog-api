@@ -187,10 +187,10 @@ export default function PricingPage() {
               Get API key →
             </Link>
             <Link
-              href="/developers"
+              href="/quickstart"
               className="px-8 py-3 border border-indigo-400 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors"
             >
-              View docs
+              View quickstart
             </Link>
           </div>
         </div>

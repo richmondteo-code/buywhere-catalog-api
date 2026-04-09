@@ -180,7 +180,7 @@ export default function ApiKeysPage() {
                 </div>
                 <div className="bg-gray-50 rounded-xl p-5 text-sm text-gray-500">
                   <p className="font-medium text-gray-700 mb-1">Already have a key?</p>
-                  <p>Head to the <a href="/developers" className="text-indigo-600 hover:underline">developer docs</a> to get started.</p>
+                  <p>Head to the <a href="/quickstart" className="text-indigo-600 hover:underline">canonical quickstart</a> to get started.</p>
                 </div>
               </div>
             </div>
@@ -229,10 +229,10 @@ export default function ApiKeysPage() {
               <div className="grid sm:grid-cols-3 gap-4">
                 {[
                   {
-                    title: "Read the docs",
-                    desc: "Full API reference, code samples for LangChain, CrewAI, and more.",
-                    href: "/developers",
-                    cta: "View docs →",
+                    title: "Open quickstart",
+                    desc: "Canonical onboarding path from API key to first query and MCP setup.",
+                    href: "/quickstart",
+                    cta: "View quickstart →",
                   },
                   {
                     title: "See example agents",
