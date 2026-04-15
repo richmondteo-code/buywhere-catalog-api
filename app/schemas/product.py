@@ -5,6 +5,7 @@ from datetime import datetime
 from enum import Enum
 
 
+
 class PriceTrend(str):
     UP = "up"
     DOWN = "down"
@@ -67,6 +68,8 @@ class ProductResponse(BaseModel):
     review_count: Optional[int] = Field(None, description="Number of reviews from aggregated sources")
     avg_rating: Optional[Decimal] = Field(None, description="Average rating from aggregated sources (0-5)")
     rating_source: Optional[str] = Field(None, description="Source of the aggregated rating (e.g. 'scraped', 'platform_api')")
+    region: str = Field("sg", description="Geographic region (e.g. sg, us, sea, eu, au)")
+    country_code: str = Field("SG", description="ISO 3166-1 alpha-2 country code")
     is_available: bool = Field(..., description="Whether product is currently in stock and available for purchase")
     in_stock: Optional[bool] = Field(None, description="Whether product is in stock")
     stock_level: Optional[str] = Field(None, description="Stock level: low, medium, or high")
@@ -101,13 +104,49 @@ class ProductListResponse(BaseModel):
     highlights: Optional[Dict[str, str]] = None
 
 
+class V1ProductSearchItem(BaseModel):
+    id: int
+    sku: str
+    source: str
+    merchant_id: str
+    name: str
+    description: Optional[str] = None
+    price: Decimal
+    currency: str
+    region: str = Field("sg", description="Geographic region")
+    country_code: str = Field("SG", description="ISO 3166-1 alpha-2 country code")
+    buy_url: str
+    affiliate_url: Optional[str] = None
+    image_url: Optional[str] = None
+    brand: Optional[str] = None
+    category: Optional[str] = None
+    category_path: Optional[List[str]] = None
+    rating: Optional[Decimal] = None
+    review_count: Optional[int] = None
+    is_available: bool = True
+    in_stock: Optional[bool] = None
+    stock_level: Optional[str] = None
+    last_checked: Optional[datetime] = None
+    metadata_: Optional[Any] = None
+    updated_at: datetime
+    price_trend: Optional[str] = None
+    confidence_score: Optional[float] = None
+
+
+class V1ProductSearchMeta(BaseModel):
+    query: Optional[str] = None
+    filters_applied: Dict[str, Any] = Field(default_factory=dict)
+    total_results: int
+    page_info: Dict[str, Any] = Field(default_factory=dict)
+
+
 class V1ProductSearchResponse(BaseModel):
     total: int
     limit: int
     offset: int
-    items: List[Any]
+    items: List[V1ProductSearchItem]
     has_more: bool
-    meta: Any
+    meta: V1ProductSearchMeta
 
 
 class ProductFeedCursorResponse(BaseModel):
@@ -128,17 +167,30 @@ class AutocompleteResponse(BaseModel):
 
 
 class TaxonomyResponse(BaseModel):
-    taxonomy: Dict[str, Any]
+    categories: List['TaxonomyCategory']
+    total: int
+    version: str
+
+
+class CategoryNode(BaseModel):
+    id: str
+    name: str
+    slug: str
+    parent_id: Optional[str] = None
+    count: int
+    children: List['CategoryNode'] = Field(default_factory=list)
 
 
 class CategoryResponse(BaseModel):
-    id: int
+    categories: List[CategoryNode]
+    total: int
+
+
+class TaxonomyCategory(BaseModel):
+    id: str
     name: str
-    description: Optional[str] = None
-    parent_id: Optional[int] = None
-    level: int
     product_count: int
-    is_active: bool
+    subcategories: List[Dict[str, Any]] = Field(default_factory=list)
 
 
 class ProductIngestResponse(BaseModel):
@@ -158,14 +210,11 @@ class CompareSearchResponse(BaseModel):
 
 
 class CompareResponse(BaseModel):
-    id: int
-    name: str
-    price: Decimal
-    currency: str
-    buy_url: str
-    image_url: Optional[str] = None
-    brand: Optional[str] = None
-    rating: Optional[Decimal] = None
+    source_product_id: int
+    source_product_name: str
+    matches: List[Any]
+    total_matches: int
+    highlights: Optional[Any] = None
 
 
 class ProductMatchResponse(BaseModel):
@@ -184,8 +233,44 @@ class ProductMatchesResponse(BaseModel):
 
 class SimilarProductsResponse(BaseModel):
     product_id: int
-    similar_products: List[Any]
+    items: List[Any]
     total: int
+
+
+class SimilarMatch(BaseModel):
+    id: int
+    sku: str
+    source: str
+    merchant_id: str
+    name: str
+    description: Optional[str] = None
+    price: Decimal
+    currency: str
+    buy_url: str
+    affiliate_url: Optional[str] = None
+    image_url: Optional[str] = None
+    brand: Optional[str] = None
+    category: Optional[str] = None
+    category_path: Optional[List[str]] = None
+    rating: Optional[Decimal] = None
+    is_available: bool = True
+    in_stock: Optional[bool] = None
+    stock_level: Optional[str] = None
+    last_checked: Optional[datetime] = None
+    metadata: Optional[Any] = None
+    updated_at: Optional[datetime] = None
+    similarity_score: float
+    match_reasons: List[str] = Field(default_factory=list)
+
+    model_config = {"from_attributes": True}
+
+
+class RatingDistributionBucket(BaseModel):
+    stars: int = Field(..., description="Star rating (1-5)")
+    count: int = Field(..., description="Number of reviews with this star rating")
+    percentage: float = Field(..., description="Percentage of total reviews")
+
+    model_config = {"from_attributes": True}
 
 
 class CompareMatch(BaseModel):
@@ -203,10 +288,14 @@ class CompareMatch(BaseModel):
     brand: Optional[str] = None
     category: Optional[str] = None
     category_path: Optional[List[str]] = None
+    rating: Optional[Decimal] = None
     is_available: bool
+    last_checked: Optional[datetime] = None
     metadata: Optional[Any] = None
     updated_at: datetime
     match_score: float
+    savings_vs_most_expensive: Optional[float] = None
+    savings_pct: Optional[float] = None
 
 
 class CompareHighlights(BaseModel):
@@ -219,6 +308,171 @@ class CompareMatrixResponse(BaseModel):
     comparisons: List[Any]
     total_products: int
     highlights: Optional[Any] = None
+
+
+class CompareMatrixRequest(BaseModel):
+    product_ids: List[int]
+    min_price: Optional[float] = None
+    max_price: Optional[float] = None
+
+
+class CompareMatrixEntry(BaseModel):
+    source_product_id: int
+    source_product_name: str
+    matches: List[Any]
+    total_matches: int
+
+
+class CompareDiffRequest(BaseModel):
+    product_ids: List[int]
+    include_image_similarity: Optional[bool] = None
+
+
+class CompareDiffEntry(BaseModel):
+    id: int
+    sku: str
+    source: str
+    merchant_id: str
+    name: str
+    description: Optional[str] = None
+    price: Decimal
+    currency: str
+    buy_url: str
+    affiliate_url: Optional[str] = None
+    image_url: Optional[str] = None
+    brand: Optional[str] = None
+    category: Optional[str] = None
+    category_path: Optional[List[str]] = None
+    is_available: bool
+    metadata: Optional[Any] = None
+    updated_at: datetime
+    price_rank: Optional[int] = None
+
+
+class FieldDiff(BaseModel):
+    field: str
+    values: List[Any]
+    all_identical: bool
+
+
+class TrendingMatch(BaseModel):
+    product_id: int
+    title: str
+    source: str
+    price: Decimal
+    currency: str
+    view_count: int
+    click_count: int
+    updated_at: datetime
+
+
+class RecommendationMatch(BaseModel):
+    id: int
+    sku: str
+    source: str
+    merchant_id: str
+    name: str
+    description: Optional[str] = None
+    price: Decimal
+    currency: str
+    buy_url: str
+    affiliate_url: Optional[str] = None
+    image_url: Optional[str] = None
+    brand: Optional[str] = None
+    category: Optional[str] = None
+    category_path: Optional[List[str]] = None
+    rating: Optional[Decimal] = None
+    review_count: Optional[int] = None
+    is_available: bool = True
+    in_stock: Optional[bool] = None
+    stock_level: Optional[str] = None
+    last_checked: Optional[datetime] = None
+    metadata: Optional[Any] = None
+    updated_at: Optional[datetime] = None
+    relevance_score: Optional[float] = None
+
+
+class BundleMatch(BaseModel):
+    id: int
+    sku: str
+    source: str
+    merchant_id: str
+    name: str
+    description: Optional[str] = None
+    price: Decimal
+    currency: str
+    buy_url: str
+    affiliate_url: Optional[str] = None
+    image_url: Optional[str] = None
+    brand: Optional[str] = None
+    category: Optional[str] = None
+    category_path: Optional[List[str]] = None
+    rating: Optional[Decimal] = None
+    review_count: Optional[int] = None
+    is_available: bool = True
+    in_stock: Optional[bool] = None
+    stock_level: Optional[str] = None
+    last_checked: Optional[datetime] = None
+    bundle_with: List[int] = Field(default_factory=list)
+    savings: Decimal
+    savings_pct: float
+
+
+class CompareSearchMatch(BaseModel):
+    id: int
+    sku: str
+    source: str
+    merchant_id: str
+    name: str
+    description: Optional[str] = None
+    price: Decimal
+    currency: str
+    buy_url: str
+    affiliate_url: Optional[str] = None
+    image_url: Optional[str] = None
+    brand: Optional[str] = None
+    category: Optional[str] = None
+    category_path: Optional[List[str]] = None
+    rating: Optional[Decimal] = None
+    is_available: bool = True
+    in_stock: Optional[bool] = None
+    stock_level: Optional[str] = None
+    last_checked: Optional[datetime] = None
+    metadata: Optional[Any] = None
+    updated_at: Optional[datetime] = None
+    match_score: float
+
+
+class StockStatus(str, Enum):
+    IN_STOCK = "in_stock"
+    LOW_STOCK = "low_stock"
+    OUT_OF_STOCK = "out_of_stock"
+    PRE_ORDER = "pre_order"
+
+
+class PlatformAvailability(BaseModel):
+    platform: str = Field(..., description="Source platform (e.g. shopee_sg, lazada_sg)")
+    status: StockStatus = Field(..., description="Stock status: in_stock, low_stock, out_of_stock, pre_order")
+    last_checked_at: Optional[datetime] = Field(None, description="Timestamp when availability was last checked")
+    raw_stock_info: Optional[Any] = Field(None, description="Raw stock info from metadata if available")
+
+    model_config = {"from_attributes": True}
+
+
+class PlatformDistribution(BaseModel):
+    platform: str = Field(..., description="Platform identifier (e.g. shopee_sg, lazada_sg)")
+    count: int = Field(..., description="Number of products from this platform")
+    percentage: float = Field(..., description="Percentage of total products (0-100)")
+
+    model_config = {"from_attributes": True}
+
+
+class CategoryBreakdown(BaseModel):
+    category: str = Field(..., description="Category name")
+    count: int = Field(..., description="Number of products in this category")
+    percentage: float = Field(..., description="Percentage of total products (0-100)")
+
+    model_config = {"from_attributes": True}
 
 
 class CompareDiffResponse(BaseModel):
@@ -236,38 +490,47 @@ class TrendingResponse(BaseModel):
     category: Optional[str] = None
     items: List[Any]
     total: int
-    platform_distribution: List[Any]
-    category_breakdown: List[Any]
+    platform_distribution: List[Any] = Field(default_factory=list)
+    category_breakdown: List[Any] = Field(default_factory=list)
 
 
 class ApiKeyResponse(BaseModel):
-    id: int
+    id: str
     name: str
-    key_prefix: str
+    tier: str
     is_active: bool
     created_at: datetime
     last_used_at: Optional[datetime] = None
     expires_at: Optional[datetime] = None
 
+    model_config = {"from_attributes": True}
+
+
+class ApiKeyCreateRequest(BaseModel):
+    name: str
+    rate_limit: Optional[int] = None
+    allowed_origins: Optional[List[str]] = None
+
 
 class ApiKeyCreateResponse(BaseModel):
-    id: int
+    key_id: str
+    raw_key: str
     name: str
-    key: str
-    key_prefix: str
-    is_active: bool
-    created_at: datetime
-    expires_at: Optional[datetime] = None
+    tier: str
+    message: str = "Store this key securely — it will not be shown again."
+
+    model_config = {"from_attributes": True}
 
 
 class ApiKeyRotateResponse(BaseModel):
-    id: int
+    key_id: str
+    raw_key: str
     name: str
-    key: str
-    key_prefix: str
-    is_active: bool
-    rotated_at: datetime
-    expires_at: Optional[datetime] = None
+    tier: str
+    expires_at: datetime
+    message: str = "Old key remains valid for 24 hours. Rotate again if you do not see it invalidated."
+
+    model_config = {"from_attributes": True}
 
 
 # Search-related schemas
@@ -296,39 +559,79 @@ class RatingFacetBucket(BaseModel):
     count: int
 
 
+class FacetCounts(BaseModel):
+    categories: List[FacetBucket] = Field(default_factory=list)
+    platforms: List[FacetBucket] = Field(default_factory=list)
+    brands: List[FacetBucket] = Field(default_factory=list)
+    rating_ranges: List[RatingFacetBucket] = Field(default_factory=list)
+    price_ranges: List[PriceFacetBucket] = Field(default_factory=list)
+
+    model_config = {"from_attributes": True}
+
+
 class ApiKeyListResponse(BaseModel):
-    api_keys: List[ApiKeyResponse]
+    keys: List[ApiKeyResponse]
     total: int
-    limit: int
-    offset: int
+
+
+class DeveloperSignupRequest(BaseModel):
+    email: str
+    name: str
 
 
 class DeveloperSignupResponse(BaseModel):
-    id: int
-    username: str
+    developer_id: Optional[str] = None
     email: str
-    is_active: bool
-    created_at: datetime
+    plan: Optional[str] = None
+    key_id: Optional[str] = None
+    raw_key: Optional[str] = None
+    name: Optional[str] = None
+    tier: Optional[str] = None
+    message: str = ""
 
 
 class DeveloperResponse(BaseModel):
-    id: int
-    username: str
+    id: str
     email: str
-    is_active: bool
+    plan: str
     created_at: datetime
-    updated_at: datetime
+
+    model_config = {"from_attributes": True}
 
 
 class DeveloperMeResponse(BaseModel):
-    id: int
-    username: str
-    email: str
-    is_active: bool
-    created_at: datetime
-    updated_at: datetime
+    developer: DeveloperResponse
     api_keys: List[ApiKeyResponse]
-    total_api_keys: int
+    total_keys: int
+
+
+class EndpointUsage(BaseModel):
+    endpoint: str
+    method: str
+    count: int
+    avg_response_time_ms: float
+
+
+class UsageStats(BaseModel):
+    requests_today: int
+    requests_this_week: int
+    requests_this_month: int
+    total_requests: int
+    quota_limit: int
+    quota_remaining: int
+    quota_used_pct: float
+    top_endpoints: List[EndpointUsage]
+    avg_response_time_ms: float
+    alert_triggered: bool
+
+
+class DeveloperUsageResponse(BaseModel):
+    developer_id: str
+    key_id: str
+    key_name: str
+    tier: str
+    usage: UsageStats
+    alert_config: dict
 
 
 class BundleResponse(BaseModel):
@@ -344,18 +647,23 @@ class BundleResponse(BaseModel):
 
 
 class RecommendationsResponse(BaseModel):
-    product_id: int
-    recommendations: List[Any]
+    source_product_id: int
+    source_product_name: str
+    items: List[Any]
     total: int
 
 
 class ProductAvailabilityResponse(BaseModel):
-    id: int
-    is_available: bool
-    in_stock: Optional[bool] = None
-    stock_level: Optional[str] = None
-    last_checked: Optional[datetime] = None
-    availability_sources: List[str]
+    product_id: int
+    canonical_id: Optional[int] = None
+    platforms: List[Any] = Field(default_factory=list)
+    overall_status: str
+    last_checked_at: Optional[datetime] = None
+    is_stale: bool = False
+
+
+class BulkAvailabilityRequest(BaseModel):
+    product_ids: List[int] = Field(..., min_length=1, max_length=100, description="List of product IDs to check (1-100)")
 
 
 class BulkAvailabilityResponse(BaseModel):
@@ -363,6 +671,10 @@ class BulkAvailabilityResponse(BaseModel):
     total: int
     available: int
     unavailable: int
+
+
+class BulkLookupRequest(BaseModel):
+    identifiers: List[str] = Field(..., min_length=1, max_length=100, description="List of SKU, UPC, or product URL to look up (max 100)")
 
 
 class ProductStockResponse(BaseModel):
@@ -381,17 +693,82 @@ class ProductURLAvailabilityResponse(BaseModel):
     checked_at: datetime
 
 
-class PriceComparisonResponse(BaseModel):
-    product_id: int
-    platform: str
+class PriceComparisonItem(BaseModel):
+    id: int
+    source: str
+    merchant_id: str
+    name: str
+    description: Optional[str] = None
     price: Decimal
     currency: str
-    timestamp: datetime
+    shipping_cost: Optional[Decimal] = None
+    total_cost: Optional[Decimal] = None
+    buy_url: str
+    affiliate_url: Optional[str] = None
+    image_url: Optional[str] = None
+    brand: Optional[str] = None
+    category: Optional[str] = None
+    category_path: Optional[List[str]] = None
+    is_available: bool
+    metadata: Optional[Any] = None
+    updated_at: datetime
+    match_score: Optional[float] = None
+
+    model_config = {"from_attributes": True}
+
+
+class PriceComparisonResponse(BaseModel):
+    source_product_id: int
+    source_product_name: str
+    items: List[Any]
+    total: int
+    cheapest_product_id: Optional[int] = None
+    fastest_delivery_product_id: Optional[int] = None
+    best_rated_product_id: Optional[int] = None
+
+
+class MerchantSummary(BaseModel):
+    merchant_id: str = Field(..., description="Unique merchant identifier")
+    merchant_name: str = Field(..., description="Merchant/store name")
+    platform: str = Field(..., description="Source platform (e.g. shopee_sg, lazada_sg)")
+    product_count: int = Field(..., description="Number of active products from this merchant")
+    categories: List[str] = Field(default_factory=list, description="Distinct product categories from this merchant")
+    avg_rating: Optional[float] = Field(None, description="Average product rating across merchant's products (0-5 scale)")
+    last_scraped_at: Optional[datetime] = Field(None, description="Timestamp of most recently scraped product from this merchant")
 
 
 class MerchantListResponse(BaseModel):
-    merchants: List[Any]
+    merchants: List[MerchantSummary]
     total: int
+    limit: int
+    offset: int
+    has_more: bool = False
+
+
+class BulkLookupMatch(BaseModel):
+    id: int
+    sku: str
+    source: str
+    merchant_id: str
+    name: str
+    price: Decimal
+    currency: str
+    buy_url: str
+    is_available: bool
+    updated_at: datetime
+    match_score: Optional[float] = None
+
+    model_config = {"from_attributes": True}
+
+
+class BulkLookupResultItem(BaseModel):
+    identifier: str = Field(..., description="The identifier that was looked up")
+    identifier_type: str = Field(..., description="Type: 'sku', 'upc', or 'url'")
+    status: str = Field(..., description="Result status: 'found', 'not_found', or 'multiple'")
+    match: Optional[BulkLookupMatch] = Field(None, description="Match details if found")
+    match_count: int = Field(default=0, description="Number of matches found (0 if not found, >1 if multiple)")
+
+    model_config = {"from_attributes": True}
 
 
 class BulkLookupResponse(BaseModel):
@@ -435,23 +812,65 @@ class BrandListResponse(BaseModel):
     total: int
 
 
+class ReviewSource(BaseModel):
+    source: str = Field(..., description="Source of the review (e.g. 'shopee', 'lazada', 'platform_api')")
+    review_count: Optional[int] = Field(None, description="Number of reviews from this source")
+    avg_rating: Optional[float] = Field(None, description="Average rating from this source (0-5)")
+    last_scraped: Optional[datetime] = Field(None, description="When this review data was last scraped")
+
+    model_config = {"from_attributes": True}
+
+
 class SourceListResponse(BaseModel):
     sources: List[Any]
     total: int
 
 
-class DeveloperUsageResponse(BaseModel):
-    developer_id: int
-    total_requests: int
-    total_bandwidth_mb: float
-    requests_today: int
-    bandwidth_today_mb: float
+class BulkImportRequest(BaseModel):
+    source: str = Field(..., description="Source platform (e.g., merchant_own, shopee_sg)")
+    products: List[Any] = Field(..., min_length=1, max_length=1000, description="Products to import")
 
 
 class BulkImportResponse(BaseModel):
     imported: int
     failed: int
     errors: List[Any]
+
+
+class BulkImportError(BaseModel):
+    index: int = Field(..., description="Index of the failed product in the input list")
+    sku: str = Field(..., description="SKU of the product that failed")
+    error: str = Field(..., description="Human-readable error message")
+    code: str = Field(default="UNKNOWN_ERROR", description="Machine-readable error code")
+
+    model_config = {"from_attributes": True}
+
+
+class CatalogStats(BaseModel):
+    total_products: int = Field(..., description="Total number of active products in catalog")
+    by_source: Dict[str, int] = Field(..., description="Product count per source platform")
+    by_category: Dict[str, int] = Field(..., description="Product count per category")
+    avg_price: Optional[float] = Field(None, description="Average price across all products (in SGD)")
+    min_price: Optional[float] = Field(None, description="Minimum product price (in SGD)")
+    max_price: Optional[float] = Field(None, description="Maximum product price (in SGD)")
+
+    model_config = {"from_attributes": True}
+
+
+class SampleReview(BaseModel):
+    id: int
+    source: str
+    author_name: Optional[str] = None
+    rating: str
+    title: Optional[str] = None
+    content: Optional[str] = None
+    verified_purchase: bool
+    helpfulness_votes: int = 0
+    review_url: Optional[str] = None
+    review_date: Optional[datetime] = None
+    scraped_at: datetime
+
+    model_config = {"from_attributes": True}
 
 
 class QuestionResponse(BaseModel):
@@ -505,6 +924,8 @@ class V2ProductResponse(BaseModel):
     price: Decimal
     currency: str
     price_sgd: Optional[Decimal] = None
+    region: str = Field("sg", description="Geographic region (e.g. sg, us, sea, eu, au)")
+    country_code: str = Field("SG", description="ISO 3166-1 alpha-2 country code")
     buy_url: str
     affiliate_url: Optional[str] = None
     image_url: Optional[str] = None
@@ -523,6 +944,8 @@ class V2ProductResponse(BaseModel):
     metadata: Optional[dict] = None
     updated_at: datetime
     price_trend: Optional[str] = None
+    confidence_score: Optional[float] = Field(None, description="Confidence score of search match (0-1)")
+    data_freshness: Optional[str] = Field(None, description="Data freshness indicator (e.g., 'fresh', 'stale', 'very_stale')")
 
     model_config = {"from_attributes": True}
 
@@ -535,14 +958,25 @@ class V2BatchProductResponse(BaseModel):
     not_found: int
     # Agent-specific metadata
     cache_hit_rate: Optional[float] = None
-    query_time_ms: Optional[int] = None
+    query_time_ms: Optional[float] = None
 
     model_config = {"from_attributes": True}
+
+
+class QuestionCreateRequest(BaseModel):
+    question: str = Field(..., min_length=10, max_length=1000, description="The question text")
+    author_id: Optional[str] = Field(None, description="ID of the asking agent or user")
+
+
+class AnswerCreateRequest(BaseModel):
+    answer: str = Field(..., min_length=5, max_length=5000, description="The answer text")
+    author_id: Optional[str] = Field(None, description="ID of the answering agent or user")
 
 
 class V2ProductListResponse(BaseModel):
     total: int
     limit: int
-    offset: int
+    offset: Optional[int] = None
     items: List[V2ProductResponse]
     has_more: bool = False
+    next_cursor: Optional[str] = None
