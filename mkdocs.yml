@@ -1,5 +1,5 @@
 site_name: BuyWhere API Documentation
-site_url: https://richmondteo-code.github.io/buywhere-catalog-api/
+site_url: https://docs.buywhere.ai/
 site_description: The agent-native product catalog API for AI commerce across Singapore and Southeast Asia.
 site_author: BuyWhere
 
@@ -36,6 +36,7 @@ theme:
 
 plugins:
   - search
+  - swagger-ui-tag
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -55,10 +56,19 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Quickstart: quickstart.md
-  - API Reference: api-reference/index.md
+  - Getting Started: getting-started.md
+  - Quickstart: QUICKSTART.md
+  - SDKs: sdks.md
+  - Changelog: changelog.md
+  - Versioning: versioning.md
+  - API Reference:
+      - OpenAPI Spec: api-reference/openapi.md
+      - API Reference (Manual): api-reference/index.md
+  - Pricing: pricing.md
+  - Rate Limits: rate-limits.md
   - Guides:
       - Authentication: guides/authentication.md
+      - LangChain Integration: LANGCHAIN_GUIDE.md
   - Code Samples: samples/index.md
 
 extra:
