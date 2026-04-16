@@ -24,12 +24,20 @@ def test_is_risk_challenge_detects_block_pages():
         "https://sg.shein.com/risk/challenge?captcha_type=909",
         "<html>risk-id=abc irregular activities</html>",
     )
+    embedded = SHEINScraper._is_risk_challenge(
+        "https://sg.shein.com/Men-Shirt-Co-ords-c-9037.html",
+        "<html>"
+        + ("x" * 6000)
+        + 'originalUrl":"/risk/challenge?captcha_type=909&redirection=https%3A%2F%2Fsg.shein.com%2FMen-Shirt-Co-ords-c-9037.html&risk-id=E4799370092505629440"'
+        + "</html>",
+    )
     clean = SHEINScraper._is_risk_challenge(
         "https://sg.shein.com/sg-en/",
         "<html>Women Dresses</html>",
     )
 
     assert blocked is True
+    assert embedded is True
     assert clean is False
 
 

@@ -186,7 +186,7 @@ class SHEINScraper:
 
     @staticmethod
     def _is_risk_challenge(url: str, text: str) -> bool:
-        lowered = f"{url}\n{text[:5000]}".lower()
+        lowered = f"{url}\n{text}".lower()
         return any(marker in lowered for marker in RISK_MARKERS)
 
     @staticmethod
@@ -688,6 +688,15 @@ async def main() -> None:
     )
     try:
         await scraper.run()
+    except SheinRiskChallengeError as exc:
+        scraper.challenge_detected = True
+        summary = {
+            "error": str(exc),
+            "challenge_detected": True,
+            "output_file": scraper.products_outfile,
+        }
+        print(json.dumps(summary, ensure_ascii=False, indent=2))
+        raise SystemExit(1) from exc
     finally:
         await scraper.close()
 
