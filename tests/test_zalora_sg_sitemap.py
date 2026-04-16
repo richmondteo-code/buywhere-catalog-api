@@ -8,6 +8,7 @@ from scrapers.zalora_sg_sitemap import (
     SitemapEntry,
     ZaloraSitemapScraper,
     interleave_entries_by_shard,
+    summarize_ndjson_file,
 )
 
 
@@ -138,3 +139,14 @@ def test_record_failure_sample_caps_unique_urls_per_status(tmp_path):
     assert len(samples) == 5
     assert samples[0] == "https://www.zalora.sg/product/blocked-item-0"
     assert samples[-1] == "https://www.zalora.sg/product/blocked-item-4"
+
+
+def test_summarize_ndjson_file_reports_line_count_and_size(tmp_path):
+    path = tmp_path / "sample.ndjson"
+    path.write_text('{"a":1}\n\n{"b":2}\n', encoding="utf-8")
+
+    summary = summarize_ndjson_file(path)
+
+    assert summary["exists"] is True
+    assert summary["line_count"] == 2
+    assert summary["size_bytes"] == path.stat().st_size

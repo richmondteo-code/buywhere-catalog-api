@@ -139,6 +139,25 @@ def interleave_entries_by_shard(entries: list[SitemapEntry]) -> list[SitemapEntr
     return interleaved
 
 
+def summarize_ndjson_file(path: Path) -> dict[str, Any]:
+    summary: dict[str, Any] = {
+        "path": str(path),
+        "exists": path.exists(),
+    }
+    if not path.exists():
+        return summary
+
+    line_count = 0
+    with path.open("r", encoding="utf-8", errors="ignore") as handle:
+        for line in handle:
+            if line.strip():
+                line_count += 1
+
+    summary["line_count"] = line_count
+    summary["size_bytes"] = path.stat().st_size
+    return summary
+
+
 class ZaloraSitemapScraper:
     def __init__(
         self,
@@ -543,6 +562,7 @@ class ZaloraSitemapScraper:
         summary = {
             "elapsed_seconds": round(elapsed, 1),
             "resume_baseline_count": len(self.existing_product_ids),
+            "resume_sources": [summarize_ndjson_file(path) for path in self.resume_paths],
             "total_scraped": self.total_scraped,
             "total_failed": self.total_failed,
             "total_output_count": len(self.existing_product_ids) + len(self.written_product_ids),
