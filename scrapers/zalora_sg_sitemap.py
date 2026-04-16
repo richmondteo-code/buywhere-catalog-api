@@ -201,6 +201,7 @@ class ZaloraSitemapScraper:
         self.status_counts: Counter[str] = Counter()
         self.shard_stats: dict[str, Counter[str]] = defaultdict(Counter)
         self.shard_categories: dict[str, Counter[str]] = defaultdict(Counter)
+        self.shard_failure_samples: dict[str, dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
 
     async def _ensure_session(self) -> None:
         if self._session is None or self._session.closed:
@@ -444,11 +445,17 @@ class ZaloraSitemapScraper:
             with self.output_file.open("a", encoding="utf-8") as handle:
                 handle.write(json.dumps(product, ensure_ascii=False) + "\n")
 
+    def _record_failure_sample(self, entry: SitemapEntry, key: str, url: str, limit: int = 5) -> None:
+        samples = self.shard_failure_samples[entry.shard][key]
+        if url not in samples and len(samples) < limit:
+            samples.append(url)
+
     def _record_failure(self, entry: SitemapEntry, status: int, mode: str) -> None:
         shard_counter = self.shard_stats[entry.shard]
         key = f"{mode}_status_{status}" if status else f"{mode}_request_failed"
         shard_counter[key] += 1
         self.status_counts[key] += 1
+        self._record_failure_sample(entry, key, f"{PRODUCT_BASE}{entry.slug}")
         self.total_failed += 1
 
     async def _scrape_worker(self, worker_id: int) -> None:
@@ -473,6 +480,7 @@ class ZaloraSitemapScraper:
                 if product is None:
                     self.shard_stats[entry.shard]["parse_failed"] += 1
                     self.status_counts["parse_failed"] += 1
+                    self._record_failure_sample(entry, "parse_failed", f"{PRODUCT_BASE}{entry.slug}")
                     self.total_failed += 1
                     continue
 
@@ -545,6 +553,7 @@ class ZaloraSitemapScraper:
                 shard: {
                     **dict(counter),
                     "categories": dict(self.shard_categories.get(shard, Counter()).most_common(10)),
+                    "failure_samples": self.shard_failure_samples.get(shard, {}),
                 }
                 for shard, counter in sorted(self.shard_stats.items())
             },

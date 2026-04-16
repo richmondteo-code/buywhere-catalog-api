@@ -111,3 +111,30 @@ def test_interleave_entries_by_shard_spreads_early_queue_across_sitemaps():
         "product-sitemap-4.xml",
     ]
     assert interleaved[4].slug == "item-a-2"
+
+
+def test_record_failure_sample_caps_unique_urls_per_status(tmp_path):
+    scraper = ZaloraSitemapScraper(
+        output_file=str(tmp_path / "fresh.ndjson"),
+        coverage_report=str(tmp_path / "coverage.json"),
+    )
+    entry = SitemapEntry(
+        shard="product-sitemap-2.xml",
+        slug="blocked-item-100",
+        image_url="",
+    )
+
+    for suffix in range(7):
+        varied = SitemapEntry(
+            shard=entry.shard,
+            slug=f"blocked-item-{suffix}",
+            image_url="",
+        )
+        scraper._record_failure_sample(varied, "direct_status_403", f"https://www.zalora.sg/product/blocked-item-{suffix}")
+
+    scraper._record_failure_sample(entry, "direct_status_403", "https://www.zalora.sg/product/blocked-item-0")
+
+    samples = scraper.shard_failure_samples[entry.shard]["direct_status_403"]
+    assert len(samples) == 5
+    assert samples[0] == "https://www.zalora.sg/product/blocked-item-0"
+    assert samples[-1] == "https://www.zalora.sg/product/blocked-item-4"
