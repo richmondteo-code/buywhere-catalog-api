@@ -138,6 +138,9 @@ class FlipkartInScraper:
     def _parse_price(value: str | None) -> float:
         if not value:
             return 0.0
+        rupee_match = re.search(r"₹\s*([\d,]+(?:\.\d+)?)", value)
+        if rupee_match:
+            return float(rupee_match.group(1).replace(",", ""))
         cleaned = value.replace(",", "").replace("₹", "").strip()
         match = re.search(r"\d+(?:\.\d+)?", cleaned)
         return float(match.group(0)) if match else 0.0
@@ -160,6 +163,9 @@ class FlipkartInScraper:
     def _parse_review_count(value: str | None) -> int | None:
         if not value:
             return None
+        match = re.search(r"\(([\d,]+)\)", value)
+        if match:
+            return int(match.group(1).replace(",", ""))
         match = re.search(r"([\d,]+)\s+Reviews", value, re.IGNORECASE)
         if match:
             return int(match.group(1).replace(",", ""))
@@ -180,22 +186,28 @@ class FlipkartInScraper:
                 if "Site is overloaded" in body_text:
                     raise RuntimeError("Flipkart returned overload page")
                 cards = await browser_page.evaluate(
-                    """() => Array.from(document.querySelectorAll('div[data-id]')).map((card, index) => {
+                    r"""() => Array.from(document.querySelectorAll('div[data-id]')).map((card, index) => {
                         const link = card.querySelector('a[href*="/p/"]');
                         const img = card.querySelector('img[alt]');
-                        const titleEl = card.querySelector('div.RG5Slk');
+                        const titleEl = card.querySelector('div.RG5Slk, a[title], div.KzDlHZ, div.WKTcLC');
                         const ratingEl = card.querySelector('span.CjyrHS, div.MKiFS6');
                         const reviewEl = card.querySelector('span.PvbNMB');
-                        const priceEl = card.querySelector('div.hZ3P6w.DeU9vF, div.Nx9bqj._4b5DiR, div._30jeq3');
+                        const priceEl = card.querySelector('div.hZ3P6w.DeU9vF, div.Nx9bqj._4b5DiR, div.Nx9bqj, div._30jeq3');
+                        const cardText = card.innerText || '';
+                        const priceCandidates = Array.from(card.querySelectorAll('*'))
+                          .map((node) => (node.textContent || '').trim())
+                          .filter((text) => /₹\s?[\d,]+/.test(text));
+                        const fallbackPrice = priceCandidates[0] || (cardText.match(/₹\s?[\d,]+/) || [''])[0];
+                        const fallbackReviews = (cardText.match(/\([\d,]+\)/) || [''])[0];
                         const specs = Array.from(card.querySelectorAll('li')).map((node) => node.textContent.trim()).filter(Boolean);
                         return {
                             product_id: card.getAttribute('data-id') || '',
-                            title: (titleEl?.textContent || img?.getAttribute('alt') || '').trim(),
+                            title: (titleEl?.textContent || titleEl?.getAttribute('title') || img?.getAttribute('alt') || '').trim(),
                             product_url: link?.href || '',
-                            image_url: img?.src || '',
+                            image_url: img?.currentSrc || img?.src || '',
                             rating_text: (ratingEl?.textContent || '').trim(),
-                            reviews_text: (reviewEl?.textContent || '').trim(),
-                            price_text: (priceEl?.textContent || '').trim(),
+                            reviews_text: (reviewEl?.textContent || fallbackReviews || '').trim(),
+                            price_text: (priceEl?.textContent || fallbackPrice || '').trim(),
                             specs,
                             rank: index + 1,
                         };
