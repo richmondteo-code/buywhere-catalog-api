@@ -1,17 +1,38 @@
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, Query
+from pydantic import BaseModel
 from sqlalchemy import func, select, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth import get_current_api_key
 from app.database import get_db
-from app.models.product import ApiKey, Product
-from app.schemas.status import CatalogHealthReport, CatalogStatsReport
+from app.models.product import ApiKey, IngestionRun, Product
+from app.schemas.brand import SourceInfo, SourceListResponse
+from app.schemas.status import CatalogHealthReport, CatalogQualityReport, CatalogStatsReport
 from app.services.catalog_health import get_catalog_health
+from app.services.catalog_quality import build_catalog_quality_report
 from app import cache
-from fastapi import Query
 
-router = APIRouter(prefix="/v1/catalog", tags=["catalog"])
+router = APIRouter(prefix="/catalog", tags=["catalog"])
+
+COUNTRY_NAMES = {
+    "SG": "Singapore",
+    "MY": "Malaysia",
+    "PH": "Philippines",
+    "TH": "Thailand",
+    "VN": "Vietnam",
+}
+
+
+class CountryInfo(BaseModel):
+    code: str
+    name: str
+    product_count: int
+
+
+class CountryListResponse(BaseModel):
+    total: int
+    countries: list[CountryInfo]
 
 
 @router.get("/health", response_model=CatalogHealthReport, summary="Get catalog health and quality report")
@@ -32,9 +53,9 @@ async def catalog_health(
 async def list_incomplete_products(
     db: AsyncSession = Depends(get_db),
     api_key: ApiKey = Depends(get_current_api_key),
-    source: str | None = Query(None, description="Filter by source platform"),
-    limit: int = Query(20, ge=1, le=100),
-    offset: int = Query(0, ge=0),
+    source: str | None = Query(None, max_length=100, description="Filter by source platform"),
+    limit: int = Query(20, ge=1, le=100, description="Results per page (1-100)"),
+    offset: int = Query(0, ge=0, le=10000, description="Pagination offset (0-10000)"),
 ) -> dict:
     cache_key = cache.build_cache_key(
         "catalog:incomplete",
@@ -141,3 +162,18 @@ async def catalog_stats(
     )
     await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
     return response
+
+
+@router.get("/quality-report", response_model=CatalogQualityReport, summary="Get product data quality report with freshness, completeness, and price accuracy")
+async def catalog_quality_report(
+    db: AsyncSession = Depends(get_db),
+    api_key: ApiKey = Depends(get_current_api_key),
+) -> CatalogQualityReport:
+    cache_key = "catalog:quality-report"
+    cached = await cache.cache_get(cache_key)
+    if cached:
+        return CatalogQualityReport(**cached)
+
+    report = await build_catalog_quality_report(db)
+    await cache.cache_set(cache_key, report, ttl_seconds=300)
+    return CatalogQualityReport(**report)

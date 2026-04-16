@@ -1,8 +1,8 @@
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class PlatformProductCount(BaseModel):
@@ -119,6 +119,98 @@ class CatalogStatsReport(BaseModel):
     by_category: dict[str, int]
 
 
+class FieldCompletenessSummary(BaseModel):
+    image_url_pct: float
+    description_pct: float
+    price_pct: float
+    brand_pct: float
+
+
+class CatalogQualityOverview(BaseModel):
+    total_products: int
+    overall_quality_score: float
+    avg_freshness_score: float
+    avg_completeness_score: float
+    avg_price_accuracy_score: float
+    stale_products: int
+    stale_rate: float
+    field_completeness: FieldCompletenessSummary
+
+
+class CatalogQualityAggregate(BaseModel):
+    name: str
+    product_count: int
+    stale_products: int
+    stale_rate: float
+    avg_freshness_score: float
+    avg_completeness_score: float
+    avg_price_accuracy_score: float
+    avg_overall_score: float
+
+
+class CatalogQualityAggregates(BaseModel):
+    by_source: list[CatalogQualityAggregate]
+    by_region: list[CatalogQualityAggregate]
+    by_category: list[CatalogQualityAggregate]
+
+
+class CatalogQualityThresholds(BaseModel):
+    stale_after_days: int
+    low_quality_score: float
+    price_history_lookback_days: int
+
+
+class CatalogQualityProductSample(BaseModel):
+    product_id: int
+    source: str
+    region: str
+    category: str
+    title: str
+    url: str
+    updated_at: Optional[datetime] = None
+    overall_score: float
+    missing_fields: list[str]
+
+
+class LowQualityProductSample(CatalogQualityProductSample):
+    freshness_score: float
+    completeness_score: float
+    price_accuracy_score: float
+    is_stale: bool
+
+
+class CatalogRescrapeRecommendation(BaseModel):
+    name: str
+    product_count: int
+    stale_products: int
+    stale_rate: float
+    avg_freshness_score: float
+    avg_completeness_score: float
+    avg_price_accuracy_score: float
+    avg_overall_score: float
+
+
+class CatalogRescrapeSummary(BaseModel):
+    count: int
+    sources: list[CatalogRescrapeRecommendation]
+
+
+class CatalogStaleProductSummary(BaseModel):
+    count: int
+    sample: list[CatalogQualityProductSample]
+
+
+class CatalogQualityReport(BaseModel):
+    generated_at: datetime
+    snapshot_date: datetime | date
+    thresholds: CatalogQualityThresholds
+    overview: CatalogQualityOverview
+    aggregates: CatalogQualityAggregates
+    re_scrape_recommendations: CatalogRescrapeSummary
+    stale_products: CatalogStaleProductSummary
+    low_quality_products: list[LowQualityProductSample]
+
+
 class DBConnectionHealth(BaseModel):
     ok: bool
     latency_ms: float
@@ -144,3 +236,75 @@ class SystemHealthReport(BaseModel):
     generated_at: datetime
     db: DBHealthReport
     scrapers: ScraperHealthReport
+
+
+class PlatformHealth(BaseModel):
+    source: str
+    last_scrape_at: Optional[datetime] = None
+    product_count: int = 0
+    avg_freshness_minutes: Optional[float] = None
+    error_rate: Optional[float] = None
+    is_stale: bool = False
+    last_run_status: Optional[str] = None
+    rows_inserted: Optional[int] = None
+    rows_updated: Optional[int] = None
+    rows_failed: Optional[int] = None
+
+
+class PlatformHealthReport(BaseModel):
+    generated_at: datetime
+    platforms: List[PlatformHealth]
+    total_platforms: int
+    healthy_platforms: int
+    stale_platforms: int
+    overall_health_score: float
+
+
+class DiskSpaceHealth(BaseModel):
+    total_bytes: int
+    used_bytes: int
+    available_bytes: int
+    usage_percent: float
+    ok: bool
+
+
+class APIResponseTimeHealth(BaseModel):
+    endpoint: str
+    latency_ms: float
+    ok: bool
+
+
+class ComprehensiveHealthReport(BaseModel):
+    generated_at: datetime
+    overall_status: str = Field(..., description="Overall status: healthy, degraded, or unhealthy")
+    db: DBHealthReport
+    disk: DiskSpaceHealth
+    api_self_test: APIResponseTimeHealth
+    scrapers: ScraperHealthReport
+
+
+class SimpleHealthResponse(BaseModel):
+    status: str = Field(..., description="Overall status: ok, degraded, or down")
+    environment: str = Field(..., description="Runtime environment: development, staging, or production")
+    database_connected: bool = Field(..., description="Database connection ok")
+    cache_connected: bool = Field(..., description="Cache (Redis) connection ok")
+    uptime_seconds: float = Field(..., description="Process uptime in seconds")
+    version: str = Field(..., description="Application version")
+    product_count: int = Field(..., description="Total active product count")
+    last_ingestion_time: Optional[datetime] = Field(None, description="Most recent ingestion run completion time")
+
+
+class DependencyHealth(BaseModel):
+    ok: bool
+    latency_ms: float
+    error: Optional[str] = None
+
+
+class DetailedHealthResponse(BaseModel):
+    status: str = Field(..., description="Overall status: ok, degraded, or unhealthy")
+    db: DependencyHealth
+    cache: DependencyHealth
+    uptime_seconds: float = Field(..., description="Process uptime in seconds")
+    version: str = Field(..., description="Application version")
+    product_count: int = Field(..., description="Total active product count")
+    generated_at: datetime
