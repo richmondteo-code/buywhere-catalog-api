@@ -4,7 +4,11 @@ from pathlib import Path
 
 sys.path.insert(0, "/home/paperclip/buywhere-api")
 
-from scrapers.zalora_sg_sitemap import SitemapEntry, ZaloraSitemapScraper
+from scrapers.zalora_sg_sitemap import (
+    SitemapEntry,
+    ZaloraSitemapScraper,
+    interleave_entries_by_shard,
+)
 
 
 def test_load_existing_product_ids_supports_current_baseline_shape(tmp_path):
@@ -87,3 +91,23 @@ def test_parse_product_page_extracts_priced_product_from_next_data(tmp_path):
     assert product["category"] == "Shoes"
     assert product["merchant_id"] == "zalora"
     assert product["image_url"] == entry.image_url
+
+
+def test_interleave_entries_by_shard_spreads_early_queue_across_sitemaps():
+    entries = [
+        SitemapEntry(shard="product-sitemap-1.xml", slug="item-a-1", image_url=""),
+        SitemapEntry(shard="product-sitemap-1.xml", slug="item-a-2", image_url=""),
+        SitemapEntry(shard="product-sitemap-2.xml", slug="item-b-1", image_url=""),
+        SitemapEntry(shard="product-sitemap-3.xml", slug="item-c-1", image_url=""),
+        SitemapEntry(shard="product-sitemap-4.xml", slug="item-d-1", image_url=""),
+    ]
+
+    interleaved = interleave_entries_by_shard(entries)
+
+    assert [entry.shard for entry in interleaved[:4]] == [
+        "product-sitemap-1.xml",
+        "product-sitemap-2.xml",
+        "product-sitemap-3.xml",
+        "product-sitemap-4.xml",
+    ]
+    assert interleaved[4].slug == "item-a-2"

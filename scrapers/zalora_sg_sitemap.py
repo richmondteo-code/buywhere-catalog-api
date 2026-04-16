@@ -21,6 +21,7 @@ import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from itertools import zip_longest
 from pathlib import Path
 from typing import Any, Optional
 from urllib.parse import quote
@@ -119,6 +120,23 @@ class SitemapEntry:
     @property
     def url(self) -> str:
         return f"{CANONICAL_BASE}{self.slug}"
+
+
+def interleave_entries_by_shard(entries: list[SitemapEntry]) -> list[SitemapEntry]:
+    grouped: dict[str, list[SitemapEntry]] = defaultdict(list)
+    shard_order: list[str] = []
+
+    for entry in entries:
+        if entry.shard not in grouped:
+            shard_order.append(entry.shard)
+        grouped[entry.shard].append(entry)
+
+    interleaved: list[SitemapEntry] = []
+    for row in zip_longest(*(grouped[shard] for shard in shard_order)):
+        for entry in row:
+            if entry is not None:
+                interleaved.append(entry)
+    return interleaved
 
 
 class ZaloraSitemapScraper:
@@ -443,7 +461,7 @@ class ZaloraSitemapScraper:
             try:
                 async with self._semaphore:
                     html, status, mode = await self._fetch_text(
-                        f"{PRODUCT_BASE}{entry.slug}",
+                        f"{CANONICAL_BASE}{entry.slug}",
                         allow_proxy_fallback=True,
                     )
 
@@ -486,7 +504,7 @@ class ZaloraSitemapScraper:
         loaded = self.load_existing_product_ids()
         logger.info("Loaded %s existing Zalora product ids from resume baseline", loaded)
 
-        entries = await self.fetch_sitemap_entries()
+        entries = interleave_entries_by_shard(await self.fetch_sitemap_entries())
         if not entries:
             await self.close()
             return {"error": "No sitemap entries found"}
