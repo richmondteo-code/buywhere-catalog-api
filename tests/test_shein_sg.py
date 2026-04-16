@@ -1,4 +1,4 @@
-from scrapers.shein_sg import SHEINScraper
+from scrapers.shein_sg import SHEINScraper, build_scraperapi_proxy_url
 
 
 def test_extract_categories_from_homepage_filters_fashion_items():
@@ -31,3 +31,26 @@ def test_is_risk_challenge_detects_block_pages():
 
     assert blocked is True
     assert clean is False
+
+
+def test_build_scraperapi_proxy_url():
+    assert (
+        build_scraperapi_proxy_url("abc123")
+        == "http://scraperapi:abc123@proxy-server.scraperapi.com:8001"
+    )
+
+
+def test_proxy_headers_added_when_scraperapi_enabled():
+    scraper = SHEINScraper(
+        api_key="",
+        scrape_only=True,
+        discover_only=True,
+        scraperapi_key="abc123",
+    )
+    try:
+        headers = scraper._headers_with_proxy_options({"User-Agent": "Mozilla/5.0"})
+        assert headers["x-sapi-render"] == "true"
+        assert headers["x-sapi-country_code"] == "sg"
+    finally:
+        scraper.cf_scraper.close()
+        scraper.request_session.close()

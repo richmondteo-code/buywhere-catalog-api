@@ -22,6 +22,8 @@ from urllib.parse import unquote, urljoin
 
 import cloudscraper
 import httpx
+import requests
+import urllib3
 
 from scrapers.scraper_logging import get_logger
 
@@ -34,6 +36,7 @@ NORMALIZED_OUTPUT_DIR = "/home/paperclip/buywhere-api/data/normalized"
 NORMALIZED_OUTPUT_FILE = os.path.join(
     NORMALIZED_OUTPUT_DIR, "shein_sg_normalized.ndjson"
 )
+DEFAULT_SCRAPERAPI_COUNTRY = "sg"
 
 HTML_HEADERS = {
     "User-Agent": (
@@ -92,6 +95,13 @@ RISK_MARKERS = (
 log = get_logger(MERCHANT_ID)
 
 
+def build_scraperapi_proxy_url(scraperapi_key: str) -> str:
+    return (
+        f"http://scraperapi:{scraperapi_key}"
+        "@proxy-server.scraperapi.com:8001"
+    )
+
+
 class SheinRiskChallengeError(RuntimeError):
     """Raised when SHEIN returns a challenge page or blocked listing response."""
 
@@ -105,6 +115,8 @@ class SHEINScraper:
         delay: float = 1.0,
         scrape_only: bool = False,
         discover_only: bool = False,
+        scraperapi_key: str | None = None,
+        scraperapi_country: str = DEFAULT_SCRAPERAPI_COUNTRY,
     ):
         self.api_key = api_key
         self.api_base = api_base.rstrip("/")
@@ -112,10 +124,30 @@ class SHEINScraper:
         self.delay = delay
         self.scrape_only = scrape_only
         self.discover_only = discover_only
+        self.scraperapi_key = scraperapi_key or os.getenv("SCRAPERAPI_KEY", "")
+        self.scraperapi_country = scraperapi_country
+        self.scraperapi_proxy_url = (
+            os.getenv("SCRAPERAPI_PROXY_URL")
+            or build_scraperapi_proxy_url(self.scraperapi_key)
+            if self.scraperapi_key
+            else ""
+        )
+        self.scrape_timeout = 120 if self.scraperapi_proxy_url else 30
         self.cf_scraper = cloudscraper.create_scraper(
             browser={"browser": "chrome", "platform": "windows", "mobile": False}
         )
         self.http_client = httpx.AsyncClient(timeout=30.0)
+        self.request_session = requests.Session()
+        self.request_verify = True
+        if self.scraperapi_proxy_url:
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+            self.request_session.proxies.update(
+                {
+                    "http": self.scraperapi_proxy_url,
+                    "https": self.scraperapi_proxy_url,
+                }
+            )
+            self.request_verify = False
         self.total_scraped = 0
         self.total_ingested = 0
         self.total_updated = 0
@@ -132,7 +164,16 @@ class SHEINScraper:
 
     async def close(self) -> None:
         self.cf_scraper.close()
+        self.request_session.close()
         await self.http_client.aclose()
+
+    def _headers_with_proxy_options(self, headers: dict[str, str]) -> dict[str, str]:
+        if not self.scraperapi_proxy_url:
+            return headers
+        enriched = dict(headers)
+        enriched.setdefault("x-sapi-render", "true")
+        enriched.setdefault("x-sapi-country_code", self.scraperapi_country)
+        return enriched
 
     @staticmethod
     def _is_risk_challenge(url: str, text: str) -> bool:
@@ -206,10 +247,26 @@ class SHEINScraper:
         for attempt in range(retries):
             try:
                 loop = asyncio.get_running_loop()
-                response = await loop.run_in_executor(
-                    None,
-                    lambda: self.cf_scraper.get(url, headers=HTML_HEADERS, timeout=30),
-                )
+                request_headers = self._headers_with_proxy_options(HTML_HEADERS)
+                if self.scraperapi_proxy_url:
+                    response = await loop.run_in_executor(
+                        None,
+                        lambda: self.request_session.get(
+                            url,
+                            headers=request_headers,
+                            timeout=self.scrape_timeout,
+                            verify=self.request_verify,
+                        ),
+                    )
+                else:
+                    response = await loop.run_in_executor(
+                        None,
+                        lambda: self.cf_scraper.get(
+                            url,
+                            headers=request_headers,
+                            timeout=self.scrape_timeout,
+                        ),
+                    )
                 text = response.text or ""
                 final_url = getattr(response, "url", url)
                 if self._is_risk_challenge(str(final_url), text):
@@ -253,15 +310,28 @@ class SHEINScraper:
         for attempt in range(3):
             try:
                 loop = asyncio.get_running_loop()
-                response = await loop.run_in_executor(
-                    None,
-                    lambda: self.cf_scraper.get(
-                        LIST_API_URL,
-                        params=params,
-                        headers=API_HEADERS,
-                        timeout=30,
-                    ),
-                )
+                request_headers = self._headers_with_proxy_options(API_HEADERS)
+                if self.scraperapi_proxy_url:
+                    response = await loop.run_in_executor(
+                        None,
+                        lambda: self.request_session.get(
+                            LIST_API_URL,
+                            params=params,
+                            headers=request_headers,
+                            timeout=self.scrape_timeout,
+                            verify=self.request_verify,
+                        ),
+                    )
+                else:
+                    response = await loop.run_in_executor(
+                        None,
+                        lambda: self.cf_scraper.get(
+                            LIST_API_URL,
+                            params=params,
+                            headers=request_headers,
+                            timeout=self.scrape_timeout,
+                        ),
+                    )
                 text = response.text or ""
                 if response.status_code == 403 and text.strip() in {"", "{}"}:
                     raise SheinRiskChallengeError(
@@ -481,6 +551,12 @@ async def main() -> None:
     parser.add_argument("--delay", type=float, default=1.0)
     parser.add_argument("--scrape-only", action="store_true", help="Write NDJSON without ingestion")
     parser.add_argument("--discover-only", action="store_true", help="Only emit discovered category seeds")
+    parser.add_argument("--scraperapi-key", default=None, help="ScraperAPI key for proxy-mode bypass")
+    parser.add_argument(
+        "--scraperapi-country",
+        default=DEFAULT_SCRAPERAPI_COUNTRY,
+        help="ScraperAPI country code for proxy-mode bypass",
+    )
     args = parser.parse_args()
 
     if not args.scrape_only and not args.discover_only and not args.api_key:
@@ -493,6 +569,8 @@ async def main() -> None:
         delay=args.delay,
         scrape_only=args.scrape_only,
         discover_only=args.discover_only,
+        scraperapi_key=args.scraperapi_key,
+        scraperapi_country=args.scraperapi_country,
     )
     try:
         await scraper.run()
