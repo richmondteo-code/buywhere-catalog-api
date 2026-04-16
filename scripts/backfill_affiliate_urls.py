@@ -44,55 +44,55 @@ def backfill_affiliate_urls(batch_size: int = BATCH_SIZE, platform: str | None =
         where_clause += " AND p.source = %s"
         params.append(platform)
 
-    query = f"""
-        SELECT p.id, p.url, p.source
-        FROM products p
-        LEFT JOIN affiliate_links al ON p.id = al.product_id
-        {where_clause}
-        ORDER BY p.id
-        LIMIT 10000
-    """
-
-    cur.execute(query, params)
-    rows = cur.fetchall()
-    print(f"Found {len(rows)} products without affiliate links." + (f" (platform: {platform})" if platform else ""))
-
-    if not rows:
-        cur.close()
-        conn.close()
-        return 0
-
     total_inserted = 0
-    for i in range(0, len(rows), batch_size):
-        batch = rows[i:i + batch_size]
-        data = []
-        for product_id, url, source in batch:
-            if not url:
-                continue
-            affiliate_url = get_affiliate_url(source, url, product_id)
-            data.append((
-                product_id,
-                source,
-                url,
-                affiliate_url,
-                None,
-                get_program_name(source),
-                get_commission_pct(source),
-            ))
 
-        if data:
-            insert_sql = """
-                INSERT INTO affiliate_links (product_id, platform, raw_url, affiliate_url, tracking_id, program, commission_pct)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-                ON CONFLICT (product_id) DO UPDATE SET
-                    affiliate_url = EXCLUDED.affiliate_url,
-                    raw_url = EXCLUDED.raw_url,
-                    platform = EXCLUDED.platform
-            """
-            execute_batch(cur, insert_sql, data, page_size=1000)
-            conn.commit()
-            total_inserted += len(data)
-            print(f"Inserted batch of {len(data)} affiliate links (total: {total_inserted})")
+    while True:
+        query = f"""
+            SELECT p.id, p.url, p.source
+            FROM products p
+            LEFT JOIN affiliate_links al ON p.id = al.product_id
+            {where_clause}
+            ORDER BY p.id
+            LIMIT 10000
+        """
+
+        cur.execute(query, params)
+        rows = cur.fetchall()
+        print(f"Found {len(rows)} products without affiliate links." + (f" (platform: {platform})" if platform else ""))
+
+        if not rows:
+            break
+
+        for i in range(0, len(rows), batch_size):
+            batch = rows[i:i + batch_size]
+            data = []
+            for product_id, url, source in batch:
+                if not url:
+                    continue
+                affiliate_url = get_affiliate_url(source, url, product_id)
+                data.append((
+                    product_id,
+                    source,
+                    url,
+                    affiliate_url,
+                    None,
+                    get_program_name(source),
+                    get_commission_pct(source),
+                ))
+
+            if data:
+                insert_sql = """
+                    INSERT INTO affiliate_links (product_id, platform, raw_url, affiliate_url, tracking_id, program, commission_pct)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (product_id) DO UPDATE SET
+                        affiliate_url = EXCLUDED.affiliate_url,
+                        raw_url = EXCLUDED.raw_url,
+                        platform = EXCLUDED.platform
+                """
+                execute_batch(cur, insert_sql, data, page_size=1000)
+                conn.commit()
+                total_inserted += len(data)
+                print(f"Inserted batch of {len(data)} affiliate links (total: {total_inserted})")
 
     cur.close()
     conn.close()
