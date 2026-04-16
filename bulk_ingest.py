@@ -63,6 +63,8 @@ PLATFORM_MAP = {
     "iherb_sg": "iherb",
     "nike_sg": "nike",
     "tokopedia_sg": "tokopedia",
+    # Indonesia retailers
+    "bukalapak_id": "bukalapak",
     # US retailers
     "nike_us": "nike_us",
     "zappos_us": "zappos_us",
@@ -167,7 +169,7 @@ def normalize_record(record: Dict[str, Any], platform: str) -> Optional[Dict[str
         except (ValueError, TypeError):
             raw_price = None
 
-    category = record.get("category") or record.get("category_path") or []
+    category = record.get("category_path") or record.get("category") or []
     if isinstance(category, str):
         category = [category]
     elif category and not isinstance(category, list):
@@ -433,7 +435,7 @@ def main():
     pg_host = os.environ.get("PGHOST", "172.18.0.4")
     conn = psycopg2.connect(
         host=pg_host,
-        dbname="buywhere",
+        dbname=os.environ.get("PGDATABASE", "buywhere_new"),
         user="buywhere",
         password="buywhere",
         port=5432,
