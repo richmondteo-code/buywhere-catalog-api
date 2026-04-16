@@ -303,6 +303,13 @@ class TestBukalapakIDScraper:
             "https://www.bukalapak.com/products?page=1&search%5Bcategory_id%5D=142",
         ) is True
 
+    def test_builds_scraperapi_proxy_url(self):
+        scraper = BukalapakIDScraper(
+            api_key="test-key",
+            scraperapi_key="abc123",
+        )
+        assert scraper.proxy_url == "http://scraperapi:abc123@proxy-server.scraperapi.com:8001"
+
 
 class TestBukalapakIDScraperOutputSchema:
     def setup_method(self):

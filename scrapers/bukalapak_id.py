@@ -25,6 +25,7 @@ import json
 import os
 import re
 import time
+import urllib.parse
 from pathlib import Path
 from typing import Any
 
@@ -37,6 +38,8 @@ log = get_logger(MERCHANT_ID)
 SOURCE = "bukalapak_id"
 BASE_URL = "https://www.bukalapak.com"
 API_KEY_ENV_VARS = ("BUYWHERE_API_KEY", "PRODUCT_API_KEY", "API_KEY")
+SCRAPERAPI_KEY_ENV = "SCRAPERAPI_KEY"
+SCRAPERAPI_PROXY_ENV = "SCRAPERAPI_PROXY_URL"
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -81,6 +84,8 @@ class BukalapakIDScraper:
         max_pages_per_category: int = 100,
         target_products: int = 100000,
         scrape_only: bool = False,
+        scraperapi_key: str | None = None,
+        proxy_url: str | None = None,
     ):
         self.api_key = api_key
         self.api_base = api_base.rstrip("/")
@@ -91,12 +96,28 @@ class BukalapakIDScraper:
         self.max_pages_per_category = max_pages_per_category
         self.target_products = target_products
         self.scrape_only = scrape_only
-        self.client = httpx.AsyncClient(timeout=30.0, headers=HEADERS)
+        self.scraperapi_key = scraperapi_key or os.environ.get(SCRAPERAPI_KEY_ENV)
+        self.proxy_url = proxy_url or os.environ.get(SCRAPERAPI_PROXY_ENV) or self._build_scraperapi_proxy_url()
+        self.client = httpx.AsyncClient(
+            timeout=30.0,
+            headers=HEADERS,
+            proxy=self.proxy_url,
+            verify=False if self.proxy_url else True,
+        )
         self.total_scraped = 0
         self.total_ingested = 0
         self.total_updated = 0
         self.total_failed = 0
         self.skipped_pages = 0
+
+    def _build_scraperapi_proxy_url(self) -> str | None:
+        if not self.scraperapi_key:
+            return None
+        return (
+            "http://scraperapi:"
+            f"{urllib.parse.quote(self.scraperapi_key, safe='')}"
+            "@proxy-server.scraperapi.com:8001"
+        )
 
     async def close(self):
         await self.client.aclose()
@@ -418,6 +439,8 @@ class BukalapakIDScraper:
         print(f"API: {self.api_base}")
         print(f"Batch size: {self.batch_size}, Delay: {self.delay}s")
         print(f"Data dir: {self.data_dir}")
+        if self.proxy_url:
+            print("Proxy: enabled")
         print(f"Categories: {len(CATEGORIES)}")
         print(f"Target: {self.target_products:,} products")
 
@@ -465,6 +488,16 @@ async def main():
     parser.add_argument("--max-pages", type=int, default=100, help="Max pages per category")
     parser.add_argument("--target", type=int, default=100000, help="Target number of products")
     parser.add_argument("--scrape-only", action="store_true", help="Save to JSONL only, skip API ingestion")
+    parser.add_argument(
+        "--scraperapi-key",
+        default=None,
+        help=f"ScraperAPI key (or set {SCRAPERAPI_KEY_ENV})",
+    )
+    parser.add_argument(
+        "--proxy-url",
+        default=None,
+        help=f"Explicit proxy URL (or set {SCRAPERAPI_PROXY_ENV})",
+    )
     args = parser.parse_args()
     api_key = args.api_key
     if not api_key:
@@ -487,6 +520,8 @@ async def main():
         max_pages_per_category=args.max_pages,
         target_products=args.target,
         scrape_only=args.scrape_only,
+        scraperapi_key=args.scraperapi_key,
+        proxy_url=args.proxy_url,
     )
 
     try:
