@@ -2,6 +2,7 @@ import sys
 from decimal import Decimal
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import httpx
 import pytest
 
 sys.path.insert(0, "/home/paperclip/buywhere-api")
@@ -302,6 +303,38 @@ class TestBukalapakIDScraper:
             html,
             "https://www.bukalapak.com/products?page=1&search%5Bcategory_id%5D=142",
         ) is True
+
+    def test_detects_html_404_shell_without_literal_page_not_found(self):
+        html = "<!DOCTYPE html><html data-capo><head><script>window.APP = {}</script></head></html>"
+        assert self.scraper._looks_like_not_found_shell(
+            html,
+            "https://www.bukalapak.com/products?page=1&search%5Bcategory_id%5D=142",
+            status_code=404,
+        ) is True
+
+    def test_detects_search_route_html_404_shell(self):
+        html = "<!DOCTYPE html><html data-capo><head><script>window.APP = {}</script></head></html>"
+        assert self.scraper._looks_like_not_found_shell(
+            html,
+            "https://www.bukalapak.com/search?q=samsung",
+            status_code=404,
+        ) is True
+
+    @pytest.mark.asyncio
+    async def test_marks_catalog_unavailable_on_proxy_timeout(self):
+        scraper = BukalapakIDScraper(
+            api_key="test-key",
+            scrape_only=True,
+            proxy_url="http://proxy.local:8001",
+        )
+        try:
+            scraper.client.get = AsyncMock(side_effect=httpx.ReadTimeout("timed out"))
+            products = await scraper.fetch_products_page(CATEGORIES[0], 1)
+            assert products == []
+            assert scraper.catalog_surface_unavailable is True
+            assert "timed out" in scraper.catalog_surface_reason.lower()
+        finally:
+            await scraper.close()
 
     def test_builds_scraperapi_proxy_url(self):
         scraper = BukalapakIDScraper(

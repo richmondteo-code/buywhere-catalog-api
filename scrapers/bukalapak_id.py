@@ -27,6 +27,7 @@ import re
 import time
 import urllib.parse
 from pathlib import Path
+from urllib.parse import urlparse
 from typing import Any
 
 import httpx
@@ -164,20 +165,44 @@ class BukalapakIDScraper:
 
             html = resp.text
             return self._extract_products_from_html(html, category)
+        except httpx.TimeoutException:
+            if self.proxy_url:
+                self.catalog_surface_unavailable = True
+                self.catalog_surface_reason = (
+                    "Bukalapak listing route timed out through ScraperAPI proxy mode, "
+                    "so public catalog pagination is not viable."
+                )
+                log.progress(
+                    f"Bukalapak listing route timed out for category {category['id']} "
+                    f"page {page} via proxy."
+                )
+            return []
         except Exception:
             return []
 
     def _looks_like_not_found_shell(self, html: str, url: str | Any, status_code: int | None = None) -> bool:
         text = html or ""
         url_text = str(url)
-        return (
-            (
-                status_code == 404
-                or 'statusCode":404' in text
-                or '"statusCode":404' in text
+        path = urlparse(url_text).path
+        not_found_markers = (
+            'statusCode":404' in text
+            or '"statusCode":404' in text
+            or "Page not found" in text
+        )
+        is_catalog_route = path in {"/products", "/search"}
+
+        # Bukalapak currently serves a fully bootstrapped app shell for missing
+        # catalog routes, including through ScraperAPI proxy mode. Treat an
+        # HTML 404 on catalog/search paths as a hard blocker instead of silently
+        # continuing through empty pages.
+        return is_catalog_route and (
+            status_code == 404
+            or not_found_markers
+            or (
+                "window.APP" in text
+                and "<!DOCTYPE html>" in text
+                and "data-capo" in text
             )
-            and "Page not found" in text
-            and "/products" in url_text
         )
 
     def _get_category_id(self, cat_id: str) -> str:
