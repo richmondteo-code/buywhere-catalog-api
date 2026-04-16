@@ -13,6 +13,7 @@ Usage:
 
 import argparse
 import asyncio
+import html as html_lib
 import json
 import os
 import re
@@ -90,6 +91,14 @@ RISK_MARKERS = (
     "risk-id=",
     "irregular activities",
     "risk challenge",
+)
+
+PRODUCT_DATA_MARKERS = (
+    'goods_url_name',
+    'data-id="',
+    'data-title="',
+    'retailPrice',
+    'salePrice',
 )
 
 log = get_logger(MERCHANT_ID)
@@ -179,6 +188,10 @@ class SHEINScraper:
     def _is_risk_challenge(url: str, text: str) -> bool:
         lowered = f"{url}\n{text[:5000]}".lower()
         return any(marker in lowered for marker in RISK_MARKERS)
+
+    @staticmethod
+    def _has_product_markers(text: str) -> bool:
+        return any(marker in text for marker in PRODUCT_DATA_MARKERS)
 
     @staticmethod
     def _normalize_category_seed(
@@ -295,6 +308,93 @@ class SHEINScraper:
         log.progress("Homepage discovery returned no categories, using static fallback")
         return STATIC_CATEGORIES
 
+    @staticmethod
+    def _extract_card_attribute(block: str, attr: str) -> str:
+        match = re.search(rf'{re.escape(attr)}="([^"]*)"', block)
+        return html_lib.unescape(match.group(1)) if match else ""
+
+    @classmethod
+    def _parse_products_from_rendered_html(
+        cls, html: str, category: dict[str, str]
+    ) -> list[dict[str, Any]]:
+        products: list[dict[str, Any]] = []
+        seen: set[str] = set()
+
+        # First choice: stable card data attributes when present.
+        card_pattern = re.compile(
+            r'<[^>]+data-id="(?P<sku>\d+)"[^>]+data-title="(?P<title>[^"]+)"[^>]*>',
+            re.S,
+        )
+        for match in card_pattern.finditer(html):
+            block = match.group(0)
+            sku = match.group("sku")
+            if sku in seen:
+                continue
+            title = html_lib.unescape(match.group("title"))
+            price = cls._extract_price(cls._extract_card_attribute(block, "data-price"))
+            product_url = cls._extract_card_attribute(block, "data-product-link")
+            image_url = cls._extract_card_attribute(block, "data-image")
+            products.append(
+                {
+                    "goods_id": sku,
+                    "goods_name": title,
+                    "goods_url_name": "",
+                    "cat_id": cls._extract_card_attribute(block, "data-cat_id") or category["cat_id"],
+                    "cate_name": category["sub"],
+                    "goods_url": product_url,
+                    "goods_img": image_url,
+                    "brand_name": cls._extract_card_attribute(block, "data-brand"),
+                    "comment_rank_average": cls._extract_card_attribute(block, "data-rating"),
+                    "comment_num": cls._extract_card_attribute(block, "data-review-count"),
+                    "retailPrice": {"amount": str(price or 0)},
+                    "salePrice": {"amount": str(price or 0)},
+                }
+            )
+            seen.add(sku)
+
+        if products:
+            return products
+
+        # Fallback: regex over embedded JSON-like product objects seen in SHEIN HTML.
+        object_pattern = re.compile(
+            r'"goods_id":"(?P<sku>\d+)".{0,1500}?"goods_name":"(?P<title>[^"]+)".{0,1200}?'
+            r'"goods_url_name":"(?P<slug>[^"]+)".{0,600}?"cat_id":"(?P<cat_id>\d+)".{0,1200}?'
+            r'"retailPrice":\{"amount":"(?P<retail>[^"]+)".{0,500}?"salePrice":\{"amount":"(?P<sale>[^"]+)".{0,1200}?'
+            r'"comment_num":"?(?P<reviews>\d+)"?.{0,500}?"comment_rank_average":"?(?P<rating>[^",}]+)"?.{0,1200}?'
+            r'"goods_img":"(?P<image>[^"]+)"',
+            re.S,
+        )
+        for match in object_pattern.finditer(html):
+            sku = match.group("sku")
+            if sku in seen:
+                continue
+            slug = html_lib.unescape(match.group("slug"))
+            products.append(
+                {
+                    "goods_id": sku,
+                    "goods_name": html_lib.unescape(match.group("title")),
+                    "goods_url_name": slug,
+                    "cat_id": match.group("cat_id"),
+                    "cate_name": category["sub"],
+                    "goods_url": f"/{slug}-p-{sku}.html",
+                    "goods_img": html_lib.unescape(match.group("image")),
+                    "brand_name": "",
+                    "comment_rank_average": match.group("rating"),
+                    "comment_num": match.group("reviews"),
+                    "retailPrice": {"amount": match.group("retail")},
+                    "salePrice": {"amount": match.group("sale")},
+                }
+            )
+            seen.add(sku)
+
+        return products
+
+    async def _fetch_category_page_html(
+        self, category: dict[str, str], page: int
+    ) -> str:
+        url = category["url"] if page <= 1 else f'{category["url"]}?page={page}'
+        return await self._fetch_html(url)
+
     async def fetch_products_page(
         self, category: dict[str, str], page: int = 1
     ) -> list[dict[str, Any]]:
@@ -341,6 +441,20 @@ class SHEINScraper:
                     raise SheinRiskChallengeError(
                         f"Risk challenge on listing API for cat_id={category['cat_id']}"
                     )
+                if "<html" in text.lower():
+                    products = self._parse_products_from_rendered_html(text, category)
+                    if products:
+                        return products
+                    if self.scraperapi_proxy_url:
+                        category_html = await self._fetch_category_page_html(category, page)
+                        products = self._parse_products_from_rendered_html(category_html, category)
+                        if products:
+                            return products
+                    log.page_empty(
+                        LIST_API_URL,
+                        f"No product markers found in SHEIN rendered HTML for cat_id={category['cat_id']} page={page}",
+                    )
+                    return []
                 response.raise_for_status()
                 payload = response.json()
                 if isinstance(payload, dict):

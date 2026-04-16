@@ -54,3 +54,35 @@ def test_proxy_headers_added_when_scraperapi_enabled():
     finally:
         scraper.cf_scraper.close()
         scraper.request_session.close()
+
+
+def test_parse_products_from_rendered_html_json_object_fallback():
+    html = """
+    <div>
+      "goods_id":"43870969",
+      "goods_name":"OTTIMOZO Set",
+      "goods_url_name":"OTTIMOZO-Set",
+      "cat_id":"9037",
+      "cate_name":"Men Shirt Co-ords",
+      "retailPrice":{"amount":"22.99","amountWithSymbol":"S$22.99"},
+      "salePrice":{"amount":"19.99","amountWithSymbol":"S$19.99"},
+      "comment_num":"1001",
+      "comment_rank_average":"4.89",
+      "goods_img":"https://img.example/item.jpg"
+    </div>
+    """
+
+    products = SHEINScraper._parse_products_from_rendered_html(
+        html, {"cat_id": "9037", "sub": "Shirt Co-ords"}
+    )
+
+    assert len(products) == 1
+    assert products[0]["goods_id"] == "43870969"
+    assert products[0]["goods_url_name"] == "OTTIMOZO-Set"
+    assert products[0]["salePrice"]["amount"] == "19.99"
+    assert products[0]["goods_img"] == "https://img.example/item.jpg"
+
+
+def test_has_product_markers():
+    assert SHEINScraper._has_product_markers('foo "goods_url_name":"bar"') is True
+    assert SHEINScraper._has_product_markers("<html><body>shell only</body></html>") is False
