@@ -10,6 +10,7 @@ for the existing ingestion pipeline.
 import argparse
 import asyncio
 import json
+import os
 import re
 import time
 from pathlib import Path
@@ -86,6 +87,7 @@ class FlipkartInScraper:
         self.limit = limit
         self.scrape_only = scrape_only
         self.client = httpx.AsyncClient(timeout=60.0)
+        self.scraperapi_key = os.getenv("SCRAPERAPI_KEY", "").strip()
         self.total_scraped = 0
         self.total_ingested = 0
         self.total_updated = 0
@@ -133,6 +135,64 @@ class FlipkartInScraper:
     @staticmethod
     def _build_search_url(query: str, page: int) -> str:
         return f"{BASE_URL}/search?q={quote_plus(query)}&page={page}"
+
+    async def _load_page_via_scraperapi(self, url: str) -> bool:
+        if not self.scraperapi_key:
+            return False
+
+        browser_page = await self._ensure_browser()
+        try:
+            resp = await self.client.get(
+                "http://api.scraperapi.com",
+                params={
+                    "api_key": self.scraperapi_key,
+                    "url": url,
+                    "render": "true",
+                    "country_code": "in",
+                    "keep_headers": "true",
+                },
+            )
+            resp.raise_for_status()
+            html = resp.text
+            if "Site is overloaded" in html or len(html) < 2000:
+                return False
+            await browser_page.set_content(html, wait_until="domcontentloaded")
+            await browser_page.wait_for_timeout(1000)
+            return True
+        except Exception:
+            return False
+
+    async def _extract_cards_from_page(self) -> list[dict]:
+        browser_page = await self._ensure_browser()
+        cards = await browser_page.evaluate(
+            r"""() => Array.from(document.querySelectorAll('div[data-id]')).map((card, index) => {
+                const link = card.querySelector('a[href*="/p/"]');
+                const img = card.querySelector('img[alt]');
+                const titleEl = card.querySelector('div.RG5Slk, a[title], div.KzDlHZ, div.WKTcLC');
+                const ratingEl = card.querySelector('span.CjyrHS, div.MKiFS6');
+                const reviewEl = card.querySelector('span.PvbNMB');
+                const priceEl = card.querySelector('div.hZ3P6w.DeU9vF, div.Nx9bqj._4b5DiR, div.Nx9bqj, div._30jeq3');
+                const cardText = card.innerText || '';
+                const priceCandidates = Array.from(card.querySelectorAll('*'))
+                  .map((node) => (node.textContent || '').trim())
+                  .filter((text) => /₹\s?[\d,]+/.test(text));
+                const fallbackPrice = priceCandidates[0] || (cardText.match(/₹\s?[\d,]+/) || [''])[0];
+                const fallbackReviews = (cardText.match(/\([\d,]+\)/) || [''])[0];
+                const specs = Array.from(card.querySelectorAll('li')).map((node) => node.textContent.trim()).filter(Boolean);
+                return {
+                    product_id: card.getAttribute('data-id') || '',
+                    title: (titleEl?.textContent || titleEl?.getAttribute('title') || img?.getAttribute('alt') || '').trim(),
+                    product_url: link?.href || '',
+                    image_url: img?.currentSrc || img?.src || '',
+                    rating_text: (ratingEl?.textContent || '').trim(),
+                    reviews_text: (reviewEl?.textContent || fallbackReviews || '').trim(),
+                    price_text: (priceEl?.textContent || fallbackPrice || '').trim(),
+                    specs,
+                    rank: index + 1,
+                };
+            })"""
+        )
+        return [card for card in cards if card.get("product_id") and card.get("title")]
 
     @staticmethod
     def _parse_price(value: str | None) -> float:
@@ -185,36 +245,15 @@ class FlipkartInScraper:
                 body_text = await browser_page.locator("body").inner_text()
                 if "Site is overloaded" in body_text:
                     raise RuntimeError("Flipkart returned overload page")
-                cards = await browser_page.evaluate(
-                    r"""() => Array.from(document.querySelectorAll('div[data-id]')).map((card, index) => {
-                        const link = card.querySelector('a[href*="/p/"]');
-                        const img = card.querySelector('img[alt]');
-                        const titleEl = card.querySelector('div.RG5Slk, a[title], div.KzDlHZ, div.WKTcLC');
-                        const ratingEl = card.querySelector('span.CjyrHS, div.MKiFS6');
-                        const reviewEl = card.querySelector('span.PvbNMB');
-                        const priceEl = card.querySelector('div.hZ3P6w.DeU9vF, div.Nx9bqj._4b5DiR, div.Nx9bqj, div._30jeq3');
-                        const cardText = card.innerText || '';
-                        const priceCandidates = Array.from(card.querySelectorAll('*'))
-                          .map((node) => (node.textContent || '').trim())
-                          .filter((text) => /₹\s?[\d,]+/.test(text));
-                        const fallbackPrice = priceCandidates[0] || (cardText.match(/₹\s?[\d,]+/) || [''])[0];
-                        const fallbackReviews = (cardText.match(/\([\d,]+\)/) || [''])[0];
-                        const specs = Array.from(card.querySelectorAll('li')).map((node) => node.textContent.trim()).filter(Boolean);
-                        return {
-                            product_id: card.getAttribute('data-id') || '',
-                            title: (titleEl?.textContent || titleEl?.getAttribute('title') || img?.getAttribute('alt') || '').trim(),
-                            product_url: link?.href || '',
-                            image_url: img?.currentSrc || img?.src || '',
-                            rating_text: (ratingEl?.textContent || '').trim(),
-                            reviews_text: (reviewEl?.textContent || fallbackReviews || '').trim(),
-                            price_text: (priceEl?.textContent || fallbackPrice || '').trim(),
-                            specs,
-                            rank: index + 1,
-                        };
-                    })"""
-                )
-                return [card for card in cards if card.get("product_id") and card.get("title")]
+                cards = await self._extract_cards_from_page()
+                if cards:
+                    return cards
+                raise RuntimeError("Flipkart DOM load returned no cards")
             except Exception:
+                if await self._load_page_via_scraperapi(url):
+                    cards = await self._extract_cards_from_page()
+                    if cards:
+                        return cards
                 if attempt == 2:
                     return []
                 await asyncio.sleep(2 ** attempt)
