@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import RedirectResponse
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth import get_current_api_key
@@ -11,8 +12,9 @@ from app.affiliate_links import (
 from app.database import get_db
 from app.models.product import ApiKey, Click, Product
 from app import cache
+from app.services.analytics import post_hog
 
-router = APIRouter(prefix="/v1/track", tags=["tracking"])
+router = APIRouter(prefix="/track", tags=["tracking"])
 
 
 @router.get("/{tracking_id}", summary="Track click and redirect to affiliate URL")
@@ -28,7 +30,7 @@ async def track_click(
     product_id, _ = parsed
 
     product_result = await db.execute(
-        select(Product).where(Product.id == product_id, Product.is_active == True)
+        select(Product).where(Product.id == product_id, Product.is_active)
     )
     product = product_result.scalar_one_or_none()
     if not product:
@@ -51,6 +53,13 @@ async def track_click(
     cache_key = f"click_count:{product_id}"
     await cache.cache_delete(cache_key)
 
+    post_hog.track_affiliate_click(
+        distinct_id=api_key.developer_id if api_key else "anonymous",
+        product_id=product_id,
+        merchant=product.source,
+        affiliate_link=destination_url,
+    )
+
     return RedirectResponse(url=destination_url, status_code=status.HTTP_302_FOUND)
 
 
@@ -67,7 +76,7 @@ async def verify_tracking_id(
     product_id, _ = parsed
 
     product_result = await db.execute(
-        select(Product).where(Product.id == product_id, Product.is_active == True)
+        select(Product).where(Product.id == product_id, Product.is_active)
     )
     product = product_result.scalar_one_or_none()
     if not product:
@@ -83,6 +92,3 @@ async def verify_tracking_id(
         "platform": product.source,
         "destination_url": destination_url,
     }
-
-
-from sqlalchemy import select

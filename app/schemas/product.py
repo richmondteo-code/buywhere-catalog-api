@@ -21,10 +21,25 @@ class PriceHistoryEntry(BaseModel):
     model_config = {"from_attributes": True, "populate_by_name": True}
 
 
+class PriceHistoryAggregationEntry(BaseModel):
+    date: str = Field(..., description="Date in YYYY-MM-DD format")
+    min_price: Decimal
+    max_price: Decimal
+    avg_price: Decimal
+    price_count: int = Field(..., description="Number of price records on this date")
+    currency: str
+    platform: Optional[str] = Field(None, description="Source platform if aggregated by platform, else null for all platforms")
+
+    model_config = {"from_attributes": True, "populate_by_name": True}
+
+
 class PriceHistoryResponse(BaseModel):
     product_id: int
-    entries: List[PriceHistoryEntry]
+    entries: List[PriceHistoryEntry] = Field(default_factory=list)
+    aggregated_entries: List[PriceHistoryAggregationEntry] = Field(default_factory=list, description="Aggregated daily time series when aggregate=daily is requested")
     total: int
+    aggregate: Optional[str] = Field(None, description="Aggregation type: 'daily' if aggregated")
+    period: Optional[str] = Field(None, description="Period requested (e.g. '30d')")
 
 
 class PriceStats(BaseModel):
@@ -78,6 +93,7 @@ class ProductResponse(BaseModel):
     availability_prediction: Optional[str] = Field(None, description="Predicted availability based on historical patterns (e.g., 'likely_in_stock', 'likely_out_of_stock')")
     competitor_count: Optional[int] = Field(None, description="Number of platforms selling the same product")
     confidence_score: Optional[float] = Field(None, description="Confidence score of search match (0-1)")
+    specs: Optional[Dict[str, Any]] = Field(None, description="Product specifications as key-value pairs for comparison (e.g. {color: 'Black', storage: '256GB'})")
     metadata: Optional[Any] = None
     updated_at: datetime
     price_trend: Optional[str] = Field(None, description="30-day price trend: 'up', 'down', or 'stable'")
@@ -100,6 +116,7 @@ class ProductListResponse(BaseModel):
     offset: int
     items: List[ProductResponse]
     has_more: bool = False
+    next_cursor: Optional[int] = None
     facets: Optional[Any] = None
     highlights: Optional[Dict[str, str]] = None
 
@@ -209,12 +226,61 @@ class CompareSearchResponse(BaseModel):
     fastest_shipping_product_id: Optional[int] = None
 
 
+class PriceMissingReason(str, Enum):
+    RETAILER_API_ERROR = "retailer_api_error"
+    RETAILER_TIMEOUT = "retailer_timeout"
+    PRODUCT_UNAVAILABLE = "product_unavailable"
+    PRICE_NOT_DISCLOSED = "price_not_disclosed"
+    CRAWL_ERROR = "crawl_error"
+
+
+class CompareMatch(BaseModel):
+    id: int
+    sku: str
+    source: str
+    merchant_id: str
+    merchant_name: Optional[str] = Field(None, description="Human-readable merchant/store name")
+    name: str
+    description: Optional[str] = None
+    price: Decimal
+    currency: str
+    buy_url: str
+    affiliate_url: Optional[str] = None
+    image_url: Optional[str] = None
+    brand: Optional[str] = None
+    category: Optional[str] = None
+    category_path: Optional[List[str]] = None
+    rating: Optional[Decimal] = None
+    is_available: bool
+    last_checked: Optional[datetime] = None
+    metadata: Optional[Any] = None
+    updated_at: datetime
+    match_score: float
+    savings_vs_most_expensive: Optional[float] = None
+    savings_pct: Optional[float] = None
+    price_missing: bool = Field(False, description="True when price is not available from this retailer")
+    price_missing_reason: Optional[PriceMissingReason] = Field(None, description="Reason why price is missing")
+    zero_price: bool = Field(False, description="True when product is free (price is 0)")
+    data_freshness: Optional[str] = Field(None, description="Data freshness tier: fresh (<24h), recent (24h-7d), stale (7-30d), very_stale (>30d)")
+    merchant_edge_case: Optional[str] = Field(
+        None,
+        description="Edge case flag for merchant issues: 'duplicate_merchant', 'empty_merchant_id', 'unknown_merchant', 'cross_border_merchant', or null if no issues"
+    )
+
+
+class CompareHighlights(BaseModel):
+    cheapest: Optional[CompareMatch] = None
+    best_rated: Optional[CompareMatch] = None
+    fastest_shipping: Optional[CompareMatch] = None
+
+
 class CompareResponse(BaseModel):
     source_product_id: int
     source_product_name: str
     matches: List[Any]
     total_matches: int
-    highlights: Optional[Any] = None
+    highlights: CompareHighlights
+    meta: Optional[Dict[str, Any]] = Field(None, description="Metadata including price_coverage_pct, stale_count, very_stale_count")
 
 
 class ProductMatchResponse(BaseModel):
@@ -273,37 +339,6 @@ class RatingDistributionBucket(BaseModel):
     model_config = {"from_attributes": True}
 
 
-class CompareMatch(BaseModel):
-    id: int
-    sku: str
-    source: str
-    merchant_id: str
-    name: str
-    description: Optional[str] = None
-    price: Decimal
-    currency: str
-    buy_url: str
-    affiliate_url: Optional[str] = None
-    image_url: Optional[str] = None
-    brand: Optional[str] = None
-    category: Optional[str] = None
-    category_path: Optional[List[str]] = None
-    rating: Optional[Decimal] = None
-    is_available: bool
-    last_checked: Optional[datetime] = None
-    metadata: Optional[Any] = None
-    updated_at: datetime
-    match_score: float
-    savings_vs_most_expensive: Optional[float] = None
-    savings_pct: Optional[float] = None
-
-
-class CompareHighlights(BaseModel):
-    cheapest: Optional[CompareMatch] = None
-    best_rated: Optional[CompareMatch] = None
-    fastest_shipping: Optional[CompareMatch] = None
-
-
 class CompareMatrixResponse(BaseModel):
     comparisons: List[Any]
     total_products: int
@@ -344,6 +379,7 @@ class CompareDiffEntry(BaseModel):
     category: Optional[str] = None
     category_path: Optional[List[str]] = None
     is_available: bool
+    specs: Optional[Dict[str, Any]] = Field(None, description="Product specifications as key-value pairs for comparison")
     metadata: Optional[Any] = None
     updated_at: datetime
     price_rank: Optional[int] = None
@@ -485,6 +521,14 @@ class CompareDiffResponse(BaseModel):
     price_spread_pct: float
 
 
+class CompactCompareResponse(BaseModel):
+    products: List[Any]
+    total: int
+    field_labels: List[str] = Field(default_factory=list, description="Ordered list of spec field names present across all products")
+    cheapest_product_id: Optional[int] = None
+    best_rated_product_id: Optional[int] = None
+
+
 class TrendingResponse(BaseModel):
     period: str
     category: Optional[str] = None
@@ -577,6 +621,14 @@ class ApiKeyListResponse(BaseModel):
 class DeveloperSignupRequest(BaseModel):
     email: str
     name: str
+    experiment_variant: Optional[str] = None
+    discovery_path: Optional[str] = None
+    referrer: Optional[str] = None
+    utm_source: Optional[str] = None
+    utm_medium: Optional[str] = None
+    utm_campaign: Optional[str] = None
+    utm_content: Optional[str] = None
+    utm_term: Optional[str] = None
 
 
 class DeveloperSignupResponse(BaseModel):
@@ -941,6 +993,7 @@ class V2ProductResponse(BaseModel):
     data_updated_at: Optional[datetime] = Field(None, description="Timestamp when product data was last updated")
     availability_prediction: Optional[str] = Field(None, description="Predicted availability based on historical patterns (e.g., 'likely_in_stock', 'likely_out_of_stock')")
     competitor_count: Optional[int] = Field(None, description="Number of platforms selling the same product")
+    specs: Optional[Dict[str, Any]] = Field(None, description="Product specifications as key-value pairs for comparison (e.g. {color: 'Black', storage: '256GB'})")
     metadata: Optional[dict] = None
     updated_at: datetime
     price_trend: Optional[str] = None
@@ -980,3 +1033,49 @@ class V2ProductListResponse(BaseModel):
     items: List[V2ProductResponse]
     has_more: bool = False
     next_cursor: Optional[str] = None
+
+
+class BulkProductItem(BaseModel):
+    platform_id: str = Field(..., description="Platform-specific product ID (unique within platform)")
+    platform: str = Field(..., description="Source platform (e.g., shopee_sg, lazada_sg)")
+    sku: Optional[str] = Field(None, description="SKU within the retailer's system")
+    merchant_id: str = Field(..., description="Merchant/platform shop identifier")
+    title: str = Field(..., description="Product title/name")
+    description: Optional[str] = Field(None, description="Product description")
+    price: Decimal = Field(..., description="Product price")
+    currency: str = Field(default="SGD", description="ISO 4217 currency code")
+    region: Optional[str] = Field(default="sg", description="Geographic region: sg, my, th, ph, vn, id, us, eu, etc.")
+    country_code: Optional[str] = Field(default="SG", description="ISO 3166-1 alpha-2 country code")
+    url: str = Field(..., description="Direct product URL")
+    image_url: Optional[str] = Field(None, description="Product image URL")
+    category: Optional[str] = Field(None, description="Primary category")
+    category_path: Optional[List[str]] = Field(None, description="Category hierarchy")
+    brand: Optional[str] = Field(None, description="Brand name")
+    is_active: bool = Field(default=True, description="Whether product is active/listed")
+    is_available: Optional[bool] = Field(None, description="Whether product is in stock and available")
+    in_stock: Optional[bool] = Field(None, description="Whether product is currently in stock")
+    stock_level: Optional[str] = Field(None, description="Stock level: low, medium, or high")
+    rating: Optional[Decimal] = Field(None, description="Product rating (0-5)")
+    review_count: Optional[int] = Field(None, description="Number of reviews")
+    metadata: Optional[Dict[str, Any]] = Field(None, description="Additional product metadata")
+
+    model_config = {"extra": "allow"}
+
+
+class BulkProductRequest(BaseModel):
+    products: List[BulkProductItem] = Field(..., min_length=1, max_length=500, description="Products to upsert (max 500)")
+
+
+class BulkUpsertResult(BaseModel):
+    platform_id: str
+    platform: str
+    status: str = Field(..., description="Status: inserted, updated, failed")
+    product_id: Optional[int] = Field(None, description="Database product ID if successful")
+    error: Optional[str] = Field(None, description="Error message if failed")
+
+
+class BulkProductResponse(BaseModel):
+    total: int = Field(..., description="Total products in request")
+    success_count: int = Field(..., description="Number of successful upserts")
+    failure_count: int = Field(..., description="Number of failed upserts")
+    results: List[BulkUpsertResult] = Field(default_factory=list, description="Individual upsert results")
