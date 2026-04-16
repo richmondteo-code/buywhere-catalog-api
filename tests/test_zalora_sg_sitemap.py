@@ -150,3 +150,20 @@ def test_summarize_ndjson_file_reports_line_count_and_size(tmp_path):
     assert summary["exists"] is True
     assert summary["line_count"] == 2
     assert summary["size_bytes"] == path.stat().st_size
+
+
+def test_seed_output_from_resume_source_copies_missing_canonical_file(tmp_path):
+    resume = tmp_path / "resume.ndjson"
+    resume.write_text('{"product_id":"zalora_sg_1"}\n', encoding="utf-8")
+    output = tmp_path / "canonical.ndjson"
+
+    scraper = ZaloraSitemapScraper(
+        output_file=str(output),
+        coverage_report=str(tmp_path / "coverage.json"),
+        resume_from=[str(resume)],
+    )
+
+    seeded_from = scraper.seed_output_from_resume_source()
+
+    assert seeded_from == resume
+    assert output.read_text(encoding="utf-8") == resume.read_text(encoding="utf-8")

@@ -16,6 +16,7 @@ import json
 import logging
 import os
 import re
+import shutil
 import time
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
@@ -258,6 +259,21 @@ class ZaloraSitemapScraper:
                         product_id = product_id.removeprefix("zalora_sg_")
                     self.existing_product_ids.add(str(product_id))
         return len(self.existing_product_ids) - before
+
+    def seed_output_from_resume_source(self) -> Optional[Path]:
+        if self.output_file.exists():
+            return None
+
+        for path in self.resume_paths:
+            if not path.exists():
+                continue
+            if path.resolve(strict=False) == self.output_file.resolve(strict=False):
+                continue
+            self.output_file.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(path, self.output_file)
+            logger.info("Seeded canonical Zalora output %s from resume source %s", self.output_file, path)
+            return path
+        return None
 
     async def _fetch_text(
         self,
@@ -528,6 +544,10 @@ class ZaloraSitemapScraper:
         start_time = time.time()
         await self._ensure_session()
 
+        seeded_from = self.seed_output_from_resume_source()
+        if seeded_from is not None and self.output_file not in self.resume_paths:
+            self.resume_paths.append(self.output_file)
+
         loaded = self.load_existing_product_ids()
         logger.info("Loaded %s existing Zalora product ids from resume baseline", loaded)
 
@@ -562,6 +582,7 @@ class ZaloraSitemapScraper:
         summary = {
             "elapsed_seconds": round(elapsed, 1),
             "resume_baseline_count": len(self.existing_product_ids),
+            "seeded_output_from": str(seeded_from) if seeded_from is not None else None,
             "resume_sources": [summarize_ndjson_file(path) for path in self.resume_paths],
             "total_scraped": self.total_scraped,
             "total_failed": self.total_failed,
