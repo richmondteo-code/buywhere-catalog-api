@@ -450,3 +450,27 @@ class TestBukalapakIDScraperIngestion:
             assert inserted == 0
             assert updated == 0
             assert failed == 1
+
+
+class TestBukalapakIDScraperRunBehavior:
+    @pytest.mark.asyncio
+    async def test_run_stops_early_when_catalog_surface_unavailable(self):
+        scraper = BukalapakIDScraper(
+            api_key="test-key",
+            batch_size=10,
+            delay=0.0,
+            max_pages_per_category=1,
+            target_products=10,
+        )
+
+        async def fake_fetch(category, page):
+            scraper.catalog_surface_unavailable = True
+            scraper.catalog_surface_reason = "Bukalapak listing routes are returning a 404 shell page instead of catalog data."
+            return []
+
+        with patch.object(scraper, "fetch_products_page", side_effect=fake_fetch):
+            summary = await scraper.run()
+
+        assert summary["catalog_surface_unavailable"] is True
+        assert "blocked_reason" in summary
+        await scraper.close()

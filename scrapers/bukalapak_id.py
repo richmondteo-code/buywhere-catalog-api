@@ -109,6 +109,8 @@ class BukalapakIDScraper:
         self.total_updated = 0
         self.total_failed = 0
         self.skipped_pages = 0
+        self.catalog_surface_unavailable = False
+        self.catalog_surface_reason = ""
 
     def _build_scraperapi_proxy_url(self) -> str | None:
         if not self.scraperapi_key:
@@ -145,27 +147,35 @@ class BukalapakIDScraper:
         }
         try:
             resp = await self.client.get(url, params=params)
+            if self._looks_like_not_found_shell(resp.text, resp.url, resp.status_code):
+                self.catalog_surface_unavailable = True
+                self.catalog_surface_reason = (
+                    "Bukalapak listing routes are returning a 404 shell page instead of catalog data."
+                )
+                log.progress(
+                    f"Bukalapak listing route no longer serves catalog data for category "
+                    f"{category['id']} page {page}: {resp.url}"
+                )
+                return []
             if "json" in resp.headers.get("content-type", "").lower():
                 resp.raise_for_status()
                 data = resp.json()
                 return self._extract_products_from_response(data, category)
 
             html = resp.text
-            if self._looks_like_not_found_shell(html, resp.url):
-                log.progress(
-                    f"Bukalapak listing route no longer serves catalog data for category "
-                    f"{category['id']} page {page}: {resp.url}"
-                )
-                return []
             return self._extract_products_from_html(html, category)
         except Exception:
             return []
 
-    def _looks_like_not_found_shell(self, html: str, url: str | Any) -> bool:
+    def _looks_like_not_found_shell(self, html: str, url: str | Any, status_code: int | None = None) -> bool:
         text = html or ""
         url_text = str(url)
         return (
-            'statusCode":404' in text
+            (
+                status_code == 404
+                or 'statusCode":404' in text
+                or '"statusCode":404' in text
+            )
             and "Page not found" in text
             and "/products" in url_text
         )
@@ -365,6 +375,9 @@ class BukalapakIDScraper:
         category_file = self.data_dir / f"{cat_id}.jsonl"
 
         while page <= self.max_pages_per_category:
+            if self.catalog_surface_unavailable:
+                print(f"  {self.catalog_surface_reason}")
+                break
             if self.total_scraped >= self.target_products:
                 print(f"  Target of {self.target_products} products reached!")
                 break
@@ -447,6 +460,9 @@ class BukalapakIDScraper:
         start = time.time()
 
         for cat in CATEGORIES:
+            if self.catalog_surface_unavailable:
+                print(f"\nStopping early: {self.catalog_surface_reason}")
+                break
             if self.total_scraped >= self.target_products:
                 print(f"\nTarget of {self.target_products:,} products reached! Stopping.")
                 break
@@ -464,7 +480,10 @@ class BukalapakIDScraper:
             "total_failed": self.total_failed,
             "target": self.target_products,
             "achievement_pct": round(self.total_scraped / self.target_products * 100, 1),
+            "catalog_surface_unavailable": self.catalog_surface_unavailable,
         }
+        if self.catalog_surface_reason:
+            summary["blocked_reason"] = self.catalog_surface_reason
 
         print(f"\nScraper complete: {summary}")
         return summary
