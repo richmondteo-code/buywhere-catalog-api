@@ -124,11 +124,30 @@ class BukalapakIDScraper:
         }
         try:
             resp = await self.client.get(url, params=params)
-            resp.raise_for_status()
-            data = resp.json()
-            return self._extract_products_from_response(data, category)
+            if "json" in resp.headers.get("content-type", "").lower():
+                resp.raise_for_status()
+                data = resp.json()
+                return self._extract_products_from_response(data, category)
+
+            html = resp.text
+            if self._looks_like_not_found_shell(html, resp.url):
+                log.progress(
+                    f"Bukalapak listing route no longer serves catalog data for category "
+                    f"{category['id']} page {page}: {resp.url}"
+                )
+                return []
+            return self._extract_products_from_html(html, category)
         except Exception:
             return []
+
+    def _looks_like_not_found_shell(self, html: str, url: str | Any) -> bool:
+        text = html or ""
+        url_text = str(url)
+        return (
+            'statusCode":404' in text
+            and "Page not found" in text
+            and "/products" in url_text
+        )
 
     def _get_category_id(self, cat_id: str) -> str:
         category_map = {

@@ -296,6 +296,13 @@ class TestBukalapakIDScraper:
     def test_get_category_id_unknown_returns_input(self):
         assert self.scraper._get_category_id("unknown-cat") == "unknown-cat"
 
+    def test_detects_not_found_shell_response(self):
+        html = '{"statusCode":404,"message":"Page not found: /products?page=1&search[category_id]=142"}'
+        assert self.scraper._looks_like_not_found_shell(
+            html,
+            "https://www.bukalapak.com/products?page=1&search%5Bcategory_id%5D=142",
+        ) is True
+
 
 class TestBukalapakIDScraperOutputSchema:
     def setup_method(self):
