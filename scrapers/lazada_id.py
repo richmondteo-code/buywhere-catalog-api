@@ -1,12 +1,13 @@
 """
 Lazada Indonesia comprehensive product scraper.
 
-Covers major Lazada ID categories targeting 80K+ products.
+Covers major Lazada ID categories targeting 100K+ products.
 Saves structured JSONL matching the BuyWhere catalog schema for
 ingestion via POST /v1/ingest/products.
 
 Usage:
     python -m scrapers.lazada_id --api-key <key> [--batch-size 200] [--delay 1.0]
+    python -m scrapers.lazada_id --scrape-only  # save to JSONL without ingesting
 
 Categories covered:
 - Electronics: Phones, Laptops, TVs, Audio
@@ -15,18 +16,20 @@ Categories covered:
 - Beauty & Health: Skincare, Makeup
 - Sports: Sports Equipment, Fitness
 
-Target: 80,000+ products
+Target: 100,000+ products
 """
 import argparse
 import asyncio
 import json
+import re
 import time
+import unicodedata
 from pathlib import Path
 from typing import Any
 
 import httpx
 
-from scrapers.logging import get_logger
+from scrapers.scraper_logging import get_logger
 
 MERCHANT_ID = "lazada_id"
 log = get_logger(MERCHANT_ID)
@@ -70,13 +73,14 @@ CATEGORIES = [
 class LazadaIDScraper:
     def __init__(
         self,
-        api_key: str,
+        api_key: str | None = None,
         api_base: str = "http://localhost:8000",
         batch_size: int = 200,
         delay: float = 1.0,
         data_dir: str = "/home/paperclip/buywhere-api/data/lazada-id",
         max_pages_per_category: int = 100,
-        target_products: int = 80000,
+        target_products: int = 100000,
+        scrape_only: bool = False,
     ):
         self.api_key = api_key
         self.api_base = api_base.rstrip("/")
@@ -86,14 +90,18 @@ class LazadaIDScraper:
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.max_pages_per_category = max_pages_per_category
         self.target_products = target_products
+        self.scrape_only = scrape_only
         self.client = httpx.AsyncClient(timeout=30.0, headers=HEADERS)
         self.total_scraped = 0
         self.total_ingested = 0
         self.total_updated = 0
         self.total_failed = 0
         self.skipped_pages = 0
+        self._playwright_fallback = None
 
     async def close(self):
+        if self._playwright_fallback is not None:
+            await self._playwright_fallback._close_browser()
         await self.client.aclose()
 
     async def _get_with_retry(
@@ -121,9 +129,13 @@ class LazadaIDScraper:
             resp = await self.client.get(url, params=params)
             resp.raise_for_status()
             data = resp.json()
-            return self._extract_products_from_response(data, category)
+            products = self._extract_products_from_response(data, category)
+            if products:
+                return products
         except Exception:
-            return await self._fetch_search_api_fallback(category, page)
+            pass
+
+        return await self._fetch_search_api_fallback(category, page)
 
     async def _fetch_search_api_fallback(self, category: dict, page: int = 1) -> list[dict]:
         url = f"{BASE_URL}/search"
@@ -135,23 +147,140 @@ class LazadaIDScraper:
             resp = await self.client.get(url, params=params)
             resp.raise_for_status()
             data = resp.json()
-            return self._extract_products_from_response(data, category)
+            products = self._extract_products_from_response(data, category)
+            if products:
+                return products
         except Exception:
-            return []
+            pass
+
+        return await self._fetch_playwright_fallback(category)
 
     def _extract_products_from_response(self, data: dict, category: dict) -> list[dict]:
         products = []
-        if isinstance(data, dict):
-            items = data.get("data", {}).get("products", []) or data.get("products", []) or []
-            for raw in items:
-                transformed = self._transform_lazada_product(raw, category)
-                if transformed:
-                    products.append(transformed)
+        if isinstance(data, list):
+            items = data
+        else:
+            items = (
+                data.get("data", {}).get("products", [])
+                or data.get("mods", {}).get("listItems", [])
+                or data.get("products", [])
+                or data.get("items", [])
+                or data.get("results", [])
+            )
+
+        for raw in items:
+            transformed = self._transform_lazada_product(raw, category)
+            if transformed:
+                products.append(transformed)
         return products
+
+    @staticmethod
+    def _parse_price(value: Any, default: float = 0.0) -> float:
+        if value is None:
+            return default
+        if isinstance(value, (int, float)):
+            return float(value)
+
+        text = str(value).strip()
+        if not text:
+            return default
+
+        cleaned = re.sub(r"[^0-9,.\-]", "", text)
+        if cleaned.count(",") == 1 and cleaned.count(".") == 0:
+            cleaned = cleaned.replace(",", ".")
+        elif cleaned.count(".") > 1 or ("," in cleaned and "." in cleaned):
+            cleaned = cleaned.replace(".", "").replace(",", ".")
+        else:
+            cleaned = cleaned.replace(",", "")
+
+        try:
+            return float(cleaned)
+        except ValueError:
+            return default
+
+    @staticmethod
+    def _normalize_url(url: str) -> str:
+        if not url:
+            return ""
+        if url.startswith("//"):
+            return f"https:{url}"
+        if url.startswith("/"):
+            return f"{BASE_URL}{url}"
+        if url.startswith("http://") or url.startswith("https://"):
+            return url
+        return f"{BASE_URL}/{url.lstrip('/')}"
+
+    @staticmethod
+    def _ascii_slug(value: str) -> str:
+        normalized = unicodedata.normalize("NFKD", value or "")
+        ascii_text = normalized.encode("ascii", "ignore").decode("ascii").lower()
+        ascii_text = re.sub(r"[^a-z0-9]+", "-", ascii_text).strip("-")
+        return ascii_text
+
+    @classmethod
+    def _build_cross_listing_ids(cls, title: str, brand: str = "") -> dict[str, str]:
+        brand_slug = cls._ascii_slug(brand)
+        title_slug = cls._ascii_slug(title)
+        if brand_slug and title_slug.startswith(f"{brand_slug}-"):
+            core_slug = title_slug[len(brand_slug) + 1 :]
+        else:
+            core_slug = title_slug
+
+        token = core_slug[:96] or title_slug[:96] or "unknown"
+        prefix = brand_slug or "generic"
+        return {
+            "tokopedia_lookup": f"tpd:{prefix}:{token}",
+            "catalog_dedupe": f"dedupe:{prefix}:{token}",
+        }
+
+    async def _get_playwright_fallback(self):
+        if self._playwright_fallback is None:
+            from scrapers.lazada_id_playwright import LazadaIDPlaywrightScraper
+
+            self._playwright_fallback = LazadaIDPlaywrightScraper(
+                api_key=self.api_key,
+                api_base=self.api_base,
+                batch_size=self.batch_size,
+                delay=self.delay,
+                output_dir=str(self.data_dir),
+                scrape_only=True,
+                limit=self.batch_size,
+                headless=True,
+                max_pages_per_category=max(1, min(self.max_pages_per_category, 3)),
+                target_products=self.target_products,
+            )
+            await self._playwright_fallback._init_browser()
+        return self._playwright_fallback
+
+    async def _fetch_playwright_fallback(self, category: dict) -> list[dict]:
+        try:
+            scraper = await self._get_playwright_fallback()
+            await scraper._page.goto(category["url"], wait_until="domcontentloaded")
+            await asyncio.sleep(max(self.delay, 3.0))
+            products = await scraper._extract_products_from_page(scraper._page)
+            return [self._enrich_playwright_product(product, category) for product in products if product]
+        except Exception:
+            return []
+
+    def _enrich_playwright_product(self, product: dict[str, Any], category: dict) -> dict[str, Any]:
+        metadata = dict(product.get("metadata") or {})
+        brand = product.get("brand") or ""
+        title = product.get("title") or ""
+        metadata.setdefault("subcategory", category["sub"])
+        metadata.setdefault("country", "ID")
+        metadata.setdefault("region", "id")
+        metadata.setdefault("country_code", "ID")
+        metadata["cross_listing_ids"] = self._build_cross_listing_ids(title, brand)
+        product["category"] = category["name"]
+        product["category_path"] = [category["name"], category["sub"]]
+        product["region"] = "id"
+        product["country_code"] = "ID"
+        product["metadata"] = metadata
+        return product
 
     def _transform_lazada_product(self, raw: dict, category: dict) -> dict[str, Any] | None:
         try:
-            sku = str(raw.get("productId", "") or raw.get("sku", ""))
+            sku = str(raw.get("productId", "") or raw.get("itemId", "") or raw.get("sku", ""))
             if not sku:
                 return None
 
@@ -159,25 +288,21 @@ class LazadaIDScraper:
             if not name:
                 return None
 
-            price = raw.get("price", 0.0)
-            if isinstance(price, str):
-                price_str = price.replace("Rp", "").replace("rp", "").replace(".", "").replace(",", "").strip()
-                try:
-                    price = float(price_str) if price_str else 0.0
-                except ValueError:
-                    price = 0.0
+            price = self._parse_price(raw.get("price"), default=0.0)
+            if price <= 0:
+                price = self._parse_price(raw.get("priceShow"), default=0.0)
+            if price <= 0:
+                return None
 
-            original_price = raw.get("originalPrice", price)
-            if isinstance(original_price, str):
-                price_str = original_price.replace("Rp", "").replace("rp", "").replace(".", "").replace(",", "").strip()
-                try:
-                    original_price = float(price_str) if price_str else price
-                except ValueError:
-                    original_price = price
+            original_price = self._parse_price(raw.get("originalPrice"), default=0.0)
+            if original_price <= 0:
+                original_price = self._parse_price(raw.get("originalPriceShow"), default=0.0)
+            if original_price <= 0:
+                original_price = price
 
             discount = raw.get("discount", "0")
             if discount:
-                discount = int(str(discount).replace("%", "").replace(" ", "") or 0)
+                discount = int(re.sub(r"[^0-9\-]", "", str(discount)) or 0)
             else:
                 discount = 0
 
@@ -187,10 +312,16 @@ class LazadaIDScraper:
                 image_url = images[0] if isinstance(images[0], str) else ""
             if not image_url and raw.get("imageUrl"):
                 image_url = raw["imageUrl"]
+            if not image_url and raw.get("image"):
+                image_url = raw["image"]
+            image_url = self._normalize_url(image_url)
 
             product_url = raw.get("productUrl", "") or raw.get("url", "")
-            if product_url and not product_url.startswith("http"):
-                product_url = BASE_URL + product_url
+            if not product_url and raw.get("itemUrl"):
+                product_url = raw["itemUrl"]
+            product_url = self._normalize_url(product_url)
+            if not product_url:
+                return None
 
             brand = raw.get("brand", "") or raw.get("brandName", "") or ""
             rating = raw.get("rating", 0.0) or 0.0
@@ -200,16 +331,21 @@ class LazadaIDScraper:
 
             seller = raw.get("seller", {}) or {}
             seller_name = seller.get("name", "") if isinstance(seller, dict) else ""
+            if not seller_name:
+                seller_name = raw.get("sellerName", "") or raw.get("seller_name", "")
 
             location = raw.get("location", "")
 
             return {
-                "sku": sku,
+                "sku": f"lazada_id_{sku}",
                 "merchant_id": MERCHANT_ID,
+                "source": SOURCE,
                 "title": name,
                 "description": raw.get("description", "") or "",
                 "price": price,
                 "currency": "IDR",
+                "region": "id",
+                "country_code": "ID",
                 "url": product_url,
                 "image_url": image_url,
                 "category": category["name"],
@@ -225,6 +361,10 @@ class LazadaIDScraper:
                     "seller_name": seller_name,
                     "location": location,
                     "lazada_category_id": raw.get("categoryId", ""),
+                    "country": "ID",
+                    "region": "id",
+                    "country_code": "ID",
+                    "cross_listing_ids": self._build_cross_listing_ids(name, brand),
                 },
             }
         except Exception:
@@ -233,6 +373,9 @@ class LazadaIDScraper:
     async def ingest_batch(self, products: list[dict]) -> tuple[int, int, int]:
         if not products:
             return 0, 0, 0
+
+        if self.scrape_only:
+            return len(products), 0, 0
 
         url = f"{self.api_base}/v1/ingest/products"
         headers = {"Authorization": f"Bearer {self.api_key}"}
@@ -355,12 +498,18 @@ class LazadaIDScraper:
 
 def main():
     parser = argparse.ArgumentParser(description="Lazada Indonesia product scraper")
-    parser.add_argument("--api-key", required=True, help="BuyWhere API key")
+    parser.add_argument("--api-key", default=None, help="BuyWhere API key")
     parser.add_argument("--api-base", default="http://localhost:8000", help="API base URL")
     parser.add_argument("--batch-size", type=int, default=200, help="Batch size for ingestion")
     parser.add_argument("--delay", type=float, default=1.0, help="Delay between requests (seconds)")
     parser.add_argument("--data-dir", default="/home/paperclip/buywhere-api/data/lazada-id", help="Output data directory")
+    parser.add_argument("--max-pages", type=int, default=100, help="Max pages per category")
+    parser.add_argument("--target", type=int, default=100000, help="Target number of products")
+    parser.add_argument("--scrape-only", action="store_true", help="Save to JSONL without ingesting")
     args = parser.parse_args()
+
+    if not args.scrape_only and not args.api_key:
+        parser.error("--api-key is required unless --scrape-only is used")
 
     scraper = LazadaIDScraper(
         api_key=args.api_key,
@@ -368,6 +517,9 @@ def main():
         batch_size=args.batch_size,
         delay=args.delay,
         data_dir=args.data_dir,
+        max_pages_per_category=args.max_pages,
+        target_products=args.target,
+        scrape_only=args.scrape_only,
     )
     asyncio.run(scraper.run())
 
