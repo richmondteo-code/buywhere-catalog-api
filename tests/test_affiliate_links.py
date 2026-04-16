@@ -91,6 +91,62 @@ class TestLazadaSGFallback:
         assert result == ""
 
 
+class TestChallengerHandlers:
+    def setup_method(self):
+        self.m = _reload_module({"CHALLENGER_AFFILIATE_URL_TEMPLATE": ""})
+
+    def test_challenger_fallback_appends_buywhere_utms(self):
+        url = "https://www.challenger.sg/product/keyboard"
+        result = self.m.get_affiliate_url("challenger_sg", url)
+        assert result == f"{url}?utm_source=buywhere&utm_medium=affiliate&utm_campaign=challenger-catalog"
+
+    def test_challenger_legacy_source_aliases_are_supported(self):
+        url = "https://www.challenger.sg/product/mouse?sku=123"
+        result = self.m.get_affiliate_url("challenger", url)
+        assert result == f"{url}&utm_source=buywhere&utm_medium=affiliate&utm_campaign=challenger-catalog"
+
+    def test_challenger_template_overrides_fallback(self):
+        m = _reload_module({})
+        url = "https://www.challenger.sg/product/headphones?color=black"
+        with patch.dict(
+            "os.environ",
+            {
+                "CHALLENGER_AFFILIATE_URL_TEMPLATE": "https://track.example/challenger?mid=abc&url={encoded_url}",
+            },
+            clear=False,
+        ):
+            result = m.get_affiliate_url("challenger.sg", url)
+        assert result == "https://track.example/challenger?mid=abc&url=https%3A%2F%2Fwww.challenger.sg%2Fproduct%2Fheadphones%3Fcolor%3Dblack"
+
+
+class TestDecathlonHandlers:
+    def setup_method(self):
+        self.m = _reload_module({"DECATHLON_AFFILIATE_URL_TEMPLATE": ""})
+
+    def test_decathlon_fallback_appends_buywhere_utms(self):
+        url = "https://www.decathlon.sg/p/running-shoes-123.html"
+        result = self.m.get_affiliate_url("decathlon_sg", url)
+        assert result == f"{url}?utm_source=buywhere&utm_medium=affiliate&utm_campaign=decathlon-catalog"
+
+    def test_decathlon_legacy_source_aliases_are_supported(self):
+        url = "https://www.decathlon.sg/p/water-bottle-123.html?query=1"
+        result = self.m.get_affiliate_url("decathlon", url)
+        assert result == f"{url}&utm_source=buywhere&utm_medium=affiliate&utm_campaign=decathlon-catalog"
+
+    def test_decathlon_template_supports_raw_url_placeholder(self):
+        m = _reload_module({})
+        url = "https://www.decathlon.sg/p/yoga-mat-123.html"
+        with patch.dict(
+            "os.environ",
+            {
+                "DECATHLON_AFFILIATE_URL_TEMPLATE": "https://track.example/decathlon?dest={url}",
+            },
+            clear=False,
+        ):
+            result = m.get_affiliate_url("decathlon_sg", url)
+        assert result == f"https://track.example/decathlon?dest={url}"
+
+
 class TestUnknownPlatform:
     def setup_method(self):
         self.m = _reload_module({})
@@ -163,7 +219,7 @@ class TestClickTrackingUrlGeneration:
     def test_wraps_with_tracking_url_when_product_id_provided(self):
         url = "https://shopee.sg/product/12345"
         result = self.m.get_affiliate_url("shopee_sg", url, product_id=42)
-        assert result.startswith("https://api.buywhere.ai/v1/track/")
+        assert result.startswith("https://api.buywhere.ai/v1/go/")
 
     def test_no_tracking_wrapper_without_product_id(self):
         url = "https://shopee.sg/product/12345"
