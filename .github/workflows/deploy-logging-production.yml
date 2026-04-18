@@ -3,7 +3,7 @@ name: Deploy Logging Infrastructure to Production
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'k8s/production/**'
       - 'k8s/base/**'
