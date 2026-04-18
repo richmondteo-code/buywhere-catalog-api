@@ -71,12 +71,12 @@
                                 
                                 <!-- Price Comparison -->
                                 <div style="display: flex; align-items: center; margin-bottom: 16px; gap: 12px; flex-wrap: wrap;">
-                                    <span style="text-decoration: line-through; color: #9ca3af; font-size: 16px;">{{ currency }}{{ target_price }}</span>
+                                    <span style="text-decoration: line-through; color: #9ca3af; font-size: 16px;">{{ currency }}{{ price_at_add }}</span>
                                     <span style="font-size: 24px; font-weight: 700; color: #10b981;">{{ currency }}{{ current_price }}</span>
                                     
-                                    {% if savings_percentage %}
+                                    {% if savings_from_original_pct %}
                                     <span style="background-color: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 4px; font-size: 14px; font-weight: 600;">
-                                        {{ savings_percentage }}% OFF
+                                        {{ savings_from_original_pct }}% OFF
                                     </span>
                                     {% endif %}
                                 </div>
@@ -106,6 +106,14 @@
                             
                             <!-- Details List -->
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 24px 0; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
+                                <tr>
+                                    <td style="padding: 12px 16px; font-size: 14px; color: #6b7280; border-bottom: 1px solid #e5e7eb;">
+                                        Original Price
+                                    </td>
+                                    <td style="padding: 12px 16px; font-size: 14px; font-weight: 600; color: #9ca3af; text-decoration: line-through; border-bottom: 1px solid #e5e7eb; text-align: right;">
+                                        {{ currency }}{{ price_at_add }}
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td style="padding: 12px 16px; font-size: 14px; color: #6b7280; border-bottom: 1px solid #e5e7eb;">
                                         Your Target Price
