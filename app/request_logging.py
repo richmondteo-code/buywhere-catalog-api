@@ -17,6 +17,12 @@ try:
 except ImportError:
     post_hog = None
 
+try:
+    from app.logging_centralized import log_request as central_log_request, log_scraper_progress as central_log_scraper_progress
+except ImportError:
+    central_log_request = None
+    central_log_scraper_progress = None
+
 LOG_DIR = Path(os.environ.get("LOG_DIR", "/app/logs"))
 LOG_FILE = LOG_DIR / "api_requests.log"
 BOT_LOG_FILE = LOG_DIR / "bot_sessions.log"
@@ -195,20 +201,31 @@ def log_scraper_progress(
     duration_ms: float = None,
     **extra: Any,
 ) -> None:
-    log_entry: Dict[str, Any] = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "logger": "scraper",
-        "scraper_name": scraper_name,
-        "status": status,
-        "items_scraped": items_scraped,
-        "items_total": items_total,
-    }
-    if error:
-        log_entry["error"] = error
-    if duration_ms is not None:
-        log_entry["duration_ms"] = round(duration_ms, 2)
-    log_entry.update(extra)
-    get_scraper_logger().info(json.dumps(log_entry))
+    if central_log_scraper_progress is not None:
+        central_log_scraper_progress(
+            scraper_name=scraper_name,
+            status=status,
+            items_scraped=items_scraped,
+            items_total=items_total,
+            error=error,
+            duration_ms=duration_ms,
+            **extra,
+        )
+    else:
+        log_entry: Dict[str, Any] = {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "logger": "scraper",
+            "scraper_name": scraper_name,
+            "status": status,
+            "items_scraped": items_scraped,
+            "items_total": items_total,
+        }
+        if error:
+            log_entry["error"] = error
+        if duration_ms is not None:
+            log_entry["duration_ms"] = round(duration_ms, 2)
+        log_entry.update(extra)
+        get_scraper_logger().info(json.dumps(log_entry))
 
 
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
@@ -260,7 +277,23 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
                 "ip": client_ip,
             }))
 
-        logger.info(json.dumps(log_entry))
+        if central_log_request is not None:
+            extra = {"user_agent": user_agent, "api_key_hash": api_key_hash, "ip": client_ip}
+            if bot_name:
+                extra["bot_name"] = bot_name
+            central_log_request(
+                method=request.method,
+                path=request.url.path,
+                status_code=response.status_code,
+                duration_ms=elapsed_ms,
+                request_id=request_id,
+                user_agent=user_agent,
+                api_key_hash=api_key_hash,
+                ip=client_ip,
+                extra=extra,
+            )
+        else:
+            logger.info(json.dumps(log_entry))
 
         # Log analytics entry for structured API analytics
         try:
