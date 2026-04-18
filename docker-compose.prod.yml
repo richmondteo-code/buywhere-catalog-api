@@ -10,6 +10,9 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
+      - "8001:8001"
+      - "8002:8002"
+      - "8003:8003"
     environment:
       DATABASE_URL: ${DATABASE_URL}
       DATABASE_REPLICA_URL: ${DATABASE_REPLICA_URL}
@@ -21,6 +24,10 @@ services:
       APP_VERSION: ${APP_VERSION:-1.0.0}
       ENVIRONMENT: production
       DEBUG: "false"
+      BUYWHERE_API_URL: ${BUYWHERE_API_URL:-http://api:8000}
+    volumes:
+      - api_pm2_data:/app/data
+      - api_pm2_logs:/app/logs
     depends_on:
       db:
         condition: service_healthy
@@ -35,15 +42,24 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 30s
+      start_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
+    labels:
+      - "service=api"
+      - "environment=production"
     deploy:
       resources:
         limits:
-          cpus: "2"
-          memory: 2G
+          cpus: "4"
+          memory: 4G
         reservations:
-           cpus: "0.5"
-           memory: 512M
+           cpus: "1"
+           memory: 1G
  
   migrate:
     build:
@@ -59,6 +75,15 @@ services:
       db:
         condition: service_healthy
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
+    labels:
+      - "service=migrate"
+      - "environment=production"
 
   db:
     image: postgres:16-alpine
@@ -83,6 +108,15 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
+    labels:
+      - "service=db"
+      - "environment=production"
     deploy:
       resources:
         limits:
@@ -115,6 +149,15 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
+    labels:
+      - "service=db_replica"
+      - "environment=production"
     deploy:
       resources:
         limits:
@@ -130,10 +173,10 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-buywhere}:${POSTGRES_PASSWORD:-buywhere}@db:5432/catalog
       POOL_MODE: transaction
       MAX_CLIENT_CONN: "1000"
-      DEFAULT_POOL_SIZE: "50"
-      MIN_POOL_SIZE: "10"
-      RESERVE_POOL_SIZE: "10"
-      RESERVE_POOL_TIMEOUT: "3"
+      DEFAULT_POOL_SIZE: "100"
+      MIN_POOL_SIZE: "20"
+      RESERVE_POOL_SIZE: "30"
+      RESERVE_POOL_TIMEOUT: "10"
       SERVER_RESET_ON_RETURN: "kludge"
       SERVER_LIFETIME: "3600"
       SERVER_IDLE_TIMEOUT: "600"
@@ -147,6 +190,15 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
+    labels:
+      - "service=pgbouncer"
+      - "environment=production"
     deploy:
       resources:
         limits:
@@ -167,6 +219,15 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
+    labels:
+      - "service=redis"
+      - "environment=production"
     deploy:
       resources:
         limits:
@@ -191,6 +252,15 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
+    labels:
+      - "service=scraper-scheduler"
+      - "environment=production"
     deploy:
       resources:
         limits:
@@ -215,11 +285,85 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
+    labels:
+      - "service=backup-cron"
+      - "environment=production"
     deploy:
       resources:
         limits:
           cpus: "0.25"
           memory: 128M
+
+  backup-verify-cron:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: buywhere-api:latest
+    restart: unless-stopped
+    command: ["sh", "-c", "while true; do sleep 604800; /app/scripts/verify_backup.sh verify all && /app/scripts/verify_backup.sh verify-new; done"]
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      BACKUP_DIR: ${BACKUP_DIR:-/var/backups/buywhere}
+      POSTGRES_USER: ${POSTGRES_USER:-buywhere}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-buywhere}
+      LOG_FILE: /var/log/backup_verify.log
+      MAX_BACKUP_AGE_HOURS: 168
+    volumes:
+      - backup_data:/var/backups/buywhere
+      - backup_verify_logs:/var/log
+      - buywhere_new_backup_data:/tmp/backups/buywhere_new
+    depends_on:
+      db:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
+    labels:
+      - "service=backup-verify-cron"
+      - "environment=production"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+
+  logrotate-cron:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: buywhere-api:latest
+    restart: unless-stopped
+    command: ["sh", "-c", "while true; do sleep 86400; /app/scripts/logrotate.sh; done"]
+    volumes:
+      - ./config/logrotate.conf:/app/config/logrotate.conf:ro
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - app_state:/var/lib/logrotate
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "service,environment"
+    labels:
+      - "service=logrotate-cron"
+      - "environment=production"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 64M
 
   mcp:
     build:
@@ -243,6 +387,16 @@ services:
       timeout: 5s
       retries: 5
       start_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
+    labels:
+      - "com.docker.compose.service=mcp"
+      - "com.docker.compose.project=buywhere"
+      - "environment=production"
     deploy:
       resources:
         limits:
@@ -261,11 +415,118 @@ services:
       - '--config.file=/config/blackbox.yml'
     volumes:
       - ./blackbox.yml:/config/blackbox.yml:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
     deploy:
       resources:
         limits:
           cpus: "0.25"
           memory: 128M
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    restart: unless-stopped
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - alertmanager_data:/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+
+  loki:
+    image: grafana/loki:2.9.4
+    restart: unless-stopped
+    ports:
+      - "3110:3100"
+    volumes:
+      - ./loki-config.yml:/etc/loki/local-config.yaml:ro
+      - ./loki_rules:/loki/rules:ro
+      - loki_data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
+  fluent-bit:
+    image: fluent/fluent-bit:3.0.0
+    restart: unless-stopped
+    ports:
+      - "2020:2020"
+    volumes:
+      - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - ./parsers.conf:/fluent-bit/etc/parsers.conf:ro
+      - ./scripts/timestamp.lua:/fluent-bit/scripts/timestamp.lua:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - api_pm2_logs:/app/logs:ro
+      - fluent_bit_data:/var/log
+    depends_on:
+      - loki
+    environment:
+      - FLUENT_BIT_ENVIRONMENT=production
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  promtail:
+    image: grafana/promtail:2.9.4
+    restart: unless-stopped
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/config.yaml:ro
+      - /var/log:/var/log:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: -config.file=/etc/promtail/config.yaml
+    depends_on:
+      - loki
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+    profiles:
+      - legacy
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - loki
+      - metrics-collector
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
 
   metrics-collector:
     image: prom/prometheus:latest
@@ -283,6 +544,12 @@ services:
     depends_on:
       - api
       - blackbox-exporter
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
     deploy:
       resources:
         limits:
@@ -294,4 +561,13 @@ volumes:
   postgres_replica_data:
   redis_data:
   backup_data:
+  backup_verify_logs:
   prometheus_data:
+  loki_data:
+  grafana_data:
+  app_state:
+  buywhere_new_backup_data:
+  api_pm2_data:
+  api_pm2_logs:
+  alertmanager_data:
+  fluent_bit_data:
