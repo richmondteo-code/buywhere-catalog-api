@@ -6,7 +6,7 @@ const audiences = [
   {
     icon: "🤖",
     title: "AI Agent Developers",
-    desc: "Query a structured, normalized product catalog from your agent. One API, one schema, every retailer in Singapore.",
+    desc: "Query a structured, normalized product catalog from your agent. One API, one schema, cross-market product discovery for the US and Southeast Asia.",
     cta: "Start building",
     ctaHref: "/quickstart",
   },
@@ -32,8 +32,8 @@ const valueProps = [
     desc: "Product, merchant, and catalog data is normalized so LLM-powered agents can search, rank, compare, and recommend with less prompt overhead and fewer brittle parsing failures.",
   },
   {
-    title: "Commerce-ready Singapore coverage",
-    desc: "Start with Singapore merchants and catalogs so your agent can answer location-specific shopping and product availability questions with market relevance from day one.",
+    title: "Commerce-ready regional coverage",
+    desc: "Start with region-aware coverage across the US and Southeast Asia so your agent can answer market-specific shopping and availability questions without rebuilding the stack for each geography.",
   },
   {
     title: "Faster than scraping",
@@ -67,8 +67,8 @@ const faqs = [
     a: "A strong product API for LLM apps should provide normalized schemas, searchable catalog data, merchant context, availability signals, and predictable responses that are easy for models and tools to consume.",
   },
   {
-    q: "What is the best way to power Singapore shopping queries in an AI app?",
-    a: "Use a Singapore-focused product and merchant API so your app can return locally relevant products and sellers. Geography-specific catalog coverage improves answer quality for users asking where to buy items nearby or within-market.",
+    q: "What is the best way to power region-specific shopping queries in an AI app?",
+    a: "Use a product and merchant API that supports explicit regional filters so your app can return locally relevant products and sellers in the US, Singapore, and broader Southeast Asia. Geography-aware catalog coverage improves answer quality for users asking where to buy items within a specific market.",
   },
   {
     q: "How can developers avoid scraping merchant sites for commerce agents?",
@@ -116,7 +116,7 @@ response = requests.get(
 
 products = response.json()["items"]
 for p in products:
-    print(f"{p['name']} — S$\{p['price']} at {p['source']}")`;
+    print(f"{p['name']} — {p['currency']} {p['price']} at {p['source']}")`;
 
 export default function HomePage() {
   return (
@@ -133,13 +133,13 @@ export default function HomePage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 text-sm font-medium px-3 py-1 rounded-full mb-6">
               <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-              Now in developer beta · Singapore live
+              Now in developer beta · US + Southeast Asia
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
               The product catalog API built for AI agents.
             </h1>
             <p className="text-xl text-indigo-200 mb-10 leading-relaxed">
-              Give your agents real products, live merchant data, and structured catalog search for Singapore commerce workflows with one API.
+              Give your agents real products, live merchant data, and structured catalog search for US and Southeast Asia commerce workflows with one API.
             </p>
             <p className="text-base text-indigo-100/90 mb-8 leading-relaxed max-w-2xl">
               BuyWhere helps AI assistants and agentic apps discover products, compare options, and power commerce experiences without scraping storefronts or stitching together unreliable feeds.
@@ -159,7 +159,7 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="text-sm text-indigo-100/80">
-              Built for agentic commerce, product search, merchant discovery, and real-world buying workflows in Singapore.
+              Built for agentic commerce, product search, merchant discovery, and real-world buying workflows across the US and Southeast Asia.
             </p>
           </div>
         </div>
@@ -228,7 +228,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row items-start gap-12">
             <div className="flex-1 text-white">
-              <h2 className="text-2xl font-bold mb-4">Query Singapore products in 5 lines</h2>
+              <h2 className="text-2xl font-bold mb-4">Query regional products in 5 lines</h2>
               <p className="text-gray-400 mb-6">
                 One API call returns structured product data: name, price, SKU, retailer, image, and availability. No scraping, no parsing.
               </p>
@@ -282,28 +282,250 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Why now */}
-      <section className="py-20 bg-indigo-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Why AI shopping needs a neutral catalog layer</h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Platform APIs surface their own inventory first. Shopee returns Shopee products. Lazada returns Lazada products. For an AI agent trying to find the best match across the market, that is a sales channel — not a catalog.
-            </p>
-            <p className="text-gray-600 leading-relaxed mb-8">
-              BuyWhere has no inventory to sell and no platform to favour. We index products across Singapore&rsquo;s retail landscape into a single, structured API — so AI agents get the market, not one platform&rsquo;s version of it.
-            </p>
-            <Link
-              href="/about"
-              className="text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
-            >
-              Learn more about our approach →
-            </Link>
-          </div>
-        </div>
-      </section>
+       {/* Why now */}
+       <section className="py-20 bg-indigo-50">
+         <div className="max-w-6xl mx-auto px-4 sm:px-6">
+           <div className="max-w-3xl mx-auto text-center">
+             <h2 className="text-3xl font-bold text-gray-900 mb-6">Why AI shopping needs a neutral catalog layer</h2>
+             <p className="text-gray-600 leading-relaxed mb-4">
+               Platform APIs surface their own inventory first. Shopee returns Shopee products. Lazada returns Lazada products. For an AI agent trying to find the best match across the market, that is a sales channel — not a catalog.
+             </p>
+             <p className="text-gray-600 leading-relaxed mb-8">
+               BuyWhere has no inventory to sell and no platform to favour. We index products across the US and Southeast Asia into a single, structured API so AI agents get a broader market view instead of one platform&rsquo;s version of it.
+             </p>
+             <Link
+               href="/about"
+               className="text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
+             >
+               Learn more about our approach →
+             </Link>
+           </div>
+         </div>
+       </section>
 
-      {/* FAQ */}
+       {/* US-localized homepage section */}
+       <section className="py-20 bg-white">
+         <div className="max-w-6xl mx-auto px-4 sm:px-6">
+           <div className="space-y-12">
+             {/* Featured US retailers grid */}
+             <div>
+               <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                 Featured US Retailers
+               </h2>
+               <p className="text-lg text-gray-500 mb-8 max-w-2xl">
+                 Discover top-rated products from America&apos;s most trusted retailers
+               </p>
+               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                 {/* Retailer cards */}
+                 <div className="bg-white rounded-xl border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                   <div className="flex items-center justify-center h-16 mb-4">
+                     <span className="text-4xl">📦</span>
+                   </div>
+                   <h3 className="font-semibold text-gray-900 mb-2 text-center">
+                     Amazon
+                   </h3>
+                   <p className="text-sm text-gray-500 text-center mb-4">
+                     Electronics, home goods, fashion & more
+                   </p>
+                   <Link
+                     href="/compare/us"
+                     className="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                   >
+                     Browse Amazon
+                   </Link>
+                 </div>
+                 
+                 <div className="bg-white rounded-xl border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                   <div className="flex items-center justify-center h-16 mb-4">
+                     <span className="text-4xl">🛒</span>
+                   </div>
+                   <h3 className="font-semibold text-gray-900 mb-2 text-center">
+                     Walmart
+                   </h3>
+                   <p className="text-sm text-gray-500 text-center mb-4">
+                     Groceries, electronics, home essentials
+                   </p>
+                   <Link
+                     href="/compare/us"
+                     className="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                   >
+                     Browse Walmart
+                   </Link>
+                 </div>
+                 
+                 <div className="bg-white rounded-xl border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                   <div className="flex items-center justify-center h-16 mb-4">
+                     <span className="text-4xl">🎯</span>
+                   </div>
+                   <h3 className="font-semibold text-gray-900 mb-2 text-center">
+                     Target
+                   </h3>
+                   <p className="text-sm text-gray-500 text-center mb-4">
+                     Home, apparel, electronics & baby
+                   </p>
+                   <Link
+                     href="/compare/us"
+                     className="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                   >
+                     Browse Target
+                   </Link>
+                 </div>
+                 
+                 <div className="bg-white rounded-xl border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                   <div className="flex items-center justify-center h-16 mb-4">
+                     <span className="text-4xl">🏪</span>
+                   </div>
+                   <h3 className="font-semibold text-gray-900 mb-2 text-center">
+                     Best Buy
+                   </h3>
+                   <p className="text-sm text-gray-500 text-center mb-4">
+                     Electronics, appliances & tech
+                   </p>
+                   <Link
+                     href="/compare/us"
+                     className="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                   >
+                     Browse Best Buy
+                   </Link>
+                 </div>
+               </div>
+             </div>
+             
+             {/* Trending US deals widget */}
+             <div>
+               <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                 Trending US Deals
+               </h2>
+               <p className="text-lg text-gray-500 mb-6 max-w-2xl">
+                 Limited-time offers on popular products across US retailers
+               </p>
+               <div className="space-y-4">
+                 {/* Deal items */}
+                 <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:bg-indigo-50 transition-colors">
+                   <div className="flex justify-between items-start">
+                     <div className="flex-1">
+                       <h3 className="font-semibold text-gray-900 mb-1">
+                         Sony WH-1000XM5 Headphones
+                       </h3>
+                       <p className="text-sm text-gray-500 mb-2">
+                         Wireless Noise Cancelling - Black
+                       </p>
+                       <div className="flex items-center gap-2 mb-2">
+                         <span className="text-indigo-600 font-bold text-lg">
+                           $248.00
+                         </span>
+                         <span className="text-gray-400 line-through text-sm">
+                           $349.99
+                         </span>
+                         <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                           29% OFF
+                         </span>
+                       </div>
+                       <div className="flex items-center gap-2 text-sm">
+                         <span className="text-yellow-500">★</span>
+                         <span className="font-medium">4.8</span>
+                         <span className="text-gray-500">(1,247)</span>
+                       </div>
+                     </div>
+                     <div className="flex-shrink-0">
+                       <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mb-2">
+                         <span className="text-indigo-600">📦</span>
+                       </div>
+                       <span className="text-xs text-indigo-600">
+                         Amazon
+                       </span>
+                     </div>
+                   </div>
+                 </div>
+                 
+                 <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:bg-indigo-50 transition-colors">
+                   <div className="flex justify-between items-start">
+                     <div className="flex-1">
+                       <h3 className="font-semibold text-gray-900 mb-1">
+                         Apple AirPods Pro (2nd Gen)
+                       </h3>
+                       <p className="text-sm text-gray-500 mb-2">
+                         Wireless Earbuds with MagSafe Case
+                       </p>
+                       <div className="flex items-center gap-2 mb-2">
+                         <span className="text-indigo-600 font-bold text-lg">
+                           $189.00
+                         </span>
+                         <span className="text-gray-400 line-through text-sm">
+                           $249.00
+                         </span>
+                         <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                           24% OFF
+                         </span>
+                       </div>
+                       <div className="flex items-center gap-2 text-sm">
+                         <span className="text-yellow-500">★</span>
+                         <span className="font-medium">4.9</span>
+                         <span className="text-gray-500">(3,842)</span>
+                       </div>
+                     </div>
+                     <div className="flex-shrink-0">
+                       <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mb-2">
+                         <span className="text-indigo-600">🛒</span>
+                       </div>
+                       <span className="text-xs text-indigo-600">
+                         Walmart
+                       </span>
+                     </div>
+                   </div>
+                 </div>
+                 
+                 <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:bg-indigo-50 transition-colors">
+                   <div className="flex justify-between items-start">
+                     <div className="flex-1">
+                       <h3 className="font-semibold text-gray-900 mb-1">
+                         Ninja Foodi 9-in-1 Pressure Cooker
+                       </h3>
+                       <p className="text-sm text-gray-500 mb-2">
+                         Air Fryer, Steamer & More
+                       </p>
+                       <div className="flex items-center gap-2 mb-2">
+                         <span className="text-indigo-600 font-bold text-lg">
+                           $129.99
+                         </span>
+                         <span className="text-gray-400 line-through text-sm">
+                           $199.99
+                         </span>
+                         <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                           35% OFF
+                         </span>
+                       </div>
+                       <div className="flex items-center gap-2 text-sm">
+                         <span className="text-yellow-500">★</span>
+                         <span className="font-medium">4.7</span>
+                         <span className="text-gray-500">(2,156)</span>
+                       </div>
+                     </div>
+                     <div className="flex-shrink-0">
+                       <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mb-2">
+                         <span className="text-indigo-600">🎯</span>
+                       </div>
+                       <span className="text-xs text-indigo-600">
+                         Target
+                       </span>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               <div className="mt-6 text-center">
+                 <Link
+                   href="/compare/us"
+                   className="text-indigo-600 font-medium hover:text-indigo-700"
+                 >
+                   See all deals →
+                 </Link>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+
+       {/* FAQ */}
       <section className="py-20 bg-white border-t border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="max-w-3xl mb-12">
@@ -347,7 +569,7 @@ export default function HomePage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-3xl font-bold mb-4">Launch product-aware agents without building a catalog pipeline.</h2>
           <p className="text-indigo-200 mb-8 text-lg">
-            If your agent needs to answer &ldquo;what should I buy?&rdquo;, &ldquo;where can I get it?&rdquo;, or &ldquo;what are the best options in Singapore?&rdquo; BuyWhere gives you the product layer to ship faster.
+            If your agent needs to answer &ldquo;what should I buy?&rdquo;, &ldquo;where can I get it?&rdquo;, or &ldquo;what are the best options in the US, Singapore, or Southeast Asia?&rdquo; BuyWhere gives you the product layer to ship faster.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
