@@ -25,6 +25,9 @@ services:
       ENVIRONMENT: production
       DEBUG: "false"
       BUYWHERE_API_URL: ${BUYWHERE_API_URL:-http://api:8000}
+      USD_DEFAULT: ${USD_DEFAULT:-true}
+      US_REGION: ${US_REGION:-us}
+      AFFILIATE_TAG: ${AFFILIATE_TAG:-buywhere-20}
     volumes:
       - api_pm2_data:/app/data
       - api_pm2_logs:/app/logs
@@ -42,7 +45,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 60s
+      start_period: 120s
     logging:
       driver: json-file
       options:
@@ -55,8 +58,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "4"
-          memory: 4G
+          cpus: "2"
+          memory: 2G
         reservations:
            cpus: "1"
            memory: 1G
@@ -165,7 +168,7 @@ services:
           memory: 2G
 
   pgbouncer:
-    image: pgbouncer/pgbouncer:latest
+    image: edoburu/pgbouncer:latest
     restart: unless-stopped
     ports:
       - "5435:5432"
@@ -186,7 +189,7 @@ services:
       db_replica:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "echo show version | nc localhost 5432 || exit 1"]
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -U buywhere || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -274,7 +277,7 @@ services:
       target: production
     image: buywhere-api:latest
     restart: unless-stopped
-    command: ["sh", "-c", "while true; do sleep 3600; /app/scripts/backup.sh backup hourly; done"]
+    command: ["sh", "-c", "while true; do /app/scripts/backup.sh backup daily; sleep 86400; done"]
     environment:
       DATABASE_URL: ${DATABASE_URL}
       BACKUP_DIR: ${BACKUP_DIR:-/var/backups/buywhere}
@@ -365,6 +368,74 @@ services:
           cpus: "0.1"
           memory: 64M
 
+  price-alert-cron:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: buywhere-api:latest
+    restart: unless-stopped
+    command: ["sh", "-c", "while true; do sleep 86400; python scripts/price_alert_email_cron.py --once; done"]
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      SMTP_HOST: ${SMTP_HOST:-localhost}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-alerts@buywhere.ai}
+      EMAIL_FROM_NAME: ${EMAIL_FROM_NAME:-BuyWhere}
+    depends_on:
+      db:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service,environment"
+    labels:
+      - "service=price-alert-cron"
+      - "environment=production"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+
+  sitemap-cron:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: buywhere-api:latest
+    restart: unless-stopped
+    command: ["sh", "-c", "while true; do sleep 86400; /app/scripts/sitemap_cron.sh; done"]
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      SITE_BASE_URL: ${SITE_BASE_URL:-https://buywhere.com}
+      S3_BUCKET: ${SITEMAP_S3_BUCKET:-}
+      SCRAPER_INTERVAL_MINUTES: ${SCRAPER_INTERVAL_MINUTES:-60}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    volumes:
+      - ./static:/app/static
+    depends_on:
+      db:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "service,environment"
+    labels:
+      - "service=sitemap-cron"
+      - "environment=production"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+
   mcp:
     build:
       context: .
@@ -454,6 +525,12 @@ services:
       - ./loki_rules:/loki/rules:ro
       - loki_data:/loki
     command: -config.file=/etc/loki/local-config.yaml
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     deploy:
       resources:
         limits:
