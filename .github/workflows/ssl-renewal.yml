@@ -13,6 +13,7 @@ on:
 
 env:
   CERT_DOMAIN: api.buywhere.ai
+  ADDITIONAL_DOMAINS: us.buywhere.com
 
 jobs:
   renew-ssl:
@@ -47,15 +48,26 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ env.INSTANCE_IP }} >> ~/.ssh/known_hosts 2>/dev/null
 
-      - name: Deploy certbot renewal config
+      - name: Deploy certbot renewal configs
         run: |
-          echo "Ensuring certbot renewal config is deployed..."
+          echo "Ensuring certbot renewal configs are deployed..."
+          # Deploy api.buywhere.ai config
           scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 \
             certbot/renewal/api.buywhere.ai.conf \
             ubuntu@${{ env.INSTANCE_IP }}:/tmp/api.buywhere.ai.conf
           ssh -o StrictHostKeyChecking=no ubuntu@${{ env.INSTANCE_IP }} \
             "sudo mkdir -p /etc/letsencrypt/renewal && sudo cp /tmp/api.buywhere.ai.conf /etc/letsencrypt/renewal/api.buywhere.ai.conf && rm /tmp/api.buywhere.ai.conf"
-          echo "Certbot renewal config deployed"
+          
+          # Deploy us.buywhere.com config if ADDITIONAL_DOMAINS is set
+          if [[ -n "${{ env.ADDITIONAL_DOMAINS }}" ]]; then
+            scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 \
+              certbot/renewal/us.buywhere.com.conf \
+              ubuntu@${{ env.INSTANCE_IP }}:/tmp/us.buywhere.com.conf
+            ssh -o StrictHostKeyChecking=no ubuntu@${{ env.INSTANCE_IP }} \
+              "sudo cp /tmp/us.buywhere.com.conf /etc/letsencrypt/renewal/us.buywhere.com.conf && rm /tmp/us.buywhere.com.conf"
+          fi
+          
+          echo "Certbot renewal configs deployed"
 
       - name: Ensure webroot directory exists
         run: |
