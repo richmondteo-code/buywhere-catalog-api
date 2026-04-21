@@ -103,9 +103,97 @@ def _decathlon_affiliate_url(product_url: str) -> str:
     )
 
 
+def _zalora_affiliate_url(product_url: str) -> str:
+    return _template_affiliate_url(
+        product_url,
+        "ZALORA_AFFILIATE_URL_TEMPLATE",
+        "zalora-catalog",
+    )
+
+
+def _amazon_sg_affiliate_url(product_url: str) -> str:
+    amazon_sg_tag = os.environ.get("AMAZON_ASSOCIATE_TAG") or os.environ.get("AFFILIATE_TAG", "")
+    asin_match = re.search(r"/dp/([A-Z0-9]{10})", product_url, re.IGNORECASE)
+    if not asin_match:
+        asin_match = re.search(r"/gp/product/([A-Z0-9]{10})", product_url, re.IGNORECASE)
+    if not asin_match:
+        return product_url
+    sep = "&" if "?" in product_url else "?"
+    if amazon_sg_tag:
+        return f"{product_url}{sep}tag={amazon_sg_tag}&linkCode=ll"
+    return product_url
+
+
+def _amazon_us_affiliate_url(product_url: str) -> str:
+    amazon_us_tag = os.environ.get("AMAZON_US_ASSOCIATE_TAG", "buywhere-20")
+    asin_match = re.search(r"/dp/([A-Z0-9]{10})", product_url, re.IGNORECASE)
+    if not asin_match:
+        asin_match = re.search(r"/gp/product/([A-Z0-9]{10})", product_url, re.IGNORECASE)
+    if not asin_match:
+        asin_match = re.search(r"/product/([A-Z0-9]{10})", product_url, re.IGNORECASE)
+    asin = asin_match.group(1) if asin_match else None
+    utm = "utm_source=buywhere&utm_medium=affiliate&utm_campaign=amazon-us"
+    sep = "&" if "?" in product_url else "?"
+    if asin:
+        return f"{product_url}{sep}tag={amazon_us_tag}&linkCode=ll&{utm}"
+    return f"{product_url}{sep}{utm}"
+
+
+def _walmart_us_affiliate_url(product_url: str) -> str:
+    walmart_affiliate_id = os.environ.get("WALMART_AFFILIATE_ID", "")
+    utm = "utm_source=buywhere&utm_medium=affiliate&utm_campaign=walmart-us"
+    sep = "&" if "?" in product_url else "?"
+    if walmart_affiliate_id:
+        return f"{product_url}{sep}affiliate_id={walmart_affiliate_id}&{utm}"
+    return f"{product_url}{sep}{utm}"
+
+
+def _bestbuy_us_affiliate_url(product_url: str) -> str:
+    bestbuy_affiliate_id = os.environ.get("BESTBUY_AFFILIATE_ID", "")
+    utm = "utm_source=buywhere&utm_medium=affiliate&utm_campaign=bestbuy-us"
+    sep = "&" if "?" in product_url else "?"
+    if bestbuy_affiliate_id:
+        return f"{product_url}{sep}ref={bestbuy_affiliate_id}&{utm}"
+    return f"{product_url}{sep}{utm}"
+
+
+def _target_us_affiliate_url(product_url: str) -> str:
+    target_affiliate_id = os.environ.get("TARGET_AFFILIATE_ID", "")
+    utm = "utm_source=buywhere&utm_medium=affiliate&utm_campaign=target-us"
+    sep = "&" if "?" in product_url else "?"
+    if target_affiliate_id:
+        return f"{product_url}{sep}affid={target_affiliate_id}&{utm}"
+    return f"{product_url}{sep}{utm}"
+
+
+def _ebay_us_affiliate_url(product_url: str) -> str:
+    ebay_affiliate_id = os.environ.get("EBAY_US_AFFILIATE_ID", "")
+    utm = "utm_source=buywhere&utm_medium=affiliate&utm_campaign=ebay-us"
+    sep = "&" if "?" in product_url else "?"
+    if ebay_affiliate_id:
+        return f"{product_url}{sep}mkevt=1&mkcid=1&mkrid=711-53200-19255-0&affiliate_id={ebay_affiliate_id}&campid=auction_creation&{utm}"
+    return f"{product_url}{sep}{utm}"
+
+
+def _wayfair_us_affiliate_url(product_url: str) -> str:
+    wayfair_affiliate_id = os.environ.get("WAYFAIR_US_AFFILIATE_ID", "")
+    utm = "utm_source=buywhere&utm_medium=affiliate&utm_campaign=wayfair-us"
+    sep = "&" if "?" in product_url else "?"
+    if wayfair_affiliate_id:
+        return f"{product_url}{sep}ref=affiliate_id:{wayfair_affiliate_id}&{utm}"
+    return f"{product_url}{sep}{utm}"
+
+
 _PLATFORM_HANDLERS = {
+    "shopee": _shopee_affiliate_url,
+    "shopee-sg": _shopee_affiliate_url,
+    "shopee.sg": _shopee_affiliate_url,
     "shopee_sg": _shopee_affiliate_url,
+    "lazada": _lazada_affiliate_url,
+    "lazada.sg": _lazada_affiliate_url,
     "lazada_sg": _lazada_affiliate_url,
+    "zalora.sg": _zalora_affiliate_url,
+    "zalora_sg": _zalora_affiliate_url,
     "asos_sg": _awin_affiliate_url,
     "challenger": _challenger_affiliate_url,
     "challenger.sg": _challenger_affiliate_url,
@@ -117,6 +205,15 @@ _PLATFORM_HANDLERS = {
     "underarmour_sg": _awin_affiliate_url,
     "etsy_sg": _awin_affiliate_url,
     "marksandspencer_sg": _awin_affiliate_url,
+    "amazon.sg": _amazon_sg_affiliate_url,
+    "amazon_sg": _amazon_sg_affiliate_url,
+    "amazon_sg_toys": _amazon_sg_affiliate_url,
+    "amazon_us": _amazon_us_affiliate_url,
+    "walmart_us": _walmart_us_affiliate_url,
+    "bestbuy_us": _bestbuy_us_affiliate_url,
+    "target_us": _target_us_affiliate_url,
+    "ebay_us": _ebay_us_affiliate_url,
+    "wayfair_us": _wayfair_us_affiliate_url,
 }
 
 

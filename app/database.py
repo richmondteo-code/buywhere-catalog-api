@@ -2,6 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sess
 from sqlalchemy.orm import DeclarativeBase
 from app.config import get_settings
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +23,13 @@ def _get_db_url() -> str:
     """Get normalized database URL."""
     global _db_url
     if _db_url is None:
-        _db_url = _normalize_database_url(settings.database_url)
+        db_url = settings.database_url
+        if "paperclip" in db_url or "127.0.0.1:54330" in db_url or "localhost:54330" in db_url:
+            db_url = os.environ.get(
+                "BUYWHERE_DATABASE_URL",
+                "postgresql+asyncpg://buywhere:buywhere@db:5432/catalog",
+            )
+        _db_url = _normalize_database_url(db_url)
     return _db_url
 
 def _create_engine():
