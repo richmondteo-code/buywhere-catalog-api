@@ -85,6 +85,20 @@ FASHION_KEYWORDS = (
     "fashion",
 )
 
+NON_FASHION_CATEGORY_PHRASES = (
+    "cell phone",
+    "electronics",
+    "home improvement",
+    "home kitchen",
+    "home living",
+    "office",
+    "school supplies",
+    "appliance",
+    "automotive",
+    "pet supplies",
+    "toys",
+)
+
 RISK_MARKERS = (
     "/risk/challenge",
     "captcha_type=",
@@ -184,6 +198,13 @@ class SHEINScraper:
         enriched.setdefault("x-sapi-country_code", self.scraperapi_country)
         return enriched
 
+    def _should_retry_plain_proxy(self, status_code: int, text: str) -> bool:
+        return (
+            bool(self.scraperapi_proxy_url)
+            and status_code == 403
+            and "<html" not in text.lower()
+        )
+
     @staticmethod
     def _is_risk_challenge(url: str, text: str) -> bool:
         lowered = f"{url}\n{text}".lower()
@@ -198,16 +219,18 @@ class SHEINScraper:
         cat_id: str, category_name: str, relative_url: str
     ) -> dict[str, str] | None:
         slug = relative_url.split("/")[-1].split(".html")[0]
-        slug_words = slug.replace("-c-", "-").split("-")
+        slug_words = slug.replace("-c-", "-").replace("-sc-", "-").split("-")
         text = " ".join(filter(None, [category_name, slug])).lower()
-        if not any(keyword in text for keyword in FASHION_KEYWORDS):
+        if any(phrase in text for phrase in NON_FASHION_CATEGORY_PHRASES):
+            return None
+        if not any(re.search(rf"\b{re.escape(keyword)}\w*\b", text) for keyword in FASHION_KEYWORDS):
             return None
 
-        if "women" in text or "lady" in text or "curve" in text:
+        if re.search(r"\b(women|lady|curve)\b", text):
             top = "Women"
-        elif "men" in text:
+        elif re.search(r"\bmen\b", text):
             top = "Men"
-        elif "kid" in text or "girl" in text or "boy" in text:
+        elif re.search(r"\b(kid\w*|girl\w*|boy\w*)\b", text):
             top = "Kids"
         elif "shoe" in text:
             top = "Shoes"
@@ -220,7 +243,7 @@ class SHEINScraper:
             word
             for word in slug_words
             if word
-            and word.lower() not in {"c", cat_id.lower(), top.lower(), "sg", "en"}
+            and word.lower() not in {"c", "sc", cat_id.lower(), top.lower(), "sg", "en"}
             and not word.isdigit()
         ]
         sub = " ".join(word.capitalize() for word in sub_parts[:4]) or category_name
@@ -234,26 +257,39 @@ class SHEINScraper:
 
     @classmethod
     def extract_categories_from_homepage(cls, html: str) -> list[dict[str, str]]:
-        pattern = re.compile(
-            r'"webClickUrl":"(?P<url>(?:\\/|/)[^"]+-c-(?P<cat_id>\d+)\.html)".{0,300}?"categoryName":"(?P<name>[^"]+)"',
-            re.DOTALL,
-        )
         categories: list[dict[str, str]] = []
         seen: set[str] = set()
-        for match in pattern.finditer(html):
-            relative_url = unquote(match.group("url")).replace("\\/", "/")
+
+        def add_category(cat_id: str, category_name: str, relative_url: str) -> None:
+            relative_url = unquote(relative_url).replace("\\/", "/")
             category = cls._normalize_category_seed(
-                match.group("cat_id"),
-                match.group("name"),
+                cat_id,
+                category_name,
                 relative_url,
             )
             if not category:
-                continue
+                return
             key = f'{category["cat_id"]}:{category["url"]}'
             if key in seen:
-                continue
+                return
             seen.add(key)
             categories.append(category)
+
+        real_category_pattern = re.compile(
+            r'"webClickUrl":"(?P<url>(?:\\/|/)[^"]+-c-(?P<cat_id>\d+)\.html)".{0,300}?"categoryName":"(?P<name>[^"]+)"',
+            re.DOTALL,
+        )
+        for match in real_category_pattern.finditer(html):
+            add_category(match.group("cat_id"), match.group("name"), match.group("url"))
+
+        item_picking_pattern = re.compile(
+            r'"webClickUrl":"(?P<url>(?:\\/|/)[^"]+-sc-\d+\.html)".{0,500}?"categoryName":"(?P<name>[^"]+)".{0,300}?"cateLeftRealId":"(?P<real_ids>[\d,]+)"',
+            re.DOTALL,
+        )
+        for match in item_picking_pattern.finditer(html):
+            real_id = match.group("real_ids").split(",", 1)[0]
+            add_category(real_id, match.group("name"), match.group("url"))
+
         return categories
 
     async def _fetch_html(self, url: str, retries: int = 3) -> str:
@@ -281,6 +317,17 @@ class SHEINScraper:
                         ),
                     )
                 text = response.text or ""
+                if self._should_retry_plain_proxy(response.status_code, text):
+                    response = await loop.run_in_executor(
+                        None,
+                        lambda: self.request_session.get(
+                            url,
+                            headers=HTML_HEADERS,
+                            timeout=self.scrape_timeout,
+                            verify=self.request_verify,
+                        ),
+                    )
+                    text = response.text or ""
                 final_url = getattr(response, "url", url)
                 if self._is_risk_challenge(str(final_url), text):
                     raise SheinRiskChallengeError(
@@ -433,6 +480,18 @@ class SHEINScraper:
                         ),
                     )
                 text = response.text or ""
+                if self._should_retry_plain_proxy(response.status_code, text):
+                    response = await loop.run_in_executor(
+                        None,
+                        lambda: self.request_session.get(
+                            LIST_API_URL,
+                            params=params,
+                            headers=API_HEADERS,
+                            timeout=self.scrape_timeout,
+                            verify=self.request_verify,
+                        ),
+                    )
+                    text = response.text or ""
                 if response.status_code == 403 and text.strip() in {"", "{}"}:
                     raise SheinRiskChallengeError(
                         f"Listing API blocked with 403 for cat_id={category['cat_id']}"

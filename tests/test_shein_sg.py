@@ -19,6 +19,27 @@ def test_extract_categories_from_homepage_filters_fashion_items():
     assert categories[1]["name"] == "Women"
 
 
+def test_extract_categories_from_homepage_handles_item_picking_nav():
+    html = """
+    <script>
+    {"webClickUrl":"\\/RecommendSelection\\/Men-Clothing-sc-017172963.html"},"categoryNodeType":"categoryTree","categoryName":"Men Clothing","categoryId":"110000035","categoryLanguage":"Men Clothing","cateLeftRealId":"2026"}
+    {"webClickUrl":"\\/RecommendSelection\\/Women-Clothing-sc-017172961.html"},"categoryNodeType":"categoryTree","categoryName":"Women Clothing","categoryId":"110000033","categoryLanguage":"Women Clothing","cateLeftRealId":"2030"}
+    {"webClickUrl":"\\/RecommendSelection\\/Home-Kitchen-sc-017185546.html"},"categoryNodeType":"categoryTree","categoryName":"Home & Living","categoryId":"110003132","categoryLanguage":"Home & Living","cateLeftRealId":"2032"}
+    {"webClickUrl":"\\/RecommendSelection\\/Tools-Home-Improvement-sc-017185547.html"},"categoryNodeType":"categoryTree","categoryName":"Tools & Home Improvement","categoryId":"110003133","categoryLanguage":"Tools & Home Improvement","cateLeftRealId":"4327"}
+    {"webClickUrl":"\\/RecommendSelection\\/Cell-Phones-Accessories-sc-017706910.html"},"categoryNodeType":"categoryTree","categoryName":"Cell Phones & Accessories","categoryId":"110005228","categoryLanguage":"Cell Phones & Accessories","cateLeftRealId":"2274"}
+    </script>
+    """
+
+    categories = SHEINScraper.extract_categories_from_homepage(html)
+
+    assert len(categories) == 2
+    assert categories[0]["cat_id"] == "2026"
+    assert categories[0]["name"] == "Men"
+    assert categories[0]["sub"] == "Clothing"
+    assert categories[1]["cat_id"] == "2030"
+    assert categories[1]["name"] == "Women"
+
+
 def test_is_risk_challenge_detects_block_pages():
     blocked = SHEINScraper._is_risk_challenge(
         "https://sg.shein.com/risk/challenge?captcha_type=909",
@@ -59,6 +80,22 @@ def test_proxy_headers_added_when_scraperapi_enabled():
         headers = scraper._headers_with_proxy_options({"User-Agent": "Mozilla/5.0"})
         assert headers["x-sapi-render"] == "true"
         assert headers["x-sapi-country_code"] == "sg"
+    finally:
+        scraper.cf_scraper.close()
+        scraper.request_session.close()
+
+
+def test_plain_proxy_retry_only_for_non_html_403():
+    scraper = SHEINScraper(
+        api_key="",
+        scrape_only=True,
+        discover_only=True,
+        scraperapi_key="abc123",
+    )
+    try:
+        assert scraper._should_retry_plain_proxy(403, "Forbidden") is True
+        assert scraper._should_retry_plain_proxy(403, "<html>Forbidden</html>") is False
+        assert scraper._should_retry_plain_proxy(200, "Forbidden") is False
     finally:
         scraper.cf_scraper.close()
         scraper.request_session.close()
