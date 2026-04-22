@@ -17,7 +17,14 @@ from app.models.product import Product, ProductMatch
 
 logger = get_logger("matches-service")
 
-US_RETAILER_PREFIXES = ("amazon_us", "walmart_us", "target_us")
+US_RETAILER_SOURCE_GROUPS = {
+    "amazon": ("amazon_us", "amazon.com"),
+    "walmart": ("walmart_us", "walmart.com"),
+    "target": ("target_us", "target.com"),
+}
+US_RETAILER_PREFIXES = tuple(
+    prefix for prefixes in US_RETAILER_SOURCE_GROUPS.values() for prefix in prefixes
+)
 STOP_WORDS = {
     "and",
     "for",
@@ -37,6 +44,16 @@ def is_us_retailer_source(source: Optional[str]) -> bool:
         return False
     source = source.lower()
     return any(source == prefix or source.startswith(f"{prefix}_") for prefix in US_RETAILER_PREFIXES)
+
+
+def retailer_key(source: Optional[str]) -> Optional[str]:
+    if not source:
+        return None
+    source = source.lower()
+    for key, prefixes in US_RETAILER_SOURCE_GROUPS.items():
+        if any(source == prefix or source.startswith(f"{prefix}_") for prefix in prefixes):
+            return key
+    return None
 
 
 def normalized_match_key(title: Optional[str], brand: Optional[str]) -> str:
@@ -137,17 +154,26 @@ class MatchService:
         if not source_brand or not tokens:
             return []
 
-        source_prefix = next(
-            prefix for prefix in US_RETAILER_PREFIXES if source_product.source.lower().startswith(prefix)
-        )
+        source_retailer = retailer_key(source_product.source)
+        if not source_retailer:
+            return []
+
+        same_retailer_conditions = [
+            Product.source.like(f"{prefix}%")
+            for prefix in US_RETAILER_SOURCE_GROUPS[source_retailer]
+        ]
+        us_retailer_conditions = [
+            Product.source.like(f"{prefix}%")
+            for prefix in US_RETAILER_PREFIXES
+        ]
 
         query = (
             select(Product)
             .where(Product.is_active == True)
             .where(Product.id != source_product.id)
             .where(Product.currency == "USD")
-            .where(Product.source.notlike(f"{source_prefix}%"))
-            .where(or_(*[Product.source.like(f"{prefix}%") for prefix in US_RETAILER_PREFIXES]))
+            .where(~or_(*same_retailer_conditions))
+            .where(or_(*us_retailer_conditions))
             .where(Product.brand.ilike(source_product.brand))
         )
 

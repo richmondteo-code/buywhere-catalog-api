@@ -5,6 +5,7 @@ from app.schemas.product import CompareMatch, ProductMatchesResponse
 from app.services.matches import (
     is_us_retailer_source,
     normalized_match_key,
+    retailer_key,
     score_name_brand_match,
     title_search_tokens,
 )
@@ -12,9 +13,13 @@ from app.services.matches import (
 
 def test_us_retailer_source_detection():
     assert is_us_retailer_source("amazon_us")
+    assert is_us_retailer_source("amazon.com")
     assert is_us_retailer_source("walmart_us_marketplace")
     assert is_us_retailer_source("target_us")
     assert not is_us_retailer_source("amazon_sg")
+    assert retailer_key("amazon.com") == "amazon"
+    assert retailer_key("amazon_us") == "amazon"
+    assert retailer_key("walmart.com_marketplace") == "walmart"
 
 
 def test_name_brand_match_score_accepts_same_item_across_retailers():
