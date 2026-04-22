@@ -1721,7 +1721,7 @@ async def get_product_matches(
         limit=limit,
     )
     cached = await cache.cache_get(cache_key)
-    if cached:
+    if cached and not recompute:
         return ProductMatchesResponse(**cached)
 
     product_result = await db.execute(
@@ -1741,14 +1741,22 @@ async def get_product_matches(
     )
 
     match_responses = []
-    for match in stored_matches:
-        matched_product_result = await db.execute(
-            select(Product).where(Product.id == match.matched_product_id, Product.is_active == True)
+    if stored_matches:
+        matched_ids = [
+            m.matched_product_id if m.source_product_id == product_id else m.source_product_id
+            for m in stored_matches
+        ]
+        matched_products_result = await db.execute(
+            select(Product).where(Product.id.in_(matched_ids), Product.is_active == True)
         )
-        matched_product = matched_product_result.scalar_one_or_none()
-        if matched_product:
-            compare_match = _build_compare_match(matched_product, float(match.confidence_score))
-            match_responses.append(compare_match)
+        products_by_id = {p.id: p for p in matched_products_result.scalars().all()}
+
+        for match in stored_matches:
+            matched_id = match.matched_product_id if match.source_product_id == product_id else match.source_product_id
+            matched_product = products_by_id.get(matched_id)
+            if matched_product:
+                compare_match = _build_compare_match(matched_product, float(match.confidence_score))
+                match_responses.append(compare_match)
 
     response = ProductMatchesResponse(
         product_id=product_id,

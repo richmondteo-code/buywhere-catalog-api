@@ -293,8 +293,8 @@ class ProductMatchResponse(BaseModel):
 
 class ProductMatchesResponse(BaseModel):
     product_id: int
-    matches: List[ProductMatchResponse]
-    total: int
+    matches: List[CompareMatch]
+    total_matches: int
 
 
 class SimilarProductsResponse(BaseModel):
