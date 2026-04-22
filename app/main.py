@@ -1,4 +1,3 @@
-import logging
 import uuid
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
@@ -17,15 +16,17 @@ from app.config import get_settings
 from app.rate_limit import limiter, TierRateLimitMiddleware, RedisPerMinuteRateLimitMiddleware
 from app.request_logging import RequestLoggingMiddleware
 from app.usage_metering import UsageMeteringMiddleware
-from app.routers import products, categories, keys, deals, ingestion, ingest, search, status, catalog, agents, analytics, admin, developers, webhooks, metrics, alerts, images, changelog, feed, merchants, trending, export, enrichment, health, brands, watchlist, dedup, compare, billing, countries, sitemap, v2, merchant_analytics, affiliate, preferences, import_csv, saved_searches, usage, referrals, coupons, linkless_attribution, scraper_assignments, scraper_alerts, agent_native, newsletter
+from app.routers import products, categories, keys, deals, ingestion, ingest, search, status, catalog, agents, analytics, admin, developers, webhooks, metrics, alerts, images, changelog, feed, merchants, trending, export, enrichment, health, brands, watchlist, dedup, compare, billing, countries, sitemap, v2, merchant_analytics, affiliate, preferences, import_csv, saved_searches, usage, referrals, coupons, linkless_attribution, scraper_assignments, scraper_alerts, scraper_refresh, agent_native, newsletter, user_watchlist, user_alerts, users, referral_landing, push_notifications, user_notification_preferences, price_drops, growth, feature_flags, signup, stats, public_alerts, alertmanager_webhooks
 from app import clickthrough
 from app.graphql import graphql_router
 from app.versioning import VersionRoutingMiddleware
 from app.services.health import get_db_health, check_disk_space, check_api_self_test
 from app.services.scraper_health import get_scraper_health
 from app.schemas.status import ComprehensiveHealthReport, DiskSpaceHealth, APIResponseTimeHealth
+from app.sentry import init_sentry, is_sentry_enabled, capture_exception_with_context, SentrySlowQueryMiddleware
+from app.logging_centralized import get_logger
 
-logger = logging.getLogger("buywhere_api")
+logger = get_logger("api-service")
 
 settings = get_settings()
 
@@ -34,9 +35,23 @@ MAX_QUERY_LENGTH = 500
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup
+    if settings.jwt_secret_key == "change-me-in-production":
+        raise RuntimeError(
+            "JWT_SECRET_KEY environment variable must be set before starting the server. "
+            "The default value 'change-me-in-production' is insecure and must be overridden in production."
+        )
+    init_sentry()
+    try:
+        from app.services.feature_flags_configmap import get_configmap_syncer
+        get_configmap_syncer()
+    except Exception:
+        pass
     yield
-    # Shutdown
+    try:
+        from app.services.feature_flags_configmap import stop_configmap_syncer
+        stop_configmap_syncer()
+    except Exception:
+        pass
 
 
 app = FastAPI(
@@ -70,16 +85,19 @@ app.add_middleware(TierRateLimitMiddleware)
 app.add_middleware(RequestLoggingMiddleware)
 app.add_middleware(UsageMeteringMiddleware)
 
+if is_sentry_enabled():
+    app.add_middleware(SentrySlowQueryMiddleware)
+
 # API versioning middleware
 app.add_middleware(VersionRoutingMiddleware)
 
 # Routers — v1 under /v1 prefix, v2 under /v2 prefix
 app.include_router(products.router, prefix="/v1")
 app.include_router(search.router, prefix="/v1")
-app.include_router(categories.router, prefix="/v1")
-app.include_router(keys.router, prefix="/v1")
-app.include_router(developers.router, prefix="/v1")
-app.include_router(deals.router, prefix="/v1")
+app.include_router(categories.router)
+app.include_router(keys.router)
+app.include_router(deals.router)
+app.include_router(price_drops.router)
 app.include_router(coupons.router, prefix="/v1")
 app.include_router(graphql_router, prefix="/api/graphql")
 app.include_router(ingestion.router, prefix="/v1")
@@ -91,9 +109,12 @@ app.include_router(merchant_analytics.router, prefix="/v1")
 app.include_router(brands.router, prefix="/v1")
 app.include_router(brands.sources_router, prefix="/v1")
 app.include_router(agents.router)
+app.include_router(developers.router, prefix="/v1")
 app.include_router(analytics.router, prefix="/v1")
 app.include_router(admin.router, prefix="/v1")
+app.include_router(feature_flags.router)
 app.include_router(webhooks.router, prefix="/v1")
+app.include_router(alertmanager_webhooks.router)
 app.include_router(metrics.router, prefix="/v1")
 app.include_router(alerts.router, prefix="/v1")
 app.include_router(images.router, prefix="/v1")
@@ -119,10 +140,21 @@ app.include_router(v2.router)
 app.include_router(saved_searches.router, prefix="/v1")
 app.include_router(clickthrough.router)
 app.include_router(referrals.router, prefix="/v1")
+app.include_router(referral_landing.router)
 app.include_router(linkless_attribution.router, prefix="/v1")
 app.include_router(scraper_assignments.router, prefix="/v1")
 app.include_router(scraper_alerts.router, prefix="/v1")
+app.include_router(scraper_refresh.router, prefix="/v1")
 app.include_router(newsletter.router, prefix="/v1")
+app.include_router(user_watchlist.router)
+app.include_router(user_alerts.router)
+app.include_router(public_alerts.router)
+app.include_router(users.router)
+app.include_router(push_notifications.router)
+app.include_router(user_notification_preferences.router)
+app.include_router(growth.router)
+app.include_router(signup.router)
+app.include_router(stats.router)
 
 
 def error_response(code: str, message: str, details: Union[dict, list, None] = None, status_code: int = 400):
@@ -141,7 +173,7 @@ async def add_request_id(request: Request, call_next):
 
 
 # AI crawler / Perplexity-friendly headers on public endpoints
-AI_INDEXABLE_PREFIXES = ("/v1/products", "/v1/categories", "/v1/search", "/v1/deals", "/v2/products", "/v2/search", "/api/docs", "/api/redoc", "/llms.txt")
+AI_INDEXABLE_PREFIXES = ("/products", "/categories", "/search", "/deals", "/v2/products", "/v2/search", "/api/docs", "/api/redoc", "/llms.txt")
 
 @app.middleware("http")
 async def add_ai_crawler_headers(request: Request, call_next):
@@ -211,10 +243,43 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 MAX_QUERY_LENGTH = 500
 
+COUNTRY_HEADER_PATTERNS = [
+    "CF-IPCountry",
+    "X-Vercel-IP-Country",
+    "X-Geo-Country",
+    "X-Geo-IP-Country",
+]
+
+
+def _get_country_from_request(request: Request) -> str:
+    for header in COUNTRY_HEADER_PATTERNS:
+        country = request.headers.get(header)
+        if country:
+            return country.upper()
+    return "unknown"
+
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     logger.exception(f"Unhandled exception: {exc}")
+    
+    if is_sentry_enabled():
+        request_id = request.headers.get("X-Request-Id", "unknown")
+        path = request.url.path
+        method = request.method
+        country = _get_country_from_request(request)
+        
+        is_p0 = isinstance(exc, (ConnectionError, TimeoutError, OSError)) or "timeout" in str(exc).lower()
+        
+        capture_exception_with_context(
+            exc=exc,
+            request_id=request_id,
+            path=path,
+            method=method,
+            country=country,
+            is_p0=is_p0,
+        )
+    
     return error_response("INTERNAL_ERROR", "An internal server error occurred", status_code=500)
 
 
@@ -314,9 +379,9 @@ async def api_root():
             "price_comparison": "GET /v1/products/{id}/price-comparison",
             "track_click": "POST /v1/products/{id}/click",
             "similar": "GET /v1/products/{id}/similar",
-            "categories": "GET /v1/categories",
-            "categories_taxonomy": "GET /v1/categories/taxonomy",
-            "categories_products": "GET /v1/categories/{id}/products",
+            "categories": "GET /categories",
+            "categories_taxonomy": "GET /categories/taxonomy",
+            "categories_products": "GET /categories/{id}/products",
             "brands": "GET /v1/brands",
             "brands_products": "GET /v1/brands/{brand_name}/products",
             "countries": "GET /v1/countries",
@@ -386,6 +451,13 @@ async def custom_swagger_ui():
 async def api_swagger_ui():
     from starlette.responses import RedirectResponse
     return RedirectResponse(url="/docs")
+
+
+@app.get("/quickstart", include_in_schema=False)
+async def quickstart_redirect():
+    """Redirect /quickstart to /docs/guides/mcp for clean public URL."""
+    from starlette.responses import RedirectResponse
+    return RedirectResponse(url="/docs/guides/mcp", status_code=301)
 
 
 @app.get("/docs/guides/mcp", include_in_schema=False)
@@ -508,3 +580,8 @@ Content-Type: application/json
 async def status_page():
     from starlette.responses import FileResponse
     return FileResponse("static/status.html")
+
+
+@app.get("/v1/test/error", tags=["system"], summary="Test endpoint to verify Sentry error tracking")
+async def test_error_endpoint():
+    raise ValueError("This is a test error for Sentry verification - BUY-3002")
