@@ -1,4 +1,4 @@
-"""Add unique constraint for price_history product/source snapshots
+"""Add unique constraint for price_history snapshot identity
 
 Revision ID: 055
 Revises: 054
@@ -18,19 +18,17 @@ def upgrade() -> None:
     op.execute(
         """
         DELETE FROM price_history ph
-        USING price_history newer
-        WHERE ph.product_id = newer.product_id
-          AND ph.source = newer.source
-          AND (
-              newer.recorded_at > ph.recorded_at
-              OR (newer.recorded_at = ph.recorded_at AND newer.id > ph.id)
-          )
+        USING price_history duplicate
+        WHERE ph.product_id = duplicate.product_id
+          AND ph.source = duplicate.source
+          AND ph.recorded_at = duplicate.recorded_at
+          AND ph.id < duplicate.id
         """
     )
     op.create_unique_constraint(
         "price_history_product_source_unique",
         "price_history",
-        ["product_id", "source"],
+        ["product_id", "source", "recorded_at"],
     )
 
 
