@@ -207,19 +207,8 @@ class RedisPerMinuteRateLimitMiddleware(BaseHTTPMiddleware):
             return response
             
         except Exception as e:
-            logger.error(
-                "Rate limit middleware error",
+            logger.warning(
+                "Rate limit middleware unavailable, failing open",
                 extra={"error": str(e)}
             )
-            from starlette.responses import JSONResponse
-            return JSONResponse(
-                status_code=503,
-                content={
-                    "error": {
-                        "code": "SERVICE_UNAVAILABLE",
-                        "message": "Rate limiting service temporarily unavailable",
-                        "details": {"retry_after": 5}
-                    }
-                },
-                headers={"Retry-After": "5"}
-            )
+            return await call_next(request)
