@@ -365,11 +365,10 @@ async def ingest_products(
         price_history_insert = insert(PriceHistory.__table__).values(price_history_records)
         await db.execute(
             price_history_insert.on_conflict_do_update(
-                constraint="price_history_product_source_unique",
+                index_elements=["product_id", "source", "recorded_at"],
                 set_={
                     "price": price_history_insert.excluded.price,
                     "currency": price_history_insert.excluded.currency,
-                    "recorded_at": price_history_insert.excluded.recorded_at,
                 },
             )
         )

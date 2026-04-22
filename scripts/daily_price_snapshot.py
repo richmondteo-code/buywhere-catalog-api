@@ -17,7 +17,7 @@ import argparse
 import asyncio
 import logging
 import sys
-from datetime import datetime, timezone, date
+from datetime import datetime, time, timezone, date
 from pathlib import Path
 from decimal import Decimal
 
@@ -51,6 +51,7 @@ async def create_daily_snapshot(dry_run: bool = True, batch_size: int = 1000) ->
     """
     async with AsyncSessionLocal() as db:
         today = date.today()
+        snapshot_recorded_at = datetime.combine(today, time.min, tzinfo=timezone.utc)
         logger.info(f"Starting daily price snapshot for {today}")
 
         if dry_run:
@@ -70,7 +71,7 @@ async def create_daily_snapshot(dry_run: bool = True, batch_size: int = 1000) ->
             return {"status": "dry_run", "pending_snapshots": pending_count}
 
         offset = 0
-        total_inserted = 0
+        total_upserted = 0
 
         while True:
             result = await db.execute(text("""
@@ -78,15 +79,10 @@ async def create_daily_snapshot(dry_run: bool = True, batch_size: int = 1000) ->
                 FROM products p
                 WHERE p.price IS NOT NULL
                 AND p.is_active = true
-                AND NOT EXISTS (
-                    SELECT 1 FROM price_history ph
-                    WHERE ph.product_id = p.id
-                    AND DATE(ph.recorded_at) = :today
-                )
                 ORDER BY p.id
                 LIMIT :batch_size
                 OFFSET :offset
-            """), {"today": today, "batch_size": batch_size, "offset": offset})
+            """), {"batch_size": batch_size, "offset": offset})
 
             rows = result.fetchall()
             if not rows:
@@ -98,25 +94,25 @@ async def create_daily_snapshot(dry_run: bool = True, batch_size: int = 1000) ->
                     "price": row.price,
                     "currency": row.currency,
                     "source": row.source,
+                    "recorded_at": snapshot_recorded_at,
                 }
                 for row in rows
             ]
 
             await db.execute(
                 text("""
-                    INSERT INTO price_history (product_id, price, currency, source)
-                    VALUES (:product_id, :price, :currency, :source)
-                    ON CONFLICT (product_id, source) DO UPDATE
+                    INSERT INTO price_history (product_id, price, currency, source, recorded_at)
+                    VALUES (:product_id, :price, :currency, :source, :recorded_at)
+                    ON CONFLICT (product_id, source, recorded_at) DO UPDATE
                     SET price = EXCLUDED.price,
-                        currency = EXCLUDED.currency,
-                        recorded_at = EXCLUDED.recorded_at
+                        currency = EXCLUDED.currency
                 """),
                 price_history_records
             )
 
-            total_inserted += len(rows)
+            total_upserted += len(rows)
             offset += batch_size
-            logger.info(f"  Inserted {len(rows)} records (total: {total_inserted})")
+            logger.info(f"  Upserted {len(rows)} records (total: {total_upserted})")
 
         await db.commit()
 
@@ -126,7 +122,7 @@ async def create_daily_snapshot(dry_run: bool = True, batch_size: int = 1000) ->
         return {
             "status": "completed",
             "date": str(today),
-            "snapshots_created": total_inserted,
+            "snapshots_upserted": total_upserted,
             "total_snapshots_today": total_today,
         }
 

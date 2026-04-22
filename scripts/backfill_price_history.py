@@ -50,14 +50,13 @@ async def backfill_price_history(dry_run: bool = True) -> dict:
             return {"status": "dry_run", "total_products": total_products}
 
         insert_sql = text("""
-            INSERT INTO price_history (product_id, price, currency, source)
-            SELECT id, price, currency, source
+            INSERT INTO price_history (product_id, price, currency, source, recorded_at)
+            SELECT id, price, currency, source, COALESCE(data_updated_at, updated_at, created_at, NOW())
             FROM products
             WHERE price IS NOT NULL
-            ON CONFLICT (product_id, source) DO UPDATE
+            ON CONFLICT (product_id, source, recorded_at) DO UPDATE
             SET price = EXCLUDED.price,
-                currency = EXCLUDED.currency,
-                recorded_at = EXCLUDED.recorded_at
+                currency = EXCLUDED.currency
         """)
 
         result = await db.execute(insert_sql)
