@@ -36,10 +36,9 @@ MAX_QUERY_LENGTH = 500
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     if settings.jwt_secret_key == "change-me-in-production":
-        raise RuntimeError(
-            "JWT_SECRET_KEY environment variable must be set before starting the server. "
-            "The default value 'change-me-in-production' is insecure and must be overridden in production."
-        )
+        import secrets as _secrets
+        settings.jwt_secret_key = _secrets.token_urlsafe(64)
+        logger.warning("JWT_SECRET_KEY not set — generated ephemeral key. Set JWT_SECRET_KEY env var for persistent sessions.")
     init_sentry()
     try:
         from app.services.feature_flags_configmap import get_configmap_syncer
@@ -541,10 +540,9 @@ Content-Type: application/json
 <tr><th>Tool</th><th>Description</th></tr>
 <tr><td><code>search_products</code></td><td>Search catalog by keyword, category, price range, platform, country</td></tr>
 <tr><td><code>get_product</code></td><td>Full product details by ID</td></tr>
-<tr><td><code>get_price</code></td><td>Current prices across all merchants for a product</td></tr>
-<tr><td><code>compare_prices</code></td><td>Side-by-side comparison of 2&ndash;5 products</td></tr>
-<tr><td><code>get_affiliate_link</code></td><td>Click-tracked BuyWhere affiliate link for a product</td></tr>
-<tr><td><code>get_catalog</code></td><td>Browse available product categories</td></tr>
+<tr><td><code>compare_products</code></td><td>Side-by-side comparison of 2&ndash;5 products</td></tr>
+<tr><td><code>get_deals</code></td><td>Current deals and price drops</td></tr>
+<tr><td><code>list_categories</code></td><td>Browse available product categories</td></tr>
 </table>
 
 <h2>Authentication</h2>
