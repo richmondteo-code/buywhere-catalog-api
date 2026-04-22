@@ -51,6 +51,12 @@ Platform fashion feeds are messy: inconsistent sizing, variable condition fields
 
 ### Affiliate-Ready Links
 
+## Related Guides
+
+- [Best Smartwatches Singapore 2026](/guides/best-smartwatches-singapore-2026)
+- [Best Wireless Earbuds Under $100](/guides/best-wireless-earbuds-under-100-2026)
+- [Best Running Shoes Singapore 2026](/guides/best-running-shoes-singapore-2026)
+
 Generate purchase URLs with affiliate attribution for supported merchants. Earn commissions on redirected sales without negotiating individual affiliate partnerships.
 
 ---

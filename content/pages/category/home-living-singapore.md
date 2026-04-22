@@ -51,6 +51,12 @@ Platform product feeds are messy: inconsistent titles, missing specifications, v
 
 ### Affiliate-Ready Links
 
+## Related Guides
+
+- [Best Smartwatches Singapore 2026](/guides/best-smartwatches-singapore-2026)
+- [Best Wireless Earbuds Under $100](/guides/best-wireless-earbuds-under-100-2026)
+- [Best Air Fryers Singapore 2026](/guides/best-air-fryers-singapore-2026)
+
 Generate purchase URLs with affiliate attribution for supported merchants. Earn commissions on redirected sales without negotiating individual affiliate partnerships.
 
 ---

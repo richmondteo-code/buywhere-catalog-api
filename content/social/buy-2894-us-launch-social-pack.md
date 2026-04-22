@@ -1,4 +1,4 @@
-# BUY-2894: US Launch Social Media Content Pack
+# BUY-2894: US Beta Social Media Content Pack
 ## 10 Posts for Twitter/X, LinkedIn, Reddit
 
 ---
@@ -6,11 +6,11 @@
 ## Twitter/X Posts (4)
 
 ### Post 1
-🚀 Just launched: BuyWhere's agent-native product catalog for US developers building AI shopping agents!
+Just launched: BuyWhere US beta for developers and deal hunters building AI shopping agents.
 
-No more scraper hell. No more inconsistent data. Just 600K+ normalized US products via clean API.
+The first version is curated, not massive: top deal picks from Amazon, Nike, Zappos, Ulta, Costco and more, with current price, list price, and savings math.
 
-If you're building price bots, deal finders, or shopping agents - this is your data layer. #AI #ecommerce #API
+If you're building price bots, deal finders, or shopping agents, this is the first savings-focused slice of the data layer.
 
 ### Post 2
 Building AI shopping agents for the US market? You're probably fighting:
@@ -20,18 +20,18 @@ Building AI shopping agents for the US market? You're probably fighting:
 🚫 Price data that's stale by the time you scrape it
 🚫 Affiliate link management nightmares
 
-We solved this so you can focus on agent intelligence, not infrastructure.
+Our US beta starts with curated deals so you can test the workflow before we widen coverage: search, compare, explain the savings, then open the retailer.
 
 ### Post 3
 BuyWhere US gives you:
 
-✅ 600K+ products across Electronics, Fashion, Home, Sports & Beauty
-✅ Real-time prices from Amazon US, Walmart, Target, Best Buy
-✅ Schema.org JSON-LD - LLMs understand it natively
-✅ Built-in affiliate tracking (Amazon Associates + more)
+✅ Top 20 curated launch deals
+✅ Current price, list price, and discount %
+✅ Beta sources including Amazon, Nike, Zappos, Ulta and Costco
+✅ Agent-friendly response shapes
 ✅ MCP server for Claude Desktop/Cursor integration
 
-All normalized. All agent-ready.
+Focused, explainable, and agent-ready.
 
 ### Post 4
 Ready to build?
@@ -57,19 +57,21 @@ Discord: discord.gg/buywhere
 
 **Body:**
 
-Six months ago, I watched an AI agent struggle to compare AirPods Pro prices across Amazon, Walmart, and Target in the US.
+Six months ago, I watched an AI agent struggle to explain whether a US "deal" was actually worth buying.
 
-It returned three different prices. None were current.
+It returned a wall of listings. None explained the current price, list price, or why the savings mattered.
 
 That's when I realized: even in the US with its mature e-commerce infrastructure, the product data layer for AI agents is broken. Anti-bot measures block scrapers. HTML changes break parsers. Affiliate tracking is manual and error-prone.
 
-So we adapted BuyWhere for the US market — a product catalog API that gives AI agents direct access to 600K+ normalized products from Amazon US, Walmart, Target, Best Buy, and more.
+So we adapted BuyWhere for the US market as a curated beta first, not a bloated catalog claim.
+
+The first launch surface is simple: compare prices on top deals from Amazon, Nike, Zappos and more.
 
 What that means practically:
-- Schema.org JSON-LD responses that LLMs parse without custom instructions
-- MCP server so your Claude/GPT-4 agent can search US products as a tool call
-- Real-time prices with availability signals and affiliate-ready links
-- Automatic handling of anti-bot measures and HTML changes
+- Current price, list price, and savings percentage in one place
+- Top 20 deal picks to start from instead of a thin mass catalog
+- MCP-ready workflows for AI shopping agents
+- Beta coverage that expands category by category as deal quality improves
 
 If you're building US-focused shopping agents, deal bots, or price comparison tools — I'd love your feedback on our US launch.
 
@@ -103,7 +105,7 @@ What that means for US developers:
 - MCP server for instant tool integration in Claude Desktop/Cursor
 - Handle anti-bot measures at our infrastructure layer, not yours
 
-Coverage: Amazon US, Walmart, Target, Best Buy + 20+ more retailers. 600K+ products across Electronics, Fashion, Home, Sports & Beauty.
+Coverage starts with Amazon US, Nike US, Zappos US, Ulta US, Costco US and more. The goal for beta is useful price comparison, not a vanity product count.
 
 If you're building anything that involves US product recommendations, price comparison, or shopping assistance with AI — the BuyWhere US API might eliminate 80% of your infrastructure work.
 
@@ -154,11 +156,11 @@ Try BuyWhere US free: api.buywhere.ai
 **Body:**
 If you're building AI agents that shop, compare prices, or recommend products in the US market - I want to show you something that might save you months of infrastructure work.
 
-We just launched BuyWhere's US product catalog API with 600K+ normalized products from Amazon US, Walmart, Target, Best Buy, and more.
+We just launched BuyWhere's US beta with curated deal picks from Amazon US, Nike, Zappos, Ulta, Costco, and more.
 
 What makes it different:
 ✅ Agent-native: Returns Schema.org JSON-LD that LLMs understand without custom parsing
-✅ Real-time prices: Updates every 15-60 minutes depending on source
+✅ Curated savings: Current price, list price, and discount percentage
 ✅ Built-in affiliate tracking: Automatic commission earning from Amazon Associates + more
 ✅ MCP server: Connect to Claude Desktop in 2 minutes for native tool use
 ✅ Zero maintenance: We handle anti-bot measures, HTML changes, and data normalization
@@ -171,7 +173,7 @@ curl "https://api.buywhere.ai/v2/search?q=AirPods+Pro+2&region=us" \
 
 Returns structured data with current price, availability, seller info, and affiliate-ready links.
 
-We're offering the first 100 US developers 50,000 free requests/month (normally $50/month) plus dedicated onboarding.
+We're opening the beta to developers who want to test deal discovery and price-comparison workflows before broad catalog expansion.
 
 Docs: docs.buywhere.ai
 Free tier: api.buywhere.ai
@@ -219,8 +221,8 @@ If you're working on a side project that involves:
 This might save you significant backend work.
 
 Features:
-- 600K+ US products from Amazon, Walmart, Target, Best Buy
-- Real-time pricing with availability signals
+- Curated US deal picks from Amazon, Nike, Zappos and more
+- Current price, list price, and savings signals
 - Schema.org JSON-LD output (LLM-friendly)
 - Built-in affiliate link generation
 - Python SDK and MCP server integration
