@@ -236,6 +236,7 @@ class PriceHistory(Base):
 
     __table_args__ = (
         Index("idx_price_history_product_recorded", "product_id", "recorded_at"),
+        UniqueConstraint("product_id", "source", name="price_history_product_source_unique"),
     )
 
 
