@@ -12,6 +12,10 @@ on:
         default: 'false'
         type: boolean
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -25,7 +29,7 @@ jobs:
     name: Build Docker Image
     runs-on: ubuntu-latest
     outputs:
-      image_tag: ${{ steps.meta.outputs.tags }}
+      image_tag: ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
       deployment_id: ${{ steps.deploy_info.outputs.deployment_id }}
       version: ${{ steps.deploy_info.outputs.version }}
     steps:
@@ -56,9 +60,11 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          dockerfile: Dockerfile
+          file: Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
+            ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -105,7 +111,7 @@ jobs:
         run: |
           GCR_IMAGE="gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.CLOUD_RUN_SERVICE }}:sha-${{ github.sha }}"
           docker tag ${{ needs.build.outputs.image_tag }} $GCR_IMAGE
-          echo "GCR_IMAGE=$GCR_IMAGE" >> $GITHUB_OUTPUT
+          echo "GCR_IMAGE=$GCR_IMAGE" >> $GITHUB_ENV
 
       - name: Push to Google Container Registry
         run: docker push $GCR_IMAGE
