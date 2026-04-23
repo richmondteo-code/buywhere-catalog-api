@@ -7,6 +7,7 @@ from sqlalchemy import func, select, and_, or_, Integer
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.product import Product
+from app.services.product_freshness import build_catalog_freshness_monitor_report
 
 
 FRESINESS_THRESHOLD_DAYS = 7
@@ -332,6 +333,7 @@ async def get_catalog_health(db: AsyncSession) -> dict:
     deduplication = await compute_deduplication(db)
     freshness = await compute_freshness(db)
     image_health = await compute_image_health(db)
+    freshness_monitor = await build_catalog_freshness_monitor_report()
 
     platform_totals_result = await db.execute(
         select(Product.source, func.count(Product.id))
@@ -350,4 +352,5 @@ async def get_catalog_health(db: AsyncSession) -> dict:
         "deduplication": deduplication,
         "freshness": freshness,
         "image_health": image_health,
+        "freshness_monitor": freshness_monitor,
     }

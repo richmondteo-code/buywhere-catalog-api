@@ -82,6 +82,55 @@ class FreshnessReport(BaseModel):
     sample_stale: List[StaleProductInfo]
 
 
+class ProductCountSnapshot(BaseModel):
+    source: str
+    product_count: int
+    snapshot_time: datetime
+    hours_since: Optional[float] = None
+
+
+class ProductCountTrendPoint(BaseModel):
+    snapshot_time: datetime
+    product_count: int
+    hours_ago: Optional[float] = None
+
+
+class ProductCountTrend(BaseModel):
+    trend: List[ProductCountTrendPoint]
+    is_stale: bool
+    hours_flat: float
+
+
+class StalledIngestionAlert(BaseModel):
+    type: str
+    source: str
+    message: str
+    hours_flat: float
+    current_count: int
+    snapshot_time: Optional[datetime] = None
+
+
+class UnprocessedNdjsonFile(BaseModel):
+    platform: str
+    file_path: str
+    file_size_mb: float
+    last_modified: datetime
+    hours_since_scrape: float
+    last_ingestion: Optional[datetime] = None
+
+
+class CatalogFreshnessMonitorReport(BaseModel):
+    generated_at: datetime
+    source: str
+    flat_threshold_hours: int
+    min_product_count_change: int
+    latest_snapshot: Optional[ProductCountSnapshot] = None
+    trend: ProductCountTrend
+    stalled_ingestion: Optional[StalledIngestionAlert] = None
+    unprocessed_ndjson_files: List[UnprocessedNdjsonFile]
+    unprocessed_ndjson_count: int
+
+
 class CatalogHealthReport(BaseModel):
     generated_at: datetime
     total_indexed: int
@@ -89,6 +138,7 @@ class CatalogHealthReport(BaseModel):
     compliance: SchemaComplianceReport
     deduplication: DeduplicationReport
     freshness: FreshnessReport
+    freshness_monitor: Optional[CatalogFreshnessMonitorReport] = None
 
 
 class ScraperHealth(BaseModel):
