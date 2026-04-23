@@ -28,7 +28,7 @@ def get_request_context() -> Request | None:
     return getattr(_thread_local, 'request', None)
 
 
-def rate_limit_from_request(request: Request) -> str:
+def rate_limit_from_request(request: Request = None) -> str:
     """Determine rate limit based on API key tier or fallback to IP.
     
     This function is called by slowapi with the key from key_func.
@@ -119,7 +119,7 @@ def get_key_identifier(request: Request) -> str:
 limiter = Limiter(key_func=get_key_identifier)
 
 
-def ip_rate_limit_from_request(request: Request) -> str:
+def ip_rate_limit_from_request(request: Request = None) -> str:
     """Return IP-based rate limit string. Always uses IP, not API key."""
     return WATCHLIST_RATE_LIMIT
 
