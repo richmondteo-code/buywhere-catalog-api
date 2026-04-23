@@ -49,21 +49,25 @@ def _get_client_ip(request: Request) -> str:
 
 
 async def _check_rate_limit(ip: str) -> tuple[bool, int]:
-    redis = await get_redis()
-    key = f"reglimit:auth_register:{ip}"
-    now = time.time()
-    window_start = now - RATE_WINDOW
+    try:
+        redis = await get_redis()
+        key = f"reglimit:auth_register:{ip}"
+        now = time.time()
+        window_start = now - RATE_WINDOW
 
-    pipe = redis.pipeline()
-    pipe.zremrangebyscore(key, 0, window_start)
-    pipe.zadd(key, {str(now): now})
-    pipe.zcard(key)
-    pipe.expire(key, RATE_WINDOW)
-    results = await pipe.execute()
+        pipe = redis.pipeline()
+        pipe.zremrangebyscore(key, 0, window_start)
+        pipe.zadd(key, {str(now): now})
+        pipe.zcard(key)
+        pipe.expire(key, RATE_WINDOW)
+        results = await pipe.execute()
 
-    count = results[2]
-    ttl = await redis.ttl(key)
-    return count <= RATE_LIMIT, ttl
+        count = results[2]
+        ttl = await redis.ttl(key)
+        return count <= RATE_LIMIT, ttl
+    except Exception:
+        # Fail open when Redis is unavailable
+        return True, 0
 
 
 @router.post("/register", status_code=201, summary="Legacy agent self-registration (compat)")

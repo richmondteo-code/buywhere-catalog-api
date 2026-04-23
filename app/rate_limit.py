@@ -1,3 +1,4 @@
+import threading
 import time
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -12,6 +13,69 @@ from app.logging_centralized import get_logger
 
 settings = get_settings()
 logger = get_logger("api-service")
+
+
+_thread_local = threading.local()
+
+
+def set_request_context(request: Request):
+    """Set the request context for rate limit calculation."""
+    _thread_local.request = request
+
+
+def get_request_context() -> Request | None:
+    """Get the request from thread-local storage."""
+    return getattr(_thread_local, 'request', None)
+
+
+def rate_limit_from_request(request: Request) -> str:
+    """Determine rate limit based on API key tier or fallback to IP.
+    
+    This function is called by slowapi with the key from key_func.
+    We retrieve the request from thread-local storage set by middleware.
+    """
+    request = get_request_context()
+    
+    if request is None:
+        return f"{settings.global_default_rate_limit}/minute"
+    
+    api_key: ApiKey | None = getattr(request.state, "api_key", None)
+    is_us = _is_us_traffic(request)
+    
+    if api_key:
+        if api_key.rate_limit is not None:
+            limit = int(api_key.rate_limit)
+            if is_us:
+                limit = _get_us_rate_limit(limit)
+            return f"{limit}/minute"
+        tier = getattr(api_key, 'tier', 'basic')
+        if tier == 'enterprise':
+            base = 20000
+        elif tier == 'pro':
+            base = 5000
+        elif tier == 'basic':
+            base = 1000
+        elif tier == 'free':
+            base = 100
+        else:
+            base = settings.global_default_rate_limit
+        if is_us:
+            base = _get_us_rate_limit(base)
+        return f"{base}/minute"
+    
+    path = request.url.path
+    if '/search' in path:
+        limit = settings.us_search_rate_limit if is_us else settings.global_search_rate_limit
+        return f"{limit}/minute"
+    elif '/products/' in path and request.method == 'GET':
+        limit = settings.us_product_rate_limit if is_us else settings.global_product_rate_limit
+        return f"{limit}/minute"
+    elif '/watchlist' in path:
+        limit = settings.us_watchlist_rate_limit if is_us else settings.global_watchlist_rate_limit
+        return f"{limit}/minute"
+    
+    limit = settings.us_default_rate_limit if is_us else settings.global_default_rate_limit
+    return f"{limit}/minute"
 
 SEARCH_RATE_LIMIT = f"{settings.global_search_rate_limit}/minute"
 PRODUCT_DETAIL_RATE_LIMIT = f"{settings.global_product_rate_limit}/minute"
@@ -55,50 +119,6 @@ def get_key_identifier(request: Request) -> str:
 limiter = Limiter(key_func=get_key_identifier)
 
 
-def rate_limit_from_request(request: Request) -> str:
-    """Determine rate limit based on API key tier or fallback to IP.
-    
-    US traffic gets higher limits via us_rate_limit_multiplier for launch surge handling.
-    """
-    api_key: ApiKey | None = getattr(request.state, "api_key", None)
-    is_us = _is_us_traffic(request)
-    
-    if api_key:
-        if api_key.rate_limit:
-            limit = api_key.rate_limit
-            if is_us:
-                limit = _get_us_rate_limit(limit)
-            return f"{limit}/minute"
-        tier = getattr(api_key, 'tier', 'basic')
-        if tier == 'enterprise':
-            base = 20000
-        elif tier == 'pro':
-            base = 5000
-        elif tier == 'basic':
-            base = 1000
-        elif tier == 'free':
-            base = 100
-        else:
-            base = settings.global_default_rate_limit
-        if is_us:
-            base = _get_us_rate_limit(base)
-        return f"{base}/minute"
-    
-    path = request.url.path
-    if '/search' in path:
-        limit = settings.us_search_rate_limit if is_us else settings.global_search_rate_limit
-        return f"{limit}/minute"
-    elif '/products/' in path and request.method == 'GET':
-        limit = settings.us_product_rate_limit if is_us else settings.global_product_rate_limit
-        return f"{limit}/minute"
-    elif '/watchlist' in path:
-        limit = settings.us_watchlist_rate_limit if is_us else settings.global_watchlist_rate_limit
-        return f"{limit}/minute"
-    
-    limit = settings.us_default_rate_limit if is_us else settings.global_default_rate_limit
-    return f"{limit}/minute"
-
-
 def ip_rate_limit_from_request(request: Request) -> str:
     """Return IP-based rate limit string. Always uses IP, not API key."""
     return WATCHLIST_RATE_LIMIT
@@ -106,14 +126,20 @@ def ip_rate_limit_from_request(request: Request) -> str:
 
 class TierRateLimitMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        response = await call_next(request)
         api_key: ApiKey | None = getattr(request.state, "api_key", None)
         
+        tier = 'basic'
+        rate_limit = None
         if api_key:
             tier = getattr(api_key, 'tier', 'basic')
+            rate_limit = getattr(api_key, 'rate_limit', None)
+        
+        response = await call_next(request)
+        
+        if api_key:
             response.headers["X-RateLimit-Tier"] = tier
-            if api_key.rate_limit:
-                response.headers["X-RateLimit-Limit"] = str(api_key.rate_limit)
+            if rate_limit:
+                response.headers["X-RateLimit-Limit"] = str(rate_limit)
         
         return response
 
@@ -158,6 +184,8 @@ class RedisPerMinuteRateLimitMiddleware(BaseHTTPMiddleware):
             key_suffix = "default"
         
         # Get the limit from the rate_limit_from_request function (which includes tier and US multiplier)
+        # Set the request context so the rate limit function can access it via thread-local
+        set_request_context(request)
         limit_str = rate_limit_from_request(request)
         try:
             limit = int(limit_str.split('/')[0])
