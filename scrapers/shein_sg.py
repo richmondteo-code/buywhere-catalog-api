@@ -333,6 +333,10 @@ class SHEINScraper:
                     raise SheinRiskChallengeError(
                         f"Risk challenge on {final_url} while fetching {url}"
                     )
+                if response.status_code == 403 and "<html" not in text.lower():
+                    raise SheinRiskChallengeError(
+                        f"HTML fetch blocked with 403 for {url}"
+                    )
                 if response.status_code >= 400 and "<html" not in text.lower():
                     response.raise_for_status()
                 return text
