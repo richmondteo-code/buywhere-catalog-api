@@ -9,7 +9,7 @@ from typing import List, Optional, Dict
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import StreamingResponse, RedirectResponse, JSONResponse
-from sqlalchemy import func, select, text
+from sqlalchemy import case, func, select, text
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -84,7 +84,7 @@ from app.schemas.product import (
     ProductStockResponse, ProductURLAvailabilityResponse,
     FacetCounts, FacetBucket, RatingFacetBucket, PriceFacetBucket,
     ProductMatchesResponse, ProductReviewsResponse, ReviewSource, SampleReview,
-    SimilarProductsResponse, SimilarMatch,
+    SimilarProductsResponse,
     RatingDistributionBucket,
     BulkImportRequest, BulkImportResponse, BulkImportError,
     CatalogStats,
@@ -254,6 +254,34 @@ def _build_compare_match(p: Product, score: float) -> CompareMatch:
         updated_at=p.updated_at,
         match_score=round(score, 3),
     )
+
+
+def _similar_price_expression(source_product: Product):
+    if source_product.price_sgd is not None or source_product.currency == "SGD":
+        return func.coalesce(
+            Product.price_sgd,
+            case((Product.currency == "SGD", Product.price), else_=None),
+            Product.price,
+        )
+
+    if source_product.price_usd is not None or source_product.currency == "USD":
+        return func.coalesce(
+            Product.price_usd,
+            case((Product.currency == "USD", Product.price), else_=None),
+            Product.price,
+        )
+
+    return Product.price
+
+
+def _source_similar_price(source_product: Product) -> Decimal:
+    if source_product.price_sgd is not None:
+        return Decimal(str(source_product.price_sgd))
+    if source_product.currency == "SGD":
+        return Decimal(str(source_product.price))
+    if source_product.price_usd is not None:
+        return Decimal(str(source_product.price_usd))
+    return Decimal(str(source_product.price))
 
 
 def _get_highlights(matches: List[CompareMatch]) -> Optional[CompareHighlights]:
@@ -1477,7 +1505,7 @@ async def get_product(
 @router.get(
     "/{product_id}/similar",
     response_model=SimilarProductsResponse,
-    summary="Get similar products based on category, brand, and price",
+    summary="Get similar products across merchants using category and price proximity",
 )
 @limiter.limit(rate_limit_from_request)
 async def get_similar_products(
@@ -1506,84 +1534,34 @@ async def get_similar_products(
     if not source_product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
 
-    source_price = float(source_product.price)
-    price_tolerance = 0.25
-    min_price = source_price * (1 - price_tolerance)
-    max_price = source_price * (1 + price_tolerance)
+    if not source_product.category:
+        response = SimilarProductsResponse(product_id=product_id, items=[], total=0)
+        await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
+        return response
+
+    source_price = _source_similar_price(source_product)
+    min_price = source_price * Decimal("0.70")
+    max_price = source_price * Decimal("1.30")
+    similar_price = _similar_price_expression(source_product)
 
     query = (
         select(Product)
         .where(Product.is_active == True)
         .where(Product.id != product_id)
+        .where(Product.category == source_product.category)
+        .where(Product.merchant_id != source_product.merchant_id)
+        .where(similar_price >= min_price)
+        .where(similar_price <= max_price)
+        .order_by(func.abs(similar_price - source_price).asc(), Product.updated_at.desc())
+        .limit(limit)
     )
-
-    conditions = []
-    if source_product.category:
-        conditions.append(Product.category == source_product.category)
-    if source_product.brand:
-        conditions.append(Product.brand.ilike(f"%{source_product.brand}%"))
-    conditions.append(Product.price >= min_price)
-    conditions.append(Product.price <= max_price)
-
-    for cond in conditions:
-        query = query.where(cond)
-
-    query = query.order_by(Product.updated_at.desc()).limit(limit * 3)
     result = await db.execute(query)
     candidates = result.scalars().all()
 
-    scored = []
-    for p in candidates:
-        score = 0.0
-        reasons = []
-        if p.category and source_product.category and p.category == source_product.category:
-            score += 0.5
-            reasons.append("same_category")
-        if p.brand and source_product.brand and p.brand.lower() == source_product.brand.lower():
-            score += 0.3
-            reasons.append("same_brand")
-        price_val = float(p.price)
-        if min_price <= price_val <= max_price:
-            price_score = 1.0 - (abs(price_val - source_price) / source_price) if source_price > 0 else 0.0
-            score += price_score * 0.2
-            reasons.append("similar_price")
-        scored.append((p, score, reasons))
-
-    scored.sort(key=lambda x: x[1], reverse=True)
-    top_items = scored[:limit]
-
-    items = []
-    for p, score, reasons in top_items:
-        if not reasons:
-            reasons.append("similar_price")
-        items.append(SimilarMatch(
-            id=p.id,
-            sku=p.sku,
-            source=p.source,
-            merchant_id=p.merchant_id,
-            name=p.title,
-            description=p.description,
-            price=p.price,
-            currency=p.currency,
-            buy_url=p.url,
-            affiliate_url=get_affiliate_url(p.source, p.url) if p.url else None,
-            image_url=p.image_url,
-            brand=p.brand,
-            category=p.category,
-            category_path=p.category_path,
-            rating=p.rating,
-            is_available=p.is_available,
-            last_checked=p.last_checked,
-            metadata=p.metadata_,
-            updated_at=p.updated_at,
-            similarity_score=round(score, 3),
-            match_reasons=reasons,
-        ))
-
     response = SimilarProductsResponse(
         product_id=product_id,
-        items=items,
-        total=len(items),
+        items=[_map_product(product) for product in candidates],
+        total=len(candidates),
     )
 
     await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
@@ -2009,72 +1987,6 @@ async def get_price_prediction(
         trend=_direction(historical_trend_pct) if historical_trend_pct is not None else "stable",
         trend_pct=historical_trend_pct,
         data_points=len(rows),
-    )
-    await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=3600)
-    return response
-
-
-@router.get("/{product_id}/similar", response_model=RecommendationsResponse, summary="Find similar products based on TF-IDF title similarity, category match, and price proximity")
-@limiter.limit(rate_limit_from_request)
-async def get_similar_products(
-    request: Request,
-    product_id: int,
-    limit: int = Query(10, ge=1, le=20, description="Number of similar products to return"),
-    db: AsyncSession = Depends(get_db),
-    api_key: ApiKey = Depends(get_current_api_key),
-) -> RecommendationsResponse:
-    request.state.api_key = api_key
-
-    cache_key = cache.build_cache_key(
-        "products:similar",
-        product_id=product_id,
-        limit=limit,
-    )
-    cached = await cache.cache_get(cache_key)
-    if cached:
-        return RecommendationsResponse(**cached)
-
-    source_result = await db.execute(
-        select(Product).where(Product.id == product_id, Product.is_active == True)
-    )
-    source_product = source_result.scalar_one_or_none()
-    if not source_product:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
-
-    from app.recommendations import RecommendationEngine
-    engine = RecommendationEngine(db)
-    similar = await engine.find_similar(source_product, limit=limit)
-
-    items = []
-    for product, score in similar:
-        items.append(RecommendationMatch(
-            id=product.id,
-            sku=product.sku,
-            source=product.source,
-            merchant_id=product.merchant_id,
-            name=product.title,
-            description=product.description,
-            price=product.price,
-            currency=product.currency,
-            buy_url=product.url,
-            affiliate_url=get_affiliate_url(product.source, product.url) if product.url else None,
-            image_url=product.image_url,
-            brand=product.brand,
-            category=product.category,
-            category_path=product.category_path,
-            rating=product.rating,
-            is_available=product.is_available,
-            last_checked=product.last_checked,
-            metadata=product.metadata_,
-            updated_at=product.updated_at,
-            relevance_score=score,
-        ))
-
-    response = RecommendationsResponse(
-        source_product_id=source_product.id,
-        source_product_name=source_product.title,
-        items=items,
-        total=len(items),
     )
     await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=3600)
     return response
