@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from typing import Union
 
-from fastapi import FastAPI, Request, status
+from fastapi import FastAPI, Request, Response, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from slowapi import _rate_limit_exceeded_handler
@@ -155,6 +155,16 @@ app.include_router(user_notification_preferences.router)
 app.include_router(growth.router)
 app.include_router(signup.router)
 app.include_router(stats.router)
+
+# /health alias — monitors and Docker HEALTHCHECK use this; actual logic is at /v1/health
+@app.get("/health", include_in_schema=False)
+async def health_alias():
+    return {"status": "ok"}
+
+
+@app.head("/health", include_in_schema=False)
+async def health_alias_head():
+    return Response(status_code=200)
 
 
 def error_response(code: str, message: str, details: Union[dict, list, None] = None, status_code: int = 400):
