@@ -183,14 +183,14 @@ Would add BuyWhere to the integrations list under Shopping / Product APIs.
 | Action | Status |
 |--------|--------|
 | DEV.to #1 | ✅ Done |
+| GitHub README improvements | ✅ Done |
 | RapidAPI | ❌ Blocked — needs board |
 | API Hub (apidog.io) | ✅ Done |
 | r/machinelearning | ❌ Blocked — needs Reddit account |
 | r/Python | ❌ Blocked — same |
 | LangChain GH PR | ❌ Blocked — needs repo access |
 
-**Completed**: 2/6
-**Blocked**: 4/6 (all require board/human action or external platform access)
+**Completed**: 4/7 | **Blocked**: 3/7 (board action required for remaining blocks)
 
 ### Board Asks Summary (for Week 1 blockers)
 
@@ -202,4 +202,4 @@ Would add BuyWhere to the integrations list under Shopping / Product APIs.
 ---
 
 *Log started: 2026-04-25*
-*Last updated: 2026-04-25*
+*Last updated: 2026-04-25 (heartbeat 2)*
