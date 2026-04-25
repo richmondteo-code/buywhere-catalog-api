@@ -2,21 +2,22 @@ import csv
 import io
 import json
 import logging
+import re
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import List, Optional, Dict
 
 import httpx
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
 from fastapi.responses import StreamingResponse, RedirectResponse, JSONResponse
-from sqlalchemy import case, func, select, text
+from sqlalchemy import and_, case, func, or_, select, text
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.affiliate_links import get_affiliate_url, get_underlying_affiliate_url, is_valid_url
 from app.auth import get_current_api_key
 from app.database import get_db
-from app.models.product import ApiKey, Click, Product, PriceHistory, ProductView, ProductMatch, ProductReview, ProductQuestion, ProductAnswer
+from app.models.product import ApiKey, Click, Product, PriceHistory, ProductMatch, ProductReview, ProductQuestion, ProductAnswer
 from app.rate_limit import limiter, rate_limit_from_request
 
 AVAILABILITY_CACHE_TTL = 3600
@@ -68,7 +69,7 @@ def _is_stale(last_checked: Optional[datetime]) -> bool:
 from app.schemas.product import (
     ProductListResponse, ProductResponse,
     CompareMatrixRequest, CompareMatrixResponse, CompareMatrixEntry,
-    TrendingResponse, TrendingMatch,
+    TrendingResponse,
     CompareDiffRequest, CompareDiffResponse, CompareDiffEntry, FieldDiff,
     PriceHistoryResponse, PriceHistoryEntry, PriceStats, PricePredictionResponse,
     RecommendationMatch, RecommendationsResponse,
@@ -91,17 +92,161 @@ from app.schemas.product import (
     QuestionCreateRequest, AnswerCreateRequest,
     QuestionResponse, AnswerResponse, QuestionDetailResponse, QuestionListResponse,
     V1ProductSearchResponse, V1ProductSearchItem, V1ProductSearchMeta,
+    ProductAutocompleteResponse,
 )
 from app.schemas.product import CompareResponse
 from app.schemas.product import CompareMatch
 from app.schemas.product import CompareHighlights
 from app import cache
 from app.currency import convert_price, build_currency_headers, SUPPORTED_CURRENCIES, get_exchange_rate
+from app.middleware.cache_headers import build_last_modified, build_product_etag, etag_matches
 from app.routers.deals import DealItem, DealsResponse as DealsResponseBase
+from app.services.trending import get_trending_scores, record_trending_product_event
+from app.services.typesense_search import typesense_autocomplete
 
 logger = logging.getLogger("buywhere_api")
 
 router = APIRouter(prefix="/products", tags=["products"])
+LOW_CONFIDENCE_MATCH_THRESHOLD = 0.90
+BATCH_PRODUCT_FIELD_ALIASES = {"url": "buy_url"}
+BATCH_PRODUCT_DEFAULT_FIELDS = ["id", "name", "price", "currency", "url"]
+
+COUNTRY_NAMES = {
+    "SG": "Singapore",
+    "MY": "Malaysia",
+    "PH": "Philippines",
+    "TH": "Thailand",
+    "VN": "Vietnam",
+    "US": "United States",
+}
+
+REGION_NAMES = {
+    "SG": "Singapore",
+    "US": "United States",
+    "VN": "Vietnam",
+    "TH": "Thailand",
+    "MY": "Malaysia",
+}
+
+SOURCE_COUNTRY_HINTS = {
+    "SG": ("shopee_sg", "lazada_sg", "carousell_sg", "qoo10_sg", "amazon.sg", "carousell.sg", "decathlon.sg"),
+    "MY": ("shopee_my", "lazada_my", "carousell_my"),
+    "PH": ("shopee_ph", "lazada_ph"),
+    "TH": ("shopee_th", "lazada_th"),
+    "VN": ("shopee_vn", "lazada_vn"),
+    "US": (
+        "amazon_us",
+        "walmart_us",
+        "target_us",
+        "bestbuy_us",
+        "chewy_us",
+        "costco_us",
+        "homedepot_us",
+        "nordstrom_us",
+        "macys_us",
+        "sephora_us",
+        "lowes_us",
+        "kroger_us",
+        "cvs_us",
+        "walgreens_us",
+        "kohls_us",
+        "adidas_us",
+        "etsy_us",
+        "bhphoto_us",
+        "zappos_us",
+        "wayfair_us",
+        "amazon.com",
+        "bestbuy.com",
+    ),
+}
+
+ACCESSORY_TERMS = (
+    "accessory",
+    "adapter",
+    "armband",
+    "battery",
+    "cable",
+    "case",
+    "charger",
+    "container",
+    "cover",
+    "desk",
+    "filter",
+    "holder",
+    "liner",
+    "mount",
+    "organizer",
+    "paper",
+    "part",
+    "replacement",
+    "scoop",
+    "stand",
+    "straw",
+    "strap",
+    "table",
+    "tray",
+)
+
+
+def _merchant_edge_case_for_product(p: Product) -> Optional[str]:
+    merchant_id = (p.merchant_id or "").strip()
+    source = (p.source or "").strip()
+
+    if not merchant_id:
+        return "empty_merchant_id"
+    if source and merchant_id == source:
+        return "duplicate_merchant"
+    if merchant_id.lower() in {"unknown", "unknown_merchant", "n/a", "na", "none", "null"}:
+        return "unknown_merchant"
+    return None
+
+
+def _normalized_codes(value: Optional[str], valid_codes: Dict[str, str], label: str) -> Optional[List[str]]:
+    if value is None:
+        return None
+    codes = [token.strip().upper() for token in value.split(",") if token.strip()]
+    invalid = [code for code in codes if code not in valid_codes]
+    if invalid:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Invalid {label} code(s): {', '.join(invalid)}. Supported: {', '.join(valid_codes.keys())}",
+        )
+    return codes
+
+
+def _source_hint_condition(source_column, hint: str):
+    source_lc = func.lower(source_column)
+    return or_(source_lc == hint, source_lc.like(f"{hint}_%"), source_lc.like(f"{hint}.%"))
+
+
+def _inferred_country_expr():
+    whens = []
+    for country_code, hints in SOURCE_COUNTRY_HINTS.items():
+        for hint in hints:
+            whens.append((_source_hint_condition(Product.source, hint.lower()), country_code))
+    return case(*whens, else_=func.upper(Product.country_code))
+
+
+def _apply_market_filters(query, country: Optional[str], region: Optional[str]):
+    inferred_country = _inferred_country_expr()
+
+    if country is not None:
+        country_codes = _normalized_codes(country, COUNTRY_NAMES, "country")
+        query = query.where(inferred_country.in_(country_codes))
+
+    if region is not None:
+        region_codes = _normalized_codes(region, REGION_NAMES, "region")
+        query = query.where(func.lower(inferred_country).in_([code.lower() for code in region_codes]))
+
+    return query
+
+
+def _accessory_penalty_pattern(query: str) -> Optional[str]:
+    lowered_query = query.lower()
+    if any(re.search(rf"(^|[^a-z0-9]){re.escape(term)}([^a-z0-9]|$)", lowered_query) for term in ACCESSORY_TERMS):
+        return None
+    joined = "|".join(re.escape(term) for term in ACCESSORY_TERMS)
+    return rf"(^|[^a-z0-9])(?:{joined})([^a-z0-9]|$)"
 
 
 @router.get("/", response_model=ProductListResponse, summary="List all products")
@@ -187,7 +332,13 @@ def _compute_price_trend(db: AsyncSession, product_id: int) -> Optional[str]:
     return "stable"
 
 
-def _map_product(p: Product, price_trend: Optional[str] = None, target_currency: Optional[str] = None, confidence_score: Optional[float] = None) -> ProductResponse:
+def _map_product(
+    p: Product,
+    price_trend: Optional[str] = None,
+    target_currency: Optional[str] = None,
+    confidence_score: Optional[float] = None,
+    trend_score: Optional[int] = None,
+) -> ProductResponse:
     converted_price = None
     converted_currency = None
     if target_currency and target_currency != p.currency:
@@ -226,7 +377,17 @@ def _map_product(p: Product, price_trend: Optional[str] = None, target_currency:
         updated_at=p.updated_at,
         price_trend=price_trend,
         confidence_score=confidence_score,
+        trend_score=trend_score,
     )
+
+
+def _project_batch_product(product: ProductResponse, fields: List[str]) -> Dict[str, object]:
+    payload = product.model_dump(mode="json")
+    projected: Dict[str, object] = {}
+    for field in fields:
+        source_field = BATCH_PRODUCT_FIELD_ALIASES.get(field, field)
+        projected[field] = payload.get(source_field)
+    return projected
 
 
 def _build_compare_match(p: Product, score: float) -> CompareMatch:
@@ -253,6 +414,9 @@ def _build_compare_match(p: Product, score: float) -> CompareMatch:
         metadata=p.metadata_,
         updated_at=p.updated_at,
         match_score=round(score, 3),
+        low_confidence=score < LOW_CONFIDENCE_MATCH_THRESHOLD,
+        confidence_audit_threshold=LOW_CONFIDENCE_MATCH_THRESHOLD,
+        merchant_edge_case=_merchant_edge_case_for_product(p),
     )
 
 
@@ -311,6 +475,104 @@ def _get_highlights(matches: List[CompareMatch]) -> Optional[CompareHighlights]:
     )
 
 
+async def _build_compare_diff_response(
+    *,
+    db: AsyncSession,
+    product_ids: List[int],
+    include_image_similarity: Optional[bool] = None,
+) -> CompareDiffResponse:
+    if len(product_ids) < 2 or len(product_ids) > 5:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="product_ids must contain between 2 and 5 IDs",
+        )
+
+    result = await db.execute(
+        select(Product).where(
+            Product.id.in_(product_ids),
+            Product.is_active == True,
+        )
+    )
+    products = result.scalars().all()
+
+    product_map = {product.id: product for product in products}
+    missing = [product_id for product_id in product_ids if product_id not in product_map]
+    if missing:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Products not found: {missing}",
+        )
+
+    ordered_products = [product_map[product_id] for product_id in product_ids]
+    sorted_products = sorted(ordered_products, key=lambda product: product.price)
+    price_ranks = {product.id: index + 1 for index, product in enumerate(sorted_products)}
+
+    entries = []
+    for product in ordered_products:
+        entries.append(CompareDiffEntry(
+            id=product.id,
+            sku=product.sku,
+            source=product.source,
+            merchant_id=product.merchant_id,
+            name=product.title,
+            description=product.description,
+            price=product.price,
+            currency=product.currency,
+            buy_url=product.url,
+            affiliate_url=get_affiliate_url(product.source, product.url) if product.url else None,
+            image_url=product.image_url,
+            brand=product.brand,
+            category=product.category,
+            category_path=product.category_path,
+            rating=product.rating,
+            is_available=product.is_available,
+            last_checked=product.last_checked,
+            metadata=product.metadata_,
+            updated_at=product.updated_at,
+            price_rank=price_ranks[product.id],
+        ))
+
+    compared_fields = [
+        ("price", lambda product: product.price),
+        ("currency", lambda product: product.currency),
+        ("brand", lambda product: product.brand),
+        ("category", lambda product: product.category),
+        ("source", lambda product: product.source),
+        ("availability", lambda product: product.is_available),
+        ("image_url", lambda product: product.image_url),
+    ]
+
+    field_diffs = []
+    identical_fields = []
+
+    for field_name, accessor in compared_fields:
+        values = [accessor(product) for product in ordered_products]
+        all_identical = len(set(str(value) for value in values)) <= 1
+        if all_identical:
+            identical_fields.append(field_name)
+            continue
+        field_diffs.append(FieldDiff(
+            field=field_name,
+            values=values,
+            all_identical=False,
+        ))
+
+    cheapest = sorted_products[0]
+    most_expensive = sorted_products[-1]
+    spread = most_expensive.price - cheapest.price
+    spread_pct = float(spread / cheapest.price * 100) if cheapest.price > 0 else 0.0
+
+    return CompareDiffResponse(
+        products=entries,
+        field_diffs=field_diffs,
+        identical_fields=identical_fields,
+        cheapest_product_id=cheapest.id,
+        most_expensive_product_id=most_expensive.id,
+        price_spread=spread,
+        price_spread_pct=round(spread_pct, 2),
+    )
+
+
 @router.get("/search", response_model=ProductListResponse, summary="Search products (v1 API)")
 @limiter.limit(rate_limit_from_request)
 async def v1_product_search(
@@ -320,15 +582,23 @@ async def v1_product_search(
     price_min: Optional[Decimal] = Query(None, ge=0, description="Minimum price filter"),
     price_max: Optional[Decimal] = Query(None, ge=0, description="Maximum price filter"),
     platform: Optional[str] = Query(None, max_length=100, description="Filter by platform/source"),
-    sort_by: Optional[str] = Query(None, description="Sort order: relevance, price_asc, price_desc, newest"),
+    country: Optional[str] = Query(None, description="Filter by country code(s), comma-separated (e.g., SG,US)"),
+    country_code: Optional[str] = Query(None, description="Alias for country"),
+    region: Optional[str] = Query(None, description="Filter by region code(s), comma-separated (e.g., SG,US)"),
+    sort_by: Optional[str] = Query(None, description="Sort order: relevance, price_asc, price_desc, newest, popularity"),
     limit: int = Query(20, ge=1, le=100, description="Results per page (1-100)"),
     offset: int = Query(0, ge=0, le=10000, description="Pagination offset (0-10000)"),
     include_facets: bool = Query(False, description="Include facet counts in response"),
     currency: Optional[str] = Query(None, description=f"Target currency for price conversion. Supported: {', '.join(SUPPORTED_CURRENCIES)}"),
+    brand: Optional[str] = Query(None, max_length=200, description="Filter by brand name (case-insensitive)"),
+    in_stock: Optional[bool] = Query(None, description="Filter to products currently in stock"),
+    retailer: Optional[str] = Query(None, max_length=100, description="Filter by retailer/source (e.g., lazada, shopee)"),
     db: AsyncSession = Depends(get_db),
     api_key: ApiKey = Depends(get_current_api_key),
 ) -> ProductListResponse:
     request.state.api_key = api_key
+    if country_code is not None:
+        country = country_code
 
     if q and len(q) > 500:
         raise HTTPException(
@@ -365,9 +635,14 @@ async def v1_product_search(
         price_min=str(price_min) if price_min is not None else None,
         price_max=str(price_max) if price_max is not None else None,
         platform=platform,
+        country=country,
+        region=region,
         sort_by=sort_by,
         limit=limit,
         offset=offset,
+        brand=brand,
+        in_stock=str(in_stock) if in_stock is not None else None,
+        retailer=retailer,
     )
 
     cached = await cache.cache_get(cache_key)
@@ -378,15 +653,36 @@ async def v1_product_search(
     highlight_query = None
 
     if q:
+        accessory_pattern = _accessory_penalty_pattern(q)
         base_query = base_query.where(
-            text("search_vector @@ plainto_tsquery('english', :q)").bindparams(q=q)
+            text("search_vector @@ websearch_to_tsquery('english', :q)").bindparams(q=q)
         ).order_by(
-            text("ts_rank(search_vector, plainto_tsquery('english', :q_rank), 32) DESC").bindparams(q_rank=q),
+            text(
+                """
+                (
+                    ts_rank_cd(search_vector, websearch_to_tsquery('english', :q_rank), 32) * 2.0
+                    + ts_rank_cd(title_search_vector, websearch_to_tsquery('english', :q_rank), 32) * 3.0
+                    + CASE WHEN lower(title) = lower(:q_exact) THEN 2.0 ELSE 0 END
+                    + CASE WHEN lower(title) LIKE lower(:q_prefix) THEN 1.0 ELSE 0 END
+                    + CASE WHEN brand IS NOT NULL AND lower(brand) = lower(:q_exact) THEN 0.75 ELSE 0 END
+                    + CASE WHEN brand IS NOT NULL AND lower(brand) LIKE lower(:q_prefix) THEN 0.35 ELSE 0 END
+                    + CASE WHEN category IS NOT NULL AND lower(category) = lower(:q_exact) THEN 0.5 ELSE 0 END
+                    + CASE WHEN category IS NOT NULL AND lower(category) LIKE lower(:q_prefix) THEN 0.25 ELSE 0 END
+                    + CASE WHEN :accessory_pattern IS NOT NULL AND lower(coalesce(title, '')) ~ :accessory_pattern THEN -1.5 ELSE 0 END
+                    + CASE WHEN coalesce(price, 0) <= 0 THEN -1.25 ELSE 0 END
+                ) DESC
+                """
+            ).bindparams(
+                q_rank=q,
+                q_exact=q,
+                q_prefix=f"{q}%",
+                accessory_pattern=accessory_pattern,
+            ),
             Product.updated_at.desc()
         )
         highlight_query = text(
             "ts_headline('english', coalesce(title, '') || ' ' || coalesce(description, ''), "
-            "plainto_tsquery('english', :q_hl), 'MaxWords=50, MinWords=20, MaxFragments=2')"
+            "websearch_to_tsquery('english', :q_hl), 'MaxWords=50, MinWords=20, MaxFragments=2')"
         ).bindparams(q_hl=q)
     else:
         base_query = base_query.order_by(Product.updated_at.desc())
@@ -399,6 +695,26 @@ async def v1_product_search(
         base_query = base_query.where(Product.price <= price_max)
     if platform:
         base_query = base_query.where(Product.source == platform)
+    if brand:
+        base_query = base_query.where(func.lower(Product.brand) == brand.lower())
+    if in_stock is not None:
+        base_query = base_query.where(Product.in_stock == in_stock)
+    if retailer:
+        base_query = base_query.where(Product.source == retailer)
+    base_query = _apply_market_filters(base_query, country, region)
+
+    if sort_by == "price_asc":
+        base_query = base_query.order_by(Product.price.asc())
+    elif sort_by == "price_desc":
+        base_query = base_query.order_by(Product.price.desc())
+    elif sort_by == "newest":
+        base_query = base_query.order_by(Product.updated_at.desc())
+    elif sort_by == "popularity":
+        base_query = base_query.order_by(Product.review_count.desc().nullslast())
+    elif q:
+        pass
+    else:
+        base_query = base_query.order_by(Product.updated_at.desc())
 
     if offset == 0:
         count_query = select(func.count()).select_from(base_query.subquery())
@@ -417,7 +733,7 @@ async def v1_product_search(
             Product.id,
             text(
                 "ts_headline('english', coalesce(title, '') || ' ' || coalesce(description, ''), "
-                "plainto_tsquery('english', :q_hl), 'MaxWords=50, MinWords=20, MaxFragments=2') as headline"
+                "websearch_to_tsquery('english', :q_hl), 'MaxWords=50, MinWords=20, MaxFragments=2') as headline"
             )
         ).where(Product.id.in_(product_ids)).params(q_hl=q)
         hl_results = await db.execute(hl_query)
@@ -430,8 +746,9 @@ async def v1_product_search(
         facet_base_query = select(Product).where(Product.is_active)
         if q:
             facet_base_query = facet_base_query.where(
-                text("search_vector @@ plainto_tsquery('english', :fq)").bindparams(fq=q)
+                text("search_vector @@ websearch_to_tsquery('english', :fq)").bindparams(fq=q)
             )
+        facet_base_query = _apply_market_filters(facet_base_query, country, region)
 
         category_facet = select(Product.category, func.count(Product.id)).select_from(
             facet_base_query.subquery()
@@ -581,16 +898,54 @@ async def best_price(
     return response
 
 
-@router.get("/compare", response_model=CompareSearchResponse, summary="Search and compare the same product across all sources")
+@router.get("/compare", response_model=CompareSearchResponse | CompareDiffResponse, summary="Search across sources or compare products directly by IDs")
 @limiter.limit(rate_limit_from_request)
 async def compare_product_search(
     request: Request,
-    q: str = Query(..., min_length=2, description="Product search query (e.g. iphone 15)"),
+    q: Optional[str] = Query(None, min_length=2, description="Product search query (e.g. iphone 15)"),
+    ids: Optional[str] = Query(None, min_length=1, description="Comma-separated product IDs for side-by-side comparison"),
     limit: int = Query(10, ge=1, le=50, description="Max seed products from search to find matches for"),
     db: AsyncSession = Depends(get_db),
     api_key: ApiKey = Depends(get_current_api_key),
-) -> CompareSearchResponse:
+) -> CompareSearchResponse | CompareDiffResponse:
     request.state.api_key = api_key
+
+    if q and ids:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Provide either q or ids, not both",
+        )
+
+    if ids:
+        raw_ids = [value.strip() for value in ids.split(",") if value.strip()]
+        try:
+            numeric_ids = [int(value) for value in raw_ids]
+        except ValueError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="ids must be a comma-separated list of numeric integers",
+            ) from exc
+
+        cache_key = cache.build_cache_key(
+            "products:compare_get_by_ids",
+            product_ids=numeric_ids,
+        )
+        cached = await cache.cache_get(cache_key)
+        if cached:
+            return CompareDiffResponse(**cached)
+
+        response = await _build_compare_diff_response(
+            db=db,
+            product_ids=numeric_ids,
+        )
+        await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
+        return response
+
+    if not q:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Either q or ids is required",
+        )
 
     cache_key = cache.build_cache_key(
         "products:compare_search",
@@ -796,94 +1151,10 @@ async def compare_products_diff(
     cached = await cache.cache_get(cache_key)
     if cached:
         return CompareDiffResponse(**cached)
-
-    if len(body.product_ids) < 2 or len(body.product_ids) > 5:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="product_ids must contain between 2 and 5 IDs",
-        )
-
-    result = await db.execute(
-        select(Product).where(
-            Product.id.in_(body.product_ids),
-            Product.is_active == True,
-        )
-    )
-    products = result.scalars().all()
-
-    if len(products) != len(body.product_ids):
-        found_ids = {p.id for p in products}
-        missing = [id for id in body.product_ids if id not in found_ids]
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Products not found: {missing}",
-        )
-
-    sorted_products = sorted(products, key=lambda p: p.price)
-    price_ranks = {p.id: i + 1 for i, p in enumerate(sorted_products)}
-
-    entries = []
-    for p in products:
-        entries.append(CompareDiffEntry(
-            id=p.id,
-            sku=p.sku,
-            source=p.source,
-            merchant_id=p.merchant_id,
-            name=p.title,
-            description=p.description,
-            price=p.price,
-            currency=p.currency,
-            buy_url=p.url,
-            affiliate_url=get_affiliate_url(p.source, p.url) if p.url else None,
-            image_url=p.image_url,
-            brand=p.brand,
-            category=p.category,
-            category_path=p.category_path,
-            rating=p.rating,
-            is_available=p.is_available,
-            last_checked=p.last_checked,
-            metadata=p.metadata_,
-            updated_at=p.updated_at,
-            price_rank=price_ranks[p.id],
-        ))
-
-    compared_fields = [
-        ("price", lambda p: p.price),
-        ("currency", lambda p: p.currency),
-        ("brand", lambda p: p.brand),
-        ("category", lambda p: p.category),
-        ("source", lambda p: p.source),
-        ("availability", lambda p: p.is_available),
-    ]
-
-    field_diffs = []
-    identical_fields = []
-
-    for field_name, accessor in compared_fields:
-        values = [accessor(p) for p in products]
-        all_identical = len(set(str(v) for v in values)) <= 1
-        if all_identical:
-            identical_fields.append(field_name)
-        else:
-            field_diffs.append(FieldDiff(
-                field=field_name,
-                values=values,
-                all_identical=False,
-            ))
-
-    cheapest = sorted_products[0]
-    most_expensive = sorted_products[-1]
-    spread = most_expensive.price - cheapest.price
-    spread_pct = float(spread / cheapest.price * 100) if cheapest.price > 0 else 0.0
-
-    response = CompareDiffResponse(
-        products=entries,
-        field_diffs=field_diffs,
-        identical_fields=identical_fields,
-        cheapest_product_id=cheapest.id,
-        most_expensive_product_id=most_expensive.id,
-        price_spread=spread,
-        price_spread_pct=round(spread_pct, 2),
+    response = await _build_compare_diff_response(
+        db=db,
+        product_ids=body.product_ids,
+        include_image_similarity=body.include_image_similarity,
     )
 
     await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
@@ -891,13 +1162,76 @@ async def compare_products_diff(
     return response
 
 
-@router.get("/trending", response_model=TrendingResponse, summary="Get trending products ranked by query volume and clicks")
+@router.get("/autocomplete", response_model=ProductAutocompleteResponse, summary="Fast product search autocomplete — no auth required")
+@limiter.limit("60/minute")
+async def product_autocomplete(
+    request: Request,
+    q: str = Query(..., min_length=1, max_length=100, description="Search prefix (min 1 char)"),
+    limit: int = Query(5, ge=1, le=20, description="Number of suggestions (1-20)"),
+    db: AsyncSession = Depends(get_db),
+) -> ProductAutocompleteResponse:
+    cache_key = cache.build_cache_key(
+        "v1:products:autocomplete",
+        q=q.lower(),
+        limit=limit,
+    )
+    cached = await cache.cache_get(cache_key)
+    if cached:
+        return ProductAutocompleteResponse(**cached)
+
+    start_time = time.perf_counter()
+
+    result = await typesense_autocomplete(q, limit=limit)
+
+    if result is not None:
+        suggestions, _ = result
+    else:
+        prefix = q.lower().replace(" ", " & ")
+        try:
+            fts_query = text("title_search_vector @@ to_tsquery('english', :prefix_q)").bindparams(prefix_q=prefix + ":*")
+        except Exception:
+            prefix_simple = q.lower().replace(" ", "")
+            fts_query = text("title_search_vector @@ plainto_tsquery('english', :prefix_q)").bindparams(prefix_q=prefix_simple)
+
+        title_query = (
+            select(Product.title)
+            .where(Product.is_active == True)
+            .where(fts_query)
+            .group_by(Product.title)
+            .order_by(func.count(Product.id).desc())
+            .limit(limit)
+        )
+        title_result = await db.execute(title_query)
+        suggestions = list(dict.fromkeys(row[0] for row in title_result.fetchall()))
+
+    elapsed_ms = (time.perf_counter() - start_time) * 1000
+
+    response = ProductAutocompleteResponse(suggestions=suggestions)
+
+    await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
+
+    log_data = {
+        "query": q,
+        "elapsed_ms": round(elapsed_ms, 2),
+        "suggestions_count": len(suggestions),
+        "cache_hit": False,
+    }
+    if elapsed_ms > 50:
+        logger.warning("Autocomplete query slow", extra=log_data)
+    else:
+        logger.info("Autocomplete query executed", extra=log_data)
+
+    return response
+
+
+@router.get("/trending", response_model=TrendingResponse, summary="Get trending products ranked by recent product-detail and compare activity")
 @limiter.limit(rate_limit_from_request)
 async def get_trending_products(
     request: Request,
-    period: str = Query("7d", pattern="^(24h|7d|30d)$", description="Trending period: 24h, 7d, or 30d"),
+    period: str = Query("7d", pattern="^(24h|7d)$", description="Trending period: 24h or 7d"),
     category: Optional[str] = Query(None, max_length=200, description="Filter by category name"),
-    limit: int = Query(50, ge=1, le=100, description="Number of products to return (1-100)"),
+    limit: int = Query(20, ge=1, le=100, description="Number of products to return (1-100)"),
+    currency: Optional[str] = Query(None, description=f"Target currency for price conversion. Supported: {', '.join(SUPPORTED_CURRENCIES)}"),
     db: AsyncSession = Depends(get_db),
     api_key: ApiKey = Depends(get_current_api_key),
 ) -> TrendingResponse:
@@ -908,57 +1242,29 @@ async def get_trending_products(
         period=period,
         category=category,
         limit=limit,
+        currency=currency,
     )
     cached = await cache.cache_get(cache_key)
     if cached:
         return TrendingResponse(**cached)
 
-    from datetime import datetime, timedelta, timezone
-
-    period_hours = {"24h": 24, "7d": 24 * 7, "30d": 24 * 30}[period]
-    window_start = datetime.now(timezone.utc) - timedelta(hours=period_hours)
-
-    view_counts = {}
-    click_counts = {}
-
-    view_result = await db.execute(
-        select(ProductView.product_id, func.count(ProductView.id))
-        .where(ProductView.viewed_at >= window_start)
-        .group_by(ProductView.product_id)
-    )
-    for row in view_result.all():
-        view_counts[row[0]] = row[1]
-
-    click_result = await db.execute(
-        select(Click.product_id, func.count(Click.id))
-        .where(Click.clicked_at >= window_start)
-        .group_by(Click.product_id)
-    )
-    for row in click_result.all():
-        click_counts[row[0]] = row[1]
-
-    all_product_ids = set(view_counts.keys()) | set(click_counts.keys())
-
-    if not all_product_ids:
-        view_result_all = await db.execute(
-            select(ProductView.product_id, func.count(ProductView.id))
-            .group_by(ProductView.product_id)
+    trend_scores = await get_trending_scores(period)
+    if not trend_scores:
+        response = TrendingResponse(
+            period=period,
+            category=category,
+            items=[],
+            total=0,
+            platform_distribution=[],
+            category_breakdown=[],
         )
-        for row in view_result_all.all():
-            view_counts[row[0]] = view_counts.get(row[0], 0) + row[1]
-        click_result_all = await db.execute(
-            select(Click.product_id, func.count(Click.id))
-            .group_by(Click.product_id)
-        )
-        for row in click_result_all.all():
-            click_counts[row[0]] = click_counts.get(row[0], 0) + row[1]
-        all_product_ids = set(view_counts.keys()) | set(click_counts.keys())
+        await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
+        return response
 
-    combined_scores = {}
-    for pid in all_product_ids:
-        combined_scores[pid] = view_counts.get(pid, 0) + click_counts.get(pid, 0)
-
-    sorted_product_ids = sorted(combined_scores.keys(), key=lambda x: combined_scores[x], reverse=True)
+    sorted_product_ids = sorted(
+        trend_scores.keys(),
+        key=lambda product_id: (-trend_scores[product_id], product_id),
+    )
 
     if category:
         base_query = (
@@ -988,33 +1294,7 @@ async def get_trending_products(
     category_counts = {}
     items = []
     for p in sorted_products[:limit]:
-        v_count = view_counts.get(p.id, 0)
-        c_count = click_counts.get(p.id, 0)
-        t_score = combined_scores.get(p.id, 0)
-        items.append(TrendingMatch(
-            id=p.id,
-            sku=p.sku,
-            source=p.source,
-            merchant_id=p.merchant_id,
-            name=p.title,
-            description=p.description,
-            price=p.price,
-            currency=p.currency,
-            buy_url=p.url,
-            affiliate_url=get_affiliate_url(p.source, p.url) if p.url else None,
-            image_url=p.image_url,
-            brand=p.brand,
-            category=p.category,
-            category_path=p.category_path,
-            rating=p.rating,
-            is_available=p.is_available,
-            last_checked=p.last_checked,
-            metadata=p.metadata_,
-            updated_at=p.updated_at,
-            view_count=v_count,
-            click_count=c_count,
-            trend_score=float(t_score),
-        ))
+        items.append(_map_product(p, target_currency=currency, trend_score=trend_scores.get(p.id, 0)))
         platform_counts[p.source] = platform_counts.get(p.source, 0) + 1
         if p.category:
             category_counts[p.category] = category_counts.get(p.category, 0) + 1
@@ -1486,18 +1766,34 @@ async def get_product(
     cache_key = f"products:item:{product_id}:{currency or 'none'}"
     cached = await cache.cache_get(cache_key)
     if cached:
-        return ProductResponse(**cached)
+        response = ProductResponse(**cached)
+    else:
+        result = await db.execute(
+            select(Product).where(Product.id == product_id, Product.is_active == True)
+        )
+        product = result.scalar_one_or_none()
 
-    result = await db.execute(
-        select(Product).where(Product.id == product_id, Product.is_active == True)
-    )
-    product = result.scalar_one_or_none()
+        if not product:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
 
-    if not product:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+        response = _map_product(product, target_currency=currency)
+        await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=600)
 
-    response = _map_product(product, target_currency=currency)
-    await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=600)
+    await record_trending_product_event(product_id)
+
+    etag = build_product_etag(response)
+    if etag_matches(request.headers.get("if-none-match"), etag):
+        headers = {"ETag": etag}
+        last_modified = build_last_modified(response.updated_at)
+        if last_modified:
+            headers["Last-Modified"] = last_modified
+        return Response(status_code=status.HTTP_304_NOT_MODIFIED, headers=headers)
+
+    request.state.response_headers = getattr(request.state, "response_headers", {})
+    request.state.response_headers["ETag"] = etag
+    last_modified = build_last_modified(response.updated_at)
+    if last_modified:
+        request.state.response_headers["Last-Modified"] = last_modified
 
     return response
 
@@ -1512,15 +1808,26 @@ async def get_similar_products(
     request: Request,
     product_id: int,
     limit: int = Query(10, ge=1, le=50, description="Number of similar products to return (1-50)"),
+    currency: Optional[str] = Query(None, description=f"Target currency for price conversion. Supported: {', '.join(SUPPORTED_CURRENCIES)}"),
     db: AsyncSession = Depends(get_db),
     api_key: ApiKey = Depends(get_current_api_key),
 ) -> SimilarProductsResponse:
     request.state.api_key = api_key
 
+    if currency is not None and not isinstance(currency, str):
+        currency = None
+
+    if currency is not None and currency not in SUPPORTED_CURRENCIES:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Unsupported currency: {currency}. Supported: {', '.join(SUPPORTED_CURRENCIES)}",
+        )
+
     cache_key = cache.build_cache_key(
         "products:similar",
         product_id=product_id,
         limit=limit,
+        currency=currency or "none",
     )
     cached = await cache.cache_get(cache_key)
     if cached:
@@ -1536,7 +1843,7 @@ async def get_similar_products(
 
     if not source_product.category:
         response = SimilarProductsResponse(product_id=product_id, items=[], total=0)
-        await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
+        await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=1800)
         return response
 
     source_price = _source_similar_price(source_product)
@@ -1555,16 +1862,30 @@ async def get_similar_products(
         .order_by(func.abs(similar_price - source_price).asc(), Product.updated_at.desc())
         .limit(limit)
     )
+
     result = await db.execute(query)
     candidates = result.scalars().all()
 
+    if not candidates:
+        fallback_query = (
+            select(Product)
+            .where(Product.is_active == True)
+            .where(Product.id != product_id)
+            .where(Product.category == source_product.category)
+            .where(Product.merchant_id != source_product.merchant_id)
+            .order_by(func.abs(similar_price - source_price).asc(), Product.updated_at.desc())
+            .limit(limit)
+        )
+        fallback_result = await db.execute(fallback_query)
+        candidates = fallback_result.scalars().all()
+
     response = SimilarProductsResponse(
         product_id=product_id,
-        items=[_map_product(product) for product in candidates],
+        items=[_map_product(product, target_currency=currency) for product in candidates],
         total=len(candidates),
     )
 
-    await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
+    await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=1800)
 
     return response
 
@@ -1581,24 +1902,40 @@ async def batch_lookup_products(
     db: AsyncSession = Depends(get_db),
     api_key: ApiKey = Depends(get_current_api_key),
 ) -> BatchProductResponse:
+    """Bulk product lookup.
+
+    - Accepts up to 50 product IDs via `ids`
+    - Supports sparse field selection via `fields`
+    - Returns ordered `products` and `not_found` arrays
+    - Requires Bearer or `X-API-Key` authentication
+    """
     request.state.api_key = api_key
 
-    if len(body.product_ids) > 100:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Maximum 100 product IDs per request",
-        )
+    request.state.usage_cost = len(body.ids)
 
-    cache_keys = [f"products:item:{pid}" for pid in body.product_ids]
+    numeric_id_map: Dict[str, int] = {}
+    invalid_ids: List[str] = []
+    for raw_id in body.ids:
+        try:
+            numeric_id_map[raw_id] = int(raw_id)
+        except (TypeError, ValueError):
+            invalid_ids.append(raw_id)
+
+    unique_numeric_ids = list(dict.fromkeys(numeric_id_map.values()))
+    cache_keys = [f"products:item:{pid}" for pid in unique_numeric_ids]
     cached_results = await cache.cache_get_many(cache_keys)
-    cached_products = {pid: cached_results.get(f"products:item:{pid}") for pid in body.product_ids if f"products:item:{pid}" in cached_results}
+    cached_products = {
+        pid: cached_results.get(f"products:item:{pid}")
+        for pid in unique_numeric_ids
+        if f"products:item:{pid}" in cached_results
+    }
 
-    product_ids_to_fetch = [pid for pid in body.product_ids if f"products:item:{pid}" not in cached_results]
+    product_ids_to_fetch = [pid for pid in unique_numeric_ids if f"products:item:{pid}" not in cached_results]
 
-    products: List[ProductResponse] = []
+    products_by_id: Dict[int, ProductResponse] = {}
     for pid, cached in cached_products.items():
         if cached:
-            products.append(ProductResponse(**cached))
+            products_by_id[pid] = ProductResponse(**cached)
 
     if product_ids_to_fetch:
         result = await db.execute(
@@ -1610,17 +1947,20 @@ async def batch_lookup_products(
         rows = result.scalars().all()
         for row in rows:
             product_response = _map_product(row)
-            products.append(product_response)
+            products_by_id[row.id] = product_response
             await cache.cache_set(f"products:item:{row.id}", product_response.model_dump(mode="json"), ttl_seconds=600)
 
-    found_ids = {p.id for p in products}
-    not_found = len(body.product_ids) - len(found_ids)
-
     return BatchProductResponse(
-        products=products,
-        total=len(products),
-        found=len(products),
-        not_found=not_found,
+        products=[
+            _project_batch_product(products_by_id[numeric_id_map[raw_id]], body.fields)
+            for raw_id in body.ids
+            if raw_id in numeric_id_map and numeric_id_map[raw_id] in products_by_id
+        ],
+        not_found=[
+            raw_id
+            for raw_id in body.ids
+            if raw_id in invalid_ids or numeric_id_map.get(raw_id) not in products_by_id
+        ],
     )
 
 
@@ -1746,13 +2086,15 @@ async def get_product_matches(
     return response
 
 
-@router.get("/{product_id}/price-history", response_model=PriceHistoryResponse, summary="Get price history for a product")
+@router.get("/{product_id}/price-history", response_model=PriceHistoryResponse, summary="Get price history for a product — 30-day chart data")
 @limiter.limit(rate_limit_from_request)
 async def get_price_history(
     request: Request,
     product_id: int,
     days: int = Query(30, ge=1, le=365, description="Number of days of history to return (default 30)"),
     platform: Optional[str] = Query(None, description="Filter by source platform (e.g. shopee_sg, lazada_sg)"),
+    country_code: Optional[str] = Query(None, description="Filter by country code (e.g. SG, MY)"),
+    aggregate: Optional[str] = Query(None, description="Aggregation type: 'daily' for daily chart data"),
     limit: int = Query(100, ge=1, le=1000),
     offset: int = Query(0, ge=0, le=10000),
     db: AsyncSession = Depends(get_db),
@@ -1765,6 +2107,8 @@ async def get_price_history(
         product_id=product_id,
         days=days,
         platform=platform,
+        country_code=country_code,
+        aggregate=aggregate,
         limit=limit,
         offset=offset,
     )
@@ -1775,11 +2119,79 @@ async def get_price_history(
     product_result = await db.execute(
         select(Product).where(Product.id == product_id, Product.is_active == True)
     )
-    if not product_result.scalar_one_or_none():
+    product = product_result.scalar_one_or_none()
+    if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
 
     from datetime import datetime, timedelta, timezone
     cutoff_date = datetime.now(timezone.utc) - timedelta(days=days)
+
+    if aggregate == "daily":
+        agg_query = select(
+            func.date(PriceHistory.recorded_at).label("date"),
+            func.min(PriceHistory.price).label("min_price"),
+            func.max(PriceHistory.price).label("max_price"),
+            func.avg(PriceHistory.price).label("avg_price"),
+            func.count(PriceHistory.id).label("price_count"),
+            PriceHistory.currency,
+            PriceHistory.source,
+        ).where(
+            PriceHistory.product_id == product_id,
+            PriceHistory.recorded_at >= cutoff_date,
+        )
+        if platform:
+            agg_query = agg_query.where(PriceHistory.source == platform)
+        agg_query = agg_query.group_by(
+            func.date(PriceHistory.recorded_at),
+            PriceHistory.currency,
+            PriceHistory.source,
+        ).order_by(func.date(PriceHistory.recorded_at).desc())
+
+        agg_result = await db.execute(agg_query)
+        rows = agg_result.all()
+
+        period_str = f"{days}d"
+        aggregated_entries = [
+            PriceHistoryAggregationEntry(
+                date=str(row.date),
+                min_price=row.min_price,
+                max_price=row.max_price,
+                avg_price=row.avg_price,
+                price_count=row.price_count,
+                currency=row.currency,
+                platform=row.source,
+            )
+            for row in rows
+        ]
+
+        all_prices = [(float(r.max_price) + float(r.min_price)) / 2 for r in rows]
+        min_price_val = min((float(r.min_price) for r in rows), default=None)
+        max_price_val = max((float(r.max_price) for r in rows), default=None)
+        avg_price_val = sum(all_prices) / len(all_prices) if all_prices else None
+
+        trend = "stable"
+        if len(all_prices) >= 2 and all_prices[0] is not None:
+            first_avg = (float(rows[0].min_price) + float(rows[0].max_price)) / 2
+            last_avg = (float(rows[-1].min_price) + float(rows[-1].max_price)) / 2
+            if last_avg > first_avg * 1.01:
+                trend = "up"
+            elif last_avg < first_avg * 0.99:
+                trend = "down"
+
+        response = PriceHistoryResponse(
+            product_id=product_id,
+            merchant_id=product.merchant_id,
+            aggregated_entries=aggregated_entries,
+            total=len(aggregated_entries),
+            min_price=Decimal(str(round(min_price_val, 2))) if min_price_val is not None else None,
+            max_price=Decimal(str(round(max_price_val, 2))) if max_price_val is not None else None,
+            avg_price=Decimal(str(round(avg_price_val, 2))) if avg_price_val is not None else None,
+            trend=trend,
+            aggregate="daily",
+            period=period_str,
+        )
+        await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
+        return response
 
     query = select(PriceHistory).where(PriceHistory.product_id == product_id)
     query = query.where(PriceHistory.recorded_at >= cutoff_date)
@@ -1794,20 +2206,46 @@ async def get_price_history(
     query = query.order_by(PriceHistory.recorded_at.desc()).limit(limit).offset(offset)
     history_result = await db.execute(query)
 
+    raw_entries = history_result.scalars().all()
     entries = [
         PriceHistoryEntry(
+            date=h.recorded_at.strftime("%Y-%m-%d") if h.recorded_at else None,
             price=h.price,
             currency=h.currency,
             platform=h.source,
+            in_stock=None,
             scraped_at=h.recorded_at,
         )
-        for h in history_result.scalars().all()
+        for h in raw_entries
     ]
+
+    all_prices = [float(h.price) for h in raw_entries]
+    min_price_val = min(all_prices) if all_prices else None
+    max_price_val = max(all_prices) if all_prices else None
+    avg_price_val = sum(all_prices) / len(all_prices) if all_prices else None
+
+    trend = "stable"
+    if len(raw_entries) >= 2:
+        first_price = float(raw_entries[-1].price)
+        last_price = float(raw_entries[0].price)
+        if last_price > first_price * 1.01:
+            trend = "up"
+        elif last_price < first_price * 0.99:
+            trend = "down"
+
+    period_str = f"{days}d"
 
     response = PriceHistoryResponse(
         product_id=product_id,
+        merchant_id=product.merchant_id,
+        data_points=entries,
         entries=entries,
         total=total,
+        min_price=Decimal(str(round(min_price_val, 2))) if min_price_val is not None else None,
+        max_price=Decimal(str(round(max_price_val, 2))) if max_price_val is not None else None,
+        avg_price=Decimal(str(round(avg_price_val, 2))) if avg_price_val is not None else None,
+        trend=trend,
+        period=period_str,
     )
     await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=300)
     return response
