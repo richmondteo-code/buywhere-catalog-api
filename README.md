@@ -42,7 +42,14 @@ curl -sS --get "$BUYWHERE_BASE_URL/v1/deals" \
 
 ## MCP Integration
 
-Connect BuyWhere directly to Claude Desktop or any MCP-compatible AI client. Full setup instructions: [MCP.md](MCP.md).
+BuyWhere is listed in the awesome-mcp-servers registry. Connect to Claude Desktop, Cursor, Windsurf, or any MCP-compatible AI client in seconds.
+
+**Install the MCP server:**
+
+```bash
+pip install httpx mcp
+python /path/to/buywhere-api/mcp_server.py
+```
 
 **Claude Desktop** — add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
@@ -61,6 +68,8 @@ Connect BuyWhere directly to Claude Desktop or any MCP-compatible AI client. Ful
 }
 ```
 
+**Cursor** — add to Cursor settings → MCP servers using the same JSON config above.
+
 Available MCP tools: `search_products`, `get_product`, `compare_prices`, `get_deals`, `find_deals`, `browse_categories`, `get_category_products`.
 
 ## Documentation
@@ -70,6 +79,7 @@ Available MCP tools: `search_products`, `get_product`, `compare_prices`, `get_de
 | [API Documentation](docs/API_DOCUMENTATION.md) | Full endpoint reference, authentication, error codes |
 | [API Examples](docs/API_EXAMPLES.md) | Worked examples for common agent use cases |
 | [Quickstart Guide](docs/QUICKSTART.md) | First query in under 5 minutes |
+| [AI Agent Framework Guide](docs/guides/ai-agent-frameworks.md) | LangChain, Claude, and GPT integration patterns for BuyWhere |
 | [Developer FAQ](docs/developer-faq.md) | Common auth, search, category, and rate-limit fixes |
 | [Release Notes v1.0](docs/release-notes-v1.0.md) | What shipped in the GA release |
 | [MCP Setup](MCP.md) | MCP server configuration for AI clients |

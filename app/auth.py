@@ -208,6 +208,12 @@ async def provision_api_key(
     db: AsyncSession = None,
     rate_limit: int = None,
     allowed_origins: list = None,
+    utm_source: str = None,
+    utm_medium: str = None,
+    utm_campaign: str = None,
+    utm_content: str = None,
+    utm_term: str = None,
+    is_active: bool = True,
 ) -> tuple[str, ApiKey]:
     """Create a new API key. Returns (raw_key, ApiKey record)."""
     raw_key, key_hash = generate_api_key()
@@ -219,9 +225,14 @@ async def provision_api_key(
         developer_id=developer_id,
         name=name,
         tier=tier,
-        is_active=True,
+        is_active=is_active,
         rate_limit=rate_limit,
         allowed_origins=allowed_origins,
+        utm_source=utm_source,
+        utm_medium=utm_medium,
+        utm_campaign=utm_campaign,
+        utm_content=utm_content,
+        utm_term=utm_term,
     )
     db.add(api_key)
     await db.flush()
