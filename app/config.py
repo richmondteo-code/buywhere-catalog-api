@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 60 * 24 * 7  # 7 days
 
+    admin_api_key: str = ""  # Internal admin endpoint auth key
+
     rate_limit_per_minute: int = 1000
     redis_url: str = ""
     redis_host: str = ""
@@ -63,6 +65,13 @@ class Settings(BaseSettings):
 
     sendgrid_api_key: str = ""
     sendgrid_enabled: bool = False
+    agentmail_api_key: str = Field(default="", validation_alias="AGENTMAIL_API_KEY")
+    agentmail_base_url: str = "https://api.agentmail.to/v0"
+    agentmail_inbox_id: str = "developers@buywhere.ai"
+    developer_quickstart_url: str = "https://buywhere.ai/docs/quickstart"
+    developer_typescript_sdk_url: str = "https://github.com/buywhere/buywhere-api/tree/master/sdk/npm"
+    developer_python_sdk_url: str = "https://github.com/buywhere/buywhere-api/tree/master/sdk/python"
+    developer_support_email: str = "api@buywhere.ai"
 
     web_push_vapid_public_key: str = ""
     web_push_vapid_private_key: str = ""
@@ -80,6 +89,9 @@ class Settings(BaseSettings):
 
     sentry_dsn: str = ""
     sentry_environment: str = "production"
+    sentry_traces_sample_rate: float = 0.1
+    sentry_profiles_sample_rate: float = 0.1
+    sentry_slow_request_threshold_ms: int = 2000
 
     # OpenTelemetry Configuration
     otel_enabled: bool = False
@@ -92,11 +104,23 @@ class Settings(BaseSettings):
     image_full_width: int = 800
     image_full_height: int = 800
 
+    allowed_origins: str = Field(default="", validation_alias="ALLOWED_ORIGINS")
     affiliate_allowed_domains: str = "lazada.sg,shopee.sg,bestdenki.com.sg,amazon.sg,courts.com.sg,harvey-norman.com.sg,challenger.sg,qoo10.sg"
 
     scraper_api_key: str = Field(default="", validation_alias="SCRAPERAPI_KEY")
     scraper_refresh_url: str = Field(default="", validation_alias="SCRAPER_REFRESH_URL")
     model_config = {"env_file": ".env", "case_sensitive": False, "extra": "allow"}
+
+    @property
+    def cors_allowed_origins(self) -> list[str]:
+        if self.allowed_origins.strip():
+            return [origin.strip() for origin in self.allowed_origins.split(",") if origin.strip()]
+
+        environment = self.environment.lower()
+        if self.debug or environment in {"development", "dev", "local", "test", "testing"}:
+            return ["*"]
+
+        return ["https://api.buywhere.ai"]
 
 
 @lru_cache
