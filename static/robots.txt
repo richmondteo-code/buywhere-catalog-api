@@ -25,5 +25,6 @@ User-agent: *
 Allow: /
 
 Sitemap: https://buywhere.ai/sitemap.xml
+Sitemap: https://buywhere.ai/sitemap-dynamic.xml
 Sitemap: https://buywhere.ai/sitemap-us.xml
 Sitemap: https://buywhere.ai/sitemap-sg.xml
