@@ -1,13 +1,14 @@
 """Push notifications router for browser push notification subscriptions."""
 import uuid
 import base64
+import json
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from pydantic import BaseModel, Field
-from pywebpush import webpush, Vapid
-from sqlalchemy import select, func, delete
+from pywebpush import webpush
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth import get_current_api_key
@@ -37,6 +38,19 @@ class PushSubscriptionResponse(BaseModel):
 
 class VapidKeyResponse(BaseModel):
     public_key: str
+
+
+class SendPushRequest(BaseModel):
+    endpoint: str
+    title: str = Field(..., description="Notification title")
+    body: str = Field(..., description="Notification body")
+    icon: Optional[str] = Field(None, description="Notification icon URL")
+    data: Optional[dict] = None
+
+
+class SendPushResponse(BaseModel):
+    success: bool
+    message: str
 
 
 @router.get("/vapid-key", response_model=VapidKeyResponse, summary="Get VAPID public key for browser subscription")
@@ -159,11 +173,83 @@ async def list_subscriptions(
         )
     
     result = await db.execute(
-        select(func.count(PushSubscription.id)).where(
+        select(PushSubscription).where(
             PushSubscription.user_id == api_key.developer_id,
             PushSubscription.is_active.is_(True),
         )
     )
-    count = result.scalar() or 0
+    subscriptions = result.scalars().all()
     
-    return {"count": count, "subscriptions": []}
+    return {
+        "count": len(subscriptions),
+        "subscriptions": [
+            {
+                "id": s.id,
+                "endpoint": s.endpoint,
+                "is_active": s.is_active,
+                "created_at": s.created_at.isoformat() if s.created_at else None,
+            }
+            for s in subscriptions
+        ]
+    }
+
+
+@router.post("/send", response_model=SendPushResponse, summary="Send push notification to a subscription")
+async def send_push_notification(
+    request: Request,
+    body: SendPushRequest,
+    db: AsyncSession = Depends(get_db),
+    api_key: ApiKey = Depends(get_current_api_key),
+):
+    """Send a push notification to a subscribed browser endpoint."""
+    if not settings.web_push_enabled:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Push notifications are not enabled",
+        )
+    
+    if not settings.web_push_vapid_private_key:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="VAPID keys not configured",
+        )
+    
+    sub_result = await db.execute(
+        select(PushSubscription).where(
+            PushSubscription.endpoint == body.endpoint,
+            PushSubscription.is_active.is_(True),
+        )
+    )
+    sub = sub_result.scalar_one_or_none()
+    
+    if not sub:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Subscription not found or inactive",
+        )
+    
+    payload = json.dumps({
+        "title": body.title,
+        "body": body.body,
+        "icon": body.icon or "/icon.png",
+        "data": body.data or {},
+    })
+    
+    try:
+        webpush(
+            subscription_info={
+                "endpoint": sub.endpoint,
+                "keys": {
+                    "p256dh": sub.p256dh,
+                    "auth": sub.auth,
+                }
+            },
+            data=payload,
+            vapid_private_key=settings.web_push_vapid_private_key,
+            vapid_claims={
+                "sub": settings.web_push_vapid_subject or "mailto:alerts@buywhere.ai",
+            },
+        )
+        return SendPushResponse(success=True, message="Push notification sent")
+    except Exception as e:
+        return SendPushResponse(success=False, message=f"Failed to send push: {str(e)}")
