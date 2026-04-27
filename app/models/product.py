@@ -421,3 +421,19 @@ class ProductAnswer(Base):
         Index("idx_answers_is_accepted", "is_accepted"),
         Index("idx_answers_helpfulness_votes", "helpfulness_votes"),
     )
+
+
+class ComparisonPage(Base):
+    __tablename__ = "comparison_pages"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    slug = Column(Text, nullable=False, unique=True)
+    category = Column(Text, nullable=False, default="general")
+    status = Column(Text, nullable=False, default="draft")
+    product_ids = Column(ARRAY(BigInteger), nullable=False, default=list)
+    expert_summary = Column(Text, nullable=True)
+    hero_image_url = Column(Text, nullable=True)
+    metadata_ = Column("metadata", JSONB, nullable=True)
+    published_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
