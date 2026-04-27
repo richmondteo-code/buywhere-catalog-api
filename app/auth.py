@@ -181,6 +181,8 @@ async def get_current_api_key(
             )
             candidates = result.scalars().all()
             for candidate in candidates:
+                if len(token) > 72:
+                    continue
                 if _verify_key_bcrypt(token, candidate.key_hash):
                     api_key = candidate
                     break
@@ -327,6 +329,8 @@ async def resolve_api_key_from_token(token: str, db: AsyncSession) -> Optional[A
     )
     candidates = result.scalars().all()
     for candidate in candidates:
+        if len(token) > 72:
+            continue
         if _verify_key_bcrypt(token, candidate.key_hash):
             return candidate
 
