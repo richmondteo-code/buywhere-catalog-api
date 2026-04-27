@@ -112,6 +112,8 @@ app.include_router(developers.router, prefix="/v1")
 app.include_router(auth_compat.router, prefix="/v1")
 app.include_router(analytics.router, prefix="/v1")
 app.include_router(admin.router, prefix="/v1")
+from app.routers.admin_comparison_pages import router as admin_comparison_pages_router
+app.include_router(admin_comparison_pages_router, prefix="/v1")
 app.include_router(feature_flags.router)
 app.include_router(webhooks.router, prefix="/v1")
 app.include_router(alertmanager_webhooks.router)
@@ -165,6 +167,23 @@ async def health_alias():
 @app.head("/health", include_in_schema=False)
 async def health_alias_head():
     return Response(status_code=200)
+
+
+@app.get("/health/db", tags=["health"], summary="Database connection health")
+async def health_db_root():
+    from app.database import get_db
+    from app.routers.health import health_db
+    async for db in get_db():
+        try:
+            return await health_db(db)
+        finally:
+            pass
+
+
+@app.get("/health/redis", tags=["health"], summary="Redis connection health")
+async def health_redis_root():
+    from app.routers.health import health_redis
+    return await health_redis()
 
 
 def error_response(code: str, message: str, details: Union[dict, list, None] = None, status_code: int = 400):
