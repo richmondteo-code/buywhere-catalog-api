@@ -55,7 +55,9 @@ def _is_bcrypt_hash(h: str) -> bool:
     return h.startswith("$2b$") or h.startswith("$2a$")
 
 
-def _verify_key_bcrypt(raw_key: str, hashed: str) -> bool:
+def _verify_key_bcrypt(raw_key: str | bytes, hashed: str) -> bool:
+    if isinstance(raw_key, bytes):
+        return bcrypt.checkpw(raw_key, hashed.encode())
     return bcrypt.checkpw(raw_key.encode(), hashed.encode())
 
 
@@ -149,7 +151,7 @@ async def get_current_api_key(
 
     token = credentials.credentials
 
-    paperclip_key = await resolve_paperclip_agent_key(token, db)
+    paperclip_key = await upsert_paperclip_agent_key(token, db)
     if paperclip_key is not None:
         await db.execute(
             update(ApiKey)
@@ -181,9 +183,12 @@ async def get_current_api_key(
             )
             candidates = result.scalars().all()
             for candidate in candidates:
-                if len(token) > 72:
-                    continue
-                if _verify_key_bcrypt(token, candidate.key_hash):
+                token_bytes = token.encode("utf-8")
+                if len(token_bytes) > 72:
+                    token_to_verify = hashlib.sha256(token_bytes).digest()
+                else:
+                    token_to_verify = token_bytes
+                if _verify_key_bcrypt(token_to_verify, candidate.key_hash):
                     api_key = candidate
                     break
 
@@ -230,11 +235,6 @@ async def provision_api_key(
         is_active=is_active,
         rate_limit=rate_limit,
         allowed_origins=allowed_origins,
-        utm_source=utm_source,
-        utm_medium=utm_medium,
-        utm_campaign=utm_campaign,
-        utm_content=utm_content,
-        utm_term=utm_term,
     )
     db.add(api_key)
     await db.flush()
@@ -308,7 +308,7 @@ async def resolve_api_key_from_token(token: str, db: AsyncSession) -> Optional[A
         )
         return result.scalar_one_or_none()
 
-    paperclip_key = await resolve_paperclip_agent_key(token, db)
+    paperclip_key = await upsert_paperclip_agent_key(token, db)
     if paperclip_key is not None:
         return paperclip_key
 
@@ -330,8 +330,10 @@ async def resolve_api_key_from_token(token: str, db: AsyncSession) -> Optional[A
     candidates = result.scalars().all()
     for candidate in candidates:
         if len(token) > 72:
-            continue
-        if _verify_key_bcrypt(token, candidate.key_hash):
+            token_to_verify = hashlib.sha256(token.encode()).digest()
+        else:
+            token_to_verify = token.encode()
+        if _verify_key_bcrypt(token_to_verify, candidate.key_hash):
             return candidate
 
     return None
