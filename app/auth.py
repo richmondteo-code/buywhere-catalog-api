@@ -201,10 +201,63 @@ async def get_current_api_key(
     return api_key
 
 
+async def get_optional_api_key(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+) -> ApiKey | None:
+    auth_header = request.headers.get("Authorization")
+    token = None
+    if auth_header and auth_header.startswith("Bearer "):
+        token = auth_header[7:]
+
+    if not token:
+        return None
+
+    paperclip_key = await resolve_paperclip_agent_key(token, db)
+    if paperclip_key is not None:
+        return paperclip_key
+
+    payload = decode_access_token(token)
+    if payload and "key_id" in payload:
+        key_id = payload["key_id"]
+        result = await db.execute(
+            select(ApiKey).where(ApiKey.id == key_id, ApiKey.is_active == True)
+        )
+        return result.scalar_one_or_none()
+
+    key_hash = hash_key(token)
+    result = await db.execute(
+        select(ApiKey).where(ApiKey.key_hash == key_hash, ApiKey.is_active == True)
+    )
+    api_key = result.scalar_one_or_none()
+
+    if api_key is None:
+        result = await db.execute(
+            select(ApiKey).where(
+                ApiKey.is_active == True,
+                ApiKey.key_hash.like("$2%"),
+            )
+        )
+        candidates = result.scalars().all()
+        for candidate in candidates:
+            if _verify_key_bcrypt(token, candidate.key_hash):
+                api_key = candidate
+                break
+
+    if api_key is not None:
+        await db.execute(
+            update(ApiKey)
+            .where(ApiKey.id == api_key.id)
+            .values(last_used_at=datetime.now(timezone.utc))
+        )
+
+    return api_key
+
+
 async def provision_api_key(
     developer_id: str,
     name: str,
-    tier: str = "basic",
+    tier: str = "free",
     db: AsyncSession = None,
     rate_limit: int = None,
     allowed_origins: list = None,

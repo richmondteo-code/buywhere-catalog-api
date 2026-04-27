@@ -240,6 +240,26 @@ class PriceHistory(Base):
     )
 
 
+class PriceChangeEvent(Base):
+    __tablename__ = "price_change_events"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    product_id = Column(BigInteger, nullable=False)
+    old_price = Column(Numeric(12, 2), nullable=False)
+    new_price = Column(Numeric(12, 2), nullable=False)
+    change_pct = Column(Numeric(10, 4), nullable=False)
+    direction = Column(String(10), nullable=False)
+    currency = Column(String(3), nullable=False, default="SGD")
+    source = Column(Text, nullable=True)
+    merchant_id = Column(Text, nullable=True)
+    recorded_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+    __table_args__ = (
+        Index("idx_price_change_events_product_recorded", "product_id", "recorded_at"),
+        Index("idx_price_change_events_direction", "direction"),
+    )
+
+
 class Click(Base):
     __tablename__ = "clicks"
 

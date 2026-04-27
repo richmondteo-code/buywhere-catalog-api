@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List, Any, Dict
 from decimal import Decimal
 from datetime import datetime
@@ -13,9 +13,11 @@ class PriceTrend(str):
 
 
 class PriceHistoryEntry(BaseModel):
+    date: Optional[str] = Field(None, description="Date in YYYY-MM-DD format (derived from scraped_at for chart compatibility)")
     price: Decimal
     currency: str
     platform: str = Field(..., description="Source platform (e.g. shopee_sg, lazada_sg)")
+    in_stock: Optional[bool] = Field(None, description="Whether product was in stock on this date (if available)")
     scraped_at: datetime = Field(..., description="Timestamp when price was scraped")
 
     model_config = {"from_attributes": True, "populate_by_name": True}
@@ -35,11 +37,19 @@ class PriceHistoryAggregationEntry(BaseModel):
 
 class PriceHistoryResponse(BaseModel):
     product_id: int
+    merchant_id: Optional[str] = Field(None, description="Merchant/platform of the product")
+    data_points: List[PriceHistoryEntry] = Field(default_factory=list, description="Raw price data points for charting")
     entries: List[PriceHistoryEntry] = Field(default_factory=list)
     aggregated_entries: List[PriceHistoryAggregationEntry] = Field(default_factory=list, description="Aggregated daily time series when aggregate=daily is requested")
     total: int
+    min_price: Optional[Decimal] = Field(None, description="Minimum price across the period")
+    max_price: Optional[Decimal] = Field(None, description="Maximum price across the period")
+    avg_price: Optional[Decimal] = Field(None, description="Average price across the period")
+    trend: Optional[str] = Field(None, description="Price trend: 'up', 'down', or 'stable'")
     aggregate: Optional[str] = Field(None, description="Aggregation type: 'daily' if aggregated")
     period: Optional[str] = Field(None, description="Period requested (e.g. '30d')")
+
+    model_config = {"from_attributes": True, "populate_by_name": True}
 
 
 class PriceStats(BaseModel):
@@ -70,6 +80,7 @@ class ProductResponse(BaseModel):
     price: Decimal
     currency: str
     price_sgd: Optional[Decimal] = Field(None, description="Price normalized to SGD")
+    usd_price: Optional[Decimal] = Field(None, description="Price normalized to USD")
     converted_price: Optional[Decimal] = Field(None, description="Price converted to requested currency (when ?currency= param is used)")
     converted_currency: Optional[str] = Field(None, description="Currency of converted_price")
     buy_url: str = Field(..., description="Direct purchase URL")
@@ -97,6 +108,7 @@ class ProductResponse(BaseModel):
     metadata: Optional[Any] = None
     updated_at: datetime
     price_trend: Optional[str] = Field(None, description="30-day price trend: 'up', 'down', or 'stable'")
+    trend_score: Optional[int] = Field(None, description="Rolling trending score based on recent product-detail and compare activity")
 
 
 class SearchFiltersResponse(BaseModel):
@@ -112,11 +124,12 @@ class SearchFiltersResponse(BaseModel):
 
 class ProductListResponse(BaseModel):
     total: int
+    total_count: Optional[int] = Field(None, description="Total matching products across all pages")
     limit: int
     offset: int
     items: List[ProductResponse]
     has_more: bool = False
-    next_cursor: Optional[int] = None
+    next_cursor: Optional[str] = Field(None, description="Opaque cursor for the next page")
     facets: Optional[Any] = None
     highlights: Optional[Dict[str, str]] = None
 
@@ -175,6 +188,10 @@ class ProductFeedCursorResponse(BaseModel):
 class SearchSuggestionResponse(BaseModel):
     suggestions: List[str]
     total: int
+
+
+class ProductAutocompleteResponse(BaseModel):
+    suggestions: List[str]
 
 
 class AutocompleteResponse(BaseModel):
@@ -262,6 +279,8 @@ class CompareMatch(BaseModel):
     price_missing_reason: Optional[PriceMissingReason] = Field(None, description="Reason why price is missing")
     zero_price: bool = Field(False, description="True when product is free (price is 0)")
     data_freshness: Optional[str] = Field(None, description="Data freshness tier: fresh (<24h), recent (24h-7d), stale (7-30d), very_stale (>30d)")
+    low_confidence: bool = Field(False, description="True when the listing matched below the compare confidence audit threshold")
+    confidence_audit_threshold: Optional[float] = Field(None, description="Threshold used to determine whether low_confidence is set")
     merchant_edge_case: Optional[str] = Field(
         None,
         description="Edge case flag for merchant issues: 'duplicate_merchant', 'empty_merchant_id', 'unknown_merchant', 'cross_border_merchant', or null if no issues"
@@ -279,7 +298,7 @@ class CompareResponse(BaseModel):
     source_product_name: str
     matches: List[Any]
     total_matches: int
-    highlights: CompareHighlights
+    highlights: Optional[CompareHighlights] = Field(None, description="Highlighted matches (cheapest, best rated, fastest shipping)")
     meta: Optional[Dict[str, Any]] = Field(None, description="Metadata including price_coverage_pct, stale_count, very_stale_count")
 
 
@@ -327,6 +346,7 @@ class SimilarMatch(BaseModel):
     updated_at: Optional[datetime] = None
     similarity_score: float
     match_reasons: List[str] = Field(default_factory=list)
+    price_delta: Optional[str] = Field(None, description="Price difference vs source product, e.g. '34% cheaper'")
 
     model_config = {"from_attributes": True}
 
@@ -426,6 +446,7 @@ class RecommendationMatch(BaseModel):
     metadata: Optional[Any] = None
     updated_at: Optional[datetime] = None
     relevance_score: Optional[float] = None
+    price_delta: Optional[str] = Field(None, description="Price difference vs source product, e.g. '34% cheaper'")
 
 
 class BundleMatch(BaseModel):
@@ -546,6 +567,11 @@ class ApiKeyResponse(BaseModel):
     created_at: datetime
     last_used_at: Optional[datetime] = None
     expires_at: Optional[datetime] = None
+    utm_source: Optional[str] = None
+    utm_medium: Optional[str] = None
+    utm_campaign: Optional[str] = None
+    utm_content: Optional[str] = None
+    utm_term: Optional[str] = None
 
     model_config = {"from_attributes": True}
 
@@ -606,6 +632,7 @@ class RatingFacetBucket(BaseModel):
 class FacetCounts(BaseModel):
     categories: List[FacetBucket] = Field(default_factory=list)
     platforms: List[FacetBucket] = Field(default_factory=list)
+    retailers: List[FacetBucket] = Field(default_factory=list)
     brands: List[FacetBucket] = Field(default_factory=list)
     rating_ranges: List[RatingFacetBucket] = Field(default_factory=list)
     price_ranges: List[PriceFacetBucket] = Field(default_factory=list)
@@ -640,12 +667,14 @@ class DeveloperSignupResponse(BaseModel):
     name: Optional[str] = None
     tier: Optional[str] = None
     message: str = ""
+    redirect_url: Optional[str] = None
 
 
 class DeveloperResponse(BaseModel):
     id: str
     email: str
     plan: str
+    email_verified: bool = False
     created_at: datetime
 
     model_config = {"from_attributes": True}
@@ -655,6 +684,11 @@ class DeveloperMeResponse(BaseModel):
     developer: DeveloperResponse
     api_keys: List[ApiKeyResponse]
     total_keys: int
+    requests_today: int
+    daily_limit: int
+    requests_this_month: int
+    monthly_limit: int
+    reset_at: datetime
 
 
 class EndpointUsage(BaseModel):
@@ -677,13 +711,36 @@ class UsageStats(BaseModel):
     alert_triggered: bool
 
 
+class TopQueryUsage(BaseModel):
+    query: str
+    count: int
+
+
 class DeveloperUsageResponse(BaseModel):
-    developer_id: str
-    key_id: str
-    key_name: str
-    tier: str
-    usage: UsageStats
-    alert_config: dict
+    requests_today: int
+    requests_this_month: int
+    rate_limit_hits: int
+    top_5_queries: List[TopQueryUsage]
+
+
+class ApiKeyStats(BaseModel):
+    key_prefix: str
+    last_used: Optional[datetime] = None
+
+
+class EndpointUsageSimple(BaseModel):
+    endpoint: str
+    count: int
+
+
+class DeveloperStatsResponse(BaseModel):
+    plan: str
+    requests_today: int
+    requests_7d: int
+    daily_limit: int
+    reset_at: datetime
+    top_endpoints: List[EndpointUsageSimple]
+    api_keys: List[ApiKeyStats]
 
 
 class BundleResponse(BaseModel):
@@ -783,7 +840,10 @@ class MerchantSummary(BaseModel):
     merchant_id: str = Field(..., description="Unique merchant identifier")
     merchant_name: str = Field(..., description="Merchant/store name")
     platform: str = Field(..., description="Source platform (e.g. shopee_sg, lazada_sg)")
+    country: Optional[str] = Field(None, description="ISO 3166-1 alpha-2 country code for the merchant")
     product_count: int = Field(..., description="Number of active products from this merchant")
+    affiliate_enabled: bool = Field(False, description="Whether BuyWhere can generate an affiliate/tracked link for this merchant")
+    example_url: Optional[str] = Field(None, description="Example product URL from this merchant")
     categories: List[str] = Field(default_factory=list, description="Distinct product categories from this merchant")
     avg_rating: Optional[float] = Field(None, description="Average product rating across merchant's products (0-5 scale)")
     last_scraped_at: Optional[datetime] = Field(None, description="Timestamp of most recently scraped product from this merchant")
@@ -795,6 +855,38 @@ class MerchantListResponse(BaseModel):
     limit: int
     offset: int
     has_more: bool = False
+
+
+class ProductSummaryForMerchant(BaseModel):
+    id: int
+    name: str
+    price: Decimal
+    currency: str
+    image_url: Optional[str] = None
+    url: str
+    rating: Optional[Decimal] = None
+    in_stock: Optional[bool] = None
+
+    model_config = {"from_attributes": True}
+
+
+class MerchantDetail(BaseModel):
+    merchant_id: str = Field(..., description="Unique merchant identifier")
+    merchant_name: str = Field(..., description="Merchant/store name")
+    platform: str = Field(..., description="Source platform (e.g. shopee_sg, lazada_sg)")
+    country: Optional[str] = Field(None, description="ISO 3166-1 alpha-2 country code for the merchant")
+    product_count: int = Field(..., description="Number of active products from this merchant")
+    affiliate_enabled: bool = Field(False, description="Whether BuyWhere can generate an affiliate/tracked link for this merchant")
+    example_url: Optional[str] = Field(None, description="Example product URL from this merchant")
+    categories: List[str] = Field(default_factory=list, description="Distinct product categories from this merchant")
+    top_categories: List[str] = Field(default_factory=list, description="Top merchant categories ranked by active product count")
+    avg_rating: Optional[float] = Field(None, description="Average product rating across merchant's products (0-5 scale)")
+    last_scraped_at: Optional[datetime] = Field(None, description="Timestamp of most recently scraped product from this merchant")
+    sample_products: List[ProductSummaryForMerchant] = Field(default_factory=list, description="Sample of active products from this merchant")
+
+
+class MerchantDetailResponse(BaseModel):
+    merchant: MerchantDetail
 
 
 class BulkLookupMatch(BaseModel):
@@ -832,14 +924,46 @@ class BulkLookupResponse(BaseModel):
 
 
 class BatchProductRequest(BaseModel):
-    product_ids: List[int] = Field(..., min_length=1, max_length=100, description="List of product IDs to look up (max 100)")
+    ids: List[str] = Field(..., min_length=1, max_length=50, description="List of product IDs to look up (max 50)")
+    fields: List[str] = Field(
+        default_factory=lambda: ["id", "name", "price", "currency", "url"],
+        min_length=1,
+        description="Fields to include in each product result",
+    )
+
+    @field_validator("ids", mode="before")
+    @classmethod
+    def normalize_ids(cls, value):
+        if not isinstance(value, list):
+            raise TypeError("ids must be a list")
+        normalized = []
+        for item in value:
+            text = str(item).strip()
+            if not text:
+                raise ValueError("ids cannot contain empty values")
+            normalized.append(text)
+        return normalized
+
+    @field_validator("fields")
+    @classmethod
+    def validate_fields(cls, value: List[str]) -> List[str]:
+        allowed = set(ProductResponse.model_fields.keys()) | {"url"}
+        normalized = []
+        for field_name in value:
+            field = field_name.strip()
+            if field not in allowed:
+                raise ValueError(f"Unsupported field: {field}")
+            normalized.append(field)
+        return normalized
 
 
 class BatchProductResponse(BaseModel):
-    products: List[ProductResponse]
-    total: int
-    found: int
-    not_found: int
+    products: List[Dict[str, Any]]
+    not_found: List[str]
+
+
+class V2BatchProductRequest(BaseModel):
+    product_ids: List[int] = Field(..., min_length=1, max_length=100, description="List of product IDs to look up (max 100)")
 
 
 class BulkIdsRequest(BaseModel):
@@ -976,6 +1100,7 @@ class V2ProductResponse(BaseModel):
     price: Decimal
     currency: str
     price_sgd: Optional[Decimal] = None
+    usd_price: Optional[Decimal] = None
     region: str = Field("sg", description="Geographic region (e.g. sg, us, sea, eu, au)")
     country_code: str = Field("SG", description="ISO 3166-1 alpha-2 country code")
     buy_url: str
@@ -1079,3 +1204,73 @@ class BulkProductResponse(BaseModel):
     success_count: int = Field(..., description="Number of successful upserts")
     failure_count: int = Field(..., description="Number of failed upserts")
     results: List[BulkUpsertResult] = Field(default_factory=list, description="Individual upsert results")
+
+
+class PriceVariantItem(BaseModel):
+    id: int
+    source: str
+    merchant_id: str
+    merchant_name: Optional[str] = Field(None, description="Human-readable merchant/store name")
+    price: Decimal
+    currency: str
+    price_sgd: Optional[Decimal] = None
+    usd_price: Optional[Decimal] = None
+    buy_url: str
+    affiliate_url: Optional[str] = Field(None, description="Tracked affiliate URL")
+    is_available: bool
+    in_stock: Optional[bool] = None
+    stock_level: Optional[str] = None
+    rating: Optional[Decimal] = None
+    review_count: Optional[int] = None
+    image_url: Optional[str] = None
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class ProductDetailResponse(BaseModel):
+    sku: str
+    canonical_id: Optional[int] = None
+    name: str
+    description: Optional[str] = None
+    brand: Optional[str] = None
+    category: Optional[str] = None
+    category_path: Optional[List[str]] = None
+    image_url: Optional[str] = None
+    barcode: Optional[str] = None
+    specs: Optional[Dict[str, Any]] = None
+    lowest_price: Decimal = Field(..., description="Lowest price across all variants")
+    highest_price: Decimal = Field(..., description="Highest price across all variants")
+    currency: str
+    price_sgd: Optional[Decimal] = None
+    usd_price: Optional[Decimal] = None
+    variants: List[PriceVariantItem] = Field(default_factory=list, description="All price variants from different merchants")
+    total_merchants: int = Field(..., description="Number of merchants offering this SKU")
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class BestPriceItem(BaseModel):
+    price: Decimal = Field(..., description="Product price")
+    currency: str = Field(..., description="Currency code (e.g., USD)")
+    retailer: str = Field(..., description="Retailer/source identifier (e.g., walmart_us)")
+    url: str = Field(..., description="Direct purchase URL")
+
+    model_config = {"from_attributes": True}
+
+
+class SavingsInfo(BaseModel):
+    amount: Decimal = Field(..., description="Savings amount compared to highest price")
+    percent: float = Field(..., description="Savings as percentage")
+
+    model_config = {"from_attributes": True}
+
+
+class BestPriceResponse(BaseModel):
+    product_id: int = Field(..., description="Original product ID used for the query")
+    best_price: BestPriceItem = Field(..., description="Cheapest price found")
+    all_prices: List[BestPriceItem] = Field(default_factory=list, description="All prices from US retailers")
+    savings: SavingsInfo = Field(..., description="Savings compared to highest price")
+
+    model_config = {"from_attributes": True}

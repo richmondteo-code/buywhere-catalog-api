@@ -40,6 +40,48 @@ curl -sS --get "$BUYWHERE_BASE_URL/v1/deals" \
   --data-urlencode "limit=10"
 ```
 
+## TypeScript SDK
+
+Install the official npm package:
+
+```bash
+npm install @buywhere/sdk
+```
+
+Basic search:
+
+```typescript
+import { BuyWhereClient } from "@buywhere/sdk";
+
+const client = new BuyWhereClient(process.env.BUYWHERE_API_KEY!);
+
+const results = await client.search({
+  q: "wireless headphones",
+  limit: 5,
+  in_stock: true,
+});
+
+for (const product of results.items) {
+  console.log(`${product.name} | ${product.currency} ${product.price} | ${product.source}`);
+}
+```
+
+Price comparison for a known product:
+
+```typescript
+const search = await client.search({ q: "Nintendo Switch OLED", limit: 1 });
+const product = search.items[0];
+
+if (product) {
+  const comparison = await client.compare({ product_id: product.id });
+  console.log(comparison.highlights?.cheapest);
+}
+```
+
+Full package docs and more examples: [sdk/npm/README.md](sdk/npm/README.md)
+
+Runnable scripts live in [sdk/npm/examples](sdk/npm/examples).
+
 ## MCP Integration
 
 BuyWhere is listed in the awesome-mcp-servers registry. Connect to Claude Desktop, Cursor, Windsurf, or any MCP-compatible AI client in seconds.

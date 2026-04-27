@@ -1,0 +1,56 @@
+{
+  "name": "@buywhere/sdk",
+  "version": "1.0.0",
+  "description": "Official TypeScript SDK for BuyWhere API — Agent-native product catalog API for AI agent commerce in Singapore and globally",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "prepublishOnly": "npm run build",
+    "typecheck": "tsc --noEmit",
+    "example:search": "tsx examples/search-products.ts",
+    "example:get-product": "tsx examples/get-product.ts",
+    "example:compare": "tsx examples/compare-product.ts",
+    "example:price-history": "tsx examples/price-history.ts",
+    "example:webhook": "tsx examples/register-webhook.ts"
+  },
+  "keywords": [
+    "buywhere",
+    "typescript",
+    "javascript",
+    "node",
+    "nextjs",
+    "ecommerce",
+    "singapore",
+    "product-catalog",
+    "api",
+    "ai-agents",
+    "shopping",
+    "sdk"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^25.5.2",
+    "tsx": "^4.20.6",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/buywhere/buywhere-api"
+  }
+}

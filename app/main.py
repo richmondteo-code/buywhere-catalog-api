@@ -12,11 +12,12 @@ from slowapi.wrappers import Limit
 from slowapi.middleware import SlowAPIMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.auth import ApiKeyContextMiddleware
 from app.config import get_settings
 from app.rate_limit import limiter, TierRateLimitMiddleware, RedisPerMinuteRateLimitMiddleware
-from app.request_logging import RequestLoggingMiddleware
+from app.request_logging import RequestLoggingMiddleware, get_request_id, log_api_error
 from app.usage_metering import UsageMeteringMiddleware
-from app.routers import products, categories, keys, deals, ingestion, ingest, search, status, catalog, agents, analytics, admin, developers, webhooks, metrics, alerts, images, changelog, feed, merchants, trending, export, enrichment, health, brands, watchlist, dedup, compare, billing, countries, sitemap, v2, merchant_analytics, affiliate, preferences, import_csv, saved_searches, usage, referrals, coupons, linkless_attribution, scraper_assignments, scraper_alerts, scraper_refresh, agent_native, newsletter, user_watchlist, user_alerts, users, referral_landing, push_notifications, user_notification_preferences, price_drops, growth, feature_flags, signup, stats, public_alerts, alertmanager_webhooks, auth_compat
+from app.routers import products, categories, keys, deals, ingestion, ingest, search, status, catalog, agents, analytics, admin, developers, webhooks, metrics, alerts, images, changelog, feed, merchants, trending, export, enrichment, health, brands, watchlist, dedup, compare, billing, countries, sitemap, v2, merchant_analytics, affiliate, affiliate_click, preferences, import_csv, saved_searches, usage, referrals, coupons, linkless_attribution, scraper_assignments, scraper_alerts, scraper_refresh, agent_native, newsletter, user_watchlist, user_alerts, users, referral_landing, push_notifications, user_notification_preferences, price_drops, growth, feature_flags, signup, stats, public_alerts, alertmanager_webhooks, auth_compat, auth, agent_health, webhook_catalog_update
 from app import clickthrough
 from app.graphql import graphql_router
 from app.versioning import VersionRoutingMiddleware
@@ -31,6 +32,21 @@ logger = get_logger("api-service")
 settings = get_settings()
 
 MAX_QUERY_LENGTH = 500
+
+try:
+    from app.routers import prometheus_metrics
+    from app.routers.prometheus_metrics import PrometheusMiddleware
+except ModuleNotFoundError as exc:
+    if exc.name != "prometheus_client":
+        raise
+    prometheus_metrics = None
+
+    class PrometheusMiddleware:  # type: ignore[no-redef]
+        def __init__(self, app):
+            self.app = app
+
+        async def __call__(self, scope, receive, send):
+            await self.app(scope, receive, send)
 
 
 @asynccontextmanager
@@ -81,8 +97,10 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
 app.add_middleware(RedisPerMinuteRateLimitMiddleware)
 app.add_middleware(TierRateLimitMiddleware)
+app.add_middleware(ApiKeyContextMiddleware)
 app.add_middleware(RequestLoggingMiddleware)
 app.add_middleware(UsageMeteringMiddleware)
+app.add_middleware(PrometheusMiddleware)
 
 if is_sentry_enabled():
     app.add_middleware(SentrySlowQueryMiddleware)
@@ -110,10 +128,13 @@ app.include_router(brands.sources_router, prefix="/v1")
 app.include_router(agents.router)
 app.include_router(developers.router, prefix="/v1")
 app.include_router(auth_compat.router, prefix="/v1")
+app.include_router(auth_compat.api_compat_router, prefix="/api")
+app.include_router(auth.router, prefix="/v1")
 app.include_router(analytics.router, prefix="/v1")
 app.include_router(admin.router, prefix="/v1")
 app.include_router(feature_flags.router)
 app.include_router(webhooks.router, prefix="/v1")
+app.include_router(webhook_catalog_update.router)
 app.include_router(alertmanager_webhooks.router)
 app.include_router(metrics.router, prefix="/v1")
 app.include_router(alerts.router, prefix="/v1")
@@ -132,6 +153,7 @@ app.include_router(dedup.router, prefix="/v1")
 app.include_router(dedup.dedup_ingest_router, prefix="/v1")
 app.include_router(compare.router, prefix="/v1")
 app.include_router(affiliate.router, prefix="/v1")
+app.include_router(affiliate_click.router, prefix="/v1")
 app.include_router(billing.router, prefix="/v1")
 app.include_router(usage.router, prefix="/v1")
 app.include_router(agent_native.router)
@@ -155,6 +177,9 @@ app.include_router(user_notification_preferences.router)
 app.include_router(growth.router)
 app.include_router(signup.router)
 app.include_router(stats.router)
+app.include_router(agent_health.router)
+if prometheus_metrics is not None:
+    app.include_router(prometheus_metrics.router)
 
 # /health alias — monitors and Docker HEALTHCHECK use this; actual logic is at /v1/health
 @app.get("/health", include_in_schema=False)
@@ -176,14 +201,14 @@ def error_response(code: str, message: str, details: Union[dict, list, None] = N
 
 @app.middleware("http")
 async def add_request_id(request: Request, call_next):
-    request_id = request.headers.get("X-Request-Id") or str(uuid.uuid4())
+    request_id = get_request_id(request)
     response = await call_next(request)
     response.headers["X-Request-Id"] = request_id
     return response
 
 
 # AI crawler / Perplexity-friendly headers on public endpoints
-AI_INDEXABLE_PREFIXES = ("/products", "/categories", "/search", "/deals", "/v2/products", "/v2/search", "/api/docs", "/api/redoc", "/llms.txt")
+AI_INDEXABLE_PREFIXES = ("/products", "/categories", "/search", "/deals", "/compare", "/v2/products", "/v2/search", "/api/docs", "/api/redoc", "/llms.txt")
 
 @app.middleware("http")
 async def add_ai_crawler_headers(request: Request, call_next):
@@ -197,8 +222,16 @@ async def add_ai_crawler_headers(request: Request, call_next):
 
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request: Request, exc: StarletteHTTPException):
+    if exc.status_code >= 500:
+        log_api_error(request, exc, exc.status_code, message="HTTP exception response")
     if exc.status_code == 404:
         return error_response("NOT_FOUND", "The requested resource was not found", status_code=404)
+    if exc.status_code >= 500:
+        return JSONResponse(
+            status_code=exc.status_code,
+            content={"error": {"code": f"HTTP_{exc.status_code}", "message": exc.detail if hasattr(exc, "detail") else "An error occurred", "details": {}}},
+            headers={"Cache-Control": "no-store"},
+        )
     return error_response(
         f"HTTP_{exc.status_code}",
         exc.detail if hasattr(exc, "detail") else "An error occurred",
@@ -208,6 +241,7 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    log_api_error(request, exc, 422, message="Request validation failed")
     errors = []
     for error in exc.errors():
         field = ".".join(str(loc) for loc in error["loc"] if loc not in ("body", "query", "path"))
@@ -271,6 +305,7 @@ def _get_country_from_request(request: Request) -> str:
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
+    log_api_error(request, exc, 500, message="Unhandled exception response")
     logger.exception(f"Unhandled exception: {exc}")
     
     if is_sentry_enabled():
@@ -290,7 +325,11 @@ async def global_exception_handler(request: Request, exc: Exception):
             is_p0=is_p0,
         )
     
-    return error_response("INTERNAL_ERROR", "An internal server error occurred", status_code=500)
+    return JSONResponse(
+        status_code=500,
+        content={"error": {"code": "INTERNAL_ERROR", "message": "An internal server error occurred", "details": {}}},
+        headers={"Cache-Control": "no-store"},
+    )
 
 
 @app.exception_handler(RateLimitExceeded)
@@ -328,6 +367,40 @@ async def chatgpt_openapi():
     return JSONResponse(
         content=json.loads(spec_path.read_text()),
         headers={"Cache-Control": "public, max-age=3600"},
+    )
+
+
+@app.get("/.well-known/ai-plugin.json", tags=["integrations"], summary="AI agent plugin manifest for ChatGPT/GPT Builder discovery")
+async def ai_plugin_manifest():
+    api_base = getattr(settings, "app_base_url", "https://api.buywhere.ai")
+    manifest = {
+        "schema_version": "v1",
+        "name_for_model": "buywhere_product_catalog",
+        "name_for_human": "BuyWhere Product Catalog",
+        "description_for_model": (
+            "Search and compare millions of products across major e-commerce platforms including "
+            "Shopee, Lazada, Amazon, Carousell, and 20+ other merchants in Singapore and globally. "
+            "Find best prices, deals, price history, and product availability. "
+            "Supports semantic search, category filtering, brand lookup, and multi-platform price comparison. "
+            "Use for any shopping research, price comparison, product discovery, or deal-finding tasks."
+        ),
+        "description_for_human": "Search millions of products across Shopee, Lazada, Amazon, Carousell and 20+ Singapore and global merchants. Find best prices, compare deals, and discover products.",
+        "auth": {
+            "type": "none"
+        },
+        "api": {
+            "type": "openapi",
+            "url": f"{api_base}/api/openapi.json"
+        },
+        "logo_url": f"{api_base}/static/buywhere-logo.png",
+        "contact_email": "api@buywhere.ai",
+        "legal_info_url": f"{api_base}/legal",
+        "HttpAuthorization": "Bearer",
+        "override_user_auth_header": "Authorization"
+    }
+    return JSONResponse(
+        content=manifest,
+        headers={"Cache-Control": "public, max-age=86400"},
     )
 
 
@@ -375,6 +448,7 @@ async def api_root():
             "products": "GET /v1/products",
             "best_price": "GET /v1/products/best-price",
             "compare_search": "GET /v1/products/compare?q=<query>",
+            "compare_by_ids": "GET /v1/products/compare?ids=<id1,id2,...>",
             "compare_matrix": "POST /v1/products/compare",
             "compare_diff": "POST /v1/products/compare/diff",
             "trending": "GET /v1/products/trending",
@@ -459,8 +533,25 @@ async def custom_swagger_ui():
 
 @app.get("/api/docs", include_in_schema=False)
 async def api_swagger_ui():
-    from starlette.responses import RedirectResponse
-    return RedirectResponse(url="/docs")
+    from starlette.responses import FileResponse
+    return FileResponse("templates/swagger.html")
+
+
+@app.get("/docs/api", include_in_schema=False)
+async def docs_api_swagger_ui():
+    from starlette.responses import FileResponse
+    return FileResponse("templates/swagger.html")
+
+
+@app.get("/openapi.json", tags=["integrations"], summary="Full OpenAPI 3.0 specification", include_in_schema=False)
+async def openapi_spec():
+    import json
+    from pathlib import Path
+    spec_path = Path(__file__).resolve().parent.parent / "openapi.yaml"
+    return JSONResponse(
+        content=json.loads(spec_path.read_text()),
+        headers={"Cache-Control": "public, max-age=3600"},
+    )
 
 
 @app.get("/quickstart", include_in_schema=False)
