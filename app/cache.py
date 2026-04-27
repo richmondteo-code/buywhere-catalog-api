@@ -83,3 +83,49 @@ def build_cache_key(prefix: str, **kwargs) -> str:
     sorted_params = sorted(kwargs.items())
     param_str = "&".join(f"{k}={v}" for k, v in sorted_params if v is not None)
     return f"{prefix}:{param_str}" if param_str else prefix
+
+
+async def get_cache_stats() -> dict:
+    try:
+        redis = await get_redis()
+        info = await redis.info("stats")
+        return {
+            "total_commands_processed": info.get("total_commands_processed", 0),
+            "keyspace_hits": info.get("keyspace_hits", 0),
+            "keyspace_misses": info.get("keyspace_misses", 0),
+        }
+    except Exception:
+        return {"total_commands_processed": 0, "keyspace_hits": 0, "keyspace_misses": 0}
+
+
+async def get_cache_key_count(pattern: str = "*") -> int:
+    try:
+        redis = await get_redis()
+        count = 0
+        async for _ in redis.scan_iter(match=pattern):
+            count += 1
+        return count
+    except Exception:
+        return 0
+
+
+async def get_redis_memory_info() -> dict:
+    try:
+        redis = await get_redis()
+        info = await redis.info("memory")
+        return {
+            "used_memory": info.get("used_memory", 0),
+            "used_memory_peak": info.get("used_memory_peak", 0),
+            "used_memory_human": info.get("used_memory_human", "0B"),
+        }
+    except Exception:
+        return {"used_memory": 0, "used_memory_peak": 0, "used_memory_human": "0B"}
+
+
+async def reset_cache_stats() -> bool:
+    try:
+        redis = await get_redis()
+        await redis.config_resetstat()
+        return True
+    except Exception:
+        return False
