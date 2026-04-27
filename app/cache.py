@@ -5,6 +5,8 @@ from app.config import get_settings
 
 settings = get_settings()
 
+TTL_STATS = 600
+
 _redis: Optional[Redis] = None
 
 
