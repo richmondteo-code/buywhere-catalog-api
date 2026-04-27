@@ -1,13 +1,14 @@
 """
 Shopee Thailand product scraper.
 
-Scrapes electronics, home appliances, food & beverages, health, and beauty
+Scrapes electronics, home appliances, food & beverages, health, and pet supplies
 from Shopee TH and outputs structured JSON matching the BuyWhere catalog schema
 for ingestion via POST /v1/ingest/products.
 
 Usage:
-    python -m scrapers.shopee_th --api-key <key> [--batch-size 100] [--delay 1.0]
-    python -m scrapers.shopee_th --scrape-only
+    SCRAPERAPI_KEY=... python -m scrapers.shopee_th --api-key <key> [--batch-size 100] [--delay 1.0]
+    SCRAPERAPI_KEY=... python -m scrapers.shopee_th --scrape-only --use-scraperapi
+    SCRAPERAPI_KEY=... python -m scrapers.shopee_th --scrape-only --use-scraperapi --limit 50000
 
 Verticals covered:
 - Electronics: Phones, laptops, audio, cameras, accessories — target 15K
@@ -23,9 +24,12 @@ import json
 import os
 import re
 import time
+import urllib.parse
 from typing import Any
 
 import httpx
+
+SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY", "")
 
 MERCHANT_ID = "shopee_th"
 SOURCE = "shopee_th"
@@ -39,6 +43,14 @@ HEADERS = {
     "Referer": "https://www.shopee.co.th/",
     "X-Shopee-Language": "th",
 }
+
+
+def build_scraperapi_url(target_url: str, ultra_premium: bool = True) -> str:
+    if not SCRAPERAPI_KEY:
+        return target_url
+    encoded_url = urllib.parse.quote(target_url, safe="")
+    params = [f"api_key={SCRAPERAPI_KEY}", f"url={encoded_url}", "session=true", "ultra_premium=true"]
+    return f"http://api.scraperapi.com?{'&'.join(params)}"
 
 CATEGORIES = [
     {"id": "electronics-phones", "name": "Electronics", "sub": "Phones", "url": "https://shopee.co.th/Mobile-Phones-i.6069.6069"},
@@ -70,12 +82,14 @@ class ShopeeTHScraper:
         batch_size: int = 100,
         delay: float = 1.0,
         scrape_only: bool = False,
+        use_scraperapi: bool = False,
     ):
         self.api_key = api_key
         self.api_base = api_base.rstrip("/")
         self.batch_size = batch_size
         self.delay = delay
         self.scrape_only = scrape_only
+        self.use_scraperapi = use_scraperapi and bool(SCRAPERAPI_KEY)
         self.client = httpx.AsyncClient(timeout=30.0, headers=HEADERS)
         self.total_scraped = 0
         self.total_ingested = 0
@@ -119,7 +133,14 @@ class ShopeeTHScraper:
             "offset": (page - 1) * 60,
         }
         try:
-            data = await self._get_with_retry(url, params=params)
+            if self.use_scraperapi:
+                request_url = f"{url}?{urllib.parse.urlencode(params)}"
+                scraperapi_url = build_scraperapi_url(request_url)
+                resp = await self.client.get(scraperapi_url)
+                resp.raise_for_status()
+                data = resp.json()
+            else:
+                data = await self._get_with_retry(url, params=params)
             if data:
                 return data.get("items", []) or []
             return []
@@ -242,7 +263,7 @@ class ShopeeTHScraper:
             print(f"  Ingestion error: {e}")
             return 0, 0, len(products)
 
-    async def scrape_category(self, category: dict) -> dict[str, int]:
+    async def scrape_category(self, category: dict, limit: int = 0) -> dict[str, int]:
         cat_id = category["id"]
         cat_name = category["name"]
         sub_name = category["sub"]
@@ -255,6 +276,9 @@ class ShopeeTHScraper:
         max_pages = 5000
 
         while consecutive_empty < 5 and page <= max_pages:
+            if limit > 0 and self.total_scraped >= limit:
+                print(f"  Limit of {limit} reached!")
+                break
             print(f"  Page {page}...", end=" ", flush=True)
             products = await self.fetch_products_page(category, page)
 
@@ -308,7 +332,7 @@ class ShopeeTHScraper:
         print(f"  [{cat_name} / {sub_name}] Done: {counts}")
         return counts
 
-    async def run(self) -> dict[str, Any]:
+    async def run(self, limit: int = 0) -> dict[str, Any]:
         mode = "scrape only" if self.scrape_only else f"API: {self.api_base}"
         print(f"Shopee TH Scraper starting...")
         print(f"Mode: {mode}")
@@ -316,12 +340,15 @@ class ShopeeTHScraper:
         print(f"Output: {self.products_outfile}")
         print(f"Categories: {len(CATEGORIES)} verticals")
         print(f"Verticals: Electronics, Home Appliances, Food & Beverages, Health, Beauty")
-        print(f"Target: 50K products")
+        print(f"Target: {'limit' if limit > 0 else '50K'} products")
 
         start = time.time()
 
         for cat in CATEGORIES:
-            await self.scrape_category(cat)
+            if limit > 0 and self.total_scraped >= limit:
+                print(f"Limit of {limit} reached!")
+                break
+            await self.scrape_category(cat, limit=limit)
             await asyncio.sleep(2)
 
         elapsed = time.time() - start
@@ -350,6 +377,8 @@ async def main():
     parser.add_argument("--batch-size", type=int, default=100)
     parser.add_argument("--delay", type=float, default=1.0, help="Delay between batches (seconds)")
     parser.add_argument("--scrape-only", action="store_true", help="Save to JSONL without ingesting")
+    parser.add_argument("--use-scraperapi", action="store_true", help="Route requests through ScraperAPI")
+    parser.add_argument("--limit", type=int, default=0, help="Max products to scrape (0 = unlimited)")
     args = parser.parse_args()
 
     scraper = ShopeeTHScraper(
@@ -358,10 +387,11 @@ async def main():
         batch_size=args.batch_size,
         delay=args.delay,
         scrape_only=args.scrape_only,
+        use_scraperapi=args.use_scraperapi,
     )
 
     try:
-        await scraper.run()
+        await scraper.run(limit=args.limit)
     finally:
         await scraper.close()
 
