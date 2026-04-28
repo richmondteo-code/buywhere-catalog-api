@@ -58,7 +58,8 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq nginx > /dev/null 2>&1
-          sudo nginx -t -c ${{ steps.config.outputs.path }}
+          set -x
+          sudo nginx -t -c ${{ steps.config.outputs.path }} 2>&1 || { cat /tmp/nginx_test.log 2>/dev/null; exit 1; }
 
   deploy-nginx-config:
     name: Deploy Nginx Config
