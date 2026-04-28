@@ -1,21 +1,29 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import {
+  getRegion,
+  getRegionConfig,
+  regionTitle,
+  regionKeywords,
+} from '@/lib/regionMetadata';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://buywhere.ai';
+const region = getRegion();
+const config = getRegionConfig(region);
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'BuyWhere — Compare prices across Singapore retailers',
+    default: regionTitle(config.baseTitle, region),
     template: '%s | BuyWhere',
   },
-  description: 'Find the best prices for electronics, groceries, home goods, and health products across Singapore\'s top retailers. AI-powered price comparisons.',
-  keywords: ['price comparison', 'Singapore', 'electronics', 'groceries', 'buy', 'compare prices', 'online shopping'],
+  description: config.baseDescription,
+  keywords: regionKeywords(region),
   authors: [{ name: 'BuyWhere' }],
   creator: 'BuyWhere',
   openGraph: {
     type: 'website',
-    locale: 'en_SG',
+    locale: config.locale,
     siteName: 'BuyWhere',
   },
   twitter: {
