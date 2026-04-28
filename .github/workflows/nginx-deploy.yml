@@ -107,10 +107,10 @@ jobs:
           DEPLOY_PORT: ${{ secrets.PRODUCTION_DEPLOY_PORT || 22 }}
           DEPLOY_USER: ${{ secrets.PRODUCTION_DEPLOY_USER }}
         run: |
-          NGINX_CONFIG_NAME="${{ env.NGINX_CONFIG_NAME }}"
-          DEPLOY_SHA="${{ github.sha }}"
-          ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" << EOF
-            set -euo pipefail
+          ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
+            NGINX_CONFIG_NAME="${{ env.NGINX_CONFIG_NAME }}" \
+            DEPLOY_SHA="${{ github.sha }}" \
+            'set -euo pipefail
 
             NGINX_ATOMIC_TARGET="/etc/nginx/sites-enabled/${NGINX_CONFIG_NAME}.conf"
             NGINX_TMP_TARGET="/tmp/nginx-${NGINX_CONFIG_NAME}-${DEPLOY_SHA}.conf"
@@ -144,8 +144,7 @@ jobs:
             echo "Reloading nginx..."
             nginx -s reload 2>&1 || { echo "ERROR: nginx reload failed"; exit 1; }
 
-            echo "=== Nginx config deployment complete ==="
-          EOF
+            echo "=== Nginx config deployment complete ==="'
 
       - name: Verify deployment
         env:
