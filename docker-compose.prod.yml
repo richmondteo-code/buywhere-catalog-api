@@ -448,6 +448,7 @@ services:
       BUYWHERE_API_URL: ${BUYWHERE_API_URL:-http://api:8000}
       BUYWHERE_API_KEY: ${BUYWHERE_API_KEY}
       BUYWHERE_MCP_HTTP_PORT: 8080
+      BUYWHERE_REDIS_URL: ${BUYWHERE_REDIS_URL:-redis://redis:6379/0}
       BUYWHERE_LOG_LEVEL: ${LOG_LEVEL:-INFO}
     depends_on:
       api:
@@ -530,12 +531,6 @@ services:
       - "environment=production"
     depends_on:
       - api
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "5"
-        labels: "service,environment"
     deploy:
       resources:
         limits:
