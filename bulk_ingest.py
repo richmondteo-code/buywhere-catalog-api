@@ -10,6 +10,7 @@ import os
 import sys
 import json
 import uuid
+import gzip
 import hashlib
 from pathlib import Path
 from datetime import datetime, timezone
@@ -367,7 +368,9 @@ def find_files(force: bool = False) -> list:
 
 
 def read_jsonl(filepath: str) -> Iterator[Dict[str, Any]]:
-    with open(filepath, "r", encoding="utf-8", errors="replace") as f:
+    opener = gzip.open if filepath.endswith(".gz") else open
+    mode = "rt" if filepath.endswith(".gz") else "r"
+    with opener(filepath, mode, encoding="utf-8", errors="replace") as f:
         for line in f:
             line = line.strip()
             if not line:

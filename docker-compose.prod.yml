@@ -477,150 +477,59 @@ services:
           cpus: "0.25"
           memory: 128M
 
+  browser:
+    build:
+      context: ./browser_service
+      dockerfile: Dockerfile
+    image: buywhere-browser:latest
+    restart: unless-stopped
+    ports:
+      - "8090:8090"
+    environment:
+      BUYWHERE_API_URL: ${BUYWHERE_API_URL:-http://api:8000}
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8090/health\")'"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2G
+        reservations:
+           cpus: "1"
+           memory: 1G
+
   blackbox-exporter:
-    image: prom/blackbox-exporter:latest
+    image: prom/blackbox-exporter:v0.25.0
     restart: unless-stopped
     ports:
       - "9115:9115"
     command:
       - '--config.file=/config/blackbox.yml'
+      - '--web.listen-address=:9115'
     volumes:
       - ./blackbox.yml:/config/blackbox.yml:ro
+    networks:
+      - monitoring
     logging:
       driver: json-file
       options:
         max-size: "50m"
         max-file: "5"
         labels: "service,environment"
-    deploy:
-      resources:
-        limits:
-          cpus: "0.25"
-          memory: 128M
-
-  alertmanager:
-    image: prom/alertmanager:latest
-    restart: unless-stopped
-    ports:
-      - "9093:9093"
-    volumes:
-      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
-      - alertmanager_data:/alertmanager
-    command:
-      - '--config.file=/etc/alertmanager/alertmanager.yml'
-      - '--storage.path=/alertmanager'
-    deploy:
-      resources:
-        limits:
-          cpus: "0.25"
-          memory: 128M
-
-  loki:
-    image: grafana/loki:2.9.4
-    restart: unless-stopped
-    ports:
-      - "3110:3100"
-    volumes:
-      - ./loki-config.yml:/etc/loki/local-config.yaml:ro
-      - ./loki_rules:/loki/rules:ro
-      - loki_data:/loki
-    command: -config.file=/etc/loki/local-config.yaml
-    healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 512M
-
-  fluent-bit:
-    image: fluent/fluent-bit:3.0.0
-    restart: unless-stopped
-    ports:
-      - "2020:2020"
-    volumes:
-      - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
-      - ./parsers.conf:/fluent-bit/etc/parsers.conf:ro
-      - ./scripts/timestamp.lua:/fluent-bit/scripts/timestamp.lua:ro
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - api_pm2_logs:/app/logs:ro
-      - fluent_bit_data:/var/log
-    depends_on:
-      - loki
-    environment:
-      - FLUENT_BIT_ENVIRONMENT=production
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 256M
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
-
-  promtail:
-    image: grafana/promtail:2.9.4
-    restart: unless-stopped
-    volumes:
-      - ./promtail-config.yml:/etc/promtail/config.yaml:ro
-      - /var/log:/var/log:ro
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    command: -config.file=/etc/promtail/config.yaml
-    depends_on:
-      - loki
-    deploy:
-      resources:
-        limits:
-          cpus: "0.25"
-          memory: 128M
-    profiles:
-      - legacy
-
-  grafana:
-    image: grafana/grafana:latest
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
-      GF_USERS_ALLOW_SIGN_UP: "false"
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./grafana/provisioning:/etc/grafana/provisioning
-    depends_on:
-      - loki
-      - metrics-collector
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 256M
-
-  metrics-collector:
-    image: prom/prometheus:latest
-    restart: unless-stopped
-    ports:
-      - "9090:9090"
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--storage.tsdb.retention.time=15d'
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - ./prometheus_alerts.yml:/etc/prometheus/prometheus_alerts.yml:ro
-      - prometheus_data:/prometheus
+    labels:
+      - "service=blackbox"
+      - "environment=production"
     depends_on:
       - api
-      - blackbox-exporter
     logging:
       driver: json-file
       options:

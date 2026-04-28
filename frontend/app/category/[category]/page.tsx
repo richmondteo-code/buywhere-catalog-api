@@ -30,8 +30,8 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
-  electronics: 'Compare prices on phones, laptops, headphones, and more from top Singapore retailers.',
-  grocery: 'Find the best deals on groceries and daily essentials from Singapore supermarkets.',
+  electronics: 'Compare prices on phones, laptops, headphones, and more from top US retailers.',
+  grocery: 'Find the best deals on groceries and daily essentials from US supermarkets.',
   home: 'Discover competitive prices on home appliances, furniture, and living essentials.',
   health: 'Compare health supplements, personal care, and wellness products across retailers.',
 };
@@ -39,10 +39,10 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { category } = await params;
   const label = CATEGORY_LABELS[category] || category;
-  const description = CATEGORY_DESCRIPTIONS[category] || `Compare prices on ${label} products across Singapore retailers.`;
+  const description = CATEGORY_DESCRIPTIONS[category] || `Compare prices on ${label} products across US retailers.`;
 
   return {
-    title: `${label} Price Comparison — BuyWhere Singapore`,
+    title: `${label} Price Comparison`,
     description,
     openGraph: {
       title: `${label} — BuyWhere`,
@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     },
     alternates: {
       canonical: `${BASE_URL}/category/${category}`,
-      languages: { 'en-SG': `${BASE_URL}/category/${category}` },
+      languages: { 'en-US': `${BASE_URL}/category/${category}` },
     },
   };
 }

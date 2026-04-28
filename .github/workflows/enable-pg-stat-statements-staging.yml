@@ -1,0 +1,38 @@
+name: Enable pg_stat_statements (Staging)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+
+env:
+  GCP_PROJECT_ID: gaia-calendar-488606
+  GCP_REGION: asia-southeast1
+  CLOUD_SQL_INSTANCE: buywhere-staging:asia-southeast1:buywhere-db
+
+jobs:
+  enable-pg-stat-statements:
+    name: Enable pg_stat_statements on Cloud SQL Staging
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Enable pg_stat_statements extension
+        run: |
+          echo "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;" | gcloud sql connect buywhere-staging --region=asia-southeast1 --user=postgres --quiet
+
+      - name: Verify pg_stat_statements is enabled
+        run: |
+          echo "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;" | gcloud sql connect buywhere-staging --region=asia-southeast1 --user=postgres --quiet

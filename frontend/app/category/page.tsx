@@ -13,18 +13,18 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://buywhere.ai';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'BuyWhere — Price Comparison Across Singapore Retailers',
-    description: 'Compare prices on products from top Singapore retailers including electronics, groceries, home & living, and health & beauty.',
+    title: 'BuyWhere — Price Comparison Across US Retailers',
+    description: 'Compare prices on products from top US retailers including electronics, groceries, home & living, and health & beauty.',
     openGraph: {
       title: 'BuyWhere — Price Comparison',
-      description: 'Compare prices on products from top Singapore retailers',
+      description: 'Compare prices on products from top US retailers',
       type: 'website',
       url: `${BASE_URL}/category`,
       siteName: 'BuyWhere',
     },
     alternates: {
       canonical: `${BASE_URL}/category`,
-      languages: { 'en-SG': `${BASE_URL}/category` },
+      languages: { 'en-US': `${BASE_URL}/category` },
     },
   };
 }
@@ -56,7 +56,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Shop by Category</h1>
           <p className={styles.description}>
-            Browse products across all categories from Singapore retailers
+            Browse products across all categories from US retailers
           </p>
         </div>
       </header>

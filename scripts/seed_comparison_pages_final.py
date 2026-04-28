@@ -227,14 +227,13 @@ async def main() -> None:
                 flag_missing = True
 
             metadata_json = json.dumps(page_def["metadata"])
-            product_ids_psycopg = "{" + ",".join(str(pid) for pid in product_ids) + "}"
 
             res = await session.execute(
                 text("""
                     INSERT INTO comparison_pages
                         (slug, category, status, product_ids, expert_summary, metadata, published_at, created_at, updated_at)
                     VALUES
-                        (:slug, :category, 'published', :product_ids, :expert_summary, :metadata::jsonb, :now, :now, :now)
+                        (:slug, :category, 'published', :product_ids, :expert_summary, :metadata, :now, :now, :now)
                     ON CONFLICT (slug) DO UPDATE SET
                         status = 'published',
                         product_ids = EXCLUDED.product_ids,
@@ -247,7 +246,7 @@ async def main() -> None:
                 {
                     "slug": slug,
                     "category": page_def["category"],
-                    "product_ids": product_ids_psycopg,
+                    "product_ids": product_ids,
                     "expert_summary": expert_summary,
                     "metadata": metadata_json,
                     "now": now,

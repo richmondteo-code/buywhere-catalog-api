@@ -269,26 +269,28 @@ async def upsert_paperclip_agent_key(token: str, db: AsyncSession) -> Optional[A
     if not agent_id:
         return None
 
-    company_id = payload.get("company_id", "")
-    adapter_type = payload.get("adapter_type", payload.get("role", "unknown"))
-    key_hash = f"paperclip:{agent_id}"
+    key_hash = hashlib.sha256(agent_id.encode()).hexdigest()
 
     existing = await db.execute(
-        select(ApiKey).where(ApiKey.key_hash == key_hash, ApiKey.is_active == True)
+        select(ApiKey).where(
+            ApiKey.signup_channel == "paperclip_agent",
+            ApiKey.name == agent_id,
+            ApiKey.is_active == True,
+        )
     )
     api_key = existing.scalar_one_or_none()
 
     if api_key is None:
-        raw_key = f"bw_agent_{secrets.token_urlsafe(24)}"
         api_key = ApiKey(
             id=str(uuid.uuid4()),
             key_hash=key_hash,
-            developer_id=company_id,
-            name=f"Paperclip Agent {agent_id} ({adapter_type})",
-            tier="agent",
+            developer_id=payload.get("company_id", ""),
+            name=agent_id,
+            tier="enterprise",
             is_active=True,
             rate_limit=10000,
             allowed_origins=None,
+            signup_channel="paperclip_agent",
         )
         db.add(api_key)
         await db.flush()

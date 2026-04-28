@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 revision = "054"
-down_revision = "053"
+down_revision = "026_054_bridge"
 branch_labels = None
 depends_on = None
 

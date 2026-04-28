@@ -24,6 +24,58 @@ STALE_THRESHOLD_DAYS = 7
 
 _availability_http_client: Optional[httpx.AsyncClient] = None
 
+JSON_LD_CONTEXT = "https://schema.org"
+JSON_LD_TYPE_PRODUCT = "Product"
+JSON_LD_TYPE_OFFER = "Offer"
+
+
+def _build_json_ld(p: Product, target_currency: Optional[str] = None) -> str:
+    price_currency = target_currency or p.currency or "SGD"
+    price_value = str(p.price)
+    if target_currency and target_currency != p.currency:
+        try:
+            from app.services.currency import convert_price as _convert
+            converted = _convert(p.price, p.currency, target_currency)
+            price_value = str(converted)
+            price_currency = target_currency
+        except Exception:
+            price_value = str(p.price)
+            price_currency = p.currency or "SGD"
+
+    availability = "https://schema.org/InStock" if (p.is_available or p.in_stock) else "https://schema.org/OutOfStock"
+
+    offer = {
+        "@type": "Offer",
+        "priceCurrency": price_currency,
+        "price": price_value,
+        "availability": availability,
+        "seller": {"@type": "Organization", "name": p.source or "Unknown"},
+    }
+    if p.url:
+        offer["url"] = p.url
+
+    product = {
+        "@context": JSON_LD_CONTEXT,
+        "@type": JSON_LD_TYPE_PRODUCT,
+        "name": p.title,
+        "description": p.description or "",
+        "sku": p.sku,
+        "brand": {"@type": "Brand", "name": p.brand} if p.brand else None,
+        "image": p.image_url,
+        "category": p.category,
+        "offers": offer,
+    }
+    if p.barcode:
+        product["productID"] = p.barcode
+    if p.rating is not None:
+        product["aggregateRating"] = {
+            "@type": "AggregateRating",
+            "ratingValue": str(float(p.rating)),
+            "reviewCount": str(p.review_count) if p.review_count else None,
+        }
+    filtered = {k: v for k, v in product.items() if v is not None}
+    return json.dumps(filtered, ensure_ascii=False)
+
 
 async def get_availability_http_client() -> httpx.AsyncClient:
     global _availability_http_client
@@ -226,6 +278,7 @@ def _map_product(p: Product, price_trend: Optional[str] = None, target_currency:
         updated_at=p.updated_at,
         price_trend=price_trend,
         confidence_score=confidence_score,
+        json_ld=_build_json_ld(p, target_currency),
     )
 
 

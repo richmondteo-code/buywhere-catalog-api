@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 
 revision: str = "804_add_affiliate_links_table"
-down_revision: Union[str, None] = "803ce1369b8a"
+down_revision: Union[str, None] = "056_804_bridge"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

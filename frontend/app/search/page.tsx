@@ -30,22 +30,22 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
   const query = sp.q || '';
 
   return {
-    title: query ? `"${query}" — Search Results — BuyWhere Singapore` : 'Search — BuyWhere Singapore',
+    title: query ? `"${query}" — Search Results` : 'Search',
     description: query
-      ? `Compare prices for "${query}" across Singapore retailers. Find the best deals on BuyWhere.`
-      : 'Search for products and compare prices across Singapore retailers.',
+      ? `Compare prices for "${query}" across US retailers. Find the best deals on BuyWhere.`
+      : 'Search for products and compare prices across US retailers.',
     openGraph: {
       title: query ? `"${query}" — BuyWhere` : 'Search — BuyWhere',
       description: query
-        ? `Compare prices for "${query}" across Singapore retailers.`
-        : 'Search for products and compare prices across Singapore retailers.',
+        ? `Compare prices for "${query}" across US retailers.`
+        : 'Search for products and compare prices across US retailers.',
       type: 'website',
       url: `${BASE_URL}/search${query ? `?q=${encodeURIComponent(query)}` : ''}`,
       siteName: 'BuyWhere',
     },
     alternates: {
       canonical: `${BASE_URL}/search`,
-      languages: { 'en-SG': `${BASE_URL}/search` },
+      languages: { 'en-US': `${BASE_URL}/search` },
     },
   };
 }
@@ -130,7 +130,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 <path d="M21 21l-4.35-4.35" />
               </svg>
               <h2>Start your search</h2>
-              <p>Enter a product name, brand, or category to find the best prices across Singapore retailers.</p>
+              <p>Enter a product name, brand, or category to find the best prices across US retailers.</p>
             </div>
           ) : data.items.length === 0 ? (
             <div className={styles.emptyState}>

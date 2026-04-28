@@ -29,17 +29,17 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://buywhere.ai';
 function generateSEOMetadata(data: ComparisonPageData, baseUrl: string): SEOMetadata {
   const retailerNames = data.retailers.slice(0, 3).map((r) => r.retailer_name).join(', ');
   const updatedDate = new Date(data.metadata.updated_at).toISOString().split('T')[0];
-  const description = `Find the best price for ${data.product.title} in Singapore. Compare live prices from ${retailerNames}… updated ${updatedDate}.`;
+  const description = `Find the best price for ${data.product.title}. Compare live prices from ${retailerNames}… updated ${updatedDate}.`;
 
   return {
-    title: `Compare ${data.product.brand} ${data.product.title} prices across ${data.retailers.length} Singapore retailers — BuyWhere`,
+    title: `Compare ${data.product.brand} ${data.product.title} prices — BuyWhere`,
     description: description.length > 155 ? description.substring(0, 152) + '...' : description,
     canonical_url: getCanonicalUrl(data.slug, baseUrl),
-    og_title: `Compare ${data.product.title} prices — From S$${data.lowest_price} across ${data.retailers.length} retailers`,
-    og_description: `Compare prices for ${data.product.title} from top Singapore retailers. Lowest price: S$${data.lowest_price} at ${data.lowest_price_retailer}.`,
+    og_title: `Compare ${data.product.title} prices — From $${data.lowest_price} across ${data.retailers.length} retailers`,
+    og_description: `Compare prices for ${data.product.title} from top retailers. Lowest price: $${data.lowest_price} at ${data.lowest_price_retailer}.`,
     og_image: data.product.image_url,
     twitter_title: `Compare ${data.product.title} prices`,
-    twitter_description: `Lowest price: S$${data.lowest_price} at ${data.lowest_price_retailer}. Compare prices across ${data.retailers.length} Singapore retailers.`,
+    twitter_description: `Lowest price: $${data.lowest_price} at ${data.lowest_price_retailer}. Compare prices across ${data.retailers.length} retailers.',
     twitter_image: data.product.image_url,
   };
 }
@@ -78,7 +78,7 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
     alternates: {
       canonical: seo.canonical_url,
       languages: {
-        'en-SG': seo.canonical_url,
+        'en-US': seo.canonical_url,
       },
     },
   };

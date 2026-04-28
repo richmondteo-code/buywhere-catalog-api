@@ -13,6 +13,16 @@ class Merchant(Base):
     name = Column(String, nullable=False)
     source = Column(String, nullable=False)
     country = Column(String(2), nullable=False, default="SG")
+    domain = Column(Text, nullable=True)
+    scraping_policy = Column(JSONB, nullable=True)
+    contact_email = Column(Text, nullable=True)
+    contact_phone = Column(Text, nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True)
+    scraping_priority = Column(Text, nullable=True)
+    proxy_config = Column(JSONB, nullable=True)
+    last_scraped_at = Column(DateTime(timezone=True), nullable=True)
+    scrape_error = Column(Text, nullable=True)
+    updated_at = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
 
@@ -218,9 +228,11 @@ class ApiKey(Base):
     request_count = Column(BigInteger, nullable=False, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     last_used_at = Column(DateTime(timezone=True))
+    signup_channel = Column(String, nullable=True, server_default=None)
 
     __table_args__ = (
         Index("idx_api_keys_developer_id", "developer_id"),
+        Index("idx_api_keys_signup_channel_name", "signup_channel", "name"),
     )
 
 
@@ -437,3 +449,13 @@ class ComparisonPage(Base):
     published_at = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+
+class ApiKeyAuditLog(Base):
+    __tablename__ = "api_key_audit_logs"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    api_key_id = Column(Text, nullable=False, index=True)
+    action = Column(Text, nullable=False)
+    detail = Column(Text, nullable=True)
+    ip_address = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)

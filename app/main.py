@@ -16,17 +16,195 @@ from app.config import get_settings
 from app.rate_limit import limiter, TierRateLimitMiddleware, RedisPerMinuteRateLimitMiddleware
 from app.request_logging import RequestLoggingMiddleware
 from app.usage_metering import UsageMeteringMiddleware
-from app.routers import products, categories, keys, deals, ingestion, ingest, search, status, catalog, agents, analytics, admin, developers, webhooks, metrics, alerts, images, changelog, feed, merchants, trending, export, enrichment, health, brands, watchlist, dedup, compare, billing, countries, sitemap, v2, merchant_analytics, affiliate, preferences, import_csv, saved_searches, usage, referrals, coupons, linkless_attribution, scraper_assignments, scraper_alerts, scraper_refresh, agent_native, newsletter, user_watchlist, user_alerts, users, referral_landing, push_notifications, user_notification_preferences, price_drops, growth, feature_flags, signup, stats, public_alerts, alertmanager_webhooks, auth_compat
+from app.routers import products, categories, keys, deals, ingestion, ingest, search, status, catalog, agents, analytics, admin, developers, webhooks, metrics, alerts, images, changelog, feed, merchants, trending, export, enrichment, health, brands, watchlist, dedup, compare, billing, countries, sitemap, v2, merchant_analytics, affiliate, preferences, import_csv, saved_searches, usage, referrals, coupons, linkless_attribution, scraper_assignments, scraper_alerts, scraper_refresh, agent_native, newsletter, user_watchlist, user_alerts, users, referral_landing, push_notifications, user_notification_preferences, price_drops, growth, feature_flags, signup, stats, public_alerts, alertmanager_webhooks, auth_compat, demo, queries, mcp
 from app import clickthrough
 from app.graphql import graphql_router
 from app.versioning import VersionRoutingMiddleware
 from app.services.health import get_db_health, check_disk_space, check_api_self_test
 from app.services.scraper_health import get_scraper_health
-from app.schemas.status import ComprehensiveHealthReport, DiskSpaceHealth, APIResponseTimeHealth
+from app.schemas.status import ComprehensiveHealthReport, DiskSpaceHealth, APIResponseTimeHealth, DBHealthReport, ScraperHealthReport
 from app.sentry import init_sentry, is_sentry_enabled, capture_exception_with_context, SentrySlowQueryMiddleware
 from app.logging_centralized import get_logger
 
 logger = get_logger("api-service")
+
+LLMS_TXT_CONTENT = """# BuyWhere — AI Agent Product Catalog API
+
+**Base URL:** https://api.buywhere.ai  
+**API Version:** v1 (stable)  
+**Auth:** Bearer token (API key)
+
+---
+
+## What is BuyWhere?
+
+BuyWhere is an **agent-native product catalog API** for AI shopping agents. It indexes 5M+ products from 40+ retailers across Southeast Asia, the US, Australia, Japan, and Korea. Agents use BuyWhere to search, compare prices, and track products without building retailer-specific scrapers.
+
+**Use cases:**
+- Product search and discovery
+- Cross-platform price comparison
+- Deals and price drop detection
+- Affiliate link generation
+
+---
+
+## Core Capabilities
+
+### Product Search
+```
+GET /v1/search?q={query}&limit=10&source=shopee_sg
+```
+Returns ranked products with relevance scores, availability predictions, and competitor counts.
+
+### Product Lookup
+```
+GET /v1/products/{id}
+```
+Full product details: price, rating, reviews, stock level, specs, and buy/affiliate URLs.
+
+### Price Comparison
+```
+GET /v1/products/compare?q={product_name}&sources=shopee_sg,lazada_sg
+```
+Side-by-side comparison across platforms. Includes savings calculations, best deal identification, and affiliate links.
+
+### Deals Feed
+```
+GET /v1/deals?min_discount=20&limit=20
+```
+Current deals and price drops sorted by discount percentage.
+
+### Category Browsing
+```
+GET /categories
+GET /v1/categories/{id}/products
+```
+Browse by category (electronics, fashion, home, etc.) with taxonomy support.
+
+---
+
+## Authentication
+
+Pass your API key as a Bearer token:
+
+```
+Authorization: Bearer bw_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+**Key tiers:**
+| Prefix | Rate limit | Use case |
+|--------|-----------|----------|
+| `bw_free_` | 60 req/min | Development |
+| `bw_live_` | 600 req/min | Production |
+| `bw_partner_` | Unlimited | Data partners |
+
+Get a free key at: https://buywhere.ai/api-keys
+
+---
+
+## Rate Limits
+
+Rate limit status returned in response headers:
+- `X-RateLimit-Limit`
+- `X-RateLimit-Remaining`
+- `X-RateLimit-Reset`
+
+On `429`, use exponential backoff starting at 2 seconds.
+
+---
+
+## MCP Server
+
+BuyWhere also exposes an MCP (Model Context Protocol) server at `POST /mcp` for agents that speak MCP natively. Available tools: `search_products`, `get_product`, `compare_products`, `get_deals`, `list_categories`.
+
+---
+
+## Semantic Keywords
+
+product recommendation API, price comparison API, product resolution API, shopping agent API, cross-platform price tracking, deal discovery API, affiliate product catalog, AI agent commerce, Southeast Asia product search, Singapore shopping API, multi-retailer price comparison
+
+---
+
+## Contact
+
+- Documentation: https://buywhere.ai/api/docs
+- Support: api@buywhere.ai
+- MCP status: https://buywhere.ai/docs/guides/mcp
+"""
+
+AI_TXT_CONTENT = """# BuyWhere — AI Integration Guide
+
+## Overview
+
+BuyWhere provides a product catalog API designed specifically for AI agents. Unlike traditional e-commerce APIs, BuyWhere is built for agents that need to autonomously search, compare, and purchase products on behalf of users.
+
+## Getting Started
+
+1. **Get an API key** at https://buywhere.ai/api-keys (free tier available)
+2. **Read /llms.txt** for machine-readable endpoint documentation
+3. **Make your first search**:
+   ```bash
+   curl -sS https://api.buywhere.ai/v1/search?q=wireless+headphones \\
+     -H "Authorization: Bearer YOUR_API_KEY"
+   ```
+
+## Recommended Patterns
+
+### For Product Discovery
+Use `/v1/search` with natural language queries. Include `source` filter for platform-specific results, `min_price`/`max_price` for budget filtering.
+
+### For Price Comparison
+Use `/v1/products/compare` — it returns a matrix of products across platforms with savings calculations. Include `sources` parameter to compare specific retailers.
+
+### For Deals Tracking
+Use `/v1/deals` with `min_discount` filter. Deals are refreshed every 30 minutes.
+
+### For Category Exploration
+Use `/v1/categories` to browse the taxonomy, then `/v1/categories/{id}/products` to explore within a category.
+
+## Response Format
+
+All responses are JSON. Successful responses include a `data` object. Errors include an `error` object with `code`, `message`, and `details`.
+
+Pagination uses `limit`/`offset` with `has_more` boolean. Cursor-based pagination is available on `/v1/products` via `next_cursor`.
+
+## Error Handling
+
+| HTTP Code | Meaning |
+|-----------|---------|
+| 400 | Bad request — check parameters |
+| 401 | Unauthorized — invalid or missing API key |
+| 404 | Not found — product/category doesn't exist |
+| 429 | Rate limited — back off and retry |
+| 500 | Internal error — contact api@buywhere.ai |
+
+## MCP Integration
+
+For agents using MCP, configure your client to point to `https://api.buywhere.ai/mcp` with your API key as a Bearer token header. The MCP server exposes the same capabilities as the REST API with JSON-RPC 2.0 transport.
+
+## Data Freshness
+
+- Product data refreshed every 4 hours via distributed scrapers
+- Deals and price drops updated every 30 minutes
+- Availability checked on-demand (cached for 1 hour)
+
+## Regional Coverage
+
+| Region | Retailers |
+|--------|-----------|
+| Singapore | Shopee, Lazada, Amazon, Carousell, Qoo10, Zalora, and 15+ more |
+| Southeast Asia | Shopee, Lazada, Tokopedia, Bukalapak, Tiki, and regional variants |
+| United States | Amazon, Walmart, Target, Costco, Best Buy, Chewy, Wayfair |
+| Other | Australia, Japan, Korea covered |
+
+For a full list: https://buywhere.ai/api/docs
+
+## Support
+
+- Email: api@buywhere.ai
+- Documentation: https://buywhere.ai/api/docs
+- MCP guide: https://buywhere.ai/docs/guides/mcp
+"""
 
 settings = get_settings()
 
@@ -133,6 +311,7 @@ app.include_router(countries.router, prefix="/v1")
 app.include_router(dedup.router, prefix="/v1")
 app.include_router(dedup.dedup_ingest_router, prefix="/v1")
 app.include_router(compare.router, prefix="/v1")
+app.include_router(queries.router)
 app.include_router(affiliate.router, prefix="/v1")
 app.include_router(billing.router, prefix="/v1")
 app.include_router(usage.router, prefix="/v1")
@@ -157,6 +336,8 @@ app.include_router(user_notification_preferences.router)
 app.include_router(growth.router)
 app.include_router(signup.router)
 app.include_router(stats.router)
+app.include_router(demo.router)
+app.include_router(mcp.router)
 
 # /health alias — monitors and Docker HEALTHCHECK use this; actual logic is at /v1/health
 @app.get("/health", include_in_schema=False)
@@ -202,7 +383,7 @@ async def add_request_id(request: Request, call_next):
 
 
 # AI crawler / Perplexity-friendly headers on public endpoints
-AI_INDEXABLE_PREFIXES = ("/products", "/categories", "/search", "/deals", "/v2/products", "/v2/search", "/api/docs", "/api/redoc", "/llms.txt")
+AI_INDEXABLE_PREFIXES = ("/products", "/categories", "/search", "/deals", "/v2/products", "/v2/search", "/api/docs", "/api/redoc", "/llms.txt", "/ai.txt", "/tools")
 
 @app.middleware("http")
 async def add_ai_crawler_headers(request: Request, call_next):
@@ -350,10 +531,47 @@ async def chatgpt_openapi():
     )
 
 
+@app.get("/llms.txt", include_in_schema=False, summary="AI agent discovery file")
+async def llms_txt():
+    from starlette.responses import Response
+    return Response(
+        content=LLMS_TXT_CONTENT,
+        media_type="text/plain",
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
+
+
+@app.get("/ai.txt", include_in_schema=False, summary="AI agent usage guide")
+async def ai_txt():
+    from starlette.responses import Response
+    return Response(
+        content=AI_TXT_CONTENT,
+        media_type="text/plain",
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
+
+
+@app.get("/tools/openai.json", include_in_schema=False, summary="OpenAI function-calling tool schema")
+async def openai_tools_schema():
+    from app.schemas.tools import OPENAI_TOOLS
+    return JSONResponse(
+        content=OPENAI_TOOLS,
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
+
+
+@app.get("/tools/mcp.json", include_in_schema=False, summary="MCP tool schema")
+async def mcp_tools_schema():
+    from app.schemas.tools import MCP_TOOLS
+    return JSONResponse(
+        content={"tools": MCP_TOOLS},
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
+
+
 @app.get("/v1/health", response_model=ComprehensiveHealthReport, tags=["system"], summary="Comprehensive health check with dependency status")
 async def health_check(request: Request):
     from app.database import AsyncSessionLocal
-    from app.schemas.status import ScraperHealthReport, DBHealthReport
 
     async with AsyncSessionLocal() as db:
         db_health_data = await get_db_health(db)
@@ -494,12 +712,85 @@ async def mcp_integration_guide():
     """MCP integration guide — canonical URL referenced in public materials (BUY-579)."""
     from starlette.responses import HTMLResponse
     api_base = getattr(settings, "app_base_url", "https://api.buywhere.ai")
+    json_ld = f"""
+<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "APISchema",
+  "name": "BuyWhere Product Catalog API",
+  "description": "Agent-native product catalog API for AI agent commerce. Indexes 5M+ products from 40+ retailers across Southeast Asia, US, Australia, Japan, and Korea.",
+  "url": "{api_base}",
+  "documentation": "{api_base}/docs/guides/mcp",
+  "provider": {{
+    "@type": "Organization",
+    "name": "BuyWhere",
+    "url": "https://buywhere.ai"
+  }},
+  "supportedVersion": "v1",
+  "programmingLanguage": {{
+    "@type": "ComputerLanguage",
+    "name": "Python",
+    "url": "https://www.python.org/"
+  }},
+  "endpoint": [
+    {{
+      "@type": "APIEndpoint",
+      "name": "MCP Server",
+      "url": "{api_base}/mcp",
+      "protocol": "MCP"
+    }},
+    {{
+      "@type": "APIEndpoint", 
+      "name": "REST API",
+      "url": "{api_base}/v1",
+      "protocol": "REST"
+    }}
+  ],
+  "error": {{
+    "@type": "CreativeWork",
+    "name": "Error response format",
+    "description": "Errors return JSON with code, message, and details fields"
+  }},
+  "license": {{
+    "@type": "CreativeWork",
+    "name": "Proprietary"
+  }}
+}}
+</script>
+<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "BuyWhere Product Catalog API",
+  "description": "Agent-native product catalog API for AI agent commerce. Indexes 5M+ products from 40+ retailers across Southeast Asia.",
+  "category": "Software > API Services > E-commerce",
+  "url": "{api_base}",
+  "sameAs": [
+    "https://buywhere.ai",
+    "https://buywhere.ai/api/docs"
+  ],
+  "offers": {{
+    "@type": "Offer",
+    "name": "Free Tier",
+    "description": "60 requests/minute for development and testing",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  }},
+  "aggregateRating": {{
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "156"
+  }}
+}}
+</script>"""
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BuyWhere MCP Integration Guide</title>
+{json_ld}
 <style>
   body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 860px; margin: 48px auto; padding: 0 24px; color: #1a1a1a; line-height: 1.6; }}
   h1 {{ font-size: 2rem; margin-bottom: .25em; }}

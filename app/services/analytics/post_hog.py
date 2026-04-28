@@ -6,7 +6,7 @@ from posthog import Posthog
 
 logger = logging.getLogger("buywhere_api")
 
-POSTHOG_API_KEY = os.environ.get("POSTHOG_API_KEY")
+POSTHOG_PROJECT_KEY = os.environ.get("POSTHOG_PROJECT_KEY")
 POSTHOG_HOST = os.environ.get("POSTHOG_HOST", "https://app.posthog.com")
 POSTHOG_DISABLED = os.environ.get("POSTHOG_DISABLED", "false").lower() in ("true", "1", "yes")
 
@@ -17,11 +17,11 @@ def get_client() -> Optional[Posthog]:
     global _client
     if POSTHOG_DISABLED:
         return None
-    if POSTHOG_API_KEY is None:
+    if POSTHOG_PROJECT_KEY is None:
         return None
     if _client is None:
         _client = Posthog(
-            project_api_key=POSTHOG_API_KEY,
+            project_api_key=POSTHOG_PROJECT_KEY,
             host=POSTHOG_HOST,
             sync_mode=True,
         )

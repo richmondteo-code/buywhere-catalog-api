@@ -231,7 +231,7 @@ def main():
     print("  1. Create free PostHog Cloud account at posthog.com")
     print("  2. Create new project for buywhere.ai")
     print("  3. Add to .env:")
-    print("       POSTHOG_API_KEY=<your-project-api-key>")
+    print("       POSTHOG_PROJECT_KEY=<your-project-api-key>")
     print("       POSTHOG_HOST=https://app.posthog.com")
     print("  4. Add PostHog.js snippet to buywhere.ai frontend (Reed's task BUY-1376)")
     print("  5. Track page_view events on marketing pages for UTM attribution")

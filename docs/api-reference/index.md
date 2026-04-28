@@ -488,15 +488,573 @@ All product-related endpoints return objects conforming to this schema:
 
 ---
 
+## Agent-Native Search
+
+Optimized endpoints for AI agents with enhanced result metadata.
+
+```
+GET /v2/agents/search
+```
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `q` | string | Yes | Natural language search query |
+| `limit` | integer | No | Results per page (1-100, default: 10) |
+| `offset` | integer | No | Pagination offset (default: 0) |
+| `source` | string | No | Filter by source platform |
+| `min_price` | number | No | Minimum price filter |
+| `max_price` | number | No | Maximum price filter |
+| `availability` | boolean | No | Filter by availability |
+| `sort_by` | string | No | Sort by: `relevance`, `price_asc`, `price_desc`, `newest` |
+
+### Response
+
+```json
+{
+  "total": 142,
+  "limit": 10,
+  "offset": 0,
+  "has_more": true,
+  "query_processed": "dyson vacuum",
+  "results": [
+    {
+      "id": 12345,
+      "sku": "DY-VC7-XXXX",
+      "source": "lazada_sg",
+      "title": "Dyson V15 Detect Vacuum Cleaner",
+      "price": "749.00",
+      "currency": "SGD",
+      "url": "https://...",
+      "brand": "Dyson",
+      "category": "Vacuum Cleaners",
+      "image_url": "https://...jpg",
+      "rating": 4.8,
+      "review_count": 1234,
+      "is_available": true,
+      "confidence_score": 0.95,
+      "availability_prediction": "in_stock",
+      "competitor_count": 5,
+      "buybox_price": "729.00",
+      "affiliate_url": "https://buywhere.ai/track/..."
+    }
+  ],
+  "query_time_ms": 45.2,
+  "cache_hit": false
+}
+```
+
+**Agent-specific fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `confidence_score` | float | Match quality (0-1) |
+| `availability_prediction` | string | `in_stock`, `low_stock`, `out_of_stock`, `preorder`, `unknown` |
+| `competitor_count` | integer | Number of same SKU on other platforms |
+| `buybox_price` | string | Lowest price for this SKU across all sources |
+
+---
+
+## Agent Price Comparison
+
+Compare product prices across platforms with savings calculations.
+
+```
+GET /v2/agents/price-comparison
+```
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `product_name` | string | Yes | Product name to compare |
+| `limit` | integer | No | Max results (1-50, default: 10) |
+| `sources` | string[] | No | Filter by specific sources |
+| `min_price` | number | No | Minimum price filter |
+| `max_price` | number | No | Maximum price filter |
+| `availability_only` | boolean | No | Only show in-stock products |
+| `sort_by` | string | No | Sort by: `price_asc`, `price_desc`, `relevance`, `newest` |
+
+### Response
+
+```json
+{
+  "query": "nintendo switch oled",
+  "query_processed": "nintendo switch oled",
+  "total_results": 5,
+  "limit": 10,
+  "has_more": false,
+  "price_stats": {
+    "min": 385.00,
+    "max": 459.00,
+    "avg": 412.00,
+    "median": 399.00
+  },
+  "results": [
+    {
+      "id": 12345,
+      "title": "Nintendo Switch OLED",
+      "price": "385.00",
+      "currency": "SGD",
+      "source": "shopee_sg",
+      "price_rank": 1,
+      "savings_vs_avg": "27.00",
+      "savings_vs_max": "74.00",
+      "best_deal": true
+    }
+  ],
+  "best_deal": { ... },
+  "query_time_ms": 62.1
+}
+```
+
+---
+
+## Agent Batch Lookup
+
+Retrieve multiple products by ID efficiently.
+
+```
+POST /v2/agents/batch-lookup
+```
+
+### Request Body
+
+```json
+{
+  "product_ids": [12345, 67890, 11111],
+  "include_metadata": true,
+  "affiliate_links": true
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `product_ids` | integer[] | Yes | List of 1-100 product IDs |
+| `include_metadata` | boolean | No | Include metadata field |
+| `affiliate_links` | boolean | No | Generate affiliate URLs |
+
+### Response
+
+```json
+{
+  "total": 3,
+  "found": 3,
+  "not_found": 0,
+  "not_found_ids": [],
+  "products": [ ... ],
+  "cache_hit_rate": 0.67,
+  "query_time_ms": 28.4
+}
+```
+
+---
+
+## Agent Explore
+
+Randomized product exploration for discovering new products.
+
+```
+GET /v2/agents/explore
+```
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | integer | No | Results per page (1-50, default: 10) |
+| `category` | string | No | Filter by category |
+| `source` | string | No | Filter by source platform |
+| `min_price` | number | No | Minimum price filter |
+| `max_price` | number | No | Maximum price filter |
+| `availability` | boolean | No | Filter by availability |
+
+---
+
+## Semantic Search
+
+Natural language search using embeddings for better understanding of intent.
+
+```
+GET /v1/search/semantic
+```
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `q` | string | Yes | Semantic search query |
+| `category` | string | No | Filter by category |
+| `min_price` | number | No | Minimum price |
+| `max_price` | number | No | Maximum price |
+| `platform` | string | No | Filter by platform |
+| `currency` | string | No | Target currency for conversion |
+| `limit` | integer | No | Results (1-100, default: 20) |
+| `offset` | integer | No | Pagination offset |
+
+### Response Headers
+
+| Header | Description |
+|--------|-------------|
+| `X-Semantic-Search` | `embeddings` or `fallback` |
+| `X-Currency-Rate` | Currency conversion rate if applicable |
+
+---
+
+## Search Autocomplete
+
+Get search suggestions as you type.
+
+```
+GET /v1/search/suggest
+```
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `q` | string | Yes | Search prefix (min 1 char) |
+| `limit` | integer | No | Max suggestions (1-20, default: 10) |
+| `country` | string | No | Filter by country codes (e.g., `US,SG`) |
+
+### Response
+
+```json
+{
+  "query": "wire",
+  "suggestions": [
+    {"suggestion": "wireless headphones", "product_count": 1250},
+    {"suggestion": "wireless earbuds", "product_count": 890}
+  ],
+  "total": 2
+}
+```
+
+---
+
+## Search Filters
+
+Get available filter options with counts for dynamic filter UIs.
+
+```
+GET /v1/search/filters
+```
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `q` | string | No | Scope filters to search results |
+
+### Response
+
+```json
+{
+  "categories": [{"value": "Electronics", "count": 125000}],
+  "brands": [{"value": "Sony", "count": 8900}],
+  "platforms": [{"value": "shopee_sg", "count": 45000}],
+  "countries": [{"value": "SG", "count": 120000}],
+  "price_ranges": [{"range": "100-200", "count": 8500}],
+  "rating_ranges": [{"range": "4-5", "count": 15000}],
+  "price_min": "0.00",
+  "price_max": "5000.00"
+}
+```
+
+---
+
+## Image Search
+
+Find products visually similar to an image.
+
+```
+POST /v1/search/image
+```
+
+### Request Body
+
+```json
+{
+  "image_url": "https://example.com/product-image.jpg",
+  "min_similarity": 0.8,
+  "limit": 20
+}
+```
+
+### Response
+
+```json
+{
+  "query_image_url": "https://example.com/product-image.jpg",
+  "total_matches": 5,
+  "matches": [
+    {
+      "id": 12345,
+      "name": "Similar Product",
+      "price": "89.00",
+      "similarity_score": 0.92,
+      ...
+    }
+  ]
+}
+```
+
+---
+
+## Product Price History
+
+Get historical price data for a product.
+
+```
+GET /v1/products/{product_id}/price-history
+```
+
+### Response
+
+```json
+{
+  "product_id": 12345,
+  "price_history": [
+    {"date": "2026-04-01", "price": "749.00"},
+    {"date": "2026-04-15", "price": "729.00"},
+    {"date": "2026-04-20", "price": "749.00"}
+  ],
+  "currency": "SGD"
+}
+```
+
+---
+
+## Product Price Stats
+
+Get price statistics for a product across all sellers.
+
+```
+GET /v1/products/{product_id}/price-stats
+```
+
+### Response
+
+```json
+{
+  "product_id": 12345,
+  "min_price": "729.00",
+  "max_price": "799.00",
+  "avg_price": "759.00",
+  "median_price": "749.00",
+  "price_count": 8,
+  "currency": "SGD"
+}
+```
+
+---
+
+## Similar Products
+
+Find products visually or semantically similar.
+
+```
+GET /v1/products/{product_id}/similar
+```
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | integer | No | Max results (default: 10) |
+
+---
+
+## Countries
+
+List available country filters.
+
+```
+GET /v1/countries
+```
+
+### Response
+
+```json
+{
+  "countries": [
+    {"code": "SG", "name": "Singapore", "product_count": 120000},
+    {"code": "MY", "name": "Malaysia", "product_count": 85000},
+    {"code": "US", "name": "United States", "product_count": 450000}
+  ],
+  "total": 5
+}
+```
+
+---
+
+## Brands
+
+List brands with product counts.
+
+```
+GET /v1/brands
+```
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | integer | No | Max results |
+| `country` | string | No | Filter by country |
+
+### Response
+
+```json
+{
+  "brands": [
+    {"name": "Sony", "product_count": 12500},
+    {"name": "Samsung", "product_count": 9800}
+  ],
+  "total": 500
+}
+```
+
+---
+
+## Developer Signup
+
+Register as a new API developer.
+
+```
+POST /v1/developers/signup
+```
+
+### Request Body
+
+```json
+{
+  "email": "developer@example.com",
+  "password": "secure-password",
+  "name": "My App"
+}
+```
+
+### Response
+
+```json
+{
+  "developer_id": "dev_abc123",
+  "api_key": "bw_live_xxxxx...",
+  "tier": "free",
+  "message": "Account created successfully"
+}
+```
+
+---
+
+## Webhooks
+
+Manage webhooks for event notifications.
+
+### Create Webhook
+
+```
+POST /v1/webhooks
+```
+
+```json
+{
+  "url": "https://your-app.com/webhook",
+  "events": ["product.price_drop", "product.back_in_stock"],
+  "secret": "your-webhook-secret"
+}
+```
+
+### List Webhooks
+
+```
+GET /v1/webhooks
+```
+
+### Test Webhook
+
+```
+POST /v1/webhooks/test
+```
+
+```json
+{
+  "webhook_id": "wh_xxx",
+  "event": "test"
+}
+```
+
+**Available webhook events:**
+
+| Event | Description |
+|-------|-------------|
+| `product.price_drop` | Product price decreased |
+| `product.back_in_stock` | Product became available |
+| `deal.new` | New deal detected |
+| `price_alert.triggered` | Price alert threshold met |
+
+---
+
 ## Error Codes
 
-| Status | Meaning |
-|--------|---------|
-| 400 | Bad Request — Invalid parameters |
-| 401 | Unauthorized — Invalid or missing API key |
-| 403 | Forbidden — Invalid admin secret |
-| 404 | Not Found — Resource doesn't exist |
-| 422 | Validation Error — Request validation failed |
-| 429 | Rate Limit Exceeded — Slow down requests |
-| 500 | Server Error — Something went wrong on our end |
-| 503 | Service Unavailable — Temporary outage |
+| Status | Code | Meaning |
+|--------|------|---------|
+| 400 | `BAD_REQUEST` | Invalid parameters |
+| 401 | `INVALID_API_KEY` | Invalid or missing API key |
+| 403 | `FORBIDDEN` | Invalid admin secret |
+| 404 | `NOT_FOUND` | Resource doesn't exist |
+| 422 | `VALIDATION_ERROR` | Request validation failed |
+| 429 | `RATE_LIMIT_EXCEEDED` | Slow down requests |
+| 500 | `INTERNAL_ERROR` | Something went wrong on our end |
+| 503 | `SERVICE_UNAVAILABLE` | Temporary outage |
+
+**Validation Error Response:**
+
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Request validation failed",
+    "details": {
+      "errors": [
+        {"field": "q", "message": "String exceeds maximum length of 500 characters", "type": "string_too_long"}
+      ],
+      "count": 1
+    }
+  }
+}
+```
+
+**Rate Limit Response:**
+
+```json
+{
+  "error": {
+    "code": "RATE_LIMIT_EXCEEDED",
+    "message": "Rate limit exceeded",
+    "details": {"retry_after": 60}
+  }
+}
+```
+
+---
+
+## Rate Limits
+
+| Tier | Limit |
+|------|-------|
+| Free | 100 requests/minute |
+| Standard | 500 requests/minute |
+| Premium | 1,000 requests/minute |
+| Partner | Unlimited |
+
+**Rate limit headers:**
+
+| Header | Description |
+|--------|-------------|
+| `X-RateLimit-Limit` | Your rate limit |
+| `X-RateLimit-Remaining` | Requests remaining |
+| `X-RateLimit-Reset` | Unix timestamp when limit resets |
+| `Retry-After` | Seconds to wait (on 429) |

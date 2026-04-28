@@ -97,6 +97,7 @@ class ProductResponse(BaseModel):
     metadata: Optional[Any] = None
     updated_at: datetime
     price_trend: Optional[str] = Field(None, description="30-day price trend: 'up', 'down', or 'stable'")
+    json_ld: Optional[str] = Field(None, description="JSON-LD structured data script tag for SEO/AI agents. Contains Schema.org Product and Offer data.")
 
 
 class SearchFiltersResponse(BaseModel):

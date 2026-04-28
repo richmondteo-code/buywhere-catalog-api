@@ -104,7 +104,7 @@ async def get_scraper_health_status(
     api_key: ApiKey = Depends(get_current_api_key),
 ) -> ScraperHealthReport:
     request.state.api_key = api_key
-    data = await get_scraper_health(db)
+    data = await get_scraper_health()
     return ScraperHealthReport(**data)
 
 
@@ -117,7 +117,7 @@ async def get_system_health(
 ) -> SystemHealthReport:
     request.state.api_key = api_key
     db_health = await get_db_health(db)
-    scraper_data = await get_scraper_health(db)
+    scraper_data = await get_scraper_health()
     return SystemHealthReport(
         db=db_health,
         scrapers=ScraperHealthReport(**scraper_data),
