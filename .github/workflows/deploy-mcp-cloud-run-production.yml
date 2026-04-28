@@ -80,6 +80,9 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Force target GCP project
+        run: gcloud config set project ${{ env.GCP_PROJECT_ID }}
+
       - name: Configure Docker auth for Artifact Registry
         run: gcloud auth configure-docker asia-southeast1-docker.pkg.dev --quiet
 
