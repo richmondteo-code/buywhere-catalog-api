@@ -106,58 +106,40 @@ jobs:
           DEPLOY_HOST: ${{ secrets.PRODUCTION_DEPLOY_HOST }}
           DEPLOY_PORT: ${{ secrets.PRODUCTION_DEPLOY_PORT || 22 }}
           DEPLOY_USER: ${{ secrets.PRODUCTION_DEPLOY_USER }}
-          NGINX_CONFIG_NAME: ${{ env.NGINX_CONFIG_NAME }}
-          DEPLOY_SHA: ${{ github.sha }}
         run: |
-          export NGINX_CONFIG_NAME DEPLOY_SHA
-          ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" << 'EOF'
+          NGINX_CONFIG_NAME="${{ env.NGINX_CONFIG_NAME }}"
+          DEPLOY_SHA="${{ github.sha }}"
+          ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" << EOF
             set -euo pipefail
 
             NGINX_ATOMIC_TARGET="/etc/nginx/sites-enabled/${NGINX_CONFIG_NAME}.conf"
-            NGINX_TMP_TARGET="/tmp/nginx-${NGINX_CONFIG_NAME}-${DEPLOY_SHA:-manual}.conf"
+            NGINX_TMP_TARGET="/tmp/nginx-\${NGINX_CONFIG_NAME}-\${DEPLOY_SHA}.conf"
             PREVIOUS_CONFIG="/srv/buywhere-site/.nginx_previous_config"
 
             echo "=== Deploying Nginx Config ==="
-            echo "Source: $NGINX_TMP_TARGET"
-            echo "Target: $NGINX_ATOMIC_TARGET"
+            echo "Source: \$NGINX_TMP_TARGET"
+            echo "Target: \$NGINX_ATOMIC_TARGET"
 
-            if [[ ! -f "$NGINX_TMP_TARGET" ]]; then
-              echo "ERROR: Config not found at $NGINX_TMP_TARGET"
+            if [[ ! -f "\$NGINX_TMP_TARGET" ]]; then
+              echo "ERROR: Config not found at \$NGINX_TMP_TARGET"
               exit 1
             fi
 
             echo "Validating nginx config..."
-            if ! nginx -t -c "$NGINX_TMP_TARGET" 2>&1; then
+            if ! nginx -t -c "\$NGINX_TMP_TARGET" 2>&1; then
               echo "ERROR: nginx config test failed"
-              rm -f "$NGINX_TMP_TARGET"
-              exit 1
-            fi
-            PREVIOUS_CONFIG="/srv/buywhere-site/.nginx_previous_config"
-
-            echo "=== Deploying Nginx Config ==="
-            echo "Source: $NGINX_TMP_TARGET"
-            echo "Target: $NGINX_ATOMIC_TARGET"
-
-            if [[ ! -f "$NGINX_TMP_TARGET" ]]; then
-              echo "ERROR: Config not found at $NGINX_TMP_TARGET"
-              exit 1
-            fi
-
-            echo "Validating nginx config..."
-            if ! nginx -t -c "$NGINX_TMP_TARGET" 2>&1; then
-              echo "ERROR: nginx config test failed"
-              rm -f "$NGINX_TMP_TARGET"
+              rm -f "\$NGINX_TMP_TARGET"
               exit 1
             fi
             echo "nginx config test passed"
 
-            if [[ -f "$NGINX_ATOMIC_TARGET" ]]; then
-              cp "$NGINX_ATOMIC_TARGET" "$PREVIOUS_CONFIG"
-              echo "Backed up current config to $PREVIOUS_CONFIG"
+            if [[ -f "\$NGINX_ATOMIC_TARGET" ]]; then
+              cp "\$NGINX_ATOMIC_TARGET" "\$PREVIOUS_CONFIG"
+              echo "Backed up current config to \$PREVIOUS_CONFIG"
             fi
 
             echo "Atomically swapping nginx config..."
-            mv -f "$NGINX_TMP_TARGET" "$NGINX_ATOMIC_TARGET"
+            mv -f "\$NGINX_TMP_TARGET" "\$NGINX_ATOMIC_TARGET"
 
             echo "Reloading nginx..."
             nginx -s reload 2>&1 || { echo "ERROR: nginx reload failed"; exit 1; }
