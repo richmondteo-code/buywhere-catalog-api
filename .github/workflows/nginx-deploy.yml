@@ -28,7 +28,7 @@ permissions:
 
 env:
   DEPLOY_ROOT: /srv/buywhere-site
-  NGINX_CONFIG_NAME: buywhere.ai
+  NGINX_CONFIG_NAME: api.buywhere.ai
 
 jobs:
   validate-nginx-config:
