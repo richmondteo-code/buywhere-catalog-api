@@ -58,7 +58,11 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq nginx > /dev/null 2>&1
-          sudo nginx -t -c "$(pwd)/${{ steps.config.outputs.path }}"
+          echo "Creating test SSL certificates for validation..."
+          sudo mkdir -p /tmp/nginx-test-certs
+          sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /tmp/nginx-test-certs/key.pem -out /tmp/nginx-test-certs/cert.pem -days 1 -subj "/CN=test" 2>/dev/null
+          sed "s|/etc/letsencrypt/live/api.buywhere.ai/fullchain.pem|/tmp/nginx-test-certs/cert.pem|g; s|/etc/letsencrypt/live/api.buywhere.ai/privkey.pem|/tmp/nginx-test-certs/key.pem|g; s|/etc/letsencrypt/options-ssl-nginx.conf|/dev/null|g; s|/etc/letsencrypt/ssl-dhparams.pem|/dev/null|g" "${{ steps.config.outputs.path }}" > /tmp/nginx-test-valid.conf
+          sudo nginx -t -c /tmp/nginx-test-valid.conf
 
   deploy-nginx-config:
     name: Deploy Nginx Config
