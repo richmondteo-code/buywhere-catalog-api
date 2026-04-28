@@ -15,7 +15,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ toLowerCase(github.repository_owner) }}/buywhere
+  IMAGE_NAME: buywhere/buywhere
   GCP_PROJECT_ID: buywhere-production
   GCP_REGION: asia-southeast1
   CLOUD_RUN_SERVICE: buywhere-mcp
@@ -25,7 +25,7 @@ jobs:
     name: Build MCP Docker Image
     runs-on: ubuntu-latest
     outputs:
-      image_tag: ghcr.io/${{ toLowerCase(github.repository_owner) }}/buywhere-mcp:${{ github.sha }}
+      image_tag: ghcr.io/buywhere/buywhere-mcp:${{ github.sha }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -57,7 +57,7 @@ jobs:
           file: Dockerfile.mcp
           push: true
           tags: |
-            ghcr.io/${{ toLowerCase(github.repository_owner) }}/buywhere-mcp:${{ github.sha }}
+            ghcr.io/buywhere/buywhere-mcp:${{ github.sha }}
             ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
