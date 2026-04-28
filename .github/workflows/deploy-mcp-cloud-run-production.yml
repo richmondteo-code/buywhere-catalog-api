@@ -80,19 +80,19 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Configure Docker auth for GCR
-        run: gcloud auth configure-docker
+      - name: Configure Docker auth for Artifact Registry
+        run: gcloud auth configure-docker asia-southeast1-docker.pkg.dev --quiet
 
       - name: Pull Docker image
         run: docker pull ${{ needs.build.outputs.image_tag }}
 
       - name: Retag for GCR
         run: |
-          GCR_IMAGE="gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.CLOUD_RUN_SERVICE }}:sha-${{ github.sha }}"
+          GCR_IMAGE="asia-southeast1-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.CLOUD_RUN_SERVICE }}/${{ env.CLOUD_RUN_SERVICE }}:sha-${{ github.sha }}"
           docker tag ${{ needs.build.outputs.image_tag }} $GCR_IMAGE
           echo "GCR_IMAGE=$GCR_IMAGE" >> $GITHUB_ENV
 
-      - name: Push to Google Container Registry
+      - name: Push to Artifact Registry
         run: docker push $GCR_IMAGE
 
       - name: Deploy MCP to Cloud Run
