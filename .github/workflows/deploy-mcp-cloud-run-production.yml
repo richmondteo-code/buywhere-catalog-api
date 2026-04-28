@@ -88,7 +88,7 @@ jobs:
 
       - name: Retag for GCR
         run: |
-          GCR_IMAGE="asia-southeast1-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.CLOUD_RUN_SERVICE }}/${{ env.CLOUD_RUN_SERVICE }}:sha-${{ github.sha }}"
+          GCR_IMAGE="asia-southeast1-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/buywhere/${{ env.CLOUD_RUN_SERVICE }}:sha-${{ github.sha }}"
           docker tag ${{ needs.build.outputs.image_tag }} $GCR_IMAGE
           echo "GCR_IMAGE=$GCR_IMAGE" >> $GITHUB_ENV
 
