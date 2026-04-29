@@ -19,6 +19,7 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME_LOWER: ${{ lower(github.repository) }}
   GCP_PROJECT_ID: buywhere-production
   GCP_REGION: asia-southeast1
   CLOUD_RUN_SERVICE: buywhere-api-production
@@ -29,7 +30,7 @@ jobs:
     name: Build Docker Image
     runs-on: ubuntu-latest
     outputs:
-      image_tag: ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
+      image_tag: ghcr.io/${{ env.IMAGE_NAME_LOWER }}:sha-${{ github.sha }}
       deployment_id: ${{ steps.deploy_info.outputs.deployment_id }}
       version: ${{ steps.deploy_info.outputs.version }}
     steps:
@@ -51,7 +52,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LOWER }}
           tags: |
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
@@ -63,7 +64,7 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
+            ghcr.io/${{ env.IMAGE_NAME_LOWER }}:sha-${{ github.sha }}
             ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
