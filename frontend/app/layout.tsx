@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: '%s | BuyWhere',
   },
   description: config.baseDescription,
-  keywords: regionKeywords(region),
+  keywords: [...regionKeywords(region)],
   authors: [{ name: 'BuyWhere' }],
   creator: 'BuyWhere',
   openGraph: {

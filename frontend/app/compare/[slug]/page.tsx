@@ -26,7 +26,7 @@ function generateSEOMetadata(data: ComparisonPageData, baseUrl: string): SEOMeta
     og_description: `Compare prices for ${data.product.title} from top retailers. Lowest price: $${data.lowest_price} at ${data.lowest_price_retailer}.`,
     og_image: data.product.image_url,
     twitter_title: `Compare ${data.product.title} prices`,
-    twitter_description: `Lowest price: $${data.lowest_price} at ${data.lowest_price_retailer}. Compare prices across ${data.retailers.length} retailers.',
+    twitter_description: `Lowest price: $${data.lowest_price} at ${data.lowest_price_retailer}. Compare prices across ${data.retailers.length} retailers.`,
     twitter_image: data.product.image_url,
   };
 }
