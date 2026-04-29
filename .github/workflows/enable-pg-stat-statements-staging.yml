@@ -52,6 +52,21 @@ jobs:
           echo "sa_email=$SA_EMAIL" >> $GITHUB_OUTPUT
           echo "Service account: $SA_EMAIL"
 
+      - name: Create IAM user with correct type
+        run: |
+          echo "Creating IAM service account user in Cloud SQL..."
+          gcloud sql users create "${{ steps.get-token.outputs.sa_email }}" \
+            --instance=${{ env.CLOUD_SQL_INSTANCE }} \
+            --type=CLOUD_IAM_SERVICE_ACCOUNT \
+            --project=${{ env.GCP_PROJECT_ID }} || echo "User may already exist"
+
+      - name: Grant IAM user privileges
+        run: |
+          echo "Granting privileges to IAM user..."
+          gcloud sql users grant "${{ steps.get-token.outputs.sa_email }}" \
+            --instance=${{ env.CLOUD_SQL_INSTANCE }} \
+            --project=${{ env.GCP_PROJECT_ID }} || echo "Grant may have failed"
+
       - name: Install Cloud SQL Proxy
         run: |
           echo "Installing Cloud SQL Proxy..."
