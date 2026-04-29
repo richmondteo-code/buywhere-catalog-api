@@ -33,17 +33,24 @@ jobs:
         id: instance
         run: |
           INSTANCE_DATA=$(gcloud sql instances describe buywhere-staging --format=json)
-          echo "$INSTANCE_DATA"
+          echo "INSTANCE_DATA=$INSTANCE_DATA"
           INSTANCE_NAME=$(echo "$INSTANCE_DATA" | jq -r '.name')
           echo "instance_name=${INSTANCE_NAME}" >> $GITHUB_OUTPUT
+          echo "Full instance data saved to instance_data.json"
+
+      - name: Debug instance name
+        run: |
+          echo "Instance name from step: ${{ steps.instance.outputs.instance_name }}"
+          curl -s -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/${{ steps.instance.outputs.instance_name }}" | jq '.'
 
       - name: Enable Data API access
         run: |
-          curl -X PATCH \
+          curl -v -X PATCH \
             -H "Authorization: Bearer $(gcloud auth print-access-token)" \
             -H "Content-Type: application/json" \
             -d '{"settings": {"dataApiAccess": "ALLOW_DATA_API"}}' \
-            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/${{ steps.instance.outputs.instance_name }}"
+            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/${{ steps.instance.outputs.instance_name }}" 2>&1 | tail -20
 
       - name: Wait for Data API enable to propagate
         run: sleep 10
