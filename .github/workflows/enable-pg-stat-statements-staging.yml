@@ -29,17 +29,42 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Enable IAM authentication for Cloud SQL
+      - name: Disable IAM authentication
         run: |
-          gcloud sql instances patch buywhere-staging --database-flags=cloudsql.iam_authentication=on
+          gcloud sql instances patch buywhere-staging --database-flags=cloudsql.iam_authentication=off
 
-      - name: Wait for IAM auth to propagate
-        run: sleep 30
+      - name: Install Cloud SQL Proxy
+        run: gcloud components install cloud_sql_proxy --quiet
+
+      - name: Extract password and start proxy
+        env:
+          CONNECTION_STRING: ${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}
+        run: |
+          echo "Connection string: ${CONNECTION_STRING:0:30}..."
+          # Parse connection string to extract components
+          # Format: postgresql://user:password@host:port/database
+          PROXY_SOCKET_DIR=/tmp/cloud_sql
+          mkdir -p $PROXY_SOCKET_DIR
+          /opt/hostedtoolcache/gcloud/564.0.0/x64/bin/cloud_sql_proxy \
+            --dir=$PROXY_SOCKET_DIR \
+            --instances=${{ env.CLOUD_SQL_INSTANCE }}=tcp:5432 \
+            --credential_file=/home/runner/work/_gcp_token \
+            &
+          echo "Waiting for proxy to start..."
+          sleep 10
 
       - name: Enable pg_stat_statements extension
+        env:
+          CONNECTION_STRING: ${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}
         run: |
-          gcloud sql instances execute-sql buywhere-staging --database=postgres --sql="CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
+          # Extract password from connection string
+          PASSWORD=$(echo "$CONNECTION_STRING" | sed -n 's/.*:\/\/[^:]*:\([^@]*\)@.*/\1/p')
+          echo "Connecting to database..."
+          PGPASSWORD=$PASSWORD psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
 
       - name: Verify pg_stat_statements is enabled
+        env:
+          CONNECTION_STRING: ${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}
         run: |
-          gcloud sql instances execute-sql buywhere-staging --database=postgres --sql="SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"
+          PASSWORD=$(echo "$CONNECTION_STRING" | sed -n 's/.*:\/\/[^:]*:\([^@]*\)@.*/\1/p')
+          PGPASSWORD=$PASSWORD psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -c "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"
