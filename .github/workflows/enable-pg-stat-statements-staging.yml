@@ -29,19 +29,22 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Install Cloud SQL Proxy
-        run: gcloud components install cloud-sql-proxy --quiet
+      - name: Get Cloud SQL instance connection name
+        id: connection
+        run: |
+          CONNECTION_NAME=$(gcloud sql instances describe buywhere-staging --format="value(connectionName)")
+          echo "connection_name=${CONNECTION_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Start Cloud SQL Proxy with IAM auth
+        run: |
+          /opt/hostedtoolcache/gcloud/564.0.0/x64/bin/cloud-sql-proxy --port 5432 --iam "${{ steps.connection.outputs.connection_name }}" &
+          sleep 5
+          echo "Proxy started"
 
       - name: Enable pg_stat_statements extension
         run: |
-          export PATH=$PATH:/opt/hostedtoolcache/gcloud/564.0.0/x64/bin
-          gcloud sql connect buywhere-staging --user=postgres <<'EOSQL'
-          CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
-          EOSQL
+          PGPASSWORD= psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
 
       - name: Verify pg_stat_statements is enabled
         run: |
-          export PATH=$PATH:/opt/hostedtoolcache/gcloud/564.0.0/x64/bin
-          gcloud sql connect buywhere-staging --user=postgres <<'EOSQL'
-          SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;
-          EOSQL
+          PGPASSWORD= psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -c "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"
