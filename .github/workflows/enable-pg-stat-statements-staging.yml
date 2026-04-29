@@ -29,12 +29,6 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Get access token
-        id: token
-        run: |
-          TOKEN=$(gcloud auth print-access-token)
-          echo "token=${TOKEN}" >> $GITHUB_OUTPUT
-
       - name: Get instance details
         id: instance
         run: |
@@ -46,15 +40,26 @@ jobs:
       - name: Enable Data API access
         run: |
           curl -X PATCH \
-            -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
+            -H "Authorization: Bearer $(gcloud auth print-access-token)" \
             -H "Content-Type: application/json" \
-            -d '{"settings": {"dataApiAccess": "ALLOW_DATA_API", "databaseFlags": [{"name": "cloudsql.iam_authentication", "value": "off"}]}}' \
+            -d '{"settings": {"dataApiAccess": "ALLOW_DATA_API"}}' \
             "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/${{ steps.instance.outputs.instance_name }}"
 
-      - name: Enable pg_stat_statements extension
+      - name: Wait for Data API enable to propagate
+        run: sleep 10
+
+      - name: Enable pg_stat_statements extension via Data API
         run: |
-          gcloud sql instances execute-sql buywhere-staging --database=postgres --sql="CREATE EXTENSION IF NOT EXISTS pg_stat_statements;" --user=postgres
+          curl -X POST \
+            -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+            -H "Content-Type: application/json" \
+            -d '{"sql":"CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"}' \
+            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/buywhere-staging:execute"
 
       - name: Verify pg_stat_statements is enabled
         run: |
-          gcloud sql instances execute-sql buywhere-staging --database=postgres --sql="SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;" --user=postgres
+          curl -X POST \
+            -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+            -H "Content-Type: application/json" \
+            -d '{"sql":"SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"}' \
+            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/buywhere-staging:execute"
