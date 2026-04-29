@@ -39,15 +39,19 @@ jobs:
       - name: Extract password and start proxy
         env:
           CONNECTION_STRING: ${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}
+          GOOGLE_APPLICATION_CREDENTIALS: /home/runner/work/buywhere/buywhere/gha-creds-*.json
         run: |
           echo "Connection string: ${CONNECTION_STRING:0:50}..."
-          # Connection string is in format: project:region:instance
+          # Find the actual credentials file
+          CREDS_FILE=$(ls /home/runner/work/buywhere/buywhere/gha-creds-*.json 2>/dev/null | head -1)
+          echo "Using credentials: $CREDS_FILE"
           PROXY_SOCKET_DIR=/tmp/cloud_sql
           mkdir -p $PROXY_SOCKET_DIR
-          # Use automatic credentials via Application Default Credentials
+          # Start proxy with explicit credentials
           /opt/hostedtoolcache/gcloud/564.0.0/x64/bin/cloud_sql_proxy \
             --dir=$PROXY_SOCKET_DIR \
             --instances=${{ env.CLOUD_SQL_INSTANCE }}=tcp:5432 \
+            --credential_file=$CREDS_FILE \
             &
           echo "Waiting for proxy to start..."
           sleep 15
