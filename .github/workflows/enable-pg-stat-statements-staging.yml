@@ -29,13 +29,14 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Install Cloud SQL Proxy
-        run: gcloud components install cloud-sql-proxy --quiet
-
       - name: Enable pg_stat_statements extension
         run: |
-          echo "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;" | gcloud sql connect buywhere-staging --user=postgres --quiet
+          gcloud sql connect buywhere-staging --user=postgres <<'EOSQL'
+          CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+          EOSQL
 
       - name: Verify pg_stat_statements is enabled
         run: |
-          echo "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;" | gcloud sql connect buywhere-staging --user=postgres --quiet
+          gcloud sql connect buywhere-staging --user=postgres <<'EOSQL'
+          SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;
+          EOSQL
