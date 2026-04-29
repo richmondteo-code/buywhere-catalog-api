@@ -1,23 +1,10 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import { ComparisonPageData, SEOMetadata } from '@/types/compare';
 import { fetchComparisonPage, getCanonicalUrl } from '@/lib/api';
 import { generateComparePageJSONLD } from '@/lib/jsonld';
-import Breadcrumb from '@/components/Breadcrumb';
-import HeroBlock from '@/components/HeroBlock';
-import PriceTable from '@/components/PriceTable';
-import PriceHistorySection from '@/components/PriceHistorySection';
-import ExpertSummary from '@/components/ExpertSummary';
-import SpecsSection from '@/components/SpecsSection';
-import FAQSection from '@/components/FAQSection';
-import RelatedComparisons from '@/components/RelatedComparisons';
-import Disclosure from '@/components/Disclosure';
+import ComparePageClient from './ComparePageClient';
 import EmptyState from '@/components/EmptyState';
 import ErrorState from '@/components/ErrorState';
-import LowCoverageState from '@/components/LowCoverageState';
-import OutOfStockState from '@/components/OutOfStockState';
-import LoadingState from '@/components/LoadingState';
-import TrustSignals from '@/components/TrustSignals';
 import styles from './page.module.css';
 
 interface ComparePageProps {
@@ -106,7 +93,6 @@ export default async function ComparePage({ params }: ComparePageProps) {
   if (!data.retailers || data.retailers.length === 0) {
     return (
       <div className={styles.page}>
-        <Breadcrumb items={data.breadcrumb} />
         <EmptyState
           title="No retailers available"
           message="We don't have price data from any retailers for this product yet. Check back soon!"
@@ -114,10 +100,6 @@ export default async function ComparePage({ params }: ComparePageProps) {
       </div>
     );
   }
-
-  const inStockCount = data.retailers.filter(r => r.availability === 'in_stock' || r.availability === 'low_stock').length;
-  const allOutOfStock = data.retailers.every(r => r.availability === 'out_of_stock');
-  const isLowCoverage = data.retailers.length < 3 && !allOutOfStock;
 
   const jsonld = generateComparePageJSONLD(data, BASE_URL);
 
@@ -128,39 +110,7 @@ export default async function ComparePage({ params }: ComparePageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonld) }}
       />
 
-      <div className={styles.page}>
-        <Breadcrumb items={data.breadcrumb} />
-        <HeroBlock
-          product={data.product}
-          lowestPrice={data.lowest_price}
-          lowestPriceFormatted={data.lowest_price_formatted}
-          lowestPriceRetailer={data.lowest_price_retailer}
-          retailerCount={data.retailers.length}
-        />
-        <TrustSignals
-          competitorCount={data.retailers.length - 1}
-          lastUpdated={data.metadata.updated_at}
-        />
-        {allOutOfStock && (
-          <OutOfStockState
-            productName={data.product.title}
-            retailerCount={data.retailers.length}
-          />
-        )}
-        {!allOutOfStock && isLowCoverage && (
-          <LowCoverageState
-            retailerCount={data.retailers.length}
-            productName={data.product.title}
-          />
-        )}
-        <PriceHistorySection productId={parseInt(data.product_id, 10)} />
-        <PriceTable retailers={data.retailers} lowestPrice={data.lowest_price} lastUpdated={data.metadata.updated_at} />
-        {data.expert_summary && <ExpertSummary summary={data.expert_summary} />}
-        <SpecsSection specs={data.product.specs} />
-        {data.faq && data.faq.length > 0 && <FAQSection faq={data.faq} />}
-        <RelatedComparisons comparisons={data.related_comparisons} />
-        <Disclosure updatedAt={data.metadata.updated_at} />
-      </div>
+      <ComparePageClient data={data} slug={slug} />
     </>
   );
 }
