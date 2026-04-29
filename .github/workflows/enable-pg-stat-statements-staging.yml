@@ -43,18 +43,18 @@ jobs:
           INSTANCE_NAME=$(echo "$INSTANCE_DATA" | jq -r '.name')
           echo "instance_name=${INSTANCE_NAME}" >> $GITHUB_OUTPUT
 
-      - name: Enable Data API access and IAM auth
+      - name: Enable Data API access
         run: |
           curl -X PATCH \
             -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
             -H "Content-Type: application/json" \
-            -d '{"settings": {"dataApiAccess": "ALLOW_DATA_API", "databaseFlags": [{"name": "cloudsql.iam_authentication", "value": "on"}]}}' \
+            -d '{"settings": {"dataApiAccess": "ALLOW_DATA_API", "databaseFlags": [{"name": "cloudsql.iam_authentication", "value": "off"}]}}' \
             "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/${{ steps.instance.outputs.instance_name }}"
 
       - name: Enable pg_stat_statements extension
         run: |
-          gcloud sql instances execute-sql buywhere-staging --database=postgres --sql="CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
+          gcloud sql instances execute-sql buywhere-staging --database=postgres --sql="CREATE EXTENSION IF NOT EXISTS pg_stat_statements;" --user=postgres
 
       - name: Verify pg_stat_statements is enabled
         run: |
-          gcloud sql instances execute-sql buywhere-staging --database=postgres --sql="SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"
+          gcloud sql instances execute-sql buywhere-staging --database=postgres --sql="SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;" --user=postgres
