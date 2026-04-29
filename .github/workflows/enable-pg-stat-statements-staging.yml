@@ -31,8 +31,8 @@ jobs:
 
       - name: Enable pg_stat_statements extension
         run: |
-          echo "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;" | gcloud sql instances execute-sql buywhere-staging --user=postgres
+          gcloud sql instances execute-sql buywhere-staging --sql="CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
 
       - name: Verify pg_stat_statements is enabled
         run: |
-          echo "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;" | gcloud sql instances execute-sql buywhere-staging --user=postgres
+          gcloud sql instances execute-sql buywhere-staging --sql="SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"
