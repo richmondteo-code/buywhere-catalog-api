@@ -99,7 +99,7 @@ jobs:
           DEPLOY_USER: ${{ secrets.PRODUCTION_DEPLOY_USER }}
         run: |
           CONFIG_PATH="${{ steps.config.outputs.path }}"
-          scp -P "$DEPLOY_PORT" "$CONFIG_PATH" "$DEPLOY_USER@$DEPLOY_HOST:/tmp/nginx-${{ env.NGINX_CONFIG_NAME }}-${{ github.sha }}.conf"
+          ssh -o StrictHostKeyChecking=no -o BatchMode=yes -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" "cat > /tmp/nginx-${{ env.NGINX_CONFIG_NAME }}-${{ github.sha }}.conf" < "$CONFIG_PATH"
 
       - name: Deploy config on server
         env:
