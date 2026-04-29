@@ -37,31 +37,41 @@ jobs:
             --database-flags=cloudsql.iam_authentication=on \
             --project=${{ env.GCP_PROJECT_ID }}
 
-      - name: Get access token for SQL Admin API
+      - name: Get access token and service account email
         id: get-token
         run: |
           TOKEN=$(gcloud auth print-access-token)
+          SA_EMAIL=$(gcloud auth list --filter=status:ACTIVE --format='value(account)')
           echo "token=$TOKEN" >> $GITHUB_OUTPUT
+          echo "sa_email=$SA_EMAIL" >> $GITHUB_OUTPUT
+          echo "Service account: $SA_EMAIL"
+
+      - name: List existing Cloud SQL users
+        run: |
+          echo "Existing Cloud SQL users:"
+          curl -s -X POST \
+            "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
+            -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
+            -H "Content-Type: application/json" \
+            -d '{"sql": "SELECT usename FROM pg_user;"}' | jq .
 
       - name: Create service account PostgreSQL user
         run: |
-          SA_EMAIL=$(echo "${{ secrets.GCP_SA_KEY }}" | jq -r '.client_email')
-          echo "Creating IAM-authenticated user for: $SA_EMAIL"
+          echo "Creating IAM-authenticated user for: ${{ steps.get-token.outputs.sa_email }}"
           curl -X POST \
             "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
             -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
             -H "Content-Type: application/json" \
-            -d "{\"sql\": \"DO \$\$ BEGIN CREATE USER \\\"$SA_EMAIL\\\" WITH CREATEROLE; EXCEPTION WHEN duplicate_object THEN NULL; END \$\$;\"}"
+            -d "{\"sql\": \"DO \$\$ BEGIN CREATE USER \\\"${{ steps.get-token.outputs.sa_email }}\\\" WITH CREATEROLE; EXCEPTION WHEN duplicate_object THEN NULL; END \$\$;\"}"
 
       - name: Grant IAM user necessary roles
         run: |
-          SA_EMAIL=$(echo "${{ secrets.GCP_SA_KEY }}" | jq -r '.client_email')
-          echo "Granting necessary roles to IAM user: $SA_EMAIL"
+          echo "Granting necessary roles to IAM user: ${{ steps.get-token.outputs.sa_email }}"
           curl -X POST \
             "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
             -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
             -H "Content-Type: application/json" \
-            -d "{\"sql\": \"GRANT ALL PRIVILEGES ON DATABASE postgres TO \\\"$SA_EMAIL\\\";\"}"
+            -d "{\"sql\": \"GRANT ALL PRIVILEGES ON DATABASE postgres TO \\\"${{ steps.get-token.outputs.sa_email }}\\\";\"}"
 
       - name: Enable pg_stat_statements extension
         run: |
