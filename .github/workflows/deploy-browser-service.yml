@@ -1,0 +1,128 @@
+name: Deploy Browser Service
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: 'Service to deploy'
+        required: false
+        default: 'browser'
+        type: string
+      skip_build:
+        description: 'Skip Docker build (just restart)'
+        required: false
+        default: 'false'
+        type: boolean
+
+concurrency:
+  group: browser-service-deploy
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-browser-service:
+    name: Deploy Browser Service
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.PRODUCTION_DEPLOY_SSH_KEY }}
+
+      - name: Trust production host
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "${{ secrets.PRODUCTION_DEPLOY_PORT || 22 }}" -H "${{ secrets.PRODUCTION_DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy browser service on server
+        env:
+          DEPLOY_HOST: ${{ secrets.PRODUCTION_DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.PRODUCTION_DEPLOY_PORT || 22 }}
+          DEPLOY_USER: ${{ secrets.PRODUCTION_DEPLOY_USER }}
+          SKIP_BUILD: ${{ github.event.inputs.skip_build || 'false' }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" bash -c '
+            set -euo pipefail
+            cd /srv/buywhere-site
+            
+            echo "=== Deploying browser service ==="
+            echo "Skip build: $SKIP_BUILD"
+            
+            if [[ "$SKIP_BUILD" == "true" ]]; then
+              echo "Restarting browser service (no build)..."
+              docker-compose -f docker-compose.prod.yml restart browser
+            else
+              echo "Building and starting browser service..."
+              docker-compose -f docker-compose.prod.yml up -d --build browser
+            fi
+            
+            echo "Waiting for service to be healthy..."
+            sleep 10
+            
+            echo "Checking service health..."
+            if docker-compose -f docker-compose.prod.yml ps browser | grep -q "Up"; then
+              echo "Browser service is running"
+            else
+              echo "ERROR: Browser service is not running"
+              docker-compose -f docker-compose.prod.yml ps browser
+              exit 1
+            fi
+            
+            echo "=== Browser service deployment complete ==="
+          '
+
+      - name: Verify deployment
+        env:
+          DEPLOY_HOST: ${{ secrets.PRODUCTION_DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.PRODUCTION_DEPLOY_PORT || 22 }}
+          DEPLOY_USER: ${{ secrets.PRODUCTION_DEPLOY_USER }}
+        run: |
+          sleep 5
+          HTTP_CODE=$(curl -sf -o /dev/null -w "%{http_code}" "http://$DEPLOY_HOST:8090/health" --max-time 10 2>/dev/null || echo "000")
+          if [[ "$HTTP_CODE" == "200" ]]; then
+            echo "Browser service health check passed (HTTP $HTTP_CODE)"
+          else
+            echo "WARNING: Health check returned HTTP $HTTP_CODE"
+          fi
+
+  notify:
+    name: Notify Deploy Result
+    runs-on: ubuntu-latest
+    needs: deploy-browser-service
+    if: always()
+    steps:
+      - name: Send deployment webhook
+        env:
+          DEPLOY_WEBHOOK_URL: ${{ secrets.DEPLOY_WEBHOOK_URL }}
+          DEPLOY_STATUS: ${{ needs.deploy-browser-service.result == 'success' && 'success' || 'failure' }}
+        run: |
+          if [[ -z "${DEPLOY_WEBHOOK_URL}" ]]; then
+            echo "DEPLOY_WEBHOOK_URL is not configured; skipping notification."
+            exit 0
+          fi
+
+          payload=$(jq -n \
+            --arg status "$DEPLOY_STATUS" \
+            --arg sha "$GITHUB_SHA" \
+            --arg ref "$GITHUB_REF_NAME" \
+            --arg service "browser" \
+            --arg run_url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            '{
+              text: ("buywhere-api browser service deploy " + $status),
+              status: $status,
+              service: $service,
+              repository: env.GITHUB_REPOSITORY,
+              ref: $ref,
+              sha: $sha,
+              runUrl: $run_url
+            }')
+
+          curl -fsS -X POST "$DEPLOY_WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            -d "$payload"
