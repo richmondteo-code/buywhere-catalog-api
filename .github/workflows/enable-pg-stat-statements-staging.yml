@@ -50,12 +50,11 @@ jobs:
 
       - name: Create IAM service account user in PostgreSQL
         run: |
-          echo "Creating IAM-authenticated PostgreSQL user..."
-          curl -X POST \
-            "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
-            -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
-            -H "Content-Type: application/json" \
-            -d '{"sqlStatement": "DO $$ BEGIN CREATE USER \""'${{ steps.get-token.outputs.sa_email }}'"\" WITH CREATEROLE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;"}'
+          echo "Creating IAM-authenticated PostgreSQL user: ${{ steps.get-token.outputs.sa_email }}"
+          gcloud sql users create "${{ steps.get-token.outputs.sa_email }}" \
+            --instance=${{ env.CLOUD_SQL_INSTANCE }} \
+            --type=IAM_USER \
+            --project=${{ env.GCP_PROJECT_ID }} || echo "User may already exist, continuing..."
 
       - name: Install Cloud SQL Proxy
         run: |
