@@ -29,26 +29,24 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Install Cloud SQL Proxy
-        run: gcloud components install cloud-sql-proxy --quiet
-
-      - name: Get Cloud SQL instance connection name
-        id: connection
+      - name: Get access token
+        id: token
         run: |
-          CONNECTION_NAME=$(gcloud sql instances describe buywhere-staging --format="value(connectionName)")
-          echo "connection_name=${CONNECTION_NAME}" >> $GITHUB_OUTPUT
-
-      - name: Start Cloud SQL Proxy with IAM auth
-        run: |
-          PROXY_PATH=$(which cloud-sql-proxy)
-          $PROXY_PATH --port 5432 --auto-iam-authn "${{ steps.connection.outputs.connection_name }}" &
-          sleep 8
-          echo "Proxy started on port 5432"
+          TOKEN=$(gcloud auth print-access-token)
+          echo "token=${TOKEN}" >> $GITHUB_OUTPUT
 
       - name: Enable pg_stat_statements extension
         run: |
-          PGPASSWORD= psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
+          curl -X POST \
+            -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
+            -H "Content-Type: application/json" \
+            -d '{"sql":"CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"}' \
+            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/buywhere-staging:execute"
 
       - name: Verify pg_stat_statements is enabled
         run: |
-          PGPASSWORD= psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -c "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"
+          curl -X POST \
+            -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
+            -H "Content-Type: application/json" \
+            -d '{"sql":"SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"}' \
+            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/buywhere-staging:execute"
