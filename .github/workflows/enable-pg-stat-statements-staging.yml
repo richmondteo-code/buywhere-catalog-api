@@ -29,9 +29,27 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Get access token
+        id: token
+        run: |
+          TOKEN=$(gcloud auth print-access-token)
+          echo "token=${TOKEN}" >> $GITHUB_OUTPUT
+
+      - name: Get instance details
+        id: instance
+        run: |
+          INSTANCE_DATA=$(gcloud sql instances describe buywhere-staging --format=json)
+          echo "$INSTANCE_DATA"
+          INSTANCE_NAME=$(echo "$INSTANCE_DATA" | jq -r '.name')
+          echo "instance_name=${INSTANCE_NAME}" >> $GITHUB_OUTPUT
+
       - name: Enable Data API access
         run: |
-          gcloud sql instances patch buywhere-staging --settings=dataApiAccess=ALLOW_DATA_API
+          curl -X PATCH \
+            -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
+            -H "Content-Type: application/json" \
+            -d '{"settings": {"dataApiAccess": "ALLOW_DATA_API"}}' \
+            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/${{ steps.instance.outputs.instance_name }}"
 
       - name: Enable pg_stat_statements extension
         run: |
