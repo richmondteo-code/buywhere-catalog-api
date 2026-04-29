@@ -3,9 +3,9 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BuyWhere — Product Discovery Infrastructure for AI-Powered Shopping",
+  title: "BuyWhere API — Product Catalog for AI Shopping Agents",
   description:
-    "The neutral catalog layer that AI agents use to find products and route buyers to merchants. Developers, merchants, and partners — starting with Singapore.",
+    "BuyWhere gives AI agents a product catalog layer for live product discovery, comparison, and merchant handoff across the US and Southeast Asia.",
 };
 
 export default function RootLayout({
