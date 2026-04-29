@@ -53,7 +53,7 @@ jobs:
             "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
             -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
             -H "Content-Type: application/json" \
-            -d '{"sql": "SELECT usename FROM pg_user;"}' | jq .
+            -d '{"sqlStatement": "SELECT usename FROM pg_user;"}' | jq .
 
       - name: Create service account PostgreSQL user
         run: |
@@ -62,7 +62,7 @@ jobs:
             "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
             -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
             -H "Content-Type: application/json" \
-            -d "{\"sql\": \"DO \$\$ BEGIN CREATE USER \\\"${{ steps.get-token.outputs.sa_email }}\\\" WITH CREATEROLE; EXCEPTION WHEN duplicate_object THEN NULL; END \$\$;\"}"
+            -d "{\"sqlStatement\": \"DO \$\$ BEGIN CREATE USER \\\"${{ steps.get-token.outputs.sa_email }}\\\" WITH CREATEROLE; EXCEPTION WHEN duplicate_object THEN NULL; END \$\$;\"}"
 
       - name: Grant IAM user necessary roles
         run: |
@@ -71,7 +71,7 @@ jobs:
             "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
             -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
             -H "Content-Type: application/json" \
-            -d "{\"sql\": \"GRANT ALL PRIVILEGES ON DATABASE postgres TO \\\"${{ steps.get-token.outputs.sa_email }}\\\";\"}"
+            -d "{\"sqlStatement\": \"GRANT ALL PRIVILEGES ON DATABASE postgres TO \\\"${{ steps.get-token.outputs.sa_email }}\\\";\"}"
 
       - name: Enable pg_stat_statements extension
         run: |
@@ -80,7 +80,7 @@ jobs:
             "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
             -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
             -H "Content-Type: application/json" \
-            -d '{"sql": "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"}'
+            -d '{"sqlStatement": "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"}'
 
       - name: Verify pg_stat_statements is enabled
         run: |
@@ -89,4 +89,4 @@ jobs:
             "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
             -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
             -H "Content-Type: application/json" \
-            -d '{"sql": "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"}' | jq .
+            -d '{"sqlStatement": "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"}' | jq .
