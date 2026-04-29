@@ -5,12 +5,13 @@ on:
 
 permissions:
   contents: read
+  id-token: write
   packages: read
 
 env:
   GCP_PROJECT_ID: gaia-calendar-488606
   GCP_REGION: asia-southeast1
-  CLOUD_SQL_INSTANCE: buywhere-staging:asia-southeast1:buywhere-db
+  CLOUD_SQL_INSTANCE: buywhere-staging
 
 jobs:
   enable-pg-stat-statements:
@@ -29,46 +30,53 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Disable IAM authentication
+      - name: Enable IAM authentication for Cloud SQL
         run: |
-          gcloud sql instances patch buywhere-staging --database-flags=cloudsql.iam_authentication=off
+          echo "Enabling IAM authentication on Cloud SQL instance..."
+          gcloud sql instances patch ${{ env.CLOUD_SQL_INSTANCE }} \
+            --database-flags=cloudsql.iam_authentication=on \
+            --project=${{ env.GCP_PROJECT_ID }}
 
-      - name: Install Cloud SQL Proxy
-        run: gcloud components install cloud_sql_proxy --quiet
-
-      - name: Extract password and start proxy
-        env:
-          CONNECTION_STRING: ${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}
-          GOOGLE_APPLICATION_CREDENTIALS: /home/runner/work/buywhere/buywhere/gha-creds-*.json
+      - name: Get access token for SQL Admin API
+        id: get-token
         run: |
-          echo "Connection string: ${CONNECTION_STRING:0:50}..."
-          # Find the actual credentials file
-          CREDS_FILE=$(ls /home/runner/work/buywhere/buywhere/gha-creds-*.json 2>/dev/null | head -1)
-          echo "Using credentials: $CREDS_FILE"
-          PROXY_SOCKET_DIR=/tmp/cloud_sql
-          mkdir -p $PROXY_SOCKET_DIR
-          # Start proxy with explicit credentials
-          /opt/hostedtoolcache/gcloud/564.0.0/x64/bin/cloud_sql_proxy \
-            --dir=$PROXY_SOCKET_DIR \
-            --instances=${{ env.CLOUD_SQL_INSTANCE }}=tcp:5432 \
-            --credential_file=$CREDS_FILE \
-            &
-          echo "Waiting for proxy to start..."
-          sleep 15
-          ls -la $PROXY_SOCKET_DIR/
+          TOKEN=$(gcloud auth print-access-token)
+          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+
+      - name: Create service account PostgreSQL user
+        run: |
+          SA_EMAIL=$(echo "${{ secrets.GCP_SA_KEY }}" | jq -r '.client_email')
+          echo "Creating IAM-authenticated user for: $SA_EMAIL"
+          curl -X POST \
+            "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
+            -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"sql\": \"DO \$\$ BEGIN CREATE USER \\\"$SA_EMAIL\\\" WITH CREATEROLE; EXCEPTION WHEN duplicate_object THEN NULL; END \$\$;\"}"
+
+      - name: Grant IAM user necessary roles
+        run: |
+          SA_EMAIL=$(echo "${{ secrets.GCP_SA_KEY }}" | jq -r '.client_email')
+          echo "Granting necessary roles to IAM user: $SA_EMAIL"
+          curl -X POST \
+            "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
+            -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"sql\": \"GRANT ALL PRIVILEGES ON DATABASE postgres TO \\\"$SA_EMAIL\\\";\"}"
 
       - name: Enable pg_stat_statements extension
-        env:
-          CONNECTION_STRING: ${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}
         run: |
-          # Extract password from connection string
-          PASSWORD=$(echo "$CONNECTION_STRING" | sed -n 's/.*:\/\/[^:]*:\([^@]*\)@.*/\1/p')
-          echo "Connecting to database..."
-          PGPASSWORD=$PASSWORD psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
+          echo "Enabling pg_stat_statements extension..."
+          curl -X POST \
+            "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
+            -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
+            -H "Content-Type: application/json" \
+            -d '{"sql": "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"}'
 
       - name: Verify pg_stat_statements is enabled
-        env:
-          CONNECTION_STRING: ${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}
         run: |
-          PASSWORD=$(echo "$CONNECTION_STRING" | sed -n 's/.*:\/\/[^:]*:\([^@]*\)@.*/\1/p')
-          PGPASSWORD=$PASSWORD psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -c "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"
+          echo "Verifying pg_stat_statements..."
+          curl -X POST \
+            "https://sqladmin.googleapis.com/v1/projects/${{ env.GCP_PROJECT_ID }}/instances/${{ env.CLOUD_SQL_INSTANCE }}/executeSql" \
+            -H "Authorization: Bearer ${{ steps.get-token.outputs.token }}" \
+            -H "Content-Type: application/json" \
+            -d '{"sql": "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"}' | jq .
