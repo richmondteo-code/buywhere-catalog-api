@@ -105,6 +105,7 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --add-cloudsql-instances ${{ env.CLOUD_SQL_INSTANCE }} \
+            --remove-env-vars "DATABASE_URL,REDIS_URL,API_KEY_SECRET,SENTRY_DSN" \
             --set-env-vars "ENVIRONMENT=staging" \
             --set-env-vars "DATABASE_URL=${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}" \
             --set-env-vars "REDIS_URL=${{ secrets.REDIS_STAGING_URL }}" \
