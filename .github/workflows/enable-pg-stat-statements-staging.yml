@@ -40,18 +40,18 @@ jobs:
         env:
           CONNECTION_STRING: ${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}
         run: |
-          echo "Connection string: ${CONNECTION_STRING:0:30}..."
-          # Parse connection string to extract components
-          # Format: postgresql://user:password@host:port/database
+          echo "Connection string: ${CONNECTION_STRING:0:50}..."
+          # Connection string is in format: project:region:instance
           PROXY_SOCKET_DIR=/tmp/cloud_sql
           mkdir -p $PROXY_SOCKET_DIR
+          # Use automatic credentials via Application Default Credentials
           /opt/hostedtoolcache/gcloud/564.0.0/x64/bin/cloud_sql_proxy \
             --dir=$PROXY_SOCKET_DIR \
             --instances=${{ env.CLOUD_SQL_INSTANCE }}=tcp:5432 \
-            --credential_file=/home/runner/work/_gcp_token \
             &
           echo "Waiting for proxy to start..."
-          sleep 10
+          sleep 15
+          ls -la $PROXY_SOCKET_DIR/
 
       - name: Enable pg_stat_statements extension
         env:
