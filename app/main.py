@@ -314,6 +314,7 @@ app.include_router(compare.router, prefix="/v1")
 app.include_router(queries.router)
 app.include_router(affiliate.router, prefix="/v1")
 app.include_router(billing.router, prefix="/v1")
+app.include_router(billing.billing_router, prefix="/v1")
 app.include_router(usage.router, prefix="/v1")
 app.include_router(agent_native.router)
 app.include_router(sitemap.router)
@@ -565,6 +566,19 @@ async def mcp_tools_schema():
     from app.schemas.tools import MCP_TOOLS
     return JSONResponse(
         content={"tools": MCP_TOOLS},
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
+
+
+MCP_REGISTRY_AUTH_CONTENT = "v=MCPv1; k=ed25519; p=h7SEyb+uUyDnAuhTuNfFKVLgvbKI+4eIJQQCfXiccxs="
+
+
+@app.get("/.well-known/mcp-registry-auth", include_in_schema=False, summary="MCP registry auth proof")
+async def mcp_registry_auth():
+    from starlette.responses import Response
+    return Response(
+        content=MCP_REGISTRY_AUTH_CONTENT,
+        media_type="text/plain",
         headers={"Cache-Control": "public, max-age=86400"},
     )
 
