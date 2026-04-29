@@ -29,6 +29,10 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Enable Data API access
+        run: |
+          gcloud sql instances patch buywhere-staging --settings=dataApiAccess=ALLOW_DATA_API
+
       - name: Enable pg_stat_statements extension
         run: |
           gcloud sql instances execute-sql buywhere-staging --sql="CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
