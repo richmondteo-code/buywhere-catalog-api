@@ -70,7 +70,7 @@ export function regionDescription(text: string, region: Region = getRegion()): s
   return text.replace('Singapore retailers', config.retailerLabel);
 }
 
-export function regionKeywords(region: Region = getRegion()): string[] {
+export function regionKeywords(region: Region = getRegion()): readonly string[] {
   return getRegionConfig(region).keywords;
 }
 
