@@ -91,10 +91,10 @@ jobs:
             --allow-unauthenticated \
             --add-cloudsql-instances ${{ env.CLOUD_SQL_INSTANCE }} \
             --update-env-vars "ENVIRONMENT=staging" \
-            --update-env-vars "DATABASE_URL=${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}" \
-            --update-env-vars "REDIS_URL=${{ secrets.REDIS_STAGING_URL }}" \
-            --update-env-vars "API_KEY_SECRET=${{ secrets.API_KEY_SECRET_STAGING }}" \
-            --update-env-vars "SENTRY_DSN=${{ secrets.SENTRY_DSN_STAGING }}" \
+            # DATABASE_URL set via --add-cloudsql-instances or existing secret \
+            # REDIS_URL existing or managed externally \
+            # API_KEY_SECRET existing or managed externally \
+            # SENTRY_DSN existing or managed externally \
             --set-secrets "POSTHOG_PROJECT_KEY=buywhere-posthog-api-key:latest" \
             --memory 1Gi \
             --cpu 2 \
