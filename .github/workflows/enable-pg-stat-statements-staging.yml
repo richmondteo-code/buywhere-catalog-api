@@ -58,21 +58,47 @@ jobs:
           echo "Proxy downloaded:"
           ls -la $PROXY_DIR/
 
+      - name: Get GCP credentials file path
+        id: gcp-creds
+        run: |
+          echo "Finding GCP credentials file..."
+          CREDS_FILE=$(find /home -name "*.json" -path "*gcloud*" 2>/dev/null | head -1 || echo "")
+          if [ -z "$CREDS_FILE" ]; then
+            # Try the standard location from google-github-actions
+            CREDS_FILE="/github/home/.config/gcloud/application_default_credentials.json"
+          fi
+          echo "Using credentials: $CREDS_FILE"
+          echo "creds_file=$CREDS_FILE" >> $GITHUB_OUTPUT
+
       - name: Start Cloud SQL Proxy
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcp-creds.outputs.creds_file }}
         run: |
           PROXY_DIR=/tmp/cloud_sql
-          echo "Starting Cloud SQL Proxy..."
+          echo "Starting Cloud SQL Proxy with credentials..."
+          echo "Credentials file: $GOOGLE_APPLICATION_CREDENTIALS"
           $PROXY_DIR/cloud_sql_proxy \
             --dir=$PROXY_DIR \
             --instances=${{ env.INSTANCE_CONNECTION_NAME }}=tcp:5432 \
+            --credential_file=$GOOGLE_APPLICATION_CREDENTIALS \
             &
           echo "Waiting for proxy to start..."
-          sleep 10
+          sleep 15
           ls -la $PROXY_DIR/
+          # Check if proxy is listening
+          netstat -tlnp 2>/dev/null || ss -tlnp 2>/dev/null || echo "Checking proxy process..."
+          ps aux | grep cloud_sql_proxy | grep -v grep || echo "Proxy not running"
 
       - name: Enable pg_stat_statements
         run: |
           echo "Enabling pg_stat_statements..."
+          echo "Testing connection..."
+          PGPASSWORD="${{ env.TEMP_PASSWORD }}" psql \
+            -h 127.0.0.1 -p 5432 \
+            -U postgres \
+            -d postgres \
+            -c "SELECT 1;" || echo "Connection test failed"
+          echo "Creating extension..."
           PGPASSWORD="${{ env.TEMP_PASSWORD }}" psql \
             -h 127.0.0.1 -p 5432 \
             -U postgres \
@@ -86,7 +112,7 @@ jobs:
             -h 127.0.0.1 -p 5432 \
             -U postgres \
             -d postgres \
-            -c "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"
+            -c "SELECT query, calls, total_exec_time, mean_exec_time FROM pg_stat_statements ORDER BY mean_exec_time DESC LIMIT 10;"
 
       - name: Reset postgres password back to random
         run: |
