@@ -31,9 +31,19 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Get Cloud SQL instance public IP
+        id: instance-ip
+        run: |
+          echo "Getting Cloud SQL instance IP..."
+          IP=$(gcloud sql instances describe ${{ env.CLOUD_SQL_INSTANCE }} \
+            --project=${{ env.GCP_PROJECT_ID }} \
+            --format='value(ipAddresses.ipAddress)')
+          echo "Public IP: $IP"
+          echo "ip=$IP" >> $GITHUB_OUTPUT
+
       - name: Disable IAM authentication
         run: |
-          echo "Disabling IAM authentication to use password auth..."
+          echo "Disabling IAM authentication..."
           gcloud sql instances patch ${{ env.CLOUD_SQL_INSTANCE }} \
             --database-flags=cloudsql.iam_authentication=off \
             --project=${{ env.GCP_PROJECT_ID }} || true
@@ -46,31 +56,27 @@ jobs:
             --password="${{ env.TEMP_PASSWORD }}" \
             --project=${{ env.GCP_PROJECT_ID }}
 
-      - name: Enable pg_stat_statements via expect
+      - name: Enable pg_stat_statements
         run: |
-          apt-get update -qq && apt-get install -y -qq expect > /dev/null 2>&1
-          echo 'spawn gcloud sql connect '${{ env.CLOUD_SQL_INSTANCE }}' --user=postgres --quiet
-          expect "Password:"
-          send "'${{ env.TEMP_PASSWORD }}'\r"
-          expect eof
-          catch wait result
-          exit [lindex $result 3]' > /tmp/connect.exp
-          chmod +x /tmp/connect.exp
-          echo "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;" | cat > /tmp/enable.sql
-          expect /tmp/connect.exp < /tmp/enable.sql
+          echo "Enabling pg_stat_statements via direct connection..."
+          PGPASSWORD="${{ env.TEMP_PASSWORD }}" psql \
+            -h ${{ steps.instance-ip.outputs.ip }} \
+            -p 5432 \
+            -U postgres \
+            -d postgres \
+            --set=SSLMODE=disable \
+            -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
 
       - name: Verify pg_stat_statements is enabled
         run: |
-          apt-get update -qq && apt-get install -y -qq expect > /dev/null 2>&1 || true
-          echo 'spawn gcloud sql connect '${{ env.CLOUD_SQL_INSTANCE }}' --user=postgres --quiet
-          expect "Password:"
-          send "'${{ env.TEMP_PASSWORD }}'\r"
-          expect eof
-          catch wait result
-          exit [lindex $result 3]' > /tmp/connect.exp
-          chmod +x /tmp/connect.exp
-          echo "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;" | cat > /tmp/verify.sql
-          expect /tmp/connect.exp < /tmp/verify.sql
+          echo "Verifying pg_stat_statements..."
+          PGPASSWORD="${{ env.TEMP_PASSWORD }}" psql \
+            -h ${{ steps.instance-ip.outputs.ip }} \
+            -p 5432 \
+            -U postgres \
+            -d postgres \
+            --set=SSLMODE=disable \
+            -c "SELECT query, calls, mean_exec_time, total_exec_time FROM pg_stat_statements ORDER BY mean_exec_time DESC LIMIT 10;"
 
       - name: Reset postgres password back to random
         run: |
