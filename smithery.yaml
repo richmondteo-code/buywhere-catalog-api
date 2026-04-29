@@ -4,17 +4,17 @@ description: >
   Agent-native product catalog API for Singapore and global e-commerce.
   Search, compare prices, find deals, and browse categories across
   Shopee, Lazada, Amazon, Walmart, and 20+ platforms.
-icon: https://buywhere.ai/assets/icon.png
+icon: https://raw.githubusercontent.com/BuyWhere/buywhere-cursor-plugin/main/assets/icon.png
 homepage: https://buywhere.ai
-repository: https://github.com/buywhere/buywhere-api
-license: proprietary
+repository: https://github.com/buywhere/buywhere-cursor-plugin
+license: MIT
 
 server:
   command: python
   args: [mcp_server.py]
   env:
     BUYWHERE_API_KEY:
-      description: Your BuyWhere API key (get one at https://buywhere.ai/developers)
+      description: Your BuyWhere API key (get one at https://buywhere.ai/api-keys)
       required: true
     BUYWHERE_API_URL:
       description: BuyWhere API base URL
