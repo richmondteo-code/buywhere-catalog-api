@@ -48,14 +48,17 @@ jobs:
         run: |
           TOKEN=$(gcloud auth print-access-token)
           SA_EMAIL=$(gcloud auth list --filter=status:ACTIVE --format='value(account)')
+          IAM_USER=$(echo "$SA_EMAIL" | sed 's/\.gserviceaccount\.com$//')
           echo "token=$TOKEN" >> $GITHUB_OUTPUT
           echo "sa_email=$SA_EMAIL" >> $GITHUB_OUTPUT
+          echo "iam_user=$IAM_USER" >> $GITHUB_OUTPUT
           echo "Service account: $SA_EMAIL"
+          echo "IAM user: $IAM_USER"
 
       - name: Create IAM user with correct type
         run: |
           echo "Creating IAM service account user in Cloud SQL..."
-          gcloud sql users create "${{ steps.get-token.outputs.sa_email }}" \
+          gcloud sql users create "${{ steps.get-token.outputs.iam_user }}" \
             --instance=${{ env.CLOUD_SQL_INSTANCE }} \
             --type=CLOUD_IAM_SERVICE_ACCOUNT \
             --project=${{ env.GCP_PROJECT_ID }} || echo "User may already exist"
@@ -63,7 +66,7 @@ jobs:
       - name: Grant IAM user privileges
         run: |
           echo "Granting privileges to IAM user..."
-          gcloud sql users grant "${{ steps.get-token.outputs.sa_email }}" \
+          gcloud sql users grant "${{ steps.get-token.outputs.iam_user }}" \
             --instance=${{ env.CLOUD_SQL_INSTANCE }} \
             --project=${{ env.GCP_PROJECT_ID }} || echo "Grant may have failed"
 
@@ -86,12 +89,12 @@ jobs:
           sleep 15
           ls -la $PROXY_DIR/
 
-      - name: Try to enable pg_stat_statements as postgres user
+      - name: Enable pg_stat_statements with IAM user
         run: |
-          echo "Attempting to connect as postgres user..."
-          PGPASSWORD="" psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -c "SELECT 1;" 2>&1 || echo "postgres user without password failed"
+          echo "Enabling pg_stat_statements with IAM user..."
+          PGPASSWORD="" psql -h 127.0.0.1 -p 5432 -U "${{ steps.get-token.outputs.iam_user }}" -d postgres -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;" 2>&1
 
-      - name: Check if pg_stat_statements is already available
+      - name: Verify pg_stat_statements is enabled
         run: |
-          echo "Checking if pg_stat_statements is already enabled..."
-          PGPASSWORD="" psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -c "SELECT * FROM pg_extension WHERE extname='pg_stat_statements';" 2>&1 || echo "pg_stat_statements check failed"
+          echo "Verifying pg_stat_statements..."
+          PGPASSWORD="" psql -h 127.0.0.1 -p 5432 -U "${{ steps.get-token.outputs.iam_user }}" -d postgres -c "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;" 2>&1 | head -50
