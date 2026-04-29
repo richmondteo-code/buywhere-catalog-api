@@ -29,24 +29,10 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Get access token
-        id: token
-        run: |
-          TOKEN=$(gcloud auth print-access-token)
-          echo "token=${TOKEN}" >> $GITHUB_OUTPUT
-
       - name: Enable pg_stat_statements extension
         run: |
-          curl -X POST \
-            -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
-            -H "Content-Type: application/json" \
-            -d '{"sql":"CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"}' \
-            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/buywhere-staging:execute"
+          echo "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;" | gcloud sql execute buywhere-staging --user=postgres
 
       - name: Verify pg_stat_statements is enabled
         run: |
-          curl -X POST \
-            -H "Authorization: Bearer ${{ steps.token.outputs.token }}" \
-            -H "Content-Type: application/json" \
-            -d '{"sql":"SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"}' \
-            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/buywhere-staging:execute"
+          echo "SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;" | gcloud sql execute buywhere-staging --user=postgres
