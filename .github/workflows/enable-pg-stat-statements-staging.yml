@@ -29,6 +29,9 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Install Cloud SQL Proxy
+        run: gcloud components install cloud-sql-proxy --quiet
+
       - name: Get Cloud SQL instance connection name
         id: connection
         run: |
@@ -37,9 +40,10 @@ jobs:
 
       - name: Start Cloud SQL Proxy with IAM auth
         run: |
-          /opt/hostedtoolcache/gcloud/564.0.0/x64/bin/cloud-sql-proxy --port 5432 --iam "${{ steps.connection.outputs.connection_name }}" &
-          sleep 5
-          echo "Proxy started"
+          PROXY_PATH=$(which cloud-sql-proxy)
+          $PROXY_PATH --port 5432 --iam "${{ steps.connection.outputs.connection_name }}" &
+          sleep 8
+          echo "Proxy started on port 5432"
 
       - name: Enable pg_stat_statements extension
         run: |
