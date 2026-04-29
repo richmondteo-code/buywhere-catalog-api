@@ -54,7 +54,7 @@ jobs:
             -H "Authorization: Bearer $(gcloud auth print-access-token)" \
             -H "Content-Type: application/json" \
             -d '{"sql":"CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"}' \
-            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/buywhere-staging:execute"
+            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/${{ steps.instance.outputs.instance_name }}:execute"
 
       - name: Verify pg_stat_statements is enabled
         run: |
@@ -62,4 +62,4 @@ jobs:
             -H "Authorization: Bearer $(gcloud auth print-access-token)" \
             -H "Content-Type: application/json" \
             -d '{"sql":"SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY mean_time DESC LIMIT 10;"}' \
-            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/buywhere-staging:execute"
+            "https://sqladmin.googleapis.com/v1/projects/${GCP_PROJECT_ID}/instances/${{ steps.instance.outputs.instance_name }}:execute"
