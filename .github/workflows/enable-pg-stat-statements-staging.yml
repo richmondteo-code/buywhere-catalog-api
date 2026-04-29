@@ -29,6 +29,13 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Enable IAM authentication for Cloud SQL
+        run: |
+          gcloud sql instances patch buywhere-staging --database-flags=cloudsql.iam_authentication=on
+
+      - name: Wait for IAM auth to propagate
+        run: sleep 30
+
       - name: Enable pg_stat_statements extension
         run: |
           gcloud sql instances execute-sql buywhere-staging --database=postgres --sql="CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
