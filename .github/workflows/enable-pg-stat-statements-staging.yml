@@ -41,7 +41,7 @@ jobs:
       - name: Start Cloud SQL Proxy with IAM auth
         run: |
           PROXY_PATH=$(which cloud-sql-proxy)
-          $PROXY_PATH --port 5432 --iam "${{ steps.connection.outputs.connection_name }}" &
+          $PROXY_PATH --port 5432 --auto-iam-authn "${{ steps.connection.outputs.connection_name }}" &
           sleep 8
           echo "Proxy started on port 5432"
 
