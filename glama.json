@@ -1,4 +1,5 @@
 {
+  "$schema": "https://glama.ai/mcp/schemas/connector.json",
   "name": "buywhere",
   "display_name": "BuyWhere",
   "description": "Agent-native product catalog API. Search 1.5M+ products across Shopee, Lazada, Amazon, Walmart, and 20+ e-commerce platforms. Compare prices, find deals, browse categories.",
@@ -21,6 +22,11 @@
       }
     }
   },
+  "maintainers": [
+    {
+      "email": "api@buywhere.ai"
+    }
+  ],
   "tools": [
     {
       "name": "search_products",
