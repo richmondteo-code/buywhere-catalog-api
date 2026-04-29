@@ -48,24 +48,26 @@ jobs:
             --password="${{ env.TEMP_PASSWORD }}" \
             --project=${{ env.GCP_PROJECT_ID }}
 
-      - name: Install Cloud SQL Proxy
+      - name: Download Cloud SQL Proxy
         run: |
-          echo "Installing Cloud SQL Proxy..."
-          gcloud components install cloud_sql_proxy --quiet
+          PROXY_DIR=/tmp/cloud_sql
+          mkdir -p $PROXY_DIR
+          echo "Downloading Cloud SQL Proxy..."
+          curl -s -o $PROXY_DIR/cloud_sql_proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/2.8.0/cloud-sql-proxy.linux.amd64
+          chmod +x $PROXY_DIR/cloud_sql_proxy
+          echo "Proxy downloaded:"
+          ls -la $PROXY_DIR/
 
       - name: Start Cloud SQL Proxy
         run: |
           PROXY_DIR=/tmp/cloud_sql
-          mkdir -p $PROXY_DIR
           echo "Starting Cloud SQL Proxy..."
-          PROXY_VERSION=$(gcloud components list --format=json 2>/dev/null | python3 -c "import sys,json; ver=[c['version'] for c in json.load(sys.stdin).get('components',[]) if c['id']=='cloud_sql_proxy']; print(ver[0] if ver else '258.0.0')")
-          echo "Using cloud_sql_proxy version: $PROXY_VERSION"
-          /opt/hostedtoolcache/gcloud/$PROXY_VERSION/x64/bin/cloud_sql_proxy \
+          $PROXY_DIR/cloud_sql_proxy \
             --dir=$PROXY_DIR \
             --instances=${{ env.INSTANCE_CONNECTION_NAME }}=tcp:5432 \
             &
           echo "Waiting for proxy to start..."
-          sleep 20
+          sleep 10
           ls -la $PROXY_DIR/
 
       - name: Enable pg_stat_statements
