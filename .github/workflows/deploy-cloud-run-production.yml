@@ -128,10 +128,8 @@ jobs:
             --max-instances 20 \
             --concurrency 50 \
             --timeout 60s \
-            --label "deployment-id=${{ needs.build.outputs.deployment_id }}" \
-            --label "version=${{ needs.build.outputs.version }}" \
-            --label "commit-sha=${{ github.sha }}" \
-            --output json | jq -r '.status.url')
+            --labels "deployment-id=${{ needs.build.outputs.deployment_id }},version=${{ needs.build.outputs.version }},commit-sha=${{ github.sha }}" \
+            --format json | jq -r '.status.url')
 
           echo "Service URL: $SERVICE_URL"
           echo "url=$SERVICE_URL" >> $GITHUB_OUTPUT
