@@ -171,16 +171,22 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq k6
 
-      - name: Run k6 smoke test
+      - name: Run k6 load test
         env:
           API_BASE_URL: ${{ needs.deploy-cloud-run.outputs.url }}
           K6_API_KEY: ${{ secrets.K6_API_KEY_STAGING }}
-          K6_THRESHOLD_P95_MS: 500
+          K6_TARGET_VUS: 1000
+          K6_DURATION: 5m
+          K6_THRESHOLD_P95_MS: 200
+          K6_THRESHOLD_P99_MS: 300
         run: |
           k6 run scripts/k6-load-test.js \
             --env K6_API_BASE_URL="$API_BASE_URL" \
             --env K6_API_KEY="$K6_API_KEY" \
-            --env K6_THRESHOLD_P95_MS=500 \
+            --env K6_TARGET_VUS=1000 \
+            --env K6_DURATION=5m \
+            --env K6_THRESHOLD_P95_MS=200 \
+            --env K6_THRESHOLD_P99_MS=300 \
             --out json=k6-results.json
 
       - name: Upload k6 results
