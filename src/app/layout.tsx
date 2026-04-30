@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
@@ -101,7 +102,7 @@ export default function RootLayout({
           </ThemeProvider>
         </SentryErrorBoundary>
         <WebVitals />
-        <AnalyticsTracker />
+        <Suspense fallback={null}><AnalyticsTracker /></Suspense>
       </body>
     </html>
   );
