@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { db, redis } from '../config';
 import { requireApiKey, checkRateLimit, hashKey } from '../middleware/apiKey';
 import { agentDetectMiddleware } from '../middleware/agentDetect';
-import { trackApiQuery } from '../analytics/posthog';
+import { trackApiQuery, trackProductSearch, trackProductView } from '../analytics/posthog';
 import { queryLogMiddleware } from '../middleware/queryLog';
 
 const SEARCH_CACHE_TTL_SECONDS = 60;
@@ -25,8 +25,7 @@ router.get(
   checkRateLimit,
   queryLogMiddleware('products.search'),
   async (req: Request, res: Response) => {
-    const start = Date.now();
-
+    const requestStart = Date.now();
     const q = (req.query.q as string) || '';
     const domain = req.query.domain as string | undefined;
     const region = req.query.region as string | undefined;
@@ -48,7 +47,7 @@ router.get(
       const cached = await redis.get(cacheKey);
       if (cached) {
         const parsed = JSON.parse(cached);
-        const elapsed = Date.now() - start;
+        const elapsed = Date.now() - requestStart;
         // compact envelope uses flat keys; legacy uses nested meta
         if (parsed.meta) {
           parsed.meta.cached = true;
@@ -166,7 +165,7 @@ router.get(
     const dataResult = await db.query(dataQuery, params);
 
     const total = parseInt(countResult.rows[0].count, 10);
-    const responseTimeMs = Date.now() - start;
+    const responseTimeMs = Date.now() - requestStart;
 
     const products = dataResult.rows.map((row) => {
       if (compact) {
@@ -271,6 +270,12 @@ router.get(
         signupChannel: req.apiKeyRecord.signupChannel,
         sourcePage: sourcePage || null,
         endpoint: 'products.search',
+      });
+      trackProductSearch({
+        apiKey: hashKey(req.apiKeyRecord.key),
+        queryText: q,
+        resultCount: products.length,
+        responseTimeMs,
       });
     }
 
@@ -680,6 +685,12 @@ router.get(
         signupChannel: req.apiKeyRecord.signupChannel,
         sourcePage: null,
         endpoint: 'products.get',
+      });
+      trackProductView({
+        apiKey: hashKey(req.apiKeyRecord.key),
+        productId: row.id,
+        retailer: row.domain,
+        category: (row.category_path ? row.category_path.split(' > ')[0] : null) as string | null,
       });
     }
 

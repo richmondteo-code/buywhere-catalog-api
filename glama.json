@@ -1,27 +1,58 @@
 {
-  "name": "BuyWhere",
-  "description": "Agent-native product catalog for Singapore — search, compare, discover deals across 1,000+ merchants.",
-  "longDescription": "BuyWhere provides 5 MCP tools for AI agents to access structured Singapore commerce data in real-time. Search products, compare prices across Shopee/Lazada/Amazon SG/50+ merchants, and discover deals — all through the Model Context Protocol.\n\nKey differentiators:\n- 1M+ products from 50+ Singapore merchants, normalized and structured\n- Real-time pricing — no stale data, prices reflect current market\n- Agent-optimized responses — structured JSON designed for LLM consumption\n- Zero scraping — BuyWhere handles data collection, agents just query",
-  "version": "1.0.0",
-  "transport": "http",
-  "endpoint": "https://api.buywhere.ai/mcp",
-  "authentication": {
-    "type": "bearer",
-    "registrationUrl": "https://api.buywhere.ai/v1/auth/register"
+  "$schema": "https://glama.ai/mcp/schemas/connector.json",
+  "name": "buywhere",
+  "display_name": "BuyWhere",
+  "description": "Agent-native product catalog API. Search 1.5M+ products across Shopee, Lazada, Amazon, Walmart, and 20+ e-commerce platforms. Compare prices, find deals, browse categories.",
+  "icon_url": "https://buywhere.ai/assets/icon.png",
+  "public_repository": true,
+  "homepage_url": "https://buywhere.ai",
+  "repository_url": "https://github.com/BuyWhere/buywhere-mcp",
+  "server": {
+    "transport": "stdio",
+    "command": "python",
+    "args": ["mcp_server.py"],
+    "env": {
+      "BUYWHERE_API_KEY": {
+        "description": "BuyWhere API key",
+        "required": true
+      },
+      "BUYWHERE_API_URL": {
+        "description": "API base URL",
+        "default": "https://api.buywhere.ai"
+      }
+    }
   },
-  "tools": [
-    "search_products",
-    "get_product",
-    "compare_products",
-    "get_deals",
-    "list_categories"
+  "maintainers": [
+    {
+      "email": "api@buywhere.ai"
+    }
   ],
-  "tags": ["mcp", "commerce", "shopping", "singapore", "price-comparison", "product-catalog", "ai-agent"],
-  "author": {
-    "name": "BuyWhere",
-    "email": "api@buywhere.ai",
-    "url": "https://buywhere.ai"
-  },
-  "documentation": "https://api.buywhere.ai/docs/guides/mcp",
-  "homepage": "https://buywhere.ai"
+  "tools": [
+    {
+      "name": "search_products",
+      "description": "Full-text search across 1.5M+ products from 20+ e-commerce platforms"
+    },
+    {
+      "name": "get_product",
+      "description": "Get full product details by BuyWhere product ID"
+    },
+    {
+      "name": "compare_prices",
+      "description": "Compare prices for a product across all platforms"
+    },
+    {
+      "name": "get_deals",
+      "description": "Find products with active discounts"
+    },
+    {
+      "name": "browse_categories",
+      "description": "Browse the product category taxonomy tree"
+    },
+    {
+      "name": "get_category_products",
+      "description": "Get products within a specific category"
+    }
+  ],
+  "categories": ["shopping", "e-commerce", "price-comparison"],
+  "regions": ["SG", "US", "MY", "TH", "PH", "VN", "ID"]
 }
