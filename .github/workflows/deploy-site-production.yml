@@ -1,0 +1,63 @@
+name: Deploy BuyWhere Site (nginx-based)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - src/**
+      - public/**
+      - next.config.mjs
+      - package.json
+      - package-lock.json
+      - .github/workflows/deploy-site-production.yml
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-site-production
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy Site
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PRODUCTION_DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.PRODUCTION_DEPLOY_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Deploy site via rsync
+        env:
+          DEPLOY_HOST: ${{ secrets.PRODUCTION_DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.PRODUCTION_DEPLOY_USER }}
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/id_ed25519" \
+            --exclude .git \
+            out/ \
+            ${DEPLOY_USER}@${DEPLOY_HOST}:/srv/buywhere-site/site/dist/
+
+      - name: Verify
+        run: |
+          HTTP=$(curl -sf -o /dev/null -w "%{http_code}" https://buywhere.ai/ --max-time 15 || echo "000")
+          echo "buywhere.ai status: HTTP ${HTTP}"
+          [[ "$HTTP" == "200" ]] || [[ "$HTTP" == "301" ]] || { echo "WARN: unexpected HTTP $HTTP"; }
