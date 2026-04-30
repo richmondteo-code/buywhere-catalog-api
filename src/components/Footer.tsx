@@ -14,7 +14,7 @@ export default function Footer() {
               BuyWhere
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              The product catalog API built for AI agent commerce in Southeast Asia.
+              AI-native product catalog API for the US and Southeast Asia.
             </p>
           </div>
 
@@ -48,7 +48,6 @@ export default function Footer() {
 
         <div className="mt-10 pt-6 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-gray-400">
           <span>© {new Date().getFullYear()} BuyWhere Pte. Ltd. All rights reserved.</span>
-          <span>Made in Singapore 🇸🇬</span>
         </div>
       </div>
     </footer>

@@ -95,6 +95,7 @@ function homepageHtml(base: string, locale: 'en_SG' | 'en_US'): string {
 <meta property="og:type" content="website" />
 <meta property="og:url" content="${base}${canonicalPath}" />
 <meta property="og:locale" content="${locale}" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="alternate" hreflang="en-sg" href="${base}/" />
 <link rel="alternate" hreflang="en-us" href="${base}/us/" />
 <link rel="alternate" hreflang="x-default" href="${base}/" />
@@ -215,9 +216,14 @@ ${!isSG ? `<div class="region-banner">Viewing US edition — <a href="/">Switch 
     <div class="badge">${regionLabel} Edition</div>
     <h1>The product catalog built for AI agents</h1>
     <p>Real-time pricing and availability from ${regionMerchants}. Query with MCP or REST. Structured for LLMs.</p>
+    <div style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;font-size:.9rem;color:#555">
+      <span>⚡ API key in under 60 seconds</span>
+      <span>🚫 No sales call</span>
+      <span>🔌 Works with API or MCP</span>
+    </div>
     <div class="cta-group">
-      <a class="cta cta-primary" href="/docs/guides/mcp">Get started with MCP</a>
-      <a class="cta cta-secondary" href="/v1/products?limit=5">Try the API</a>
+      <a class="cta cta-primary" href="/developers/">Start free</a>
+      <a class="cta cta-secondary" href="/docs/">Read the docs</a>
     </div>
 
     <div class="demo-section">
