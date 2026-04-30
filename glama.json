@@ -9,8 +9,8 @@
   "repository_url": "https://github.com/BuyWhere/buywhere-mcp",
   "server": {
     "transport": "stdio",
-    "command": "python",
-    "args": ["mcp_server.py"],
+    "command": "npx",
+    "args": ["@buywhere/mcp-server"],
     "env": {
       "BUYWHERE_API_KEY": {
         "description": "BuyWhere API key",
