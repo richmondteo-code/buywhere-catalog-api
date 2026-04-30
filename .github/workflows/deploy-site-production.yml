@@ -25,7 +25,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  GCP_PROJECT_ID: buywhere-production
+  GCP_PROJECT_ID: gaia-calendar-488606
   GCP_REGION: asia-southeast1
   CLOUD_RUN_SERVICE: buywhere-site-production
 
@@ -84,6 +84,7 @@ jobs:
       - name: Deploy to Cloud Run
         id: deploy
         run: |
+          set -o pipefail
           SERVICE_URL=$(gcloud run deploy ${{ env.CLOUD_RUN_SERVICE }} \
             --project ${{ env.GCP_PROJECT_ID }} \
             --region ${{ env.GCP_REGION }} \
