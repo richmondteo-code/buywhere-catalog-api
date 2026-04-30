@@ -1,10 +1,10 @@
 const serverCard = {
   name: "buywhere-catalog",
   title: "BuyWhere Catalog MCP Server",
-  description: "Search products, compare offers, and generate merchant handoff paths for AI shopping agents.",
+  description: "Agent-native product catalog API. Search, compare, and retrieve products from 40+ e-commerce platforms across Southeast Asia, US, and more.",
   version: "1.0.0",
-  homepage: "https://buywhere.ai/integrate",
-  documentation: "https://buywhere.ai/docs/quickstart-mcp",
+  homepage: "https://buywhere.ai",
+  documentation: "https://api.buywhere.ai/docs/guides/mcp",
   transports: [
     {
       type: "streamable-http",
@@ -19,23 +19,54 @@ const serverCard = {
   tools: [
     {
       name: "search_products",
-      description: "Search normalized product records by keyword, category, merchant, and price context for AI shopping agents.",
+      description:
+        "Search the BuyWhere product catalog by keyword. Returns ranked results from Singapore e-commerce platforms.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          query: { type: "string", description: "Keyword search query" },
+          category: { type: "string", description: "Category slug filter" },
+          min_price: { type: "number", description: "Minimum price" },
+          max_price: { type: "number", description: "Maximum price" },
+          source: { type: "string", description: "Merchant platform filter" },
+          limit: { type: "integer", default: 10, description: "Max results (1-50)" },
+        },
+        required: ["query"],
+      },
     },
     {
-      name: "compare_products",
-      description: "Compare product candidates, prices, merchants, and availability signals for AI shopping agents.",
+      name: "get_product",
+      description: "Retrieve full details for a specific product by its BuyWhere product ID.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          product_id: { type: "string", description: "BuyWhere product ID" },
+        },
+        required: ["product_id"],
+      },
     },
     {
-      name: "get_product_offers",
-      description: "Retrieve merchant offers, price facts, and availability metadata for AI shopping agents.",
+      name: "find_best_price",
+      description: "Find the single cheapest listing for a product across all Singapore e-commerce platforms.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          product_name: { type: "string", description: "Product name to search for" },
+          category: { type: "string", description: "Category slug filter" },
+        },
+      },
     },
     {
-      name: "get_merchant_handoff",
-      description: "Generate source merchant handoff paths and affiliate-aware routing metadata for AI shopping agents.",
-    },
-    {
-      name: "get_catalog_status",
-      description: "Inspect catalog freshness, coverage, and operational status for AI shopping agents.",
+      name: "get_deals",
+      description: "Find products with significant price drops compared to their original price.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          category: { type: "string", description: "Category slug filter" },
+          min_discount_pct: { type: "number", default: 10, description: "Minimum discount percentage" },
+          limit: { type: "integer", default: 20, description: "Max results" },
+        },
+      },
     },
   ],
 };
