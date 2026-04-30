@@ -107,10 +107,10 @@ jobs:
         id: deploy
         run: |
           echo "Creating/updating GCP Secret Manager secrets..."
-          echo -n "${{ secrets.ADMIN_API_KEY_PRODUCTION }}" | gcloud secrets versions add buywhere-admin-api-key --data-file=- --project ${{ env.GCP_PROJECT_ID }} 2>/dev/null || \
-            gcloud secrets create buywhere-admin-api-key --data-file=- --project ${{ env.GCP_PROJECT_ID }} <<< "${{ secrets.ADMIN_API_KEY_PRODUCTION }}"
-          echo -n "${{ secrets.POSTHOG_API_KEY_PRODUCTION }}" | gcloud secrets versions add buywhere-posthog-api-key --data-file=- --project ${{ env.GCP_PROJECT_ID }} 2>/dev/null || \
-            gcloud secrets create buywhere-posthog-api-key --data-file=- --project ${{ env.GCP_PROJECT_ID }} <<< "${{ secrets.POSTHOG_API_KEY_PRODUCTION }}"
+          echo -n "${{ secrets.ADMIN_API_KEY_PRODUCTION }}" | gcloud secrets versions add buywhere-admin-api-key --data-file=- --project ${{ env.GCP_PROJECT_ID }} 2>&1 || \
+            gcloud secrets create buywhere-admin-api-key --project ${{ env.GCP_PROJECT_ID }} 2>&1
+          echo -n "${{ secrets.POSTHOG_API_KEY_PRODUCTION }}" | gcloud secrets versions add buywhere-posthog-api-key --data-file=- --project ${{ env.GCP_PROJECT_ID }} 2>&1 || \
+            gcloud secrets create buywhere-posthog-api-key --project ${{ env.GCP_PROJECT_ID }} 2>&1
           
           echo "Granting secretAccessor role to Cloud Run service account..."
           GCP_SA=$(gcloud run services describe ${{ env.CLOUD_RUN_SERVICE }} --region ${{ env.GCP_REGION }} --project ${{ env.GCP_PROJECT_ID }} --format "value(spec.template.spec.serviceAccountName)" 2>/dev/null || echo "")
