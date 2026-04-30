@@ -47,15 +47,16 @@ jobs:
 
       - name: Ensure Artifact Registry repository exists
         run: |
-          REPO_EXISTS=$(gcloud artifacts repositories describe buywhere \
+          echo "Checking if Artifact Registry repository 'buywhere' exists..."
+          if ! gcloud artifacts repositories describe buywhere \
             --repository-format=docker \
             --location=${{ env.GCP_REGION }} \
-            --project=${{ env.GCP_PROJECT_ID }} 2>/dev/null && echo "yes" || echo "no")
-          if [ "$REPO_EXISTS" != "yes" ]; then
-            echo "ERROR: Artifact Registry repository 'buywhere' does not exist in project ${{ env.GCP_PROJECT_ID }}. Please create it manually or grant artifactregistry.repositories.create to the service account."
+            --project=${{ env.GCP_PROJECT_ID }} 2>/dev/null; then
+            echo "ERROR: Repository 'buywhere' not found in ${{ env.GCP_REGION }}."
+            echo "Create with: gcloud artifacts repositories create buywhere --repository-format=docker --location=${{ env.GCP_REGION }} --project=${{ env.GCP_PROJECT_ID }}"
             exit 1
           fi
-          echo "Artifact Registry repository 'buywhere' verified."
+          echo "Repository 'buywhere' verified."
 
       - name: Extract metadata
         id: meta
