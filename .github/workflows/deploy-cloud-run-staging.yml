@@ -25,7 +25,7 @@ jobs:
     name: Build Docker Image
     runs-on: ubuntu-latest
     outputs:
-      image_tag: ghcr.io/${{ env.LOWER_REPO }}:sha-${{ github.sha }}
+      image_tag: ghcr.io/buywhere/buywhere:sha-${{ github.sha }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -85,45 +85,56 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Configure Docker auth for GHCR
-        run: gcloud auth configure-docker ghcr.io --quiet
-
-      - name: Create GCP Secret Manager secret for PostHog
+      - name: Configure Docker auth for GHCR and Artifact Registry
         run: |
-          echo "Creating/updating POSTHOG_API_KEY secret in GCP Secret Manager..."
-          echo -n "${{ secrets.POSTHOG_API_KEY_PRODUCTION }}" | gcloud secrets versions add buywhere-posthog-api-key --data-file=- --project ${{ env.GCP_PROJECT_ID }} 2>/dev/null || \
-            gcloud secrets create buywhere-posthog-api-key --data-file=- --project ${{ env.GCP_PROJECT_ID }} <<< "${{ secrets.POSTHOG_API_KEY_PRODUCTION }}"
+          gcloud auth configure-docker ghcr.io --quiet
+          gcloud auth configure-docker asia-southeast1-docker.pkg.dev --quiet
 
-          echo "Granting secretAccessor role to Cloud Run service account..."
-          GCP_SA=$(gcloud run services describe ${{ env.CLOUD_RUN_SERVICE }} --region ${{ env.GCP_REGION }} --project ${{ env.GCP_PROJECT_ID }} --format "value(spec.template.spec.serviceAccountName)" 2>/dev/null || echo "")
-          [ -z "$GCP_SA" ] && GCP_SA="${{ env.GCP_PROJECT_ID }}@${{ env.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
-          gcloud secrets add-iam-policy-binding buywhere-posthog-api-key --member "serviceAccount:$GCP_SA" --role "roles/secretmanager.secretAccessor" --project ${{ env.GCP_PROJECT_ID }} 2>/dev/null || true
+      - name: Pull GHCR image and retag for Artifact Registry
+        run: |
+          echo "=== Pulling image ==="
+          docker pull ghcr.io/buywhere/buywhere:sha-${{ github.sha }} || { echo "Docker pull failed!"; exit 1; }
+          echo "=== Tagging for GAR ==="
+          AR_IMAGE="asia-southeast1-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/buywhere/${{ env.CLOUD_RUN_SERVICE }}:sha-${{ github.sha }}"
+          docker tag ghcr.io/buywhere/buywhere:sha-${{ github.sha }} $AR_IMAGE
+          echo "=== Pushing to GAR ==="
+          docker push $AR_IMAGE
+          echo "AR_IMAGE=$AR_IMAGE" >> $GITHUB_ENV
 
       - name: Deploy to Cloud Run
         id: deploy
         run: |
           echo "Deploying to Cloud Run staging..."
+          echo "Using image: $AR_IMAGE"
           SERVICE_URL=$(gcloud run deploy ${{ env.CLOUD_RUN_SERVICE }} \
             --project ${{ env.GCP_PROJECT_ID }} \
             --region ${{ env.GCP_REGION }} \
-            --image ${{ needs.build.outputs.image_tag }} \
+            --image $AR_IMAGE \
             --platform managed \
             --allow-unauthenticated \
             --add-cloudsql-instances ${{ env.CLOUD_SQL_INSTANCE }} \
-            --port 8000 \
             --set-env-vars "ENVIRONMENT=staging" \
             --set-env-vars "DATABASE_URL=${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}" \
             --set-env-vars "REDIS_URL=${{ secrets.REDIS_STAGING_URL }}" \
             --set-env-vars "API_KEY_SECRET=${{ secrets.API_KEY_SECRET_STAGING }}" \
             --set-env-vars "SENTRY_DSN=${{ secrets.SENTRY_DSN_STAGING }}" \
-            --set-secrets "POSTHOG_PROJECT_KEY=buywhere-posthog-api-key:latest" \
+            --set-env-vars "POSTHOG_PROJECT_KEY=${{ secrets.POSTHOG_API_KEY_PRODUCTION }}" \
+            --port 8000 \
             --memory 1Gi \
             --cpu 2 \
-            --min-instances 2 \
+            --min-instances 1 \
             --max-instances 10 \
-            --concurrency 50 \
+            --concurrency 80 \
             --timeout 60s \
-            --output json | jq -r '.status.url')
+            --output json 2>&1 | tee /tmp/deploy_output.json | jq -r '.status.url')
+          echo "Full deploy output:"
+          cat /tmp/deploy_output.json
+          if [ -z "$SERVICE_URL" ] || [ "$SERVICE_URL" = "null" ]; then
+            echo "ERROR: Deploy failed, no URL captured"
+            echo "Checking service status..."
+            gcloud run services describe ${{ env.CLOUD_RUN_SERVICE }} --region ${{ env.GCP_REGION }} --project ${{ env.GCP_PROJECT_ID }} || true
+            exit 1
+          fi
           echo "url=$SERVICE_URL" >> $GITHUB_OUTPUT
 
       - name: Wait for service to stabilize
