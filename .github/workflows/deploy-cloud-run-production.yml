@@ -51,9 +51,9 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/${{ github.repository }}
+            ghcr.io/${{ env.IMAGE_NAME }}
           tags: |
-            type=sha,prefix={{branch}}-
+            type=sha,prefix={{branch}}-,suffix=-{{sha}}
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push API image
@@ -63,7 +63,6 @@ jobs:
           file: ./api/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
             ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
