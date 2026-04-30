@@ -18,7 +18,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository_owner }}/${{ github.event.repository.name }}
   GCP_PROJECT_ID: buywhere-production
   GCP_REGION: asia-southeast1
   CLOUD_RUN_SERVICE: buywhere-api-production
