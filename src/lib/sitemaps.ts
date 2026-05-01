@@ -31,13 +31,13 @@ const CATEGORY_PAGE_SLUGS = [
 
 const STATIC_SITEMAP_ROUTES = [
   { path: "/", priority: 1.0, changeFrequency: "weekly" as const },
-  { path: "/docs", priority: 1.0, changeFrequency: "weekly" as const },
-  { path: "/developers", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/agents", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/docs/", priority: 1.0, changeFrequency: "weekly" as const },
+  { path: "/developers/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/agents/", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/blog/", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/quickstart/", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/integrate", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/api-keys", priority: 0.9, changeFrequency: "monthly" as const },
+  { path: "/integrate/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/api-keys/", priority: 0.9, changeFrequency: "monthly" as const },
   { path: "/docs/API_DOCUMENTATION/", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/docs/quickstart-mcp/", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/docs/developer-quickstart-sea-shopping-agent/", priority: 0.9, changeFrequency: "weekly" as const },
@@ -55,8 +55,8 @@ const STATIC_SITEMAP_ROUTES = [
   { path: "/best-gaming-laptops-us/", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/iphone-16-price-singapore/", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/best-robot-vacuums-2026/", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/privacy", priority: 0.3, changeFrequency: "yearly" as const },
-  { path: "/terms", priority: 0.3, changeFrequency: "yearly" as const },
+  { path: "/privacy/", priority: 0.3, changeFrequency: "yearly" as const },
+  { path: "/terms/", priority: 0.3, changeFrequency: "yearly" as const },
 ] as const;
 
 function xmlEscape(value: string): string {
