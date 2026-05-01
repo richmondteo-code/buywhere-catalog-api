@@ -131,8 +131,8 @@ jobs:
           HTTP=$(curl -s -o /dev/null -w "%{http_code}" \
             -X POST https://api.buywhere.ai/mcp \
             -H "Content-Type: application/json" \
-            -d '{"jsonrpc":"2.0","method":"tools/list","id":1}')
-          echo "POST /mcp → HTTP ${HTTP}"
+            -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"smoke-test","version":"1.0"}},"id":1}')
+          echo "POST /mcp (initialize) → HTTP ${HTTP}"
           if [[ "$HTTP" != "200" ]]; then
             echo "WARN: /mcp returned ${HTTP} after deploy — check nginx on production"
             exit 1
