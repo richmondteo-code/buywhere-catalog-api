@@ -29,6 +29,12 @@ app.get('/health', async (_req, res) => {
         res.status(500).json({ status: 'error', error: String(err) });
     }
 });
+app.get('/healthz', (_req, res) => {
+    res.json({ status: 'ok', server: 'mcp' });
+});
+app.get('/healthz', (_req, res) => {
+    res.json({ status: 'ok', server: 'mcp' });
+});
 app.use('/mcp', mcp_1.default);
 // JSON-RPC root alias — allow POST / as shorthand for POST /mcp
 app.use('/', mcp_1.default);

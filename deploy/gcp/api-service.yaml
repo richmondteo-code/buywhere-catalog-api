@@ -28,14 +28,16 @@ spec:
           env:
             - name: API_BASE_URL
               value: "https://api.buywhere.ai"
+            - name: APP_BASE_URL
+              value: "https://api.buywhere.ai"
             - name: PG_POOL_MAX
               value: "10"
-            # Cloud SQL via Unix socket (PgBouncer not needed with Cloud SQL Proxy)
+            # Cloud SQL via Unix socket
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: buywhere-db-url
-                  key: latest
+                  name: buywhere-db-url-staging
+                  key: "1"
             - name: REDIS_HOST
               valueFrom:
                 secretKeyRef:
