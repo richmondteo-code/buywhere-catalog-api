@@ -6,7 +6,7 @@
   "icon_url": "https://buywhere.ai/assets/icon.png",
   "public_repository": true,
   "homepage_url": "https://buywhere.ai",
-  "repository_url": "https://github.com/BuyWhere/buywhere-mcp",
+  "repository_url": "https://github.com/BuyWhere/buywhere",
   "server": {
     "transport": "stdio",
     "command": "npx",
