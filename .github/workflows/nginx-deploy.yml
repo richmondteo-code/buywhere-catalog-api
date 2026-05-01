@@ -87,6 +87,14 @@ jobs:
             exit 1
           fi
 
+          # Diagnostics: show file ownership and sudo rules to identify write path
+          echo "=== DIAGNOSTICS ==="
+          ls -la /etc/nginx/nginx.conf /etc/nginx/sites-enabled/ 2>&1 || true
+          test -w "${DEST}" && echo "DEST writable (no sudo needed)" || echo "DEST not writable by deploy user"
+          test -w /etc/nginx/nginx.conf && echo "nginx.conf writable (no sudo needed)" || echo "nginx.conf not writable by deploy user"
+          sudo -l 2>/dev/null | grep -E '(NOPASSWD|nginx|tee|cp|install)' || echo "sudo -l: no matching rules"
+          echo "=== END DIAGNOSTICS ==="
+
           echo "Validating existing nginx config before deploy..."
           sudo nginx -t -c /etc/nginx/nginx.conf
 
