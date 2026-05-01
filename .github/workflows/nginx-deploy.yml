@@ -88,12 +88,12 @@ jobs:
           fi
 
           echo "Validating existing nginx config before deploy..."
-          nginx -t -c /etc/nginx/nginx.conf
+          sudo nginx -t -c /etc/nginx/nginx.conf
 
-          cp "${SRC}" "${DEST}"
+          sudo cp "${SRC}" "${DEST}"
 
           echo "Validating nginx config after deploy..."
-          nginx -t -c /etc/nginx/nginx.conf
+          sudo nginx -t -c /etc/nginx/nginx.conf
 
           if [[ "${DRY_RUN}" == "true" ]]; then
             echo "DRY RUN: config validated OK, skipping reload"
@@ -101,11 +101,11 @@ jobs:
           fi
 
           echo "Stopping old nginx master (may be running from /tmp config)..."
-          pkill -QUIT nginx || true
+          sudo pkill -QUIT nginx || true
           sleep 2
 
           echo "Starting nginx from /etc/nginx/nginx.conf (committed config path)..."
-          nginx -c /etc/nginx/nginx.conf
+          sudo nginx -c /etc/nginx/nginx.conf
           echo "nginx restarted from /etc/nginx/nginx.conf — config drift resolved (sha ${DEPLOY_SHA})"
 
           # Cleanup tmp configs on server
