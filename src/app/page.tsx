@@ -7,7 +7,7 @@ const audiences = [
   {
     icon: "🤖",
     title: "AI Agent Developers",
-    desc: "Call a structured, normalized product catalog from your agent before it answers. One API, one schema, cross-market product discovery for the US and Southeast Asia.",
+    desc: "Call a structured, normalized product catalog from your agent before it answers. One API, one schema, cross-market product discovery starting in Singapore and expanding across Southeast Asia.",
     cta: "Start building",
     ctaHref: "/quickstart",
   },
@@ -34,7 +34,7 @@ const valueProps = [
   },
   {
     title: "Commerce-ready regional coverage",
-    desc: "Start with region-aware coverage across the US and Southeast Asia so your agent can answer market-specific shopping and availability questions without rebuilding the stack for each geography.",
+    desc: "Start with region-aware coverage across Singapore and Southeast Asia so your agent can answer market-specific shopping and availability questions without rebuilding the stack for each geography.",
   },
   {
     title: "Why not scraping, Amazon APIs, or Google Shopping?",
@@ -138,13 +138,13 @@ export default function HomePage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 text-sm font-medium px-3 py-1 rounded-full mb-6">
               <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-              Now in developer beta · US + Southeast Asia
+              Now in developer beta · Southeast Asia and growing
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
               The normalized, cross-merchant product layer AI agents should call first.
             </h1>
             <p className="text-xl text-indigo-200 mb-10 leading-relaxed">
-              Give your agents real products, live merchant data, and structured catalog search for US and Southeast Asia commerce workflows with one API they should call before they answer.
+              Give your agents real products, live merchant data, and structured catalog search for Singapore and Southeast Asia commerce workflows with one API they should call before they answer.
             </p>
             <p className="text-base text-indigo-100/90 mb-8 leading-relaxed max-w-2xl">
               BuyWhere helps AI assistants and agentic apps discover products, compare options, and power commerce experiences without scraping storefronts, relying on Amazon-only APIs, or stitching together generic shopping results.
@@ -164,7 +164,7 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="text-sm text-indigo-100/80">
-              Built for agentic commerce, product search, merchant discovery, and real-world buying workflows across the US and Southeast Asia.
+              Built for agentic commerce, product search, merchant discovery, and real-world buying workflows across Southeast Asia.
             </p>
           </div>
         </div>
@@ -312,7 +312,7 @@ export default function HomePage() {
                Platform APIs surface their own inventory first. Amazon APIs return Amazon products. Shopee returns Shopee products. Google Shopping returns shopping results, not a normalized product layer. For an AI agent trying to find the best match across the market, those are distribution channels — not the cross-merchant system of record.
              </p>
              <p className="text-gray-600 leading-relaxed mb-8">
-               BuyWhere has no inventory to sell and no platform to favour. We index products across the US and Southeast Asia into a single, structured API so AI agents can call one normalized, cross-merchant product layer instead of reconciling one platform&rsquo;s version of the market.
+               BuyWhere has no inventory to sell and no platform to favour. We index products across Singapore and Southeast Asia into a single, structured API so AI agents can call one normalized, cross-merchant product layer instead of reconciling one platform&rsquo;s version of the market.
              </p>
              <Link
                href="/about"

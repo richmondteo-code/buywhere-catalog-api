@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { TrustLayer } from "@/components/TrustLayer";
 
 export const metadata: Metadata = {
   title: "Developer Portal — BuyWhere MCP & API for AI Agents",
@@ -57,8 +58,21 @@ export default function DevelopersPage() {
               href="/quickstart"
               className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
             >
-              See 5-minute quickstart
+              Start in 5 minutes
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Stat strip */}
+      <section className="bg-indigo-950 text-indigo-100 py-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm font-medium text-center">
+            <span>3.7M+ products</span>
+            <span className="hidden sm:block text-indigo-600">·</span>
+            <span>7 SG retailers</span>
+            <span className="hidden sm:block text-indigo-600">·</span>
+            <span>Real-time pricing</span>
           </div>
         </div>
       </section>
@@ -112,6 +126,7 @@ export default function DevelopersPage() {
         </div>
       </section>
 
+      <TrustLayer />
       <Footer />
     </div>
   );

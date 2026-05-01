@@ -115,7 +115,7 @@ export default function QuickstartPage() {
               API key to first BuyWhere query in under five minutes.
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-              BuyWhere gives AI agents a product catalog layer for live product discovery, comparison, and merchant handoff across the US and Southeast Asia.
+              BuyWhere gives AI agents a product catalog layer for live product discovery, comparison, and merchant handoff starting in Singapore and expanding across Southeast Asia.
             </p>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-400">
               Start with one live API request, then add the published MCP package when you want BuyWhere tools inside your agent client.
