@@ -163,22 +163,6 @@ export default function HomePage() {
                 View docs
               </Link>
             </div>
-            <p className="text-sm text-indigo-100/80">
-              Built for agentic commerce, product search, merchant discovery, and real-world buying workflows across Southeast Asia.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Stat strip */}
-      <section className="bg-indigo-950 text-indigo-100 py-4">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm font-medium text-center">
-            <span>3.7M+ products</span>
-            <span className="hidden sm:block text-indigo-600">·</span>
-            <span>7 top SG retailers</span>
-            <span className="hidden sm:block text-indigo-600">·</span>
-            <span>Real-time pricing</span>
           </div>
         </div>
       </section>
