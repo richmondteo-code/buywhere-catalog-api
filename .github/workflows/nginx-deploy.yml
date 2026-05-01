@@ -87,12 +87,18 @@ jobs:
             exit 1
           fi
 
-          # Diagnostics: show file ownership and sudo rules to identify write path
+          # Diagnostics: show file ownership, nginx.conf includes, and writable paths
           echo "=== DIAGNOSTICS ==="
-          ls -la /etc/nginx/nginx.conf /etc/nginx/sites-enabled/ 2>&1 || true
-          test -w "${DEST}" && echo "DEST writable (no sudo needed)" || echo "DEST not writable by deploy user"
-          test -w /etc/nginx/nginx.conf && echo "nginx.conf writable (no sudo needed)" || echo "nginx.conf not writable by deploy user"
-          sudo -l 2>/dev/null | grep -E '(NOPASSWD|nginx|tee|cp|install)' || echo "sudo -l: no matching rules"
+          echo "--- nginx.conf ---"
+          cat /etc/nginx/nginx.conf 2>&1 || true
+          echo "--- conf.d ---"
+          ls -la /etc/nginx/conf.d/ 2>&1 || true
+          test -w /etc/nginx/conf.d/ && echo "conf.d WRITABLE" || echo "conf.d not writable"
+          echo "--- sites-available ---"
+          ls -la /etc/nginx/sites-available/ 2>&1 || true
+          test -w /etc/nginx/sites-available/ && echo "sites-available WRITABLE" || echo "sites-available not writable"
+          echo "--- current api conf ---"
+          cat "${DEST}" 2>&1 || echo "(DEST does not exist or not readable)"
           echo "=== END DIAGNOSTICS ==="
 
           echo "Validating existing nginx config before deploy..."
