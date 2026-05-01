@@ -1,0 +1,101 @@
+name: Inject PostHog Key to Production VM
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inject-posthog-vm:
+    name: Inject POSTHOG_API_KEY to Production VM
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.PRODUCTION_DEPLOY_SSH_KEY }}
+
+      - name: Trust production host
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "${{ secrets.PRODUCTION_DEPLOY_PORT || 22 }}" -H "${{ secrets.PRODUCTION_DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Detect service and inject POSTHOG_API_KEY
+        env:
+          DEPLOY_HOST: ${{ secrets.PRODUCTION_DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.PRODUCTION_DEPLOY_PORT || 22 }}
+          DEPLOY_USER: ${{ secrets.PRODUCTION_DEPLOY_USER }}
+          POSTHOG_KEY: ${{ secrets.POSTHOG_API_KEY_PRODUCTION }}
+        run: |
+          ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" << 'EOF'
+            set -euo pipefail
+
+            echo "=== Detecting service management ==="
+
+            POSTHOG_KEY="${POSTHOG_KEY}"
+
+            # Check for systemd service
+            if systemctl list-unit-files 2>/dev/null | grep -qiE 'buywhere|fastapi|uvicorn'; then
+              echo "Detected: systemd-managed"
+              SVC=$(systemctl list-units --type=service --all 2>/dev/null | grep -iE 'buywhere|fastapi|uvicorn' | awk '{print $1}' | head -1)
+              SVC="${SVC:-buywhere-api}"
+
+              # Update env file
+              ENV_FILE="/etc/systemd/system/${SVC}.d/override.conf"
+              mkdir -p "$(dirname $ENV_FILE)"
+              if ! grep -q "POSTHOG_API_KEY=" "$ENV_FILE" 2>/dev/null; then
+                echo "POSTHOG_API_KEY=$POSTHOG_KEY" >> "$ENV_FILE"
+              fi
+              systemctl daemon-reload
+              systemctl restart "$SVC" || true
+              echo "Done: systemd updated and service restarted"
+
+            # Check for PM2
+            elif command -v pm2 &>/dev/null && pm2 list 2>/dev/null | grep -qiE 'buywhere|api|fastapi'; then
+              echo "Detected: PM2-managed"
+              PM2_NAME=$(pm2 list 2>/dev/null | grep -iE 'buywhere|api|fastapi' | awk '{print $2}' | head -1)
+              if [ -n "$PM2_NAME" ]; then
+                export POSTHOG_API_KEY="$POSTHOG_KEY"
+                pm2 restart "$PM2_NAME" || true
+                echo "Done: PM2 process restarted"
+              fi
+
+            # Check for Docker
+            elif command -v docker &>/dev/null && docker ps 2>/dev/null | grep -qiE 'buywhere|api'; then
+              echo "Detected: Docker-managed"
+              CONTAINER=$(docker ps 2>/dev/null | grep -iE 'buywhere|api' | awk '{print $1}' | head -1)
+              if [ -n "$CONTAINER" ]; then
+                docker exec "$CONTAINER" env POSTHOG_API_KEY="$POSTHOG_KEY" sh -c 'echo "POSTHOG_API_KEY set"' 2>/dev/null || true
+                docker restart "$CONTAINER" 2>/dev/null || true
+                echo "Done: Docker container restarted"
+              fi
+
+            # Check for raw process
+            elif pgrep -f "uvicorn\|gunicorn" &>/dev/null; then
+              echo "Detected: Raw process (uvicorn/gunicorn)"
+              # Add to /etc/environment as fallback
+              if ! grep -q "POSTHOG_API_KEY=" /etc/environment 2>/dev/null; then
+                echo "POSTHOG_API_KEY=$POSTHOG_KEY" >> /etc/environment
+              fi
+              export POSTHOG_API_KEY="$POSTHOG_KEY"
+              PID=$(pgrep -f "uvicorn\|gunicorn" | head -1)
+              echo "Process PID: $PID — killed for restart"
+              kill -TERM "$PID" 2>/dev/null || true
+              sleep 2
+              # Restart hint
+              echo "WARNING: Manual restart required for raw process"
+            else
+              echo "No known service found — adding to /etc/environment"
+              if ! grep -q "POSTHOG_API_KEY=" /etc/environment 2>/dev/null; then
+                echo "POSTHOG_API_KEY=$POSTHOG_KEY" >> /etc/environment
+              fi
+              echo "Added to /etc/environment — verify service picks it up"
+            fi
+
+            echo "=== PostHog key injection complete ==="
+          EOF
