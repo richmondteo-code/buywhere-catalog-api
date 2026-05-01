@@ -165,7 +165,7 @@ export default function ApiKeysPage() {
                     {[
                       "Instant API key — no waiting",
                       "Access to GET /v1/products/search",
-                      "Product catalog across US and Southeast Asia",
+                      "Product catalog across Singapore and Southeast Asia",
                       "Free usage during beta",
                       "Email support at hello@buywhere.ai",
                     ].map((item) => (
