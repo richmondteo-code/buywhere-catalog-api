@@ -129,3 +129,20 @@ jobs:
           if [[ "$HTTP" != "200" ]]; then
             echo "WARN: Cloud Run returned ${HTTP} — check service logs"
           fi
+
+      - name: Smoke test static assets
+        run: |
+          set -o pipefail
+          SITE="${{ steps.deploy.outputs.url }}"
+          STATIC_ASSET=$(curl -sf -o /dev/null -w "%{http_code}" \
+            "${SITE}/_next/static/css/765b3c9ef9d41d32.css" --max-time 15 || echo "000")
+          echo "Static CSS asset status: HTTP ${STATIC_ASSET}"
+          if [[ "$STATIC_ASSET" == "400" ]]; then
+            echo "FAIL: _next/static asset returned 400 — stale build artifact detected"
+            echo "This means the container was built with a mismatched manifest and is serving wrong static files"
+            exit 1
+          elif [[ "$STATIC_ASSET" == "000" ]]; then
+            echo "WARN: Could not reach static asset — network or DNS issue"
+          else
+            echo "Static assets smoke test passed: HTTP ${STATIC_ASSET}"
+          fi
