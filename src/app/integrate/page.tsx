@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "BuyWhere Integration Guide — MCP Server & API for AI Agents",
   description:
-    "Connect BuyWhere to your AI agent in minutes. Use the MCP server to give your agent product search, price comparison, and deal discovery across Singapore e-commerce.",
+    "Connect BuyWhere to your AI agent in minutes. Use the MCP server to give your agent product search, price comparison, and deal discovery across Singapore and the US.",
   alternates: {
     canonical: "https://buywhere.ai/integrate",
   },
@@ -17,43 +17,57 @@ const mcpTools = [
     name: "search_products",
     description:
       "Search the BuyWhere catalog by keyword. Returns ranked results from Lazada, Shopee, Qoo10, and Carousell with price, platform, and affiliate links.",
-    example: "search_products(query='mechanical keyboard', limit=5)",
+    exampleSg: "search_products(query='mechanical keyboard', region='sg', limit=5)",
+    exampleUs: "search_products(query='mechanical keyboard', region='us', currency='USD', limit=5)",
+    status: "live",
   },
   {
     name: "compare_prices",
     description:
       "Search for a product and return results sorted by price ascending — perfect for finding the best deal across all Singapore platforms.",
-    example: "compare_prices(query='iphone 15 case', limit=10)",
+    exampleSg: "compare_prices(query='iphone 15 case', region='sg', limit=10)",
+    exampleUs: "compare_prices(query='iphone 15 case', region='us', currency='USD', limit=10)",
+    status: "live",
   },
   {
     name: "get_deals",
     description:
       "Find products with significant price drops. Returns current price, original price, and discount percentage sorted by savings.",
-    example: "get_deals(category='electronics', min_discount_pct=20)",
+    exampleSg: "get_deals(category='electronics', region='sg', min_discount_pct=20)",
+    exampleUs: "get_deals(category='electronics', region='us', currency='USD', min_discount_pct=20)",
+    status: "preview",
   },
   {
     name: "find_deals",
     description:
       "Find the best current deals across platforms sorted by discount percentage. Includes expiration dates when available.",
-    example: "find_deals(category='fashion', minDiscount=30)",
+    exampleSg: "find_deals(category='fashion', region='sg', minDiscount=30)",
+    exampleUs: "find_deals(category='fashion', region='us', currency='USD', minDiscount=30)",
+    status: "preview",
   },
   {
     name: "get_product",
     description:
       "Retrieve full details for a specific product by its BuyWhere ID — useful when you have a product ID from a previous search.",
-    example: "get_product(product_id=12345)",
+    exampleSg: "get_product(product_id='bw_sg_12345', region='sg')",
+    exampleUs: "get_product(product_id='bw_us_12345', region='us', currency='USD')",
+    status: "live",
   },
   {
     name: "browse_categories",
     description:
       "Browse the BuyWhere category taxonomy tree to understand what product categories are available in the catalog.",
-    example: "browse_categories()",
+    exampleSg: "browse_categories(region='sg')",
+    exampleUs: "browse_categories(region='us')",
+    status: "live",
   },
   {
     name: "get_category_products",
     description:
       "Get paginated product listings within a specific category. Use browse_categories first to find the right categoryId.",
-    example: "get_category_products(category_id='electronics', limit=20)",
+    exampleSg: "get_category_products(category_id='electronics', region='sg', limit=20)",
+    exampleUs: "get_category_products(category_id='electronics', region='us', currency='USD', limit=20)",
+    status: "live",
   },
 ];
 
@@ -159,14 +173,17 @@ export default function IntegratePage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mb-12 max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-600">
-              Live tools
+              MCP tools
             </p>
             <h2 className="mt-3 text-3xl font-bold text-slate-900">
               7 tools available via MCP
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-slate-600">
               Each tool maps to a BuyWhere API endpoint. The MCP server handles
-              authentication and returns formatted text your agent can reason over.
+              authentication and returns formatted text your agent can reason over.{" "}
+              <span className="font-medium text-slate-700">
+                Singapore tools are live; US catalog is in preview.
+              </span>
             </p>
           </div>
           <div className="grid gap-4 lg:grid-cols-2">
@@ -184,9 +201,27 @@ export default function IntegratePage() {
                       {tool.description}
                     </p>
                   </div>
+                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                    tool.status === 'live'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-amber-100 text-amber-700'
+                  }`}>
+                    {tool.status === 'live' ? 'Live' : 'Preview'}
+                  </span>
                 </div>
-                <div className="mt-4 rounded-xl bg-slate-950 p-4">
-                  <p className="font-mono text-xs text-slate-300">{tool.example}</p>
+                <div className="mt-4 space-y-3">
+                  <div className="rounded-xl bg-slate-950 p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="inline-flex items-center rounded-full bg-green-900/40 px-2 py-0.5 text-xs font-medium text-green-400">SG — Live</span>
+                    </div>
+                    <p className="font-mono text-xs text-slate-300">{tool.exampleSg}</p>
+                  </div>
+                  <div className="rounded-xl bg-slate-900 border border-amber-800/30 p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="inline-flex items-center rounded-full bg-amber-900/40 px-2 py-0.5 text-xs font-medium text-amber-400">US — Preview</span>
+                    </div>
+                    <p className="font-mono text-xs text-slate-300">{tool.exampleUs}</p>
+                  </div>
                 </div>
               </div>
             ))}
