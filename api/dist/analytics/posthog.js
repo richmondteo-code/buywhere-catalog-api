@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.trackApiQuery = trackApiQuery;
 exports.trackAffiliateClick = trackAffiliateClick;
 exports.trackRegistration = trackRegistration;
+exports.trackProductSearch = trackProductSearch;
+exports.trackProductView = trackProductView;
 exports.trackComparePageView = trackComparePageView;
 exports.trackCompareRetailerClick = trackCompareRetailerClick;
 exports.shutdownPostHog = shutdownPostHog;
@@ -74,6 +76,36 @@ function trackRegistration(apiKey, agentName, signupChannel, utmSource) {
             signup_channel: signupChannel,
             utm_source: utmSource,
             registered_at: new Date().toISOString(),
+        },
+    });
+}
+function trackProductSearch(event) {
+    const ph = getClient();
+    if (!ph)
+        return;
+    ph.capture({
+        distinctId: event.apiKey,
+        event: 'product_search',
+        properties: {
+            query_text: event.queryText,
+            result_count: event.resultCount,
+            response_time_ms: event.responseTimeMs,
+            source_page: event.sourcePage,
+        },
+    });
+}
+function trackProductView(event) {
+    const ph = getClient();
+    if (!ph)
+        return;
+    ph.capture({
+        distinctId: event.apiKey || 'anonymous',
+        event: 'product_view',
+        properties: {
+            product_id: event.productId,
+            retailer: event.retailer,
+            category: event.category,
+            source: event.source,
         },
     });
 }

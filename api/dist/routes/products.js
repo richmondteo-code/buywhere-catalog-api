@@ -16,7 +16,7 @@ const router = (0, express_1.Router)();
 // GET /v1/products/search
 // Query params: q, domain, region, country, min_price, max_price, currency, limit, offset, source_page
 router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey, apiKey_1.checkRateLimit, (0, queryLog_1.queryLogMiddleware)('products.search'), async (req, res) => {
-    const start = Date.now();
+    const requestStart = Date.now();
     const q = req.query.q || '';
     const domain = req.query.domain;
     const region = req.query.region;
@@ -37,7 +37,7 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
         const cached = await config_1.redis.get(cacheKey);
         if (cached) {
             const parsed = JSON.parse(cached);
-            const elapsed = Date.now() - start;
+            const elapsed = Date.now() - requestStart;
             // compact envelope uses flat keys; legacy uses nested meta
             if (parsed.meta) {
                 parsed.meta.cached = true;
@@ -152,7 +152,7 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
     params.push(limit, offset);
     const dataResult = await config_1.db.query(dataQuery, params);
     const total = parseInt(countResult.rows[0].count, 10);
-    const responseTimeMs = Date.now() - start;
+    const responseTimeMs = Date.now() - requestStart;
     const products = dataResult.rows.map((row) => {
         if (compact) {
             // Compact format for AI agents (BUY-2073): Phase 2 shape.
@@ -249,6 +249,12 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
             signupChannel: req.apiKeyRecord.signupChannel,
             sourcePage: sourcePage || null,
             endpoint: 'products.search',
+        });
+        (0, posthog_1.trackProductSearch)({
+            apiKey: (0, apiKey_1.hashKey)(req.apiKeyRecord.key),
+            queryText: q,
+            resultCount: products.length,
+            responseTimeMs,
         });
     }
     res.json(responseBody);
@@ -552,6 +558,12 @@ router.get('/:id', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey, 
             signupChannel: req.apiKeyRecord.signupChannel,
             sourcePage: null,
             endpoint: 'products.get',
+        });
+        (0, posthog_1.trackProductView)({
+            apiKey: (0, apiKey_1.hashKey)(req.apiKeyRecord.key),
+            productId: row.id,
+            retailer: row.domain,
+            category: (row.category_path ? row.category_path.split(' > ')[0] : null),
         });
     }
     res.json({ data: product });
