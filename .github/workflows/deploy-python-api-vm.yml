@@ -67,15 +67,21 @@ jobs:
             echo "HEAD: $(git log --oneline -1)"
 
             # Run any pending Alembic migrations
+            # Always prefer venv alembic over system alembic (correct deps + env context).
+            # Use 127.0.0.1 for host-side DB access; container IPs are not reachable from host.
             echo "=== alembic upgrade head ==="
-            if command -v alembic &>/dev/null; then
-              alembic upgrade head
-            elif [ -f ".venv/bin/alembic" ]; then
-              .venv/bin/alembic upgrade head
-            elif [ -f "venv/bin/alembic" ]; then
-              venv/bin/alembic upgrade head
-            elif [ -f "${APP_DIR}/venv/bin/alembic" ]; then
-              "${APP_DIR}/venv/bin/alembic" upgrade head
+            ALEMBIC_BIN=""
+            if   [ -f "venv/bin/alembic" ];          then ALEMBIC_BIN="venv/bin/alembic"
+            elif [ -f ".venv/bin/alembic" ];          then ALEMBIC_BIN=".venv/bin/alembic"
+            elif [ -f "${APP_DIR}/venv/bin/alembic" ]; then ALEMBIC_BIN="${APP_DIR}/venv/bin/alembic"
+            elif command -v alembic &>/dev/null;      then ALEMBIC_BIN="alembic"
+            fi
+            if [ -n "$ALEMBIC_BIN" ]; then
+              # Export host-reachable DATABASE_URL; app may override via env, so set it here.
+              export DATABASE_URL="${DATABASE_URL:-postgresql+asyncpg://buywhere:buywhere@127.0.0.1:5432/catalog}"
+              "$ALEMBIC_BIN" upgrade head \
+                && echo "Migrations applied" \
+                || echo "WARNING: alembic migration failed — verify DB connectivity and re-run manually"
             else
               echo "WARNING: alembic not found in PATH or venv — skipping migration"
             fi
