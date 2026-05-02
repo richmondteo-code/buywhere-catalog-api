@@ -3,8 +3,8 @@ import { HeroSearch } from '@/components/HeroSearch';
 import { buildSgCategoryMetadata } from '@/lib/seo-category-metadata';
 
 export const metadata = buildSgCategoryMetadata(
-  'Electronics Singapore | Compare Best Prices on Gadgets & Tech',
-  'Find the best electronics in Singapore. Compare cheapest prices on smartphones, laptops, TVs, and more from top retailers. Updated daily with the latest deals.',
+  'Electronics Price Comparison Singapore | Compare Gadgets & Tech Deals 2026',
+  'Compare cheapest electronics prices in Singapore: smartphones, laptops, TVs, gaming from Shopee, Lazada, Courts, Harvey Norman. Updated daily. Find the best tech deals.',
   'electronics'
 );
 
@@ -36,8 +36,8 @@ export default function ElectronicsCategoryPage() {
       },
       {
         "@type": "CollectionPage",
-        name: "Electronics Singapore | Compare Best Prices on Gadgets & Tech",
-        description: "Find the best electronics in Singapore. Compare cheapest prices on smartphones, laptops, TVs, and more from top retailers.",
+        name: "Electronics Price Comparison Singapore | Compare Gadgets & Tech Deals 2026",
+        description: "Compare cheapest electronics prices in Singapore: smartphones, laptops, TVs, gaming from Shopee, Lazada, Courts, Harvey Norman. Updated daily.",
         url: "https://buywhere.ai/categories/electronics",
         publisher: {
           "@type": "Organization",
@@ -77,7 +77,7 @@ export default function ElectronicsCategoryPage() {
         {/* Header */}
         <div className="mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Electronics Singapore | Compare Best Prices on Gadgets & Tech
+            Best Electronics Price Comparison Singapore — Gadgets & Tech Deals
           </h1>
           <p className="text-lg text-gray-600 mb-6">
             Looking for the best electronics in Singapore? BuyWhere aggregates product listings from hundreds of retailers so you can compare prices, specs, and availability all in one place. Whether you are hunting for the latest smartphone, upgrading your home entertainment system, or building a gaming PC, we help you find exactly what you need at the lowest prices.
