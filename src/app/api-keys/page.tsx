@@ -63,7 +63,7 @@ export default function ApiKeysPage() {
   }
 
   const curlExample = apiKey
-    ? `curl "https://api.buywhere.ai/v1/search?q=wireless+headphones&limit=5" \\
+    ? `curl "https://api.buywhere.ai/v1/products/search?q=wireless+headphones&limit=5" \\
   -H "Authorization: Bearer ${apiKey}"`
     : "";
 
@@ -164,8 +164,8 @@ export default function ApiKeysPage() {
                   <ul className="space-y-2 text-sm text-gray-600">
                     {[
                       "Instant API key — no waiting",
-                      "Access to /v1/search and /v1/products",
-                      "1M+ Singapore products indexed",
+                      "Access to GET /v1/products/search",
+                      "Product catalog across Singapore and Southeast Asia",
                       "Free usage during beta",
                       "Email support at hello@buywhere.ai",
                     ].map((item) => (

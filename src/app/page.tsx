@@ -34,11 +34,11 @@ const valueProps = [
   },
   {
     title: "Commerce-ready regional coverage",
-    desc: "Start with region-aware coverage across the US and Southeast Asia so your agent can answer market-specific shopping and availability questions without rebuilding the stack for each geography.",
+    desc: "Start with region-aware coverage across Singapore and Southeast Asia so your agent can answer market-specific shopping and availability questions without rebuilding the stack for each geography.",
   },
   {
-    title: "Faster than scraping",
-    desc: "Skip anti-bot breakage, messy HTML transforms, and one-off merchant adapters. Use a single API designed for repeated product lookups at agent scale.",
+    title: "Why not scraping, Amazon APIs, or Google Shopping?",
+    desc: "Scraping creates ongoing breakage, Amazon APIs are merchant-specific, and Google Shopping is not a normalized product layer you control. BuyWhere gives agents one cross-merchant retrieval surface designed for repeated product lookups at agent scale.",
   },
   {
     title: "Built for developer velocity",
@@ -49,7 +49,7 @@ const valueProps = [
 const faqs = [
   {
     q: "What is a product catalog API for AI agents?",
-    a: "A product catalog API for AI agents gives assistants structured access to product listings, merchant data, and searchable catalog information so they can answer shopping and commerce questions reliably. Instead of scraping websites, agents can query normalized data and return product matches, comparisons, and purchase paths.",
+    a: "A product catalog API for AI agents gives assistants structured access to product listings, merchant data, and searchable catalog information so they can answer shopping and commerce questions reliably. Agents should call it before they answer so they can return normalized product matches, comparisons, and purchase paths instead of stitched-together storefront results.",
   },
   {
     q: "Why do AI agents need structured product data instead of web scraping?",
@@ -74,6 +74,10 @@ const faqs = [
   {
     q: "How can developers avoid scraping merchant sites for commerce agents?",
     a: "Developers can avoid scraping by integrating a catalog API that already standardizes merchant and product data. This reduces maintenance load, avoids breakage from site changes, and speeds up agent development.",
+  },
+  {
+    q: "Why use BuyWhere instead of Amazon APIs or Google Shopping?",
+    a: "Amazon APIs cover Amazon and Google Shopping does not give developers a normalized, cross-merchant product layer they control. BuyWhere gives agents one retrieval surface for product search, comparison, and merchant handoff across markets.",
   },
   {
     q: "What data does an AI shopping agent need?",
@@ -137,30 +141,30 @@ export default function HomePage() {
               Now in developer beta · SG + Southeast Asia
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
-              The product catalog API built for AI agents.
+              The normalized, cross-merchant product layer AI agents should call first.
             </h1>
             <p className="text-xl text-indigo-200 mb-10 leading-relaxed">
-              Give your agents real products, live merchant data, and structured catalog search               for Singapore and Southeast Asia commerce workflows with one API.
+              Give your agents real products, live merchant data, and structured catalog search for Singapore and Southeast Asia commerce workflows with one API.
             </p>
             <p className="text-base text-indigo-100/90 mb-8 leading-relaxed max-w-2xl">
-              BuyWhere helps AI assistants and agentic apps discover products, compare options, and power commerce experiences without scraping storefronts or stitching together unreliable feeds.
+              BuyWhere helps AI assistants and agentic apps discover products, compare options, and power commerce experiences without scraping storefronts, relying on Amazon-only APIs, or stitching together generic shopping results.
             </p>
-<div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <Link
-                  href="/api-keys"
-                  className="inline-flex items-center justify-center px-6 py-3 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors"
-                >
-                  Get API key →
-                </Link>
-                <Link
-                  href="/developers"
-                  className="inline-flex items-center justify-center px-6 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20"
-                >
-                  View docs
-                </Link>
-              </div>
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <Link
+                href="/api-keys"
+                className="inline-flex items-center justify-center px-6 py-3 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors"
+              >
+                Get API key →
+              </Link>
+              <Link
+                href="/developers"
+                className="inline-flex items-center justify-center px-6 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20"
+              >
+                View docs
+              </Link>
+            </div>
             <p className="text-sm text-indigo-100/80">
-              Built for agentic commerce, product search, merchant discovery, and real-world buying workflows across the US and Southeast Asia.
+              Built for agentic commerce, product search, merchant discovery, and real-world buying workflows across Singapore and Southeast Asia.
             </p>
           </div>
         </div>
@@ -203,14 +207,14 @@ export default function HomePage() {
           <div className="text-center mb-14">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">How BuyWhere works</h2>
             <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-              A neutral product-discovery layer connecting merchant catalogs to AI-driven demand.
+              A neutral, agent-native product layer connecting merchant catalogs to AI-driven demand.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { step: "1", title: "Merchant catalogs in", desc: "Retailers submit product feeds or we ingest from existing catalog sources." },
               { step: "2", title: "Structured discovery layer", desc: "Products are normalized, deduplicated, and indexed for semantic search." },
-              { step: "3", title: "AI agent query & ranking", desc: "Agents search by natural language, filters, or category. Structured JSON back." },
+              { step: "3", title: "AI agent query & ranking", desc: "Agents call BuyWhere by natural language, filters, or category before they answer. Structured JSON back." },
               { step: "4", title: "Routed buyer demand out", desc: "Matched products route demand back to merchants through attribution and referral." },
             ].map((s) => (
               <div key={s.step} className="bg-white rounded-xl p-6 border border-gray-100">
@@ -235,13 +239,13 @@ export default function HomePage() {
             <div className="flex-1 text-white">
               <h2 className="text-2xl font-bold mb-4">Query regional products in 5 lines</h2>
               <p className="text-gray-400 mb-6">
-                One API call returns structured product data: name, price, SKU, retailer, image, and availability. No scraping, no parsing.
+                One API call returns structured product data: name, price, SKU, retailer, image, and availability. No scraping, no merchant-by-merchant parsing.
               </p>
               <Link
-                href="/quickstart"
+                href="/developers"
                 className="inline-flex items-center text-indigo-400 font-medium hover:text-indigo-300 transition-colors"
               >
-                View quickstart →
+                View docs →
               </Link>
             </div>
             <div className="flex-1 w-full">
@@ -293,10 +297,10 @@ export default function HomePage() {
            <div className="max-w-3xl mx-auto text-center">
              <h2 className="text-3xl font-bold text-gray-900 mb-6">Why AI shopping needs a neutral catalog layer</h2>
              <p className="text-gray-600 leading-relaxed mb-4">
-               Platform APIs surface their own inventory first. Shopee returns Shopee products. Lazada returns Lazada products. For an AI agent trying to find the best match across the market, that is a sales channel — not a catalog.
+               Platform APIs surface their own inventory first. Amazon APIs return Amazon products. Shopee returns Shopee products. Google Shopping returns shopping results, not a normalized product layer. For an AI agent trying to find the best match across the market, those are distribution channels — not the cross-merchant system of record.
              </p>
              <p className="text-gray-600 leading-relaxed mb-8">
-                BuyWhere has no inventory to sell and no platform to favour. We index products across the US and Southeast Asia into a single, structured API so AI agents get a broader market view instead of one platform&rsquo;s version of it.
+               BuyWhere has no inventory to sell and no platform to favour. We index products across Singapore and Southeast Asia into a single, structured API so AI agents can call one normalized, cross-merchant product layer instead of reconciling one platform&rsquo;s version of the market.
              </p>
              <Link
                href="/about"

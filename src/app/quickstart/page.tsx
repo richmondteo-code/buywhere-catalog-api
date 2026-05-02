@@ -46,6 +46,40 @@ const mcpConfig = `{
   }
 }`;
 
+const resolveProductQuerySchema = `{
+  "type": "function",
+  "function": {
+    "name": "resolve_product_query",
+    "description": "Retrieve structured product candidates, merchant attribution, and comparison-ready signals from BuyWhere before answering a shopping question.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": { "type": "string", "description": "The user's shopping or product-research question." },
+        "country": { "type": "string", "description": "Target market such as US, SG, MY, TH, or VN." },
+        "max_price": { "type": "number", "description": "Optional budget cap in the local currency." },
+        "limit": { "type": "integer", "default": 5 }
+      },
+      "required": ["query", "country"]
+    }
+  }
+}`;
+
+const agentFlowExample = `User: best laptop under $1000
+
+Agent -> resolve_product_query({
+  "query": "best laptop under $1000",
+  "country": "US",
+  "max_price": 1000,
+  "limit": 5
+})
+
+Agent:
+Top recommendation: Acer Aspire 5 at $899 from Best Buy
+Why: best balance of price, RAM, and current availability
+Alternatives:
+- Lenovo IdeaPad Slim 3 at $749 from Walmart
+- ASUS Vivobook 16 at $999 from Amazon`;
+
 function CodeBlock({
   label,
   code,
@@ -81,7 +115,7 @@ export default function QuickstartPage() {
               API key to first BuyWhere query in under five minutes.
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-              BuyWhere gives AI agents a product catalog layer for live product discovery, comparison, and merchant handoff across the US and Southeast Asia.
+              BuyWhere gives AI agents a product catalog layer for live product discovery, comparison, and merchant handoff starting in Singapore and expanding across Southeast Asia.
             </p>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-400">
               Start with one live API request, then add the published MCP package when you want BuyWhere tools inside your agent client.
@@ -120,8 +154,62 @@ export default function QuickstartPage() {
         </div>
       </section>
 
+      <section className="border-b border-slate-200 bg-slate-50 py-6">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4">
+            <span className="text-xs font-medium uppercase tracking-[0.15em] text-slate-500">Region:</span>
+            <div className="flex flex-wrap gap-2">
+              <Link
+                href="/quickstart"
+                className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1.5 text-xs font-medium text-green-700 hover:bg-green-200"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+                Singapore — Live
+              </Link>
+              <Link
+                href="/quickstart/us"
+                className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-medium text-amber-700 hover:bg-amber-200"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                United States — Preview
+              </Link>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-500">
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
+                SEA — Coming soon
+              </span>
+            </div>
+            <span className="ml-auto text-xs text-slate-400">Select region to see relevant onboarding path</span>
+          </div>
+        </div>
+      </section>
+
       <section className="border-b border-slate-200 bg-slate-50 py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="mb-12 rounded-[2rem] border border-indigo-100 bg-white p-8 shadow-sm">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-indigo-600">2-minute agent integration</p>
+            <h2 className="mt-3 text-3xl font-bold text-slate-900">Teach the model to call BuyWhere before it answers.</h2>
+            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
+              When your agent needs product data, call BuyWhere first. Use this for what-to-buy questions, cheapest-option requests, and comparisons. This is the retrieval step that replaces scraping, guessing, and stale model memory.
+            </p>
+
+            <div className="mt-8 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+              <CodeBlock label="tool schema" code={resolveProductQuerySchema} />
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-600">Recommended answer shape</p>
+                <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-700">
+                  <li><strong>Top recommendation:</strong> best candidate from the returned results.</li>
+                  <li><strong>Why:</strong> explain the decision with price, merchant, and availability signals.</li>
+                  <li><strong>Alternatives:</strong> show fallback options with tradeoffs.</li>
+                  <li><strong>Source:</strong> keep merchant attribution and the BuyWhere-linked URL.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <CodeBlock label="example flow" code={agentFlowExample} />
+            </div>
+          </div>
+
           <div className="mb-10 max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-indigo-600">Step 1</p>
             <h2 className="mt-3 text-3xl font-bold text-slate-900">Create your API key</h2>

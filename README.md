@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BuyWhere MCP Server
 
-## Getting Started
+Agent-native product catalog API for Southeast Asia commerce. Search 1.5M+ products across Shopee, Lazada, Amazon, Walmart, and 20+ e-commerce platforms. Compare prices, find deals, browse categories.
 
-First, run the development server:
+[![Glama Score](https://glama.ai/mcp/servers/BuyWhere/buywhere/badges/score.svg)](https://glama.ai/mcp/servers/BuyWhere/buywhere)
+
+## Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx @buywhere/mcp-server
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Or add to your MCP client config:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```json
+{
+  "mcpServers": {
+    "buywhere": {
+      "command": "npx",
+      "args": ["@buywhere/mcp-server"],
+      "env": {
+        "BUYWHERE_API_KEY": "your-api-key"
+      }
+    }
+  }
+}
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Remote MCP (HTTP/SSE)
 
-## Learn More
+```
+https://api.buywhere.ai/mcp
+```
 
-To learn more about Next.js, take a look at the following resources:
+Authentication: Bearer token (API key). Get a free key at [api.buywhere.ai/v1/auth/register](https://api.buywhere.ai/v1/auth/register).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tools
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Tool | Description |
+|------|-------------|
+| `search_products` | Full-text search across 1.5M+ products from 20+ platforms |
+| `get_product` | Get full product details by BuyWhere product ID |
+| `compare_prices` | Compare prices for a product across all platforms |
+| `get_deals` | Find products with active discounts |
+| `browse_categories` | Browse the product category taxonomy tree |
+| `get_category_products` | Get products within a specific category |
 
-## Deploy on Vercel
+## Environment Variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `BUYWHERE_API_KEY` | Yes | BuyWhere API key |
+| `BUYWHERE_API_URL` | No | API base URL (default: `https://api.buywhere.ai`) |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Documentation
+
+Full API docs: [api.buywhere.ai/docs/guides/mcp](https://api.buywhere.ai/docs/guides/mcp)
+
+## Links
+
+- Homepage: [buywhere.ai](https://buywhere.ai)
+- npm package: [@buywhere/mcp-server](https://www.npmjs.com/package/@buywhere/mcp-server)
+- API: [api.buywhere.ai](https://api.buywhere.ai)
+
+## License
+
+MIT
