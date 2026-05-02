@@ -91,6 +91,9 @@ jobs:
           # Tag as latest for docker-compose
           docker tag "${FULL_IMAGE}" buywhere-api:latest
 
+          # Ensure the compose project network exists (idempotent)
+          docker compose up -d --no-start 2>/dev/null || docker network create buywhere_default 2>/dev/null || true
+
           # Restart only the api service (zero-downtime: compose will replace container)
           docker compose up -d --no-deps api
 
