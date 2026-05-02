@@ -168,17 +168,17 @@ jobs:
           rm -f /tmp/api-env.txt
           echo "API container replaced — waiting for health check..."
 
-          # Retry health check up to 6× (30 s total)
-          for i in 1 2 3 4 5 6; do
+          # Retry health check up to 12× (60 s total)
+          for i in $(seq 1 12); do
             sleep 5
             HTTP=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/health 2>/dev/null || echo 000)
-            echo "attempt ${i}/6: GET /health → HTTP ${HTTP}"
+            echo "attempt ${i}/12: GET /health → HTTP ${HTTP}"
             if [[ "$HTTP" == "200" ]]; then
               echo "API healthy (${IMAGE_TAG})"
               break
             fi
-            if [ "$i" -eq 6 ]; then
-              echo "ERROR: API health check failed after 6 attempts"
+            if [ "$i" -eq 12 ]; then
+              echo "ERROR: API health check failed after 12 attempts (60s)"
               echo "=== Container logs ==="
               docker logs --tail 50 "$CONTAINER_NAME" 2>&1 || true
               exit 1
