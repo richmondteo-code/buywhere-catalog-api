@@ -144,8 +144,10 @@ jobs:
             docker stop "$COMPOSE_CONTAINER" || true
           fi
 
-          # Stop old container and start new one with same network/port config
-          docker stop "$API_CONTAINER" || true
+          # Stop old container and start new one with same network/port config.
+          # -t 5: reduce SIGTERM grace from 10 s to 5 s to minimise the
+          # nginx-visible downtime gap between stop and new container ready.
+          docker stop -t 5 "$API_CONTAINER" || true
           docker rm "$API_CONTAINER" || true
 
           NETWORK_FLAGS=""
