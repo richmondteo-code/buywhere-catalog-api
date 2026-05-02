@@ -4,9 +4,9 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Developer Portal — BuyWhere MCP & API for AI Agents",
+  title: "Developer Portal — BuyWhere MCP Server & Product Catalog API for AI Agents",
   description:
-    "BuyWhere gives AI agents a product catalog layer for live product discovery, comparison, and merchant handoff starting in Singapore, expanding across Southeast Asia.",
+    "Give your AI agent a live product catalog: search 5M+ products across Singapore retailers, compare prices, and generate purchase links — no scrapers, no maintenance. MCP server + REST API.",
   alternates: {
     canonical: "https://buywhere.ai/developers",
   },
@@ -38,13 +38,13 @@ export default function DevelopersPage() {
             Developer Portal
           </div>
           <h1 className="max-w-3xl text-4xl font-bold leading-tight sm:text-5xl">
-            Launch your shopping agent with one clear setup path.
+            Ship product search in your AI agent — live catalog, no scraping.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
-            BuyWhere gives AI agents a product catalog layer for live product discovery, comparison, and merchant handoff starting in Singapore, expanding across Southeast Asia.
+            BuyWhere gives AI agents a live product catalog layer: search 5M+ products across Singapore retailers, compare prices, and generate purchase links — all via one API call. MCP server included.
           </p>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-400">
-            Start with one API request, then add the published MCP package when you want BuyWhere tools inside Claude Desktop, Cursor, or another MCP client.
+            No scrapers. No maintenance. No HTML parsing. One authenticated request replaces real-time product data from every major SG retailer.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link

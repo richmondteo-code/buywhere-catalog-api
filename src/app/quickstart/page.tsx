@@ -4,8 +4,8 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "BuyWhere Quickstart",
-  description: "Create a BuyWhere API key, run your first product search, and add BuyWhere to an MCP-compatible agent in minutes.",
+  title: "Quickstart — BuyWhere MCP Server & API | Search 5M+ Products in Minutes",
+  description: "Get a BuyWhere API key, run your first product search, and connect the MCP server to your AI agent — no scrapers, no HTML parsing, just live product data.",
   alternates: {
     canonical: "https://buywhere.ai/quickstart",
   },
