@@ -257,45 +257,111 @@ class LazadaSGEng03Scraper(BaseScraper):
                     return None
         return None
 
-    async def _fetch_with_playwright(self, url: str, params: dict | None = None) -> str | None:
+    async def _fetch_playwright_page(self, category: dict, page: int) -> list[dict]:
+        """Fetch products using Playwright DOM extraction."""
         await self._init_playwright()
-        full_url = url
-        if params:
-            import urllib.parse
-            query = urllib.parse.urlencode(params)
-            full_url = f"{url}?{query}"
+        url = category["url"]
+        if page > 1:
+            url = f"{category['url']}?page={page}"
         try:
-            page = await self._browser.new_page()
-            await page.goto(full_url, wait_until="networkidle", timeout=30000)
-            await page.wait_for_timeout(2000)
-            content = await page.content()
-            await page.close()
-            return content
+            page_obj = await self._browser.new_page()
+            await page_obj.goto(url, wait_until="domcontentloaded", timeout=45000)
+            await page_obj.wait_for_timeout(5000)
+            for _ in range(3):
+                await page_obj.evaluate("window.scrollBy(0, 800)")
+                await page_obj.wait_for_timeout(1000)
+            products_raw = await page_obj.evaluate("""() => {
+                const results = [];
+                const seenTitles = new Set();
+                const cards = document.querySelectorAll('[class*="card-product-slot"]');
+                for (const card of cards) {
+                    let el = card;
+                    while (el && el.tagName !== 'A' && !el.className.includes('card-product-slot-link')) {
+                        el = el.parentElement;
+                        if (!el) break;
+                    }
+                    if (!el || el.tagName !== 'A') continue;
+                    const productUrl = el.getAttribute('href') || "";
+                    const titleEl = el.querySelector('.card-product-slot-title');
+                    const priceEl = el.querySelector('.sale-price .price');
+                    const origPriceEl = el.querySelector('.original-price .price');
+                    const discountEl = el.querySelector('.original-price .discount');
+                    const imgEl = el.querySelector('.thumb img');
+                    const title = titleEl ? (titleEl.innerText || "").trim() : "";
+                    if (!title || seenTitles.has(title)) continue;
+                    seenTitles.add(title);
+                    const price = priceEl ? priceEl.innerText : "";
+                    const originalPrice = origPriceEl ? origPriceEl.innerText : "";
+                    const discount = discountEl ? discountEl.innerText : "";
+                    const image = imgEl ? (imgEl.getAttribute('src') || imgEl.getAttribute('data-src') || "") : "";
+                    const priceNum = parseFloat(price.replace(/[^0-9.]/g, "")) || 0;
+                    const origPriceNum = parseFloat(originalPrice.replace(/[^0-9.]/g, "")) || 0;
+                    const discountPct = parseInt(discount.replace(/[^0-9]/g, "")) || 0;
+                    results.push({
+                        name: title,
+                        price: priceNum,
+                        originalPrice: origPriceNum,
+                        discount: discountPct,
+                        productUrl: productUrl,
+                        imageUrl: image,
+                    });
+                    if (results.length >= 40) break;
+                }
+                return results;
+            }""")
+            await page_obj.close()
+            return products_raw
         except Exception as e:
-            self.log.network_error(full_url, str(e))
-            return None
+            self.log.network_error(url, str(e))
+            return []
 
     async def fetch_page(self, category: dict, page: int) -> list[dict]:
-        url = f"{BASE_URL}/cat/geelhoed?ajax=true&page={page}"
-        params = {
-            "categoryId": category["id"],
-            "page": page,
-        }
-        text = await self._fetch_with_playwright(url, params)
-        if text:
-            try:
-                data = json.loads(text)
-                return self._extract_products_from_response(data, category)
-            except json.JSONDecodeError:
-                pass
-        text = await self._get_with_retry_cloudscraper(url, params)
+        products = await self._fetch_playwright_page(category, page)
+        if products:
+            return self._extract_products_from_dom(products, category)
+        fallback_url = f"{BASE_URL}/cat/geelhoed?ajax=true&page={page}"
+        params = {"categoryId": category["id"], "page": page}
+        text = await self._get_with_retry_cloudscraper(fallback_url, params)
         if text:
             try:
                 data = json.loads(text)
                 return self._extract_products_from_response(data, category)
             except json.JSONDecodeError:
                 return self._extract_products_from_html(text, category)
-        return await self._fetch_search_api_fallback(category, page)
+        return []
+
+    def _extract_products_from_dom(self, dom_products: list[dict], category: dict) -> list[dict]:
+        """Transform DOM-extracted products into catalog format."""
+        products = []
+        for raw in dom_products:
+            try:
+                name = raw.get("name", "") or ""
+                if not name:
+                    continue
+                price = raw.get("price", 0.0)
+                if isinstance(price, str):
+                    price = float(price.replace("$", "").replace(",", "") or 0)
+                original_price = raw.get("originalPrice", price)
+                if isinstance(original_price, str):
+                    original_price = float(original_price.replace("$", "").replace(",", "") or 0)
+                discount = raw.get("discount", 0)
+                image_url = raw.get("imageUrl", "") or ""
+                product_url = raw.get("productUrl", "") or ""
+                if product_url and not product_url.startswith("http"):
+                    product_url = BASE_URL + product_url
+                sku_hash = str(abs(hash(name.lower())) % 10000000000)
+                products.append({
+                    "name": name,
+                    "price": price,
+                    "originalPrice": original_price,
+                    "discount": discount,
+                    "productUrl": product_url,
+                    "imageUrl": image_url,
+                    "sku": f"lazada_sg_{sku_hash}",
+                })
+            except Exception:
+                continue
+        return products
 
     async def _fetch_search_api_fallback(self, category: dict, page: int = 1) -> list[dict]:
         url = f"{BASE_URL}/search"
