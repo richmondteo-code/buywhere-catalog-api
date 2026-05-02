@@ -737,7 +737,7 @@ router.post(
     }
 
     const VALID_PLATFORMS = new Set([
-      'amazon_sg','asos','audiohouse','bestdenki','books_com_tw','bukalapak',
+      'amazon_sg','amazon_us','asos','audiohouse','bestdenki','books_com_tw','bukalapak',
       'carousell','castlery','challenger','coldstorage','coupang','courts',
       'decathlon','ezbuy','fairprice','flipkart','fortytwo','gaincity','giant',
       'guardian','harvey_norman','hipvan','iherb','ikea','ishopchangi','kohepets',

@@ -22,6 +22,7 @@ BATCH_SIZE = 500
 # Map normalized file stems to platform enum values
 PLATFORM_MAP = {
     "amazon_sg": "amazon_sg",
+    "amazon_us": "amazon_us",
     "courts": "courts",
     "challenger": "challenger",
     "cold-storage": "coldstorage",
