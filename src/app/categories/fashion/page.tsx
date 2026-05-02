@@ -3,8 +3,8 @@ import { HeroSearch } from '@/components/HeroSearch';
 import { buildSgCategoryMetadata } from '@/lib/seo-category-metadata';
 
 export const metadata = buildSgCategoryMetadata(
-  'Fashion Singapore | Compare Prices on Clothing, Shoes & Accessories',
-  'Shop fashion online in Singapore. Compare cheapest prices on clothing, shoes, bags, and accessories from Zalora, ASOS, Love Bonito, and more. Free shipping deals available.',
+  'Fashion Price Comparison Singapore | Clothing, Shoes & Accessories Deals 2026',
+  'Compare cheapest fashion prices in Singapore: clothing, shoes, bags, accessories from Zalora, Shopee, Lazada. Find the best deals on fashion online.',
   'fashion'
 );
 
@@ -36,8 +36,8 @@ export default function FashionCategoryPage() {
       },
       {
         "@type": "CollectionPage",
-        name: "Fashion Singapore | Compare Prices on Clothing, Shoes & Accessories",
-        description: "Shop fashion online in Singapore. Compare cheapest prices on clothing, shoes, bags, and accessories from Zalora, ASOS, Love Bonito, and more.",
+        name: "Fashion Price Comparison Singapore | Clothing, Shoes & Accessories Deals 2026",
+        description: "Compare cheapest fashion prices in Singapore: clothing, shoes, bags, accessories from Zalora, Shopee, Lazada. Find the best deals on fashion online.",
         url: "https://buywhere.ai/categories/fashion",
         publisher: {
           "@type": "Organization",
@@ -77,7 +77,7 @@ export default function FashionCategoryPage() {
         {/* Header */}
         <div className="mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Fashion Singapore | Compare Prices on Clothing, Shoes & Accessories
+            Fashion Price Comparison Singapore — Clothing, Shoes & Accessories Deals
           </h1>
           <p className="text-lg text-gray-600 mb-6">
             Singapore&apos;s fashion scene is vibrant and diverse, from local boutique labels to international fast-fashion giants. BuyWhere brings together product listings from hundreds of fashion retailers so you can discover the latest trends without hopping between dozens of websites. Compare prices, check size availability, and find the best deals on everything from everyday essentials to occasion wear.
