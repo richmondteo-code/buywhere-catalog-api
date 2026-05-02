@@ -94,8 +94,8 @@ router.get(
       idx++;
     }
     if (category) {
-      conditions.push(`category_path[1] ILIKE $${idx}`);
-      params.push(category);
+      conditions.push(`category ILIKE $${idx}`);
+      params.push(`%${category}%`);
       idx++;
     }
     if (minPrice !== undefined) {

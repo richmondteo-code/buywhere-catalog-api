@@ -143,7 +143,7 @@ async function handleSearchProducts(args: Record<string, unknown>) {
   }
   if (category) {
     params.push(`%${category}%`);
-    conditions.push(`category_path[1] ILIKE $${params.length}`);
+    conditions.push(`category ILIKE $${params.length}`);
   }
 
   const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
