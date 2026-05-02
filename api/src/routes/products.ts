@@ -31,18 +31,21 @@ router.get(
     const region = req.query.region as string | undefined;
     // country_code is the canonical param; `country` is kept as a backward-compat alias
     const countryCode = ((req.query.country_code as string | undefined) || (req.query.country as string | undefined))?.toUpperCase() || undefined;
+    const category = req.query.category as string | undefined;
     const minPrice = req.query.min_price ? parseFloat(req.query.min_price as string) : undefined;
     const maxPrice = req.query.max_price ? parseFloat(req.query.max_price as string) : undefined;
     // Infer default currency from country_code when not explicitly provided.
     // Price filters (min_price/max_price) apply in this inferred currency.
-    const currency = (req.query.currency as string) || (countryCode ? (COUNTRY_CURRENCY[countryCode] || 'SGD') : 'SGD');
+    // Default to SG when no country/region specified to bias toward actual products vs accessories.
+    const inferredCountry = countryCode || (region ? undefined : 'SG');
+    const currency = (req.query.currency as string) || (inferredCountry ? (COUNTRY_CURRENCY[inferredCountry] || 'SGD') : 'SGD');
     const limit = Math.min(parseInt((req.query.limit as string) || '20'), 100);
     const offset = parseInt((req.query.offset as string) || '0');
     const sourcePage = req.query.source_page as string | undefined;
     const compact = req.query.compact === 'true';
 
     // Check Redis cache for this exact query (60s TTL)
-    const cacheKey = `fts:${q}:${domain || ''}:${region || ''}:${countryCode || ''}:${currency}:${minPrice ?? ''}:${maxPrice ?? ''}:${limit}:${offset}:${compact ? 'c' : 'f'}`;
+    const cacheKey = `fts:${q}:${domain || ''}:${region || ''}:${countryCode || ''}:${category || ''}:${currency}:${minPrice ?? ''}:${maxPrice ?? ''}:${limit}:${offset}:${compact ? 'c' : 'f'}`;
     try {
       const cached = await redis.get(cacheKey);
       if (cached) {
@@ -88,6 +91,11 @@ router.get(
     if (countryCode) {
       conditions.push(`country_code = $${idx}`);
       params.push(countryCode);
+      idx++;
+    }
+    if (category) {
+      conditions.push(`category_path[1] ILIKE $${idx}`);
+      params.push(category);
       idx++;
     }
     if (minPrice !== undefined) {
