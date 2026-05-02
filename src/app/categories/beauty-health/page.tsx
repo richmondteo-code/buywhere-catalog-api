@@ -3,8 +3,8 @@ import { HeroSearch } from '@/components/HeroSearch';
 import { buildSgCategoryMetadata } from '@/lib/seo-category-metadata';
 
 export const metadata = buildSgCategoryMetadata(
-  'Beauty & Health Singapore | Compare Best Skincare, Makeup & Wellness Prices',
-  'Find the best beauty products in Singapore. Compare cheapest prices on skincare, makeup, fragrances, and health supplements from Watsons, Guardian, Sephora, and more.',
+  'Beauty & Health Price Comparison Singapore | Skincare, Makeup & Wellness Deals 2026',
+  'Compare cheapest beauty products in Singapore: skincare, makeup, fragrances, health supplements from Watsons, Guardian, Sephora. Find the best beauty deals online.',
   'beauty-health'
 );
 
@@ -36,8 +36,8 @@ export default function BeautyHealthCategoryPage() {
       },
       {
         "@type": "CollectionPage",
-        name: "Beauty & Health Singapore | Compare Best Skincare, Makeup & Wellness Prices",
-        description: "Find the best beauty products in Singapore. Compare cheapest prices on skincare, makeup, fragrances, and health supplements from Watsons, Guardian, Sephora, and more.",
+        name: "Beauty & Health Price Comparison Singapore | Skincare, Makeup & Wellness Deals 2026",
+        description: "Compare cheapest beauty products in Singapore: skincare, makeup, fragrances, health supplements from Watsons, Guardian, Sephora. Find the best beauty deals online.",
         url: "https://buywhere.ai/categories/beauty-health",
         publisher: {
           "@type": "Organization",
@@ -77,7 +77,7 @@ export default function BeautyHealthCategoryPage() {
         {/* Header */}
         <div className="mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Beauty & Health Singapore | Compare Best Skincare, Makeup & Wellness Prices
+            Beauty & Health Price Comparison Singapore — Skincare, Makeup & Wellness Deals
           </h1>
           <p className="text-lg text-gray-600 mb-6">
             Singaporeans take their beauty and health seriously, and the market reflects that with an impressive range of products from global brands and local favourites. BuyWhere aggregates beauty and health product listings from retailers across Singapore, making it easy to compare prices on skincare, cosmetics, fragrances, hair care, and health supplements all in one place.
