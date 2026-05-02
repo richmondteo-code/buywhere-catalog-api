@@ -162,7 +162,7 @@ async function handleToolCall(name: string, args: Record<string, unknown>): Prom
 }
 
 const server = new Server(
-  { name: 'buywhere-catalog', version: '0.1.2' },
+  { name: 'buywhere-catalog', version: '0.1.4' },
   { capabilities: { tools: {} } },
 );
 
