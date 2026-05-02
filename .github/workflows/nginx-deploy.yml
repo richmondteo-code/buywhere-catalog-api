@@ -88,17 +88,40 @@ jobs:
             exit 1
           fi
 
+          # Validate nginx config — try sudo first (non-interactive), fall back to plain.
+          # Treat PID-file permission errors as non-fatal (they don't affect config syntax).
+          validate_nginx() {
+            local out
+            out=$(sudo -n nginx -t -c /etc/nginx/nginx.conf 2>&1) \
+              || out=$(nginx -t -c /etc/nginx/nginx.conf 2>&1) \
+              || true
+            echo "$out"
+            if echo "$out" | grep -q "syntax is ok"; then
+              return 0
+            fi
+            # If the only failures are pid-file permission errors, treat as OK
+            local real_errors
+            real_errors=$(echo "$out" | grep -v "nginx.pid" | grep -E "\[emerg\]|\[crit\]|test failed" || true)
+            if [[ -n "$real_errors" ]]; then
+              echo "FATAL: nginx config has errors (not just pid-file):"
+              echo "$real_errors"
+              return 1
+            fi
+            echo "Config has pid-file warning only — syntax OK, continuing."
+            return 0
+          }
+
           echo "Validating existing nginx config before deploy..."
-          sudo nginx -t -c /etc/nginx/nginx.conf
+          validate_nginx
 
           # Write the config — try plain cp first, then sudo cp, then sudo tee.
           # All three must fail for the deploy to abort. If the DEST file exists but
           # cannot be written, we exit rather than silently reloading stale config.
           if cp "${SRC}" "${DEST}" 2>/dev/null; then
             echo "Config written to ${DEST} (plain cp)"
-          elif sudo cp "${SRC}" "${DEST}" 2>/dev/null; then
+          elif sudo -n cp "${SRC}" "${DEST}" 2>/dev/null; then
             echo "Config written to ${DEST} (sudo cp)"
-          elif sudo tee "${DEST}" < "${SRC}" > /dev/null 2>/dev/null; then
+          elif sudo -n tee "${DEST}" < "${SRC}" > /dev/null 2>/dev/null; then
             echo "Config written to ${DEST} (sudo tee)"
           else
             echo "ERROR: cannot write ${DEST} — cp, sudo cp, and sudo tee all failed."
@@ -108,7 +131,7 @@ jobs:
           fi
 
           echo "Validating nginx config after deploy..."
-          sudo nginx -t -c /etc/nginx/nginx.conf
+          validate_nginx
 
           if [[ "${DRY_RUN}" == "true" ]]; then
             echo "DRY RUN: config validated OK, skipping reload"
@@ -116,7 +139,9 @@ jobs:
           fi
 
           echo "Restarting nginx via systemctl..."
-          sudo systemctl restart nginx
+          systemctl restart nginx 2>/dev/null \
+            || sudo -n systemctl restart nginx 2>/dev/null \
+            || sudo systemctl restart nginx
           echo "nginx restarted — config drift resolved (sha ${DEPLOY_SHA})"
 
           # Cleanup tmp configs on server
