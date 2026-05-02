@@ -66,6 +66,14 @@ function createApp() {
     app.use('/mcp', mcp_1.default);
     // v1 API
     app.use('/v1/auth', auth_1.default);
+    // Compat: GET /v1/products (no subpath) → /v1/products/search (BUY-6484)
+    // @buywhere/mcp-server@0.1.1 calls /v1/products instead of /v1/products/search
+    app.use('/v1/products', (req, _res, next) => {
+        if (req.method === 'GET' && req.path === '/') {
+            req.url = req.url.replace(/^\/(\?|$)/, '/search$1');
+        }
+        next();
+    });
     app.use('/v1/products', products_1.default);
     // v2 alias — same router, extends v1 contract with country_code + multi-region currency inference
     app.use('/v2/products', products_1.default);

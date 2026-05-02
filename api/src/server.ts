@@ -71,6 +71,15 @@ export function createApp() {
 
   // v1 API
   app.use('/v1/auth', authRouter);
+  // Compat: GET /v1/products (no subpath) → /v1/products/search (BUY-6484)
+  // @buywhere/mcp-server@0.1.1 calls /v1/products instead of /v1/products/search;
+  // this rewrite unblocks all existing installs without a redirect (auth flows normally).
+  app.use('/v1/products', (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+    if (req.method === 'GET' && req.path === '/') {
+      req.url = req.url.replace(/^\/(\?|$)/, '/search$1');
+    }
+    next();
+  });
   app.use('/v1/products', productsRouter);
   // v2 alias — same router, extends v1 contract with country_code + multi-region currency inference
   app.use('/v2/products', productsRouter);

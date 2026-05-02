@@ -7,9 +7,9 @@ const audiences = [
   {
     icon: "🤖",
     title: "AI Agent Developers",
-    desc: "Call a structured, normalized product catalog from your agent before it answers. One API, one schema, cross-market product discovery starting in Singapore and expanding across Southeast Asia.",
-    cta: "Start building",
-    ctaHref: "/quickstart",
+    desc: "Query a structured, normalized product catalog from your agent. One API, one schema, cross-market product discovery for Singapore and Southeast Asia.",
+    cta: "Read the docs",
+    ctaHref: "/developers",
   },
   {
     icon: "🏪",
@@ -138,13 +138,13 @@ export default function HomePage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 text-sm font-medium px-3 py-1 rounded-full mb-6">
               <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-              Now in developer beta · Southeast Asia and growing
+              Now in developer beta · SG + Southeast Asia
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
               The normalized, cross-merchant product layer AI agents should call first.
             </h1>
             <p className="text-xl text-indigo-200 mb-10 leading-relaxed">
-              Give your agents real products, live merchant data, and structured catalog search for Singapore and Southeast Asia commerce workflows with one API they should call before they answer.
+              Give your agents real products, live merchant data, and structured catalog search for Singapore and Southeast Asia commerce workflows with one API.
             </p>
             <p className="text-base text-indigo-100/90 mb-8 leading-relaxed max-w-2xl">
               BuyWhere helps AI assistants and agentic apps discover products, compare options, and power commerce experiences without scraping storefronts, relying on Amazon-only APIs, or stitching together generic shopping results.
@@ -154,7 +154,7 @@ export default function HomePage() {
                 href="/api-keys"
                 className="inline-flex items-center justify-center px-6 py-3 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors"
               >
-                Start free →
+                Get API key →
               </Link>
               <Link
                 href="/developers"
@@ -163,11 +163,15 @@ export default function HomePage() {
                 View docs
               </Link>
             </div>
+            <p className="text-sm text-indigo-100/80">
+              Built for agentic commerce, product search, merchant discovery, and real-world buying workflows across Singapore and Southeast Asia.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Who this is for */}
+      {/* Trust strip */}
+      <TrustLayer />
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
@@ -333,7 +337,7 @@ export default function HomePage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-3xl font-bold mb-4">Launch product-aware agents without building a catalog pipeline.</h2>
           <p className="text-indigo-200 mb-8 text-lg">
-            If your agent needs to answer &ldquo;what should I buy?&rdquo;, &ldquo;where can I get it?&rdquo;, or &ldquo;what are the best options in the US, Singapore, or Southeast Asia?&rdquo; BuyWhere is the product layer it should call to ship faster and answer from product truth.
+            If your agent needs to answer &ldquo;what should I buy?&rdquo;, &ldquo;where can I get it?&rdquo;, or &ldquo;what are the best options in Singapore, the US, or Southeast Asia?&rdquo; BuyWhere gives you the product layer to ship faster.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

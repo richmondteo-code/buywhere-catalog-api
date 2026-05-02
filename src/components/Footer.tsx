@@ -14,7 +14,7 @@ export default function Footer() {
               BuyWhere
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              Structured product catalog API for AI agents.
+              API key in 60 seconds · No sales call · Works with API or MCP
             </p>
           </div>
 

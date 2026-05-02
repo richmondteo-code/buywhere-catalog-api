@@ -100,6 +100,7 @@ jobs:
             --set-env-vars "BUYWHERE_API_KEY=${{ secrets.BUYWHERE_API_KEY_PROD }}" \
             --set-env-vars "BUYWHERE_MCP_HTTP_PORT=8080" \
             --set-env-vars "BUYWHERE_REDIS_URL=${{ secrets.REDIS_PRODUCTION_URL }}" \
+            --set-env-vars "APP_BASE_URL=https://api.buywhere.ai" \
             --set-env-vars "LOG_LEVEL=INFO" \
             --memory 512Mi \
             --cpu 1 \

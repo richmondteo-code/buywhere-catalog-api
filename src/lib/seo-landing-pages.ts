@@ -260,6 +260,176 @@ export function buildSeoLandingSchema(config: SeoLandingPageConfig, products: La
 }
 
 export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
+  "air-purifier-singapore": {
+    slug: "air-purifier-singapore",
+    title: "Best Air Purifiers in Singapore 2026 | Compare Prices Across Top Retailers",
+    description:
+      "Compare the best air purifiers in Singapore with live BuyWhere product results, retailer benchmarks, and quick buying advice across Dyson, Philips, Xiaomi, Sharp, and Sterra.",
+    heroEyebrow: "Singapore Home Guide",
+    heroTitle: "Best Air Purifiers in Singapore",
+    heroBody:
+      "Singapore buyers usually compare air purifiers on room size coverage, filter replacement cost, and whether local retailers are running bundle promotions. This page combines those shopper questions with live BuyWhere search results so you can move from research to purchase faster.",
+    canonicalPath: "/air-purifier-singapore",
+    country: "SG",
+    currency: "SGD",
+    locale: "en_SG",
+    searchQuery: "air purifier",
+    refreshedLabel: "Updated May 1, 2026",
+    productSectionTitle: "Live air purifier offers across Singapore",
+    comparisonSectionTitle: "Popular air purifier picks at a glance",
+    comparisonColumns: ["Model", "Price", "Coverage", "Filter", "Best For"],
+    comparisonRows: [
+      { Model: "Dyson Purifier Cool Gen1", Price: "S$699", Coverage: "Large rooms", Filter: "HEPA + carbon", "Best For": "Premium all-rounder" },
+      { Model: "Philips 3000i Series", Price: "S$459", Coverage: "Living rooms", Filter: "NanoProtect HEPA", "Best For": "Balanced family choice" },
+      { Model: "Xiaomi Smart Air Purifier 4", Price: "S$249", Coverage: "Bedrooms", Filter: "True HEPA", "Best For": "Best value" },
+      { Model: "Sharp Plasmacluster FP-J80E", Price: "S$399", Coverage: "Medium rooms", Filter: "HEPA + deodorising", "Best For": "Quiet operation" },
+      { Model: "Sterra Breeze Pro", Price: "S$329", Coverage: "Bedrooms", Filter: "HEPA", "Best For": "Local DTC option" },
+    ],
+    highlightSectionTitle: "What matters most for SG buyers",
+    highlights: [
+      {
+        title: "Filter replacement cost matters",
+        body: "A lower sticker price is not always cheaper over 12 months. Check the cost and frequency of replacement filters before deciding.",
+      },
+      {
+        title: "Bedroom noise is a deal-breaker",
+        body: "For HDB bedrooms, noise on the low setting often matters more than maximum airflow specs.",
+      },
+      {
+        title: "Campaign vouchers move prices",
+        body: "Shopee, Lazada, and local electronics chains often rotate vouchers that can materially change the real landed price.",
+      },
+    ],
+    adviceSectionTitle: "How to choose an air purifier",
+    advicePoints: [
+      "Match the purifier's room-size recommendation to your actual bedroom or living room, not just the marketing headline.",
+      "If haze, dust, or pet dander is the concern, prioritize true HEPA filtration over app features.",
+      "Compare official brand stores, Shopee Mall, LazMall, and major electronics chains before buying.",
+      "Double-check the annual filter cost so a cheaper upfront unit does not become the more expensive long-term option.",
+    ],
+    faqSectionTitle: "Air purifier Singapore FAQ",
+    faqs: [
+      {
+        question: "What is the best air purifier in Singapore right now?",
+        answer:
+          "For many households, the Philips 3000i and Dyson Purifier Cool remain strong picks because they balance filtration performance, local availability, and trusted after-sales support.",
+      },
+      {
+        question: "Is an air purifier worth buying in Singapore?",
+        answer:
+          "Yes, especially for bedrooms, homes with pets, or buyers sensitive to dust and haze. The biggest benefit is better day-to-day air quality in enclosed rooms.",
+      },
+      {
+        question: "What should I compare besides price?",
+        answer:
+          "Look at room coverage, noise, official warranty coverage, and the ongoing cost of filters before choosing the cheapest listing.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare air purifier prices in Singapore",
+      body: "Check live offers across Singapore retailers in one BuyWhere search flow.",
+      href: "/search?q=air+purifier&country=sg",
+      label: "Shop air purifiers",
+    },
+    developerCta: {
+      title: "Build Singapore home-appliance comparison flows",
+      body: "Use BuyWhere APIs to track product availability and pricing across electronics marketplaces and local retailers.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "ap1", name: "Dyson Purifier Cool Gen1", price: 699, currency: "SGD", merchant: "Dyson Singapore", imageUrl: null, href: "/search?q=Dyson+Purifier+Cool+Gen1&country=sg", brand: "Dyson", category: "Air Purifiers" },
+      { id: "ap2", name: "Philips 3000i Series Air Purifier", price: 459, currency: "SGD", merchant: "Philips", imageUrl: null, href: "/search?q=Philips+3000i+air+purifier&country=sg", brand: "Philips", category: "Air Purifiers" },
+      { id: "ap3", name: "Xiaomi Smart Air Purifier 4", price: 249, currency: "SGD", merchant: "Shopee", imageUrl: null, href: "/search?q=Xiaomi+Smart+Air+Purifier+4&country=sg", brand: "Xiaomi", category: "Air Purifiers" },
+      { id: "ap4", name: "Sharp Plasmacluster FP-J80E", price: 399, currency: "SGD", merchant: "Lazada", imageUrl: null, href: "/search?q=Sharp+Plasmacluster+FP-J80E&country=sg", brand: "Sharp", category: "Air Purifiers" },
+      { id: "ap5", name: "Sterra Breeze Pro", price: 329, currency: "SGD", merchant: "Sterra", imageUrl: null, href: "/search?q=Sterra+Breeze+Pro&country=sg", brand: "Sterra", category: "Air Purifiers" },
+    ],
+  },
+  "laptop-singapore": {
+    slug: "laptop-singapore",
+    title: "Best Laptops in Singapore 2026 | Compare Laptop Prices Across SG Retailers",
+    description:
+      "Compare the best laptops in Singapore with live BuyWhere listings, retailer price checks, and quick buying advice across Apple, ASUS, Lenovo, HP, Acer, and Dell.",
+    heroEyebrow: "Singapore Laptop Guide",
+    heroTitle: "Best Laptops in Singapore",
+    heroBody:
+      "Laptop buyers in Singapore usually want one page that answers both product fit and price comparison. This landing page combines practical buying guidance with live BuyWhere results across marketplace and electronics-retail channels.",
+    canonicalPath: "/laptop-singapore",
+    country: "SG",
+    currency: "SGD",
+    locale: "en_SG",
+    searchQuery: "laptop",
+    refreshedLabel: "Updated May 1, 2026",
+    productSectionTitle: "Live laptop offers across Singapore",
+    comparisonSectionTitle: "Popular laptop picks at a glance",
+    comparisonColumns: ["Model", "Price", "Weight", "Chip", "Best For"],
+    comparisonRows: [
+      { Model: "MacBook Air 13 M3", Price: "S$1,499", Weight: "1.24kg", Chip: "Apple M3", "Best For": "Best ultraportable" },
+      { Model: "ASUS Zenbook 14 OLED", Price: "S$1,699", Weight: "1.28kg", Chip: "Intel Core Ultra 7", "Best For": "Best Windows all-rounder" },
+      { Model: "Lenovo Yoga 7i", Price: "S$1,549", Weight: "1.49kg", Chip: "Intel Core Ultra 7", "Best For": "Best 2-in-1" },
+      { Model: "Acer Swift Go 14", Price: "S$1,199", Weight: "1.32kg", Chip: "Intel Core Ultra 5", "Best For": "Best value" },
+      { Model: "Dell XPS 14", Price: "S$2,199", Weight: "1.68kg", Chip: "Intel Core Ultra 7", "Best For": "Best premium Windows" },
+    ],
+    highlightSectionTitle: "What SG buyers usually optimise for",
+    highlights: [
+      {
+        title: "Portability matters most",
+        body: "For students and office workers commuting daily, weight and battery life often matter more than raw benchmark numbers.",
+      },
+      {
+        title: "Marketplace pricing can beat retail",
+        body: "Shopee and Lazada campaigns can undercut direct-brand pricing, but buyers should still verify warranty and seller quality.",
+      },
+      {
+        title: "Local retail still matters",
+        body: "Challenger, Courts, and Harvey Norman remain relevant when you want instalments, bundle promos, or in-store pickup.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right laptop",
+    advicePoints: [
+      "Pick by primary use case first: portability, school, office work, creative apps, or gaming.",
+      "For most non-gaming buyers, 16GB RAM and 512GB SSD is the current practical baseline.",
+      "Compare official stores against marketplace flagship stores before buying.",
+      "Check whether the listed price depends on vouchers, card promotions, or student discounts.",
+    ],
+    faqSectionTitle: "Laptop Singapore FAQ",
+    faqs: [
+      {
+        question: "What is the best laptop for most buyers in Singapore?",
+        answer:
+          "For many buyers, a MacBook Air or a premium 14-inch Windows ultraportable offers the best balance of battery life, portability, and day-to-day performance.",
+      },
+      {
+        question: "Where should I compare laptop prices in Singapore?",
+        answer:
+          "Buyers usually compare official brand stores, Shopee Mall, LazMall, Challenger, Courts, and Harvey Norman to find the lowest real checkout price.",
+      },
+      {
+        question: "Should I buy from a marketplace or a local retailer?",
+        answer:
+          "Marketplace flagship stores often win on vouchers, while local retailers are useful for instalments, bundles, and easier physical support routes.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare laptop prices in Singapore",
+      body: "See live laptop offers across Singapore retailers in one search flow.",
+      href: "/search?q=laptop&country=sg",
+      label: "Shop laptops",
+    },
+    developerCta: {
+      title: "Build laptop comparison tools for Singapore",
+      body: "Use BuyWhere to power local price-comparison and product-discovery experiences across SG electronics retailers.",
+      href: "/developers",
+      label: "View developer docs",
+    },
+    fallbackProducts: [
+      { id: "lp1", name: "MacBook Air 13 M3", price: 1499, currency: "SGD", merchant: "Apple Store", imageUrl: null, href: "/search?q=MacBook+Air+M3&country=sg", brand: "Apple", category: "Laptops" },
+      { id: "lp2", name: "ASUS Zenbook 14 OLED", price: 1699, currency: "SGD", merchant: "ASUS Singapore", imageUrl: null, href: "/search?q=ASUS+Zenbook+14+OLED&country=sg", brand: "ASUS", category: "Laptops" },
+      { id: "lp3", name: "Lenovo Yoga 7i", price: 1549, currency: "SGD", merchant: "Lenovo", imageUrl: null, href: "/search?q=Lenovo+Yoga+7i&country=sg", brand: "Lenovo", category: "Laptops" },
+      { id: "lp4", name: "Acer Swift Go 14", price: 1199, currency: "SGD", merchant: "Shopee", imageUrl: null, href: "/search?q=Acer+Swift+Go+14&country=sg", brand: "Acer", category: "Laptops" },
+      { id: "lp5", name: "Dell XPS 14", price: 2199, currency: "SGD", merchant: "Dell", imageUrl: null, href: "/search?q=Dell+XPS+14&country=sg", brand: "Dell", category: "Laptops" },
+    ],
+  },
   "best-gaming-laptops-us": {
     slug: "best-gaming-laptops-us",
     title: "Best Gaming Laptops in 2026 | Top RTX Gaming Laptop Deals Compared",
