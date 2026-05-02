@@ -89,14 +89,21 @@ jobs:
           # Tag as latest
           docker tag "${FULL_IMAGE}" buywhere-api:latest
 
-          # Find the running api container (compose v2 names: {project}-{service}-{n})
-          API_CONTAINER=$(docker ps -q --filter "name=buywhere-api" 2>/dev/null | head -1)
+          echo "=== Current container state ==="
+          docker ps --format "{{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Status}}" 2>&1 || true
+
+          # Find the API container to replace.
+          # Priority 1: container actually bound to host port 8000 (what nginx routes to)
+          API_CONTAINER=$(docker ps -q --filter "publish=8000" 2>/dev/null | head -1)
+          # Priority 2: the known named container from previous manual deploys
+          [ -z "$API_CONTAINER" ] && API_CONTAINER=$(docker ps -q --filter "name=buywhere-api-mcp-fixed" 2>/dev/null | head -1)
+          # Priority 3: any buywhere-api named container
+          [ -z "$API_CONTAINER" ] && API_CONTAINER=$(docker ps -q --filter "name=buywhere-api" 2>/dev/null | head -1)
           [ -z "$API_CONTAINER" ] && API_CONTAINER=$(docker ps -q --filter "name=buywhere_api" 2>/dev/null | head -1)
-          [ -z "$API_CONTAINER" ] && API_CONTAINER=$(docker ps -q --filter "ancestor=buywhere-api:latest" 2>/dev/null | head -1)
 
           if [ -z "$API_CONTAINER" ]; then
             echo "ERROR: Cannot find running api container"
-            docker ps --format "{{.Names}}\t{{.Image}}" 2>&1
+            docker ps -a --format "{{.Names}}\t{{.Image}}\t{{.Status}}" 2>&1
             exit 1
           fi
 
@@ -107,6 +114,18 @@ jobs:
           docker inspect "$API_CONTAINER" --format '{{json .Config.Env}}' \
             | python3 -c "import json,sys; [print(e) for e in json.load(sys.stdin)]" > /tmp/api-env.txt
 
+          # Supplement missing env vars from app .env file if available
+          if [ -f "${APP_DIR}/.env" ]; then
+            echo "Supplementing env from ${APP_DIR}/.env"
+            while IFS= read -r line || [ -n "$line" ]; do
+              [[ "$line" =~ ^[[:space:]]*# ]] && continue
+              [[ -z "${line// /}" ]] && continue
+              varname="${line%%=*}"
+              grep -q "^${varname}=" /tmp/api-env.txt 2>/dev/null || echo "$line" >> /tmp/api-env.txt
+            done < "${APP_DIR}/.env"
+          fi
+          echo "Using $(wc -l < /tmp/api-env.txt) env vars"
+
           NETS=$(docker inspect "$API_CONTAINER" --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}} {{end}}')
           PORTS=$(docker inspect "$API_CONTAINER" --format \
             '{{range $p,$b := .HostConfig.PortBindings}}-p {{(index $b 0).HostPort}}:{{$p}} {{end}}' \
@@ -115,15 +134,27 @@ jobs:
           # Fallback: bind host 8000 → container 3000 (nginx proxies to :8000, Express listens on :3000).
           [ -z "${PORTS// /}" ] && PORTS="-p 8000:3000"
           RESTART_POLICY=$(docker inspect "$API_CONTAINER" --format '{{.HostConfig.RestartPolicy.Name}}')
+          [ -z "$RESTART_POLICY" ] || [ "$RESTART_POLICY" = "no" ] && RESTART_POLICY="unless-stopped"
+
+          # Stop compose-managed buywhere-api-api-1 if it exists and is NOT our replacement target
+          # to prevent port conflicts when we start with -p 8000:3000
+          COMPOSE_CONTAINER=$(docker ps -q --filter "name=buywhere-api-api-1" 2>/dev/null | head -1)
+          if [ -n "$COMPOSE_CONTAINER" ] && [ "$COMPOSE_CONTAINER" != "$API_CONTAINER" ]; then
+            echo "Stopping compose container buywhere-api-api-1 to prevent port conflict"
+            docker stop "$COMPOSE_CONTAINER" || true
+          fi
 
           # Stop old container and start new one with same network/port config
-          docker stop "$API_CONTAINER"
-          docker rm "$API_CONTAINER"
+          docker stop "$API_CONTAINER" || true
+          docker rm "$API_CONTAINER" || true
 
           NETWORK_FLAGS=""
           for net in $NETS; do
             NETWORK_FLAGS="${NETWORK_FLAGS} --network ${net}"
           done
+          [ -z "${NETWORK_FLAGS// /}" ] && NETWORK_FLAGS="--network buywhere_default"
+
+          echo "Starting: name=${CONTAINER_NAME} ports=${PORTS} nets=${NETWORK_FLAGS} restart=${RESTART_POLICY}"
 
           # shellcheck disable=SC2086
           docker run -d \
@@ -136,16 +167,23 @@ jobs:
 
           rm -f /tmp/api-env.txt
           echo "API container replaced — waiting for health check..."
-          sleep 5
 
-          # Verify health
-          HTTP=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/health)
-          echo "GET /health → HTTP ${HTTP}"
-          if [[ "$HTTP" != "200" ]]; then
-            echo "ERROR: API health check failed with ${HTTP}"
-            exit 1
-          fi
-          echo "API healthy (${IMAGE_TAG})"
+          # Retry health check up to 6× (30 s total)
+          for i in 1 2 3 4 5 6; do
+            sleep 5
+            HTTP=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/health 2>/dev/null || echo 000)
+            echo "attempt ${i}/6: GET /health → HTTP ${HTTP}"
+            if [[ "$HTTP" == "200" ]]; then
+              echo "API healthy (${IMAGE_TAG})"
+              break
+            fi
+            if [ "$i" -eq 6 ]; then
+              echo "ERROR: API health check failed after 6 attempts"
+              echo "=== Container logs ==="
+              docker logs --tail 50 "$CONTAINER_NAME" 2>&1 || true
+              exit 1
+            fi
+          done
           REMOTE
 
       - name: Smoke test agent-readiness headers
