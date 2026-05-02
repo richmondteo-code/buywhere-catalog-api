@@ -16,6 +16,10 @@ on:
         description: 'If true, validate config but do not reload nginx'
         required: false
         default: 'false'
+      restart_only:
+        description: 'If true, skip config file upload/write and just restart nginx (useful to pick up new upstream)'
+        required: false
+        default: 'false'
 
 jobs:
   deploy-nginx:
@@ -29,11 +33,14 @@ jobs:
         run: |
           CONFIG_NAME="${{ github.event.inputs.config_name || 'api.buywhere.ai' }}"
           DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
+          RESTART_ONLY="${{ github.event.inputs.restart_only || 'false' }}"
           echo "config_name=${CONFIG_NAME}" >> "$GITHUB_OUTPUT"
           echo "deploy_sha=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
           echo "dry_run=${DRY_RUN}" >> "$GITHUB_OUTPUT"
+          echo "restart_only=${RESTART_ONLY}" >> "$GITHUB_OUTPUT"
 
       - name: Validate config file exists
+        if: steps.vars.outputs.restart_only != 'true'
         run: |
           CONFIG_NAME="${{ steps.vars.outputs.config_name }}"
           if [[ ! -f "deploy/nginx/${CONFIG_NAME}.conf" ]]; then
@@ -49,6 +56,7 @@ jobs:
           ssh-keyscan -H "${{ secrets.PRODUCTION_DEPLOY_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
 
       - name: Upload nginx config
+        if: steps.vars.outputs.restart_only != 'true'
         env:
           CONFIG_NAME: ${{ steps.vars.outputs.config_name }}
           DEPLOY_SHA: ${{ steps.vars.outputs.deploy_sha }}
@@ -66,6 +74,7 @@ jobs:
           CONFIG_NAME: ${{ steps.vars.outputs.config_name }}
           DEPLOY_SHA: ${{ steps.vars.outputs.deploy_sha }}
           DRY_RUN: ${{ steps.vars.outputs.dry_run }}
+          RESTART_ONLY: ${{ steps.vars.outputs.restart_only }}
           SSH_HOST: ${{ secrets.PRODUCTION_DEPLOY_HOST }}
           SSH_USER: ${{ secrets.PRODUCTION_DEPLOY_USER }}
         run: |
@@ -73,7 +82,7 @@ jobs:
           # Using bash -s with heredoc avoids the positional-argument/unbound-variable
           # issue that occurs when bash -c '...' _ "$VAR" is used over SSH.
           ssh -i ~/.ssh/id_ed25519 "${SSH_USER}@${SSH_HOST}" \
-            env CONFIG_NAME="${CONFIG_NAME}" DEPLOY_SHA="${DEPLOY_SHA}" DRY_RUN="${DRY_RUN}" \
+            env CONFIG_NAME="${CONFIG_NAME}" DEPLOY_SHA="${DEPLOY_SHA}" DRY_RUN="${DRY_RUN}" RESTART_ONLY="${RESTART_ONLY}" \
             bash -s <<'REMOTE'
           set -euo pipefail
 
@@ -81,12 +90,7 @@ jobs:
           DEST="/etc/nginx/sites-enabled/${CONFIG_NAME}"
           SRC="/tmp/nginx-${CONFIG_NAME}-${DEPLOY_SHA}.conf"
 
-          echo "nginx-deploy: config=${CONFIG_NAME} sha=${DEPLOY_SHA} dry_run=${DRY_RUN}"
-
-          if [[ ! -f "${SRC}" ]]; then
-            echo "ERROR: ${SRC} not found on server"
-            exit 1
-          fi
+          echo "nginx-deploy: config=${CONFIG_NAME} sha=${DEPLOY_SHA} dry_run=${DRY_RUN} restart_only=${RESTART_ONLY}"
 
           # Validate nginx config — try sudo first (non-interactive), fall back to plain.
           # Treat PID-file permission errors as non-fatal (they don't affect config syntax).
@@ -111,27 +115,36 @@ jobs:
             return 0
           }
 
-          echo "Validating existing nginx config before deploy..."
-          validate_nginx
-
-          # Write the config — try plain cp first, then sudo cp, then sudo tee.
-          # All three must fail for the deploy to abort. If the DEST file exists but
-          # cannot be written, we exit rather than silently reloading stale config.
-          if cp "${SRC}" "${DEST}" 2>/dev/null; then
-            echo "Config written to ${DEST} (plain cp)"
-          elif sudo -n cp "${SRC}" "${DEST}" 2>/dev/null; then
-            echo "Config written to ${DEST} (sudo cp)"
-          elif sudo -n tee "${DEST}" < "${SRC}" > /dev/null 2>/dev/null; then
-            echo "Config written to ${DEST} (sudo tee)"
+          if [[ "${RESTART_ONLY}" == "true" ]]; then
+            echo "restart_only=true — skipping config file write, going straight to restart"
           else
-            echo "ERROR: cannot write ${DEST} — cp, sudo cp, and sudo tee all failed."
-            echo "       Grant file ownership: sudo chown \$(whoami) ${DEST}"
-            echo "       Or add sudoers rule: \$(whoami) ALL=(root) NOPASSWD: /bin/cp /tmp/nginx-*.conf /etc/nginx/sites-enabled/*"
-            exit 1
-          fi
+            if [[ ! -f "${SRC}" ]]; then
+              echo "ERROR: ${SRC} not found on server"
+              exit 1
+            fi
 
-          echo "Validating nginx config after deploy..."
-          validate_nginx
+            echo "Validating existing nginx config before deploy..."
+            validate_nginx
+
+            # Write the config — try plain cp first, then sudo cp, then sudo tee.
+            # All three must fail for the deploy to abort. If the DEST file exists but
+            # cannot be written, we exit rather than silently reloading stale config.
+            if cp "${SRC}" "${DEST}" 2>/dev/null; then
+              echo "Config written to ${DEST} (plain cp)"
+            elif sudo -n cp "${SRC}" "${DEST}" 2>/dev/null; then
+              echo "Config written to ${DEST} (sudo cp)"
+            elif sudo -n tee "${DEST}" < "${SRC}" > /dev/null 2>/dev/null; then
+              echo "Config written to ${DEST} (sudo tee)"
+            else
+              echo "ERROR: cannot write ${DEST} — cp, sudo cp, and sudo tee all failed."
+              echo "       Grant file ownership: sudo chown \$(whoami) ${DEST}"
+              echo "       Or add sudoers rule: \$(whoami) ALL=(root) NOPASSWD: /bin/cp /tmp/nginx-*.conf /etc/nginx/sites-enabled/*"
+              exit 1
+            fi
+
+            echo "Validating nginx config after deploy..."
+            validate_nginx
+          fi
 
           if [[ "${DRY_RUN}" == "true" ]]; then
             echo "DRY RUN: config validated OK, skipping reload"
