@@ -6,6 +6,8 @@ exports.trackRegistration = trackRegistration;
 exports.trackComparePageView = trackComparePageView;
 exports.trackCompareRetailerClick = trackCompareRetailerClick;
 exports.shutdownPostHog = shutdownPostHog;
+exports.trackProductSearch = trackProductSearch;
+exports.trackProductView = trackProductView;
 const posthog_node_1 = require("posthog-node");
 const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY || '';
 const POSTHOG_HOST = process.env.POSTHOG_HOST || 'https://app.posthog.com';
@@ -112,4 +114,32 @@ async function shutdownPostHog() {
     if (client) {
         await client.shutdown();
     }
+}
+function trackProductSearch(event) {
+    const ph = getClient();
+    if (!ph)
+        return;
+    ph.capture({
+        distinctId: event.apiKey,
+        event: 'product_search',
+        properties: {
+            query_text: event.queryText,
+            result_count: event.resultCount,
+            response_time_ms: event.responseTimeMs,
+        },
+    });
+}
+function trackProductView(event) {
+    const ph = getClient();
+    if (!ph)
+        return;
+    ph.capture({
+        distinctId: event.apiKey,
+        event: 'product_view',
+        properties: {
+            product_id: event.productId,
+            retailer: event.retailer,
+            category: event.category,
+        },
+    });
 }

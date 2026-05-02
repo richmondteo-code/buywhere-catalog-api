@@ -14,14 +14,17 @@ const COUNTRY_CURRENCY = { SG: 'SGD', US: 'USD', VN: 'VND', TH: 'THB', MY: 'MYR'
 const TO_USD = { USD: 1, SGD: 0.74, VND: 0.000039, THB: 0.028, MYR: 0.22 };
 const router = (0, express_1.Router)();
 // GET /v1/products/search
-// Query params: q, domain, region, country, min_price, max_price, currency, limit, offset, source_page
+// Query params: q, domain, region, country, category, min_price, max_price, currency, limit, offset, source_page
 router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey, apiKey_1.checkRateLimit, (0, queryLog_1.queryLogMiddleware)('products.search'), async (req, res) => {
-    const start = Date.now();
+    const requestStart = Date.now();
     const q = req.query.q || '';
     const domain = req.query.domain;
     const region = req.query.region;
-    // country_code is the canonical param; `country` is kept as a backward-compat alias
-    const countryCode = (req.query.country_code || req.query.country)?.toUpperCase() || undefined;
+    const category = req.query.category;
+    // country_code is the canonical param; `country` is kept as a backward-compat alias.
+    // Default to SG when neither country nor region is specified (BUY-6598: prevent cross-region accessory pollution).
+    const explicitCountry = (req.query.country_code || req.query.country)?.toUpperCase() || undefined;
+    const countryCode = explicitCountry || (region ? undefined : 'SG');
     const minPrice = req.query.min_price ? parseFloat(req.query.min_price) : undefined;
     const maxPrice = req.query.max_price ? parseFloat(req.query.max_price) : undefined;
     // Infer default currency from country_code when not explicitly provided.
@@ -32,12 +35,12 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
     const sourcePage = req.query.source_page;
     const compact = req.query.compact === 'true';
     // Check Redis cache for this exact query (60s TTL)
-    const cacheKey = `fts:${q}:${domain || ''}:${region || ''}:${countryCode || ''}:${currency}:${minPrice ?? ''}:${maxPrice ?? ''}:${limit}:${offset}:${compact ? 'c' : 'f'}`;
+    const cacheKey = `fts:${q}:${domain || ''}:${region || ''}:${countryCode || ''}:${category || ''}:${currency}:${minPrice ?? ''}:${maxPrice ?? ''}:${limit}:${offset}:${compact ? 'c' : 'f'}`;
     try {
         const cached = await config_1.redis.get(cacheKey);
         if (cached) {
             const parsed = JSON.parse(cached);
-            const elapsed = Date.now() - start;
+            const elapsed = Date.now() - requestStart;
             // compact envelope uses flat keys; legacy uses nested meta
             if (parsed.meta) {
                 parsed.meta.cached = true;
@@ -78,6 +81,11 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
     if (countryCode) {
         conditions.push(`country_code = $${idx}`);
         params.push(countryCode);
+        idx++;
+    }
+    if (category) {
+        conditions.push(`category ILIKE $${idx}`);
+        params.push(`%${category}%`);
         idx++;
     }
     if (minPrice !== undefined) {
@@ -152,7 +160,7 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
     params.push(limit, offset);
     const dataResult = await config_1.db.query(dataQuery, params);
     const total = parseInt(countResult.rows[0].count, 10);
-    const responseTimeMs = Date.now() - start;
+    const responseTimeMs = Date.now() - requestStart;
     const products = dataResult.rows.map((row) => {
         if (compact) {
             // Compact format for AI agents (BUY-2073): Phase 2 shape.
@@ -249,6 +257,12 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
             signupChannel: req.apiKeyRecord.signupChannel,
             sourcePage: sourcePage || null,
             endpoint: 'products.search',
+        });
+        (0, posthog_1.trackProductSearch)({
+            apiKey: (0, apiKey_1.hashKey)(req.apiKeyRecord.key),
+            queryText: q,
+            resultCount: products.length,
+            responseTimeMs,
         });
     }
     res.json(responseBody);
@@ -552,6 +566,12 @@ router.get('/:id', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey, 
             signupChannel: req.apiKeyRecord.signupChannel,
             sourcePage: null,
             endpoint: 'products.get',
+        });
+        (0, posthog_1.trackProductView)({
+            apiKey: (0, apiKey_1.hashKey)(req.apiKeyRecord.key),
+            productId: row.id,
+            retailer: row.domain,
+            category: (row.category_path ? row.category_path.split(' > ')[0] : null),
         });
     }
     res.json({ data: product });

@@ -15,6 +15,10 @@ const MCP_PORT = parseInt(process.env.MCP_PORT || process.env.PORT || '8081');
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
+// Knative liveness probe — lightweight, no DB dependency
+app.get('/healthz', (_req, res) => {
+    res.json({ status: 'ok' });
+});
 app.get('/health', async (_req, res) => {
     try {
         const result = await config_1.db.query('SELECT COUNT(*) FROM products');
@@ -32,6 +36,10 @@ app.get('/health', async (_req, res) => {
 app.use('/mcp', mcp_1.default);
 // JSON-RPC root alias — allow POST / as shorthand for POST /mcp
 app.use('/', mcp_1.default);
+// 404 fallback
+app.use((_req, res) => {
+    res.status(404).json({ error: 'not found' });
+});
 const server = app.listen(MCP_PORT, () => {
     console.log(`BuyWhere MCP server listening on :${MCP_PORT}`);
     console.log(`  Health: http://localhost:${MCP_PORT}/health`);

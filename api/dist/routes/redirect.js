@@ -8,6 +8,13 @@ function hashKey(rawKey) {
     return (0, crypto_1.createHash)('sha256').update(rawKey).digest('hex');
 }
 const router = (0, express_1.Router)();
+// Awin affiliate programme (BUY-6873)
+const awinPublisherId = process.env.AWIN_PUBLISHER_ID || '';
+const awinAdvertiserIds = new Set((process.env.AWIN_ADVERTISER_IDS || '').split(',').map((id) => id.trim()).filter(Boolean));
+function buildAwinUrl(advertiserId, destination, clickRef) {
+    const encoded = encodeURIComponent(destination);
+    return `https://www.awin1.com/cread.php?awinmid=${advertiserId}&awinaffid=${awinPublisherId}&clickref=${clickRef}&p=${encoded}`;
+}
 const DEFAULT_ALLOWED_DOMAINS = [
     'lazada.sg',
     'shopee.sg',
@@ -78,17 +85,25 @@ router.get('/:affiliateSlug/:productId', async (req, res) => {
         affiliateLinkId,
         source,
     });
-    if (!isAllowedDestination(destinationUrl)) {
-        const { hostname } = (() => { try {
-            return new URL(destinationUrl);
-        }
-        catch {
-            return { hostname: destinationUrl };
-        } })();
-        console.warn(`[redirect] blocked: hostname "${hostname}" not in allowlist`);
-        res.status(403).json({ error: 'Destination not permitted' });
-        return;
+    // Rewrite to Awin tracking URL when publisher + advertiser IDs are configured
+    let finalUrl = destinationUrl;
+    if (awinPublisherId && affiliateLinkId && awinAdvertiserIds.has(affiliateLinkId)) {
+        const clickRef = `${productId.slice(0, 12)}-${Date.now().toString(36)}`;
+        finalUrl = buildAwinUrl(affiliateLinkId, destinationUrl, clickRef);
     }
-    res.redirect(302, destinationUrl);
+    else {
+        if (!isAllowedDestination(destinationUrl)) {
+            const { hostname } = (() => { try {
+                return new URL(destinationUrl);
+            }
+            catch {
+                return { hostname: destinationUrl };
+            } })();
+            console.warn(`[redirect] blocked: hostname "${hostname}" not in allowlist`);
+            res.status(403).json({ error: 'Destination not permitted' });
+            return;
+        }
+    }
+    res.redirect(302, finalUrl);
 });
 exports.default = router;
