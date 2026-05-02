@@ -3,8 +3,8 @@ import { HeroSearch } from '@/components/HeroSearch';
 import { buildSgCategoryMetadata } from '@/lib/seo-category-metadata';
 
 export const metadata = buildSgCategoryMetadata(
-  'Home & Living Singapore | Compare Best Prices on Furniture & Household Items',
-  'Shop home and living products in Singapore. Compare cheapest prices on furniture, kitchen appliances, bedding, and home decor from IKEA, Courts, and top retailers.',
+  'Home & Living Price Comparison Singapore | Furniture & Household Deals 2026',
+  'Compare cheapest home and living prices in Singapore: furniture, kitchen appliances, bedding, and home decor from IKEA, Courts, Harvey Norman. Find the best household deals.',
   'home-living'
 );
 
@@ -36,8 +36,8 @@ export default function HomeLivingCategoryPage() {
       },
       {
         "@type": "CollectionPage",
-        name: "Home & Living Singapore | Compare Best Prices on Furniture & Household Items",
-        description: "Shop home and living products in Singapore. Compare cheapest prices on furniture, kitchen appliances, bedding, and home decor from IKEA, Courts, and top retailers.",
+        name: "Home & Living Price Comparison Singapore | Furniture & Household Deals 2026",
+        description: "Compare cheapest home and living prices in Singapore: furniture, kitchen appliances, bedding, and home decor from IKEA, Courts, Harvey Norman. Find the best household deals.",
         url: "https://buywhere.ai/categories/home-living",
         publisher: {
           "@type": "Organization",
@@ -77,7 +77,7 @@ export default function HomeLivingCategoryPage() {
         {/* Header */}
         <div className="mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Home & Living Singapore | Compare Best Prices on Furniture & Household Items
+            Home & Living Price Comparison Singapore — Furniture & Household Deals 2026
           </h1>
           <p className="text-lg text-gray-600 mb-6">
             Transform your living space without overspending. BuyWhere aggregates home and living product listings from furniture stores, kitchen appliance shops, bedding retailers, and home decor boutiques across Singapore. Whether you are moving into a new flat, renovating your HDB apartment, or simply refreshing your space, we help you find the best products at the best prices.
