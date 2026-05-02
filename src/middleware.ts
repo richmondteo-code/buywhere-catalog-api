@@ -12,17 +12,23 @@ export function middleware(request: NextRequest) {
   const accept = request.headers.get("accept") ?? "";
   const wantsMarkdown = accept.includes("text/markdown");
 
-  // Content negotiation: rewrite to dedicated markdown route handlers
+  // Content negotiation: rewrite to dedicated markdown route handlers.
+  // Use nextUrl.clone() + pathname assignment (not new URL(path, request.url)) so
+  // the rewrite target is always on the same origin, regardless of Host header value.
   if (wantsMarkdown) {
     if (pathname === "/" || pathname === "") {
-      return NextResponse.rewrite(new URL("/index.md", request.url));
+      const url = request.nextUrl.clone();
+      url.pathname = "/index.md";
+      return NextResponse.rewrite(url);
     }
     if (pathname === "/docs" || pathname === "/docs/") {
-      return NextResponse.rewrite(new URL("/docs-md", request.url));
+      const url = request.nextUrl.clone();
+      url.pathname = "/docs-md";
+      return NextResponse.rewrite(url);
     }
   }
 
-  // Add discovery Link headers for HTML responses on / and /docs/
+  // Add discovery Link headers and Vary: Accept for HTML responses on / and /docs/
   const isDiscoveryRoute =
     pathname === "/" ||
     pathname === "" ||
@@ -32,6 +38,7 @@ export function middleware(request: NextRequest) {
   if (isDiscoveryRoute) {
     const response = NextResponse.next();
     response.headers.set("Link", DISCOVERY_LINK);
+    response.headers.set("Vary", "Accept");
     return response;
   }
 
