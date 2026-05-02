@@ -75,6 +75,10 @@ const TOOLS: Tool[] = [
           description: 'Return agent-optimized compact shape with structured_specs and comparison_attributes',
           default: false,
         },
+        category: {
+          type: 'string',
+          description: 'Filter by product category name (e.g. "Laptops", "Smartphones", "Televisions"). Use to exclude accessories and get actual products.',
+        },
       },
     },
   },
