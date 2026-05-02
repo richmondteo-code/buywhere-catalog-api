@@ -86,110 +86,28 @@ jobs:
           # Pull the new image
           docker pull "${FULL_IMAGE}"
 
-          # Tag as latest
+          # Update and restart the API container (docker-compose)
+          cd "${APP_DIR}"
+          # Tag as latest for docker-compose
           docker tag "${FULL_IMAGE}" buywhere-api:latest
 
-          echo "=== Current container state ==="
-          docker ps --format "{{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Status}}" 2>&1 || true
+          # Restart only the api service (zero-downtime: compose will replace container)
+          docker compose up -d --no-deps api
 
-          # Find the API container to replace.
-          # Priority 1: container actually bound to host port 8000 (what nginx routes to)
-          API_CONTAINER=$(docker ps -q --filter "publish=8000" 2>/dev/null | head -1)
-          # Priority 2: the known named container from previous manual deploys
-          [ -z "$API_CONTAINER" ] && API_CONTAINER=$(docker ps -q --filter "name=buywhere-api-mcp-fixed" 2>/dev/null | head -1)
-          # Priority 3: any buywhere-api named container
-          [ -z "$API_CONTAINER" ] && API_CONTAINER=$(docker ps -q --filter "name=buywhere-api" 2>/dev/null | head -1)
-          [ -z "$API_CONTAINER" ] && API_CONTAINER=$(docker ps -q --filter "name=buywhere_api" 2>/dev/null | head -1)
+          echo "API container restarted — waiting for health check..."
+          sleep 5
 
-          if [ -z "$API_CONTAINER" ]; then
-            echo "ERROR: Cannot find running api container"
-            docker ps -a --format "{{.Names}}\t{{.Image}}\t{{.Status}}" 2>&1
+          # Verify health
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/health)
+          echo "GET /health → HTTP ${HTTP}"
+          if [[ "$HTTP" != "200" ]]; then
+            echo "ERROR: API health check failed with ${HTTP}"
             exit 1
           fi
-
-          CONTAINER_NAME=$(docker inspect "$API_CONTAINER" --format '{{.Name}}' | sed 's|^/||')
-          echo "api-deploy: replacing container ${CONTAINER_NAME}"
-
-          # Capture config before stopping (env to file so secrets stay off logs)
-          docker inspect "$API_CONTAINER" --format '{{json .Config.Env}}' \
-            | python3 -c "import json,sys; [print(e) for e in json.load(sys.stdin)]" > /tmp/api-env.txt
-
-          # Supplement missing env vars from app .env file if available
-          if [ -f "${APP_DIR}/.env" ]; then
-            echo "Supplementing env from ${APP_DIR}/.env"
-            while IFS= read -r line || [ -n "$line" ]; do
-              [[ "$line" =~ ^[[:space:]]*# ]] && continue
-              [[ -z "${line// /}" ]] && continue
-              varname="${line%%=*}"
-              grep -q "^${varname}=" /tmp/api-env.txt 2>/dev/null || echo "$line" >> /tmp/api-env.txt
-            done < "${APP_DIR}/.env"
-          fi
-          echo "Using $(wc -l < /tmp/api-env.txt) env vars"
-
-          NETS=$(docker inspect "$API_CONTAINER" --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}} {{end}}')
-          PORTS=$(docker inspect "$API_CONTAINER" --format \
-            '{{range $p,$b := .HostConfig.PortBindings}}-p {{(index $b 0).HostPort}}:{{$p}} {{end}}' \
-            | sed 's|/tcp||g; s|/udp||g')
-          # Compose-managed containers use internal networking without HostConfig.PortBindings.
-          # Fallback: bind host 8000 → container 3000 (nginx proxies to :8000, Express listens on :3000).
-          [ -z "${PORTS// /}" ] && PORTS="-p 8000:3000"
-          RESTART_POLICY=$(docker inspect "$API_CONTAINER" --format '{{.HostConfig.RestartPolicy.Name}}')
-          [ -z "$RESTART_POLICY" ] || [ "$RESTART_POLICY" = "no" ] && RESTART_POLICY="unless-stopped"
-
-          # Stop compose-managed buywhere-api-api-1 if it exists and is NOT our replacement target
-          # to prevent port conflicts when we start with -p 8000:3000
-          COMPOSE_CONTAINER=$(docker ps -q --filter "name=buywhere-api-api-1" 2>/dev/null | head -1)
-          if [ -n "$COMPOSE_CONTAINER" ] && [ "$COMPOSE_CONTAINER" != "$API_CONTAINER" ]; then
-            echo "Stopping compose container buywhere-api-api-1 to prevent port conflict"
-            docker stop "$COMPOSE_CONTAINER" || true
-          fi
-
-          # Stop old container and start new one with same network/port config.
-          # -t 5: reduce SIGTERM grace from 10 s to 5 s to minimise the
-          # nginx-visible downtime gap between stop and new container ready.
-          docker stop -t 5 "$API_CONTAINER" || true
-          docker rm "$API_CONTAINER" || true
-
-          NETWORK_FLAGS=""
-          for net in $NETS; do
-            NETWORK_FLAGS="${NETWORK_FLAGS} --network ${net}"
-          done
-          [ -z "${NETWORK_FLAGS// /}" ] && NETWORK_FLAGS="--network buywhere_default"
-
-          echo "Starting: name=${CONTAINER_NAME} ports=${PORTS} nets=${NETWORK_FLAGS} restart=${RESTART_POLICY}"
-
-          # shellcheck disable=SC2086
-          docker run -d \
-            --name "$CONTAINER_NAME" \
-            --env-file /tmp/api-env.txt \
-            ${NETWORK_FLAGS} \
-            ${PORTS} \
-            --restart "${RESTART_POLICY}" \
-            buywhere-api:latest
-
-          rm -f /tmp/api-env.txt
-          echo "API container replaced — waiting for health check..."
-
-          # Retry health check up to 12× (60 s total)
-          for i in $(seq 1 12); do
-            sleep 5
-            HTTP=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/health 2>/dev/null || echo 000)
-            echo "attempt ${i}/12: GET /health → HTTP ${HTTP}"
-            if [[ "$HTTP" == "200" ]]; then
-              echo "API healthy (${IMAGE_TAG})"
-              break
-            fi
-            if [ "$i" -eq 12 ]; then
-              echo "ERROR: API health check failed after 12 attempts (60s)"
-              echo "=== Container logs ==="
-              docker logs --tail 50 "$CONTAINER_NAME" 2>&1 || true
-              exit 1
-            fi
-          done
+          echo "API healthy (${IMAGE_TAG})"
           REMOTE
 
       - name: Smoke test agent-readiness headers
-        continue-on-error: true
         run: |
           sleep 3
 
@@ -211,9 +129,9 @@ jobs:
           CT_DOCS=$(curl -sI -H "Accept: text/markdown" https://api.buywhere.ai/docs/guides/mcp | grep -i "content-type" || echo "MISSING")
           echo "Content-Type /docs/guides/mcp: ${CT_DOCS}"
 
-          # Warn if any are missing (non-fatal — headers may be added separately)
+          # Fail if any are missing
           if echo "${CS}${LINK}${CT}${CT_DOCS}" | grep -q "MISSING"; then
-            echo "WARNING: one or more agent-readiness headers missing after deploy (non-fatal)"
-          else
-            echo "All agent-readiness checks passed."
+            echo "ERROR: one or more agent-readiness headers missing after deploy"
+            exit 1
           fi
+          echo "All agent-readiness checks passed."
