@@ -413,13 +413,13 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
     shopperCta: {
       title: "Compare laptop prices in Singapore",
       body: "See live laptop offers across Singapore retailers in one search flow.",
-      href: "/search?q=laptop&country=sg",
+      href: "/search?q=laptop&country=sg&utm_source=blog&utm_medium=seo&utm_campaign=where-to-buy",
       label: "Shop laptops",
     },
     developerCta: {
       title: "Build laptop comparison tools for Singapore",
       body: "Use BuyWhere to power local price-comparison and product-discovery experiences across SG electronics retailers.",
-      href: "/developers",
+      href: "/quickstart?utm_source=blog&utm_medium=seo&utm_campaign=where-to-buy",
       label: "View developer docs",
     },
     fallbackProducts: [
@@ -689,6 +689,93 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "r4", name: "Ecovacs Deebot X2 Omni", price: 1099, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=Ecovacs+Deebot+X2+Omni&country=us", brand: "Ecovacs", category: "Robot Vacuums" },
       { id: "r5", name: "eufy X10 Pro Omni", price: 799, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=eufy+X10+Pro+Omni&country=us", brand: "eufy", category: "Robot Vacuums" },
       { id: "r6", name: "Roborock Q5 Pro+", price: 499, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=Roborock+Q5+Pro%2B&country=us", brand: "Roborock", category: "Robot Vacuums" },
+    ],
+  },
+  "best-headphones-singapore": {
+    slug: "best-headphones-singapore",
+    title: "Best Headphones in Singapore 2026 | Compare Prices Across Top Audio Retailers",
+    description:
+      "Compare the best headphones and earbuds in Singapore with live BuyWhere product results, retailer benchmarks, and quick buying advice across Sony, Bose, Apple, Sennheiser, and Samsung.",
+    heroEyebrow: "Singapore Audio Guide",
+    heroTitle: "Best Headphones in Singapore",
+    heroBody:
+      "Whether you want ANC for the MRT, a warm signature for long listening sessions, or workout-friendly earbuds, this page helps you compare the right headphones across SG retailers without checking each store separately.",
+    canonicalPath: "/best-headphones-singapore",
+    country: "SG",
+    currency: "SGD",
+    locale: "en_SG",
+    searchQuery: "headphones",
+    refreshedLabel: "Updated May 2, 2026",
+    productSectionTitle: "Live headphone offers across Singapore",
+    comparisonSectionTitle: "Popular headphone picks at a glance",
+    comparisonColumns: ["Model", "Price", "Type", "ANC", "Battery", "Best For"],
+    comparisonRows: [
+      { Model: "Sony WH-1000XM5", Price: "S$449", Type: "Over-ear", ANC: "Yes", Battery: "30h", "Best For": "Best overall noise cancellation" },
+      { Model: "Apple AirPods Max", Price: "S$599", Type: "Over-ear", ANC: "Yes", Battery: "20h", "Best For": "Best Apple ecosystem fit" },
+      { Model: "Bose QuietComfort Ultra", Price: "S$499", Type: "Over-ear", ANC: "Yes", Battery: "24h", "Best For": "Best comfort" },
+      { Model: "Sennheiser Momentum 4", Price: "S$379", Type: "Over-ear", ANC: "Yes", Battery: "60h", "Best For": "Best battery life" },
+      { Model: "Samsung Galaxy Buds3 Pro", Price: "S$229", Type: "Earbuds", ANC: "Yes", Battery: "6h", "Best For": "Best value ANC earbuds" },
+      { Model: "Sony WF-1000XM5", Price: "S$349", Type: "Earbuds", ANC: "Yes", Battery: "8h", "Best For": "Best premium earbuds" },
+    ],
+    highlightSectionTitle: "What matters most for SG buyers",
+    highlights: [
+      {
+        title: "ANC on the MRT matters",
+        body: "Active noise cancellation is the top feature for Singapore commuters. The Sony XM5 and Bose QC Ultra lead here, but both earbuds and over-ears now perform well on busy train rides.",
+      },
+      {
+        title: "Battery life affects daily use",
+        body: "Over-ear headphones typically outlast earbuds significantly. The Sennheiser Momentum 4 hits 60 hours, which is useful for long-haul commuters and travellers.",
+      },
+      {
+        title: "Brand ecosystem lock-in",
+        body: "Apple AirPods Max only makes sense within the Apple ecosystem. Android users get more flexibility with Sony, Bose, and Samsung options.",
+      },
+    ],
+    adviceSectionTitle: "How to pick the right headphones",
+    advicePoints: [
+      "For daily commuters on the MRT, prioritize ANC quality over battery capacity — the noise reduction matters more on a packed train than on a flight.",
+      "Workout and gym use cases favour earbuds with IPX water resistance over over-ear designs.",
+      "For music production, podcast editing, or audiophile use, look for an open-back or wired option instead of the ANC-focused picks above.",
+      "Compare Shopee, Lazada, Challenger, and Harvey Norman during 5.5, 9.9, and 11.11 campaigns for the lowest real checkout price.",
+    ],
+    faqSectionTitle: "Headphones Singapore FAQ",
+    faqs: [
+      {
+        question: "What are the best headphones in Singapore right now?",
+        answer:
+          "For most buyers, the Sony WH-1000XM5 remains the best overall pick because it combines top-tier ANC, strong battery life, and broad SG retail availability.",
+      },
+      {
+        question: "Are earbuds better than over-ear headphones?",
+        answer:
+          "Earbuds win on portability and workout suitability. Over-ear headphones win on comfort for long sessions, ANC performance, and battery life.",
+      },
+      {
+        question: "Where should I compare headphone prices in Singapore?",
+        answer:
+          "Use BuyWhere to search across Shopee, Lazada, Challenger, Harvey Norman, and electronics retailers simultaneously for the best current offer.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare headphone prices in Singapore",
+      body: "Check live offers across Sony, Bose, Apple, Sennheiser, and Samsung retailers in one search.",
+      href: "/search?q=headphones&country=sg",
+      label: "Shop headphones",
+    },
+    developerCta: {
+      title: "Build audio product discovery tools for Singapore",
+      body: "Use BuyWhere API search to track headphone availability, merchant pricing, and product specifications across SG retailers.",
+      href: "/developers",
+      label: "View developer docs",
+    },
+    fallbackProducts: [
+      { id: "h1", name: "Sony WH-1000XM5", price: 449, currency: "SGD", merchant: "Challenger", imageUrl: null, href: "/search?q=Sony+WH-1000XM5&country=sg", brand: "Sony", category: "Headphones" },
+      { id: "h2", name: "Apple AirPods Max", price: 599, currency: "SGD", merchant: "Apple Store", imageUrl: null, href: "/search?q=AirPods+Max&country=sg", brand: "Apple", category: "Headphones" },
+      { id: "h3", name: "Bose QuietComfort Ultra", price: 499, currency: "SGD", merchant: "Harvey Norman", imageUrl: null, href: "/search?q=Bose+QuietComfort+Ultra&country=sg", brand: "Bose", category: "Headphones" },
+      { id: "h4", name: "Sennheiser Momentum 4", price: 379, currency: "SGD", merchant: "Shopee", imageUrl: null, href: "/search?q=Sennheiser+Momentum+4&country=sg", brand: "Sennheiser", category: "Headphones" },
+      { id: "h5", name: "Samsung Galaxy Buds3 Pro", price: 229, currency: "SGD", merchant: "Samsung", imageUrl: null, href: "/search?q=Galaxy+Buds3+Pro&country=sg", brand: "Samsung", category: "Headphones" },
+      { id: "h6", name: "Sony WF-1000XM5", price: 349, currency: "SGD", merchant: "Lazada", imageUrl: null, href: "/search?q=Sony+WF-1000XM5&country=sg", brand: "Sony", category: "Headphones" },
     ],
   },
 };
