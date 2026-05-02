@@ -23,6 +23,7 @@ const TOOLS = [
         limit: { type: 'integer', description: 'Number of results (max 100, default 20)', default: 20 },
         offset: { type: 'integer', description: 'Pagination offset', default: 0 },
         compact: { type: 'boolean', description: 'Return agent-optimized compact shape: structured_specs, comparison_attributes, normalized_price_usd. Reduces response size ~40%. Recommended for agent tool-use.', default: false },
+        category: { type: 'string', description: 'Filter by product category name (e.g. "Laptops", "Smartphones", "Televisions"). Use to exclude accessories and get actual products.' },
       },
     },
   },
@@ -88,7 +89,10 @@ async function handleSearchProducts(args: Record<string, unknown>) {
   const domain = (args.domain as string) || '';
   const region = (args.region as string) || '';
   // country_code is canonical; `country` kept as alias for backward compat
-  const country = (((args.country_code as string) || (args.country as string)) || '').toUpperCase();
+  // Default to SG when no country/region specified (BUY-6598: SG market is primary)
+  const rawCountry = (((args.country_code as string) || (args.country as string)) || '').toUpperCase();
+  const country = rawCountry || (!region ? 'SG' : '');
+  const category = (args.category as string) || '';
   const minPrice = args.min_price != null ? Number(args.min_price) : null;
   const maxPrice = args.max_price != null ? Number(args.max_price) : null;
   const limit = Math.min(Number(args.limit) || 20, 100);
@@ -98,7 +102,7 @@ async function handleSearchProducts(args: Record<string, unknown>) {
   const COUNTRY_CURRENCY: Record<string, string> = { SG: 'SGD', US: 'USD', VN: 'VND', TH: 'THB', MY: 'MYR' };
   const currency = country ? (COUNTRY_CURRENCY[country] || 'SGD') : 'SGD';
 
-  const cacheKey = `fts:${q}:${domain}:${region}:${country}:${currency}:${minPrice}:${maxPrice}:${limit}:${offset}:${compact ? 'c' : 'f'}`;
+  const cacheKey = `fts:${q}:${domain}:${region}:${country}:${category}:${currency}:${minPrice}:${maxPrice}:${limit}:${offset}:${compact ? 'c' : 'f'}`;
   try {
     const cached = await redis.get(cacheKey);
     if (cached) {
@@ -136,6 +140,10 @@ async function handleSearchProducts(args: Record<string, unknown>) {
   if (country) {
     params.push(country.toUpperCase());
     conditions.push(`country_code = $${params.length}`);
+  }
+  if (category) {
+    params.push(`%${category}%`);
+    conditions.push(`category_path[1] ILIKE $${params.length}`);
   }
 
   const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
