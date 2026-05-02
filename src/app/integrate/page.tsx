@@ -4,9 +4,9 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "BuyWhere Integration Guide — MCP Server & API for AI Agents",
+  title: "Integration Guide — BuyWhere MCP Server for AI Agents | Product Search & Price Comparison",
   description:
-    "Connect BuyWhere to your AI agent in minutes. Use the MCP server to give your agent product search, price comparison, and deal discovery across Singapore e-commerce.",
+    "Connect BuyWhere MCP server to your AI agent in minutes. Search 5M+ Singapore products, compare prices across Shopee, Lazada, and 20+ retailers — no scraping. MCP-compatible with Claude Desktop, Cursor, and any MCP client.",
   alternates: {
     canonical: "https://buywhere.ai/integrate",
   },
@@ -130,12 +130,13 @@ export default function IntegratePage() {
               MCP Server + REST API
             </div>
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
-              Give your AI agent a product catalog layer for Singapore commerce.
+              Your AI agent needs a live product catalog. Here it is.
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-slate-300">
-              BuyWhere exposes product search, price comparison, and deal discovery
-              as tools your agent can call directly — no scraping, no HTML parsing,
-              no rate-limit battles with e-commerce sites.
+              BuyWhere gives your AI agent product search, price comparison, and deal discovery across 5M+ Singapore products — via MCP tools or REST API. No scrapers, no maintenance, no HTML parsing.
+            </p>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-400">
+              Compatible with Claude Desktop, Cursor, Windsurf, and any MCP-compatible agent. One authenticated request replaces 20+ retailer integrations.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
