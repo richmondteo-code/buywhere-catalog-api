@@ -67,6 +67,9 @@ services:
       API_BASE_URL: https://api.buywhere.ai
       # Sentry error tracking (BUY-3415) — set via AWS Secrets Manager in prod
       SENTRY_DSN: ${SENTRY_DSN:-}
+      # Awin affiliate programme (BUY-6873) — set via secrets manager in prod
+      AWIN_PUBLISHER_ID: ${AWIN_PUBLISHER_ID:-}
+      AWIN_ADVERTISER_IDS: ${AWIN_ADVERTISER_IDS:-}
     ports:
       - "3000:3000"
     healthcheck:

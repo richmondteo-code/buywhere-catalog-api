@@ -9,6 +9,17 @@ function hashKey(rawKey: string): string {
 
 const router = Router();
 
+// Awin affiliate programme (BUY-6873)
+const awinPublisherId = process.env.AWIN_PUBLISHER_ID || '';
+const awinAdvertiserIds: Set<string> = new Set(
+  (process.env.AWIN_ADVERTISER_IDS || '').split(',').map((id) => id.trim()).filter(Boolean)
+);
+
+function buildAwinUrl(advertiserId: string, destination: string, clickRef: string): string {
+  const encoded = encodeURIComponent(destination);
+  return `https://www.awin1.com/cread.php?awinmid=${advertiserId}&awinaffid=${awinPublisherId}&clickref=${clickRef}&p=${encoded}`;
+}
+
 const DEFAULT_ALLOWED_DOMAINS = [
   'lazada.sg',
   'shopee.sg',
@@ -99,14 +110,21 @@ router.get('/:affiliateSlug/:productId', async (req: Request, res: Response) => 
     source,
   });
 
-  if (!isAllowedDestination(destinationUrl)) {
-    const { hostname } = (() => { try { return new URL(destinationUrl); } catch { return { hostname: destinationUrl }; } })();
-    console.warn(`[redirect] blocked: hostname "${hostname}" not in allowlist`);
-    res.status(403).json({ error: 'Destination not permitted' });
-    return;
+  // Rewrite to Awin tracking URL when publisher + advertiser IDs are configured
+  let finalUrl = destinationUrl;
+  if (awinPublisherId && affiliateLinkId && awinAdvertiserIds.has(affiliateLinkId)) {
+    const clickRef = `${productId.slice(0, 12)}-${Date.now().toString(36)}`;
+    finalUrl = buildAwinUrl(affiliateLinkId, destinationUrl, clickRef);
+  } else {
+    if (!isAllowedDestination(destinationUrl)) {
+      const { hostname } = (() => { try { return new URL(destinationUrl); } catch { return { hostname: destinationUrl }; } })();
+      console.warn(`[redirect] blocked: hostname "${hostname}" not in allowlist`);
+      res.status(403).json({ error: 'Destination not permitted' });
+      return;
+    }
   }
 
-  res.redirect(302, destinationUrl);
+  res.redirect(302, finalUrl);
 });
 
 export default router;
