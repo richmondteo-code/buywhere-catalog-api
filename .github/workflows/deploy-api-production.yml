@@ -86,18 +86,53 @@ jobs:
           # Pull the new image
           docker pull "${FULL_IMAGE}"
 
-          # Update and restart the API container (docker-compose)
-          cd "${APP_DIR}"
-          # Tag as latest for docker-compose
+          # Tag as latest
           docker tag "${FULL_IMAGE}" buywhere-api:latest
 
-          # Ensure buywhere_default is declared as external (it pre-exists without compose labels)
-          python3 -c "import sys,yaml; p=sys.argv[1]; d=yaml.safe_load(open(p)); n=d.setdefault('networks',{}); n['buywhere_default']={'external':True}; yaml.dump(d,open(p,'w'),default_flow_style=False,sort_keys=False); print('compose networks patched to external')" "${APP_DIR}/docker-compose.yml" 2>/dev/null || true
+          # Find the running api container (compose v2 names: {project}-{service}-{n})
+          API_CONTAINER=$(docker ps -q --filter "name=buywhere-api" 2>/dev/null | head -1)
+          [ -z "$API_CONTAINER" ] && API_CONTAINER=$(docker ps -q --filter "name=buywhere_api" 2>/dev/null | head -1)
+          [ -z "$API_CONTAINER" ] && API_CONTAINER=$(docker ps -q --filter "ancestor=buywhere-api:latest" 2>/dev/null | head -1)
 
-          # Restart only the api service (zero-downtime: compose will replace container)
-          docker compose up -d --no-deps api
+          if [ -z "$API_CONTAINER" ]; then
+            echo "ERROR: Cannot find running api container"
+            docker ps --format "{{.Names}}\t{{.Image}}" 2>&1
+            exit 1
+          fi
 
-          echo "API container restarted — waiting for health check..."
+          CONTAINER_NAME=$(docker inspect "$API_CONTAINER" --format '{{.Name}}' | sed 's|^/||')
+          echo "api-deploy: replacing container ${CONTAINER_NAME}"
+
+          # Capture config before stopping (env to file so secrets stay off logs)
+          docker inspect "$API_CONTAINER" --format '{{json .Config.Env}}' \
+            | python3 -c "import json,sys; [print(e) for e in json.load(sys.stdin)]" > /tmp/api-env.txt
+
+          NETS=$(docker inspect "$API_CONTAINER" --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}} {{end}}')
+          PORTS=$(docker inspect "$API_CONTAINER" --format \
+            '{{range $p,$b := .HostConfig.PortBindings}}-p {{(index $b 0).HostPort}}:{{$p}} {{end}}' \
+            | sed 's|/tcp||g; s|/udp||g')
+          RESTART_POLICY=$(docker inspect "$API_CONTAINER" --format '{{.HostConfig.RestartPolicy.Name}}')
+
+          # Stop old container and start new one with same network/port config
+          docker stop "$API_CONTAINER"
+          docker rm "$API_CONTAINER"
+
+          NETWORK_FLAGS=""
+          for net in $NETS; do
+            NETWORK_FLAGS="${NETWORK_FLAGS} --network ${net}"
+          done
+
+          # shellcheck disable=SC2086
+          docker run -d \
+            --name "$CONTAINER_NAME" \
+            --env-file /tmp/api-env.txt \
+            ${NETWORK_FLAGS} \
+            ${PORTS} \
+            --restart "${RESTART_POLICY}" \
+            buywhere-api:latest
+
+          rm -f /tmp/api-env.txt
+          echo "API container replaced — waiting for health check..."
           sleep 5
 
           # Verify health
