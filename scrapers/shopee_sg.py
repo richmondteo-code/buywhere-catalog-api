@@ -29,6 +29,7 @@ import httpx
 
 MERCHANT_ID = "shopee_sg"
 SOURCE = "shopee_sg"
+PLATFORM = "shopee"
 BASE_URL = "https://www.shopee.sg"
 OUTPUT_DIR = "/home/paperclip/buywhere-api/data/shopee-main"
 
@@ -81,7 +82,7 @@ class ShopeeScraper:
         self.total_ingested = 0
         self.total_updated = 0
         self.total_failed = 0
-        self.products_outfile = None
+        self.products_outfile: str | None = None
         self._ensure_output_dir()
 
     def _ensure_output_dir(self):
@@ -184,12 +185,13 @@ class ShopeeScraper:
 
             return {
                 "sku": sku,
-                "merchant_id": MERCHANT_ID,
+                "platform": PLATFORM,
                 "title": name,
                 "description": "",
                 "price": price,
                 "currency": "SGD",
-                "url": product_url,
+                "country_code": "SG",
+                "product_url": product_url,
                 "image_url": image_url,
                 "category": category["name"],
                 "category_path": [category["name"], category["sub"]],
@@ -224,18 +226,17 @@ class ShopeeScraper:
             self._write_products_to_file(products)
             return len(products), 0, 0
 
-        url = f"{self.api_base}/v1/ingest/products"
+        url = f"{self.api_base}/v1/products/ingest"
         headers = {"Authorization": f"Bearer {self.api_key}"}
-        payload = {"source": SOURCE, "products": products}
 
         try:
-            resp = await self.client.post(url, json=payload, headers=headers)
+            resp = await self.client.post(url, json=products, headers=headers)
             resp.raise_for_status()
             result = resp.json()
             return (
-                result.get("rows_inserted", 0),
-                result.get("rows_updated", 0),
-                result.get("rows_failed", 0),
+                result.get("inserted", 0),
+                result.get("updated", 0),
+                result.get("skipped", 0),
             )
         except Exception as e:
             print(f"  Ingestion error: {e}")
