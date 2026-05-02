@@ -17,7 +17,7 @@ const TO_USD: Record<string, number> = { USD: 1, SGD: 0.74, VND: 0.000039, THB: 
 const router = Router();
 
 // GET /v1/products/search
-// Query params: q, domain, region, country, min_price, max_price, currency, limit, offset, source_page
+// Query params: q, domain, region, country, category, min_price, max_price, currency, limit, offset, source_page
 router.get(
   '/search',
   agentDetectMiddleware,
@@ -29,8 +29,11 @@ router.get(
     const q = (req.query.q as string) || '';
     const domain = req.query.domain as string | undefined;
     const region = req.query.region as string | undefined;
-    // country_code is the canonical param; `country` is kept as a backward-compat alias
-    const countryCode = ((req.query.country_code as string | undefined) || (req.query.country as string | undefined))?.toUpperCase() || undefined;
+    const category = req.query.category as string | undefined;
+    // country_code is the canonical param; `country` is kept as a backward-compat alias.
+    // Default to SG when neither country nor region is specified (BUY-6598: prevent cross-region accessory pollution).
+    const explicitCountry = ((req.query.country_code as string | undefined) || (req.query.country as string | undefined))?.toUpperCase() || undefined;
+    const countryCode = explicitCountry || (region ? undefined : 'SG');
     const minPrice = req.query.min_price ? parseFloat(req.query.min_price as string) : undefined;
     const maxPrice = req.query.max_price ? parseFloat(req.query.max_price as string) : undefined;
     // Infer default currency from country_code when not explicitly provided.
@@ -42,7 +45,7 @@ router.get(
     const compact = req.query.compact === 'true';
 
     // Check Redis cache for this exact query (60s TTL)
-    const cacheKey = `fts:${q}:${domain || ''}:${region || ''}:${countryCode || ''}:${currency}:${minPrice ?? ''}:${maxPrice ?? ''}:${limit}:${offset}:${compact ? 'c' : 'f'}`;
+    const cacheKey = `fts:${q}:${domain || ''}:${region || ''}:${countryCode || ''}:${category || ''}:${currency}:${minPrice ?? ''}:${maxPrice ?? ''}:${limit}:${offset}:${compact ? 'c' : 'f'}`;
     try {
       const cached = await redis.get(cacheKey);
       if (cached) {
@@ -88,6 +91,11 @@ router.get(
     if (countryCode) {
       conditions.push(`country_code = $${idx}`);
       params.push(countryCode);
+      idx++;
+    }
+    if (category) {
+      conditions.push(`category_path[1] ILIKE $${idx}`);
+      params.push(category);
       idx++;
     }
     if (minPrice !== undefined) {
