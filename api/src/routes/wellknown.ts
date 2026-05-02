@@ -33,7 +33,7 @@ router.get('/mcp.json', (_req: Request, res: Response) => {
     name: 'BuyWhere Product Catalog',
     description: "Structured product catalog and price comparison API for AI agents. Real-time pricing from Singapore's major e-commerce platforms.",
     version: '0.1.0',
-    mcp_endpoint: 'https://api.buywhere.ai/mcp',
+    mcp_endpoint: 'https://mcp.buywhere.ai/mcp',
     documentation: 'https://api.buywhere.ai/docs/guides/mcp',
     capabilities: ['search_products', 'get_product', 'compare_products', 'get_deals', 'list_categories'],
     coverage: 'Singapore',
@@ -233,7 +233,7 @@ router.get('/mcp/server-card.json', (_req: Request, res: Response) => {
     license: { name: 'Commercial', url: 'https://buywhere.ai/terms' },
     servers: [
       {
-        url: 'https://api.buywhere.ai/mcp',
+        url: 'https://mcp.buywhere.ai/mcp',
         description: 'Production MCP endpoint (Singapore)',
         transport: ['streamable-http', 'sse'],
       },

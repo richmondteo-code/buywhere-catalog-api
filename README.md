@@ -29,7 +29,7 @@ Or add to your MCP client config:
 ## Remote MCP (HTTP/SSE)
 
 ```
-https://api.buywhere.ai/mcp
+https://mcp.buywhere.ai/mcp
 ```
 
 Authentication: Bearer token (API key). Get a free key at [api.buywhere.ai/v1/auth/register](https://api.buywhere.ai/v1/auth/register).

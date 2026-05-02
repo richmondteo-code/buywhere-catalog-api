@@ -8,7 +8,7 @@ const serverCard = {
   transports: [
     {
       type: "streamable-http",
-      url: "https://api.buywhere.ai/mcp",
+      url: "https://mcp.buywhere.ai/mcp",
     },
   ],
   authentication: {

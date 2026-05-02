@@ -129,7 +129,7 @@ jobs:
         run: |
           sleep 2
           HTTP=$(curl -s -o /dev/null -w "%{http_code}" \
-            -X POST https://api.buywhere.ai/mcp \
+            -X POST https://mcp.buywhere.ai/mcp \
             -H "Content-Type: application/json" \
             -H "Accept: application/json, text/event-stream" \
             -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"smoke-test","version":"1.0"}},"id":1}')
