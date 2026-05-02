@@ -91,25 +91,8 @@ jobs:
           # Tag as latest for docker-compose
           docker tag "${FULL_IMAGE}" buywhere-api:latest
 
-          # Ensure buywhere_default network is declared in the compose file (idempotent fix)
-          cat > /tmp/fix_compose_networks.py << 'PYEOF'
-import yaml, sys
-path = sys.argv[1]
-try:
-    with open(path) as f:
-        d = yaml.safe_load(f)
-    nets = d.setdefault('networks', {})
-    if 'buywhere_default' not in nets:
-        nets['buywhere_default'] = {'driver': 'bridge'}
-        with open(path, 'w') as f:
-            yaml.dump(d, f, default_flow_style=False, sort_keys=False)
-        print('Patched: added buywhere_default to networks section')
-    else:
-        print('Network already declared, no patch needed')
-except Exception as e:
-    print(f'Warning: could not patch compose file: {e}', file=sys.stderr)
-PYEOF
-          python3 /tmp/fix_compose_networks.py "${APP_DIR}/docker-compose.yml" || true
+          # Ensure buywhere_default network is declared in the compose file (idempotent)
+          python3 -c "import sys,yaml; p=sys.argv[1]; d=yaml.safe_load(open(p)); n=d.setdefault('networks',{}); n['buywhere_default']=n.get('buywhere_default',{'driver':'bridge'}); yaml.dump(d,open(p,'w'),default_flow_style=False,sort_keys=False); print('compose networks ok')" "${APP_DIR}/docker-compose.yml" 2>/dev/null || true
 
           # Restart only the api service (zero-downtime: compose will replace container)
           docker compose up -d --no-deps api
