@@ -229,15 +229,21 @@ CREATE INDEX IF NOT EXISTS idx_merchant_events_merchant_id ON merchant_events(me
 CREATE INDEX IF NOT EXISTS idx_merchant_events_event_type ON merchant_events(event_type);
 `;
 
-async function migrate() {
+export async function runMigrations() {
   console.log('Running migrations...');
   await db.query(MIGRATION);
   console.log('Migrations complete.');
+}
+
+async function migrate() {
+  await runMigrations();
   await db.end();
   redis.disconnect();
 }
 
-migrate().catch((err) => {
-  console.error('Migration failed:', err);
-  process.exit(1);
-});
+if (require.main === module) {
+  migrate().catch((err) => {
+    console.error('Migration failed:', err);
+    process.exit(1);
+  });
+}

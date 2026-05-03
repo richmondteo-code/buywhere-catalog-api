@@ -2,11 +2,16 @@ import { initSentry } from './sentry';
 import { createApp } from './server';
 import { PORT } from './config';
 import { shutdownPostHog } from './analytics/posthog';
+import { runMigrations } from './migrate';
 
 // Initialize Sentry before anything else so all errors are captured
 initSentry();
 
 const app = createApp();
+
+runMigrations().catch(err => {
+  console.error('Migration failed during startup:', err);
+});
 
 const server = app.listen(PORT, () => {
   console.log(`BuyWhere API v1 listening on :${PORT}`);
