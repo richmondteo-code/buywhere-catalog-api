@@ -92,7 +92,7 @@ jobs:
           docker tag "${FULL_IMAGE}" buywhere-api:latest
 
           # Restart only the api service (zero-downtime: compose will replace container)
-          docker compose up -d --no-deps api
+          docker compose up -d --no-deps --force-recreate api
 
           echo "API container restarted — waiting for health check..."
           sleep 5
