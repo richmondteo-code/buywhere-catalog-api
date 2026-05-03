@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { db, redis } from '../config';
 import { requireApiKey, checkRateLimit } from '../middleware/apiKey';
 import { queryLogMiddleware } from '../middleware/queryLog';
-import { buildErrorEnvelope, ErrorCode } from '../middleware/errors';
+import { buildErrorEnvelope, ErrorCode, ErrorCodeType } from '../middleware/errors';
 
 const router = Router();
 
@@ -460,7 +460,7 @@ function jsonrpcOk(id: unknown, result: unknown) {
 function jsonrpcErr(id: unknown, code: number, message: string, data?: unknown, envelopeCode?: string) {
   const errorData: Record<string, unknown> = data != null ? { detail: data } : {};
   if (envelopeCode) {
-    errorData.envelope = buildErrorEnvelope(envelopeCode as ErrorCode, message);
+    errorData.envelope = buildErrorEnvelope(envelopeCode as ErrorCodeType, message);
   }
   return { jsonrpc: '2.0', id, error: { code, message, ...(Object.keys(errorData).length ? { data: errorData } : {}) } };
 }
