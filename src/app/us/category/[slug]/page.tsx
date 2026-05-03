@@ -191,6 +191,7 @@ export default function USCategoryBrowsePage({ params }: PageProps) {
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": "https://buywhere.ai/#breadcrumb",
     itemListElement: config.breadcrumbs.map((crumb, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -202,8 +203,11 @@ export default function USCategoryBrowsePage({ params }: PageProps) {
   const productListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    "@id": `${categoryUrl}#item-list`,
     name: `All ${config.categoryName} Products`,
     numberOfItems: config.products.length,
+    url: categoryUrl,
+    mainEntityOfPage: categoryUrl,
     itemListElement: config.products.slice(0, 20).map((product, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -220,7 +224,7 @@ export default function USCategoryBrowsePage({ params }: PageProps) {
           availability: product.inStock
             ? "https://schema.org/InStock"
             : "https://schema.org/OutOfStock",
-          seller: { "@type": "Organization", name: "BuyWhere" },
+          seller: { "@type": "Organization", "@id": "https://buywhere.ai/#organization", name: "BuyWhere" },
         },
       },
     })),
@@ -229,13 +233,15 @@ export default function USCategoryBrowsePage({ params }: PageProps) {
   const collectionPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    "@id": `${categoryUrl}#collection`,
     name: `${config.categoryName} — Compare Prices | BuyWhere US`,
     description: config.breadcrumbs[0]?.name
       ? `Browse and compare ${config.categoryName} products from multiple retailers. Find the best deals on electronics, fashion, home goods, and more.`
       : `Compare prices on ${config.categoryName} from top retailers.`,
     url: categoryUrl,
+    mainEntityOfPage: categoryUrl,
     mainEntity: productListSchema,
-    publisher: { "@type": "Organization", name: "BuyWhere" },
+    publisher: { "@type": "Organization", "@id": "https://buywhere.ai/#organization", name: "BuyWhere" },
   };
 
   return (

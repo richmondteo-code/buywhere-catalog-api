@@ -14,6 +14,7 @@ export default function ElectronicsCategoryPage() {
     "@graph": [
       {
         "@type": "BreadcrumbList",
+        "@id": "https://buywhere.ai/#breadcrumb",
         itemListElement: [
           {
             "@type": "ListItem",
@@ -30,17 +31,21 @@ export default function ElectronicsCategoryPage() {
           {
             "@type": "ListItem",
             position: 3,
-            name: "Electronics"
+            name: "Electronics",
+            item: "https://buywhere.ai/categories/electronics"
           }
         ]
       },
       {
         "@type": "CollectionPage",
+        "@id": "https://buywhere.ai/categories/electronics#collection",
         name: "Electronics Singapore | Compare Best Prices on Gadgets & Tech",
         description: "Find the best electronics in Singapore. Compare cheapest prices on smartphones, laptops, TVs, and more from top retailers.",
         url: "https://buywhere.ai/categories/electronics",
+        mainEntityOfPage: "https://buywhere.ai/categories/electronics",
         publisher: {
           "@type": "Organization",
+          "@id": "https://buywhere.ai/#organization",
           name: "BuyWhere",
           url: "https://buywhere.ai"
         },

@@ -101,6 +101,13 @@ CREATE TABLE IF NOT EXISTS affiliate_links (
 -- Note: idx_affiliate_links_slug intentionally omitted — affiliate_links table already
 -- exists in this DB without a slug column; the index is not applicable here.
 
+-- B-tree index on category_path[1] for fast GROUP BY / WHERE queries (BUY-8715)
+CREATE INDEX IF NOT EXISTS idx_products_category_path_first ON products USING btree ((category_path[1]));
+
+-- Backfill empty category_path to prevent 0-category results (BUY-8715)
+UPDATE products SET category_path = ARRAY['Uncategorized']::text[]
+WHERE category_path = '{}' OR array_length(category_path, 1) = 0;
+
 -- GEO fields (BUY-1970, BUY-1979): columns and indexes handled at top of migration
 
 -- Comparison pages curation table (BUY-2273)

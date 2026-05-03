@@ -36,11 +36,15 @@ type ComparePageProps = {
 const schemaMarkup = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
+  "@id": "https://buywhere.ai/compare#collection",
   name: "Compare Product Prices by Market",
   description:
     "Compare prices on electronics, fashion, home goods, beauty products, and more across the US and Southeast Asia.",
+  url: "https://buywhere.ai/compare",
+  mainEntityOfPage: "https://buywhere.ai/compare",
   publisher: {
     "@type": "Organization",
+    "@id": "https://buywhere.ai/#organization",
     name: "BuyWhere",
   },
 };

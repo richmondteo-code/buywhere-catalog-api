@@ -99,9 +99,19 @@ ${!isSG ? `<link rel="canonical" href="${base}/us/" />` : ''}
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": "${base}/#website",
   "name": "BuyWhere",
   "url": "${base}/",
-  "description": "AI-native product catalog and price comparison API"
+  "description": "AI-native product catalog and price comparison API",
+  "inLanguage": "en",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "${base}/search?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
 }
 </script>
 <style>

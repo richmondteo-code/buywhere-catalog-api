@@ -30,6 +30,7 @@ const categories = [
 const schemaMarkup = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
+  '@id': 'https://buywhere.ai/#breadcrumb',
   itemListElement: [
     {
       '@type': 'ListItem',
@@ -41,6 +42,7 @@ const schemaMarkup = {
       '@type': 'ListItem',
       position: 2,
       name: 'Categories',
+      item: 'https://buywhere.ai/categories',
     },
   ],
 };

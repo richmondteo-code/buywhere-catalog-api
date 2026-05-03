@@ -274,6 +274,14 @@ class CarousellSGScraper:
 
         try:
             resp = await self.client.post(url, json=payload, headers=headers)
+
+            if resp.status_code == 413 and len(products) > 1:
+                mid = len(products) // 2
+                print(f"  Payload too large ({len(products)} products). Splitting...")
+                i1, u1, f1 = await self.ingest_batch(products[:mid])
+                i2, u2, f2 = await self.ingest_batch(products[mid:])
+                return i1 + i2, u1 + u2, f1 + f2
+
             resp.raise_for_status()
             result = resp.json()
             return (

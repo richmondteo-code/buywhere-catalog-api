@@ -1,0 +1,26 @@
+# CONFIRMED WooCommerce stores (Store API open)
+nuvanta.com.sg
+paragontraders.com.sg
+
+# Test these - WooCommerce (auth-required, V3 API 401/Store API 403)
+# Would need consumer key/secret
+monoprice.com
+osprey.com
+hydroflask.com
+article.com
+joybird.com
+
+# WooCommerce guesses from inbox - need to test
+spectaclehut.com.sg
+thegroomingtable.com
+hipvan.com
+mothercare.com.sg
+pomelofashion.com
+hockhua.com
+ztp.com.sg
+euyansang.com.sg
+horme.com.sg
+home-fix.com
+mrdiy.com
+pupsikstudio.com
+mummysmarket.com.sg

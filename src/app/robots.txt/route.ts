@@ -3,6 +3,7 @@ Allow: /
 
 Sitemap: https://buywhere.ai/sitemap.xml
 Sitemap: https://buywhere.ai/sitemap-compare.xml
+Sitemap: https://buywhere.ai/sitemap-products-sg.xml
 
 Content-Signal: ai-train=no, search=yes, ai-input=yes
 `;

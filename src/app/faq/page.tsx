@@ -53,6 +53,8 @@ const faqs = [
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
+  "@id": "https://buywhere.ai/faq#faq",
+  mainEntityOfPage: "https://buywhere.ai/faq",
   mainEntity: faqs.map((faq) => ({
     "@type": "Question",
     name: faq.question,

@@ -6,12 +6,8 @@ const apiKey_1 = require("../middleware/apiKey");
 const agentDetect_1 = require("../middleware/agentDetect");
 const posthog_1 = require("../analytics/posthog");
 const queryLog_1 = require("../middleware/queryLog");
+const response_1 = require("../lib/response");
 const SEARCH_CACHE_TTL_SECONDS = 60;
-// Maps ISO country code to native currency — used for both query inference and ingest defaults.
-const COUNTRY_CURRENCY = { SG: 'SGD', US: 'USD', GB: 'GBP', VN: 'VND', TH: 'THB', MY: 'MYR' };
-// Static approximate exchange rates to USD — used for normalized_price_usd only (not billing).
-// Approximate rates as of 2026-Q1; good enough for cross-currency ordering by agents.
-const TO_USD = { USD: 1, GBP: 0.79, SGD: 0.74, VND: 0.000039, THB: 0.028, MYR: 0.22 };
 const router = (0, express_1.Router)();
 // GET /v1/products/search
 // Query params: q, domain, region, country, category, min_price, max_price, currency, limit, offset, source_page
@@ -29,7 +25,7 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
     const maxPrice = req.query.max_price ? parseFloat(req.query.max_price) : undefined;
     // Infer default currency from country_code when not explicitly provided.
     // Price filters (min_price/max_price) apply in this inferred currency.
-    const currency = req.query.currency || (countryCode ? (COUNTRY_CURRENCY[countryCode] || 'SGD') : 'SGD');
+    const currency = req.query.currency || (countryCode ? (response_1.COUNTRY_CURRENCY[countryCode] || 'SGD') : 'SGD');
     const limit = Math.min(parseInt(req.query.limit || '20'), 100);
     const offset = parseInt(req.query.offset || '0');
     const sourcePage = req.query.source_page;
@@ -41,15 +37,8 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
         if (cached) {
             const parsed = JSON.parse(cached);
             const elapsed = Date.now() - requestStart;
-            // compact envelope uses flat keys; legacy uses nested meta
-            if (parsed.meta) {
-                parsed.meta.cached = true;
-                parsed.meta.response_time_ms = elapsed;
-            }
-            else {
-                parsed.cached = true;
-                parsed.response_time_ms = elapsed;
-            }
+            parsed.cached = true;
+            parsed.response_time_ms = elapsed;
             return res.json(parsed);
         }
     }
@@ -161,84 +150,8 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
     const dataResult = await config_1.db.query(dataQuery, params);
     const total = parseInt(countResult.rows[0].count, 10);
     const responseTimeMs = Date.now() - requestStart;
-    const products = dataResult.rows.map((row) => {
-        if (compact) {
-            // Compact format for AI agents (BUY-2073): Phase 2 shape.
-            // ?compact=true opt-in only; no auto-default by UA.
-            const meta = row.metadata;
-            const amount = row.price ? parseFloat(row.price) : null;
-            const cur = row.currency || 'SGD';
-            // structured_specs: explicit key-value object for agent consumption.
-            const structured_specs = {};
-            for (const k of ['brand', 'category', 'model', 'size', 'color', 'material', 'weight']) {
-                const v = meta?.[k];
-                if (v != null)
-                    structured_specs[k] = v;
-            }
-            // comparison_attributes: flat array suited for LLM tool-use comparison tasks.
-            const comparison_attributes = [];
-            if (structured_specs.brand != null)
-                comparison_attributes.push({ key: 'brand', label: 'Brand', value: structured_specs.brand });
-            if (structured_specs.category != null)
-                comparison_attributes.push({ key: 'category', label: 'Category', value: structured_specs.category });
-            if (amount != null)
-                comparison_attributes.push({ key: 'price', label: `Price (${cur})`, value: amount });
-            if (structured_specs.model != null)
-                comparison_attributes.push({ key: 'model', label: 'Model', value: structured_specs.model });
-            if (structured_specs.color != null)
-                comparison_attributes.push({ key: 'color', label: 'Color', value: structured_specs.color });
-            // normalized_price_usd: cross-currency comparison anchor (approx rates, not billing).
-            const rate = TO_USD[cur] ?? null;
-            const normalized_price_usd = amount != null && rate != null ? +(amount * rate).toFixed(4) : null;
-            return {
-                id: row.id,
-                canonical_id: row.id,
-                title: row.title,
-                price: { amount, currency: cur },
-                normalized_price_usd,
-                merchant: row.domain,
-                url: row.url,
-                region: row.region || null,
-                country_code: row.country_code || null,
-                structured_specs,
-                comparison_attributes,
-            };
-        }
-        return {
-            id: row.id,
-            source: row.source_id,
-            domain: row.domain,
-            url: row.url,
-            title: row.title,
-            price: row.price ? parseFloat(row.price) : null,
-            currency: row.currency,
-            image_url: row.image_url,
-            metadata: row.metadata,
-            region: row.region || null,
-            country_code: row.country_code || null,
-            updated_at: row.updated_at,
-        };
-    });
-    // Compact responses use a flattened envelope (results/total/page) per approved spec.
-    // Standard responses keep the legacy data/meta shape for backwards-compat.
-    const responseBody = compact
-        ? {
-            results: products,
-            total,
-            page: { limit, offset },
-            response_time_ms: responseTimeMs,
-            cached: false,
-        }
-        : {
-            data: products,
-            meta: {
-                total,
-                limit,
-                offset,
-                response_time_ms: responseTimeMs,
-                cached: false,
-            },
-        };
+    const products = dataResult.rows.map((row) => (0, response_1.buildProduct)(row, currency, compact));
+    const responseBody = (0, response_1.buildSearchResponse)(products, total, limit, offset, responseTimeMs, false);
     // Cache result in Redis (fire-and-forget)
     config_1.redis.set(cacheKey, JSON.stringify(responseBody), 'EX', SEARCH_CACHE_TTL_SECONDS).catch(() => { });
     // Extract categories from results for analytics
@@ -281,8 +194,8 @@ router.get('/deals', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey
         const cached = await config_1.redis.get(cacheKey);
         if (cached) {
             const parsed = JSON.parse(cached);
-            parsed.meta.cached = true;
-            parsed.meta.response_time_ms = Date.now() - start;
+            parsed.cached = true;
+            parsed.response_time_ms = Date.now() - start;
             return res.json(parsed);
         }
     }
@@ -292,7 +205,8 @@ router.get('/deals', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey
     const dealParams = [currency];
     let dealIdx = 2;
     dealConditions.push(`(metadata->>'original_price')::numeric > price`);
-    dealConditions.push(`(((metadata->>'original_price')::numeric - price) / (metadata->>'original_price')::numeric * 100) >= $${dealIdx}`);
+    dealConditions.push(`(metadata->>'original_price')::numeric < price * 100`);
+    dealConditions.push(`((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100) >= $${dealIdx}`);
     dealParams.push(minDiscount);
     dealIdx++;
     if (countryCode) {
@@ -307,32 +221,15 @@ router.get('/deals', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey
                 title, price, (metadata->>'original_price')::numeric AS original_price,
                 currency, image_url, metadata, updated_at,
                 region, country_code,
-                ROUND((((metadata->>'original_price')::numeric - price) / (metadata->>'original_price')::numeric * 100)::numeric, 1) AS discount_pct
+                ROUND(((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100)::numeric, 1) AS discount_pct
          FROM products
          WHERE ${dealWhere}
-         ORDER BY (((metadata->>'original_price')::numeric - price) / (metadata->>'original_price')::numeric) DESC, updated_at DESC
+         ORDER BY (1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) DESC, updated_at DESC
          LIMIT $${dealIdx} OFFSET $${dealIdx + 1}`, [...dealParams, limit, offset]),
     ]);
-    const deals = dataResult.rows.map((row) => ({
-        id: row.id,
-        source: row.source_id,
-        domain: row.domain,
-        url: row.url,
-        title: row.title,
-        price: row.price ? parseFloat(row.price) : null,
-        original_price: row.original_price ? parseFloat(row.original_price) : null,
-        discount_pct: row.discount_pct ? parseFloat(row.discount_pct) : null,
-        currency: row.currency,
-        image_url: row.image_url,
-        metadata: row.metadata,
-        region: row.region || null,
-        country_code: row.country_code || null,
-        updated_at: row.updated_at,
-    }));
-    const responseBody = {
-        data: deals,
-        meta: { total: parseInt(countResult.rows[0].count, 10), limit, offset, response_time_ms: Date.now() - start, cached: false },
-    };
+    const deals = dataResult.rows.map((row) => (0, response_1.buildProduct)(row, currency, false));
+    const total = parseInt(countResult.rows[0].count, 10);
+    const responseBody = (0, response_1.buildSearchResponse)(deals, total, limit, offset, Date.now() - start, false);
     config_1.redis.set(cacheKey, JSON.stringify(responseBody), 'EX', SEARCH_CACHE_TTL_SECONDS).catch(() => { });
     res.json(responseBody);
 });
@@ -349,36 +246,16 @@ router.get('/compare', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiK
               title, price, currency, image_url, metadata,
               category_path, brand, avg_rating AS rating, review_count, updated_at, region, country_code
        FROM products WHERE id IN (${placeholders})`, ids);
-    const products = result.rows.map((row) => ({
-        id: row.id,
-        source: row.source_id,
-        domain: row.domain,
-        url: row.url,
-        title: row.title,
-        price: row.price ? parseFloat(row.price) : null,
-        currency: row.currency,
-        image_url: row.image_url,
-        brand: row.brand,
-        category_path: row.category_path,
-        rating: row.rating ? parseFloat(row.rating) : null,
-        review_count: row.review_count,
-        metadata: row.metadata,
-        region: row.region || null,
-        country_code: row.country_code || null,
-        updated_at: row.updated_at,
-    }));
-    const uniqueCurrencies = [...new Set(products.map((p) => p.currency).filter(Boolean))];
+    const products = result.rows.map((row) => (0, response_1.buildProduct)(row, 'SGD', false));
+    const uniqueCurrencies = [...new Set(result.rows.map((r) => r.currency).filter(Boolean))];
     const currenciesMixed = uniqueCurrencies.length > 1;
+    const responseBody = (0, response_1.buildSearchResponse)(products, products.length, ids.length, 0, Date.now() - start, false);
     res.json({
-        data: products,
-        meta: {
-            count: products.length,
-            response_time_ms: Date.now() - start,
-            currencies_mixed: currenciesMixed,
-            ...(currenciesMixed && {
-                currency_warning: `Products span multiple currencies (${uniqueCurrencies.join(', ')}). Prices are not comparable across currencies — do not aggregate or rank by price in comparison_summary.`,
-            }),
-        },
+        ...responseBody,
+        currencies_mixed: currenciesMixed,
+        ...(currenciesMixed && {
+            currency_warning: `Products span multiple currencies (${uniqueCurrencies.join(', ')}). Prices are not comparable across currencies — do not aggregate or rank by price in comparison_summary.`,
+        }),
     });
 });
 // GET /v1/products/:id/price-history — daily aggregated price history (BUY-2345)
@@ -567,24 +444,7 @@ router.get('/:id', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey, 
         return;
     }
     const row = result.rows[0];
-    const product = {
-        id: row.id,
-        source: row.source_id,
-        domain: row.domain,
-        url: row.url,
-        title: row.title,
-        price: row.price ? parseFloat(row.price) : null,
-        currency: row.currency,
-        image_url: row.image_url,
-        brand: row.brand || null,
-        category_path: row.category_path || null,
-        rating: row.rating ? parseFloat(row.rating) : null,
-        review_count: row.review_count || null,
-        metadata: row.metadata,
-        region: row.region || null,
-        country_code: row.country_code || null,
-        updated_at: row.updated_at,
-    };
+    const product = (0, response_1.buildProduct)(row, 'SGD', false);
     if (req.apiKeyRecord) {
         (0, posthog_1.trackApiQuery)({
             apiKey: (0, apiKey_1.hashKey)(req.apiKeyRecord.key),
@@ -606,7 +466,8 @@ router.get('/:id', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey, 
             category: (row.category_path ? row.category_path.split(' > ')[0] : null),
         });
     }
-    res.json({ data: product });
+    const responseBody = (0, response_1.buildSearchResponse)([product], 1, 1, 0, Date.now() - start, false);
+    res.json(responseBody);
 });
 function inferQueryIntent(q, domain, minPrice, maxPrice) {
     const lower = q.toLowerCase();
@@ -679,18 +540,26 @@ router.post('/ingest', apiKey_1.requireApiKey, async (req, res) => {
             sku,
             name: String(p.name).slice(0, 1000),
             price: parseFloat(p.price),
-            currency: p.currency || (p.country_code ? COUNTRY_CURRENCY[p.country_code.toUpperCase()] : null) || (p.countryCode ? COUNTRY_CURRENCY[p.countryCode.toUpperCase()] : null) || 'SGD',
+            currency: p.currency || (p.country_code ? response_1.COUNTRY_CURRENCY[p.country_code.toUpperCase()] : null) || (p.countryCode ? response_1.COUNTRY_CURRENCY[p.countryCode.toUpperCase()] : null) || 'SGD',
+            gtin: p.gtin ? String(p.gtin).slice(0, 14) : undefined,
+            mpn: p.mpn ? String(p.mpn).slice(0, 100) : undefined,
             productUrl: p.product_url || p.productUrl,
             merchantId: p.merchant_id || p.merchantId || p.platform,
             merchantName: p.merchant_name || p.merchantName || p.platform,
-            originalPrice: p.original_price || p.originalPrice ? parseFloat(p.original_price || p.originalPrice) : undefined,
+            originalPrice: p.original_price || p.originalPrice
+                ? (() => {
+                    const op = parseFloat(p.original_price || p.originalPrice);
+                    const cp = parseFloat(p.price);
+                    return !isNaN(op) && !isNaN(cp) && op > cp && op <= cp * 10 ? op : undefined;
+                })()
+                : undefined,
             brand: p.brand ? String(p.brand).slice(0, 200) : undefined,
             description: p.description ? String(p.description).slice(0, 5000) : undefined,
             imageUrl: p.image_url || p.imageUrl || undefined,
             images: Array.isArray(p.images) ? p.images.slice(0, 20) : undefined,
             categoryPath: Array.isArray(p.category_path || p.categoryPath)
                 ? (p.category_path || p.categoryPath).slice(0, 10)
-                : [],
+                : ['Uncategorized'],
             availability: p.availability || 'in_stock',
             region: p.region || undefined,
             countryCode: p.country_code || p.countryCode || undefined,
@@ -700,21 +569,40 @@ router.post('/ingest', apiKey_1.requireApiKey, async (req, res) => {
         res.status(400).json({ error: 'No valid products', validation_errors: errors });
         return;
     }
+    // Auto-create merchant records for any new merchant IDs (BUY-8788)
+    const uniqueMerchants = new Map();
+    for (const r of rows) {
+        if (!uniqueMerchants.has(r.merchantId)) {
+            uniqueMerchants.set(r.merchantId, {
+                name: r.merchantName,
+                source: r.platform,
+                country: r.countryCode || 'SG',
+            });
+        }
+    }
+    for (const [mid, info] of uniqueMerchants) {
+        await config_1.db.query(`INSERT INTO merchants (id, name, source, country, is_active, onboarding_stage)
+         VALUES ($1, $2, $3, $4, true, 'active')
+         ON CONFLICT (id) DO NOTHING`, [mid, info.name, info.source, info.country]).catch(() => { });
+    }
     let inserted = 0;
     let updated = 0;
     for (const r of rows) {
         const result = await config_1.db.query(`INSERT INTO products
            (sku, source, merchant_id, title, description, price, currency, url,
-            image_url, category_path, brand, metadata, is_active, region, country_code)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,$13,$14)
+            image_url, category_path, brand, metadata, is_active, region, country_code, gtin, mpn)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,$13,$14,$15,$16)
          ON CONFLICT (sku, source)
          DO UPDATE SET
            title = EXCLUDED.title,
            price = EXCLUDED.price,
            currency = EXCLUDED.currency,
            image_url = EXCLUDED.image_url,
+           metadata = products.metadata || EXCLUDED.metadata,
            region = COALESCE(EXCLUDED.region, products.region),
            country_code = COALESCE(EXCLUDED.country_code, products.country_code),
+           gtin = COALESCE(EXCLUDED.gtin, products.gtin),
+           mpn = COALESCE(EXCLUDED.mpn, products.mpn),
            updated_at = NOW()
          RETURNING (xmax = 0) AS is_insert`, [
             r.sku, r.platform, r.merchantId, r.name, r.description || null,
@@ -723,6 +611,7 @@ router.post('/ingest', apiKey_1.requireApiKey, async (req, res) => {
             r.brand || null,
             JSON.stringify({ original_price: r.originalPrice, merchant_name: r.merchantName, availability: r.availability }),
             r.region || null, r.countryCode || null,
+            r.gtin || null, r.mpn || null,
         ]).catch(() => null);
         if (result && result.rows[0]) {
             if (result.rows[0].is_insert)
@@ -743,8 +632,9 @@ router.post('/ingest', apiKey_1.requireApiKey, async (req, res) => {
 function extractCategories(products) {
     const cats = new Set();
     for (const p of products) {
-        if (p.domain) {
-            const domain = p.domain.replace('.sg', '').replace('.com', '');
+        const source = p.domain || p.merchant;
+        if (source) {
+            const domain = source.replace('.sg', '').replace('.com', '');
             cats.add(domain);
         }
         if (p.metadata && typeof p.metadata === 'object') {

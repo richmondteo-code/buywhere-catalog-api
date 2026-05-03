@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
     const result = await config_1.db.query(`SELECT id, sku AS source_id, platform::text AS domain, product_url AS url,
             name AS title, price, original_price, currency, image_url,
             brand, description, category_path, rating, review_count,
-            availability, updated_at
+            availability, updated_at, mpn
      FROM products WHERE id IN (${placeholders})`, ids).catch(() => null);
     if (!result || result.rows.length === 0) {
         res.status(404).send('<h1>Products not found</h1>');
@@ -42,10 +42,12 @@ router.get('/', async (req, res) => {
         .filter((v) => v !== null);
     const lowPrice = prices.length ? Math.min(...prices) : null;
     const highPrice = prices.length ? Math.max(...prices) : null;
+    const compareUrl = `${base}/compare?ids=${ids.join(',')}`;
     // Schema.org AggregateOffer — summarizes the price range across sellers
     const aggregateOffer = {
         '@context': 'https://schema.org',
         '@type': 'AggregateOffer',
+        '@id': `${base}/#aggregate-offer`,
         priceCurrency: currency,
         offerCount: products.length,
         offers: products.map((p) => {
@@ -58,7 +60,7 @@ router.get('/', async (req, res) => {
                         ? 'https://schema.org/PreOrder'
                         : 'https://schema.org/InStock',
                 url: p.url,
-                seller: { '@type': 'Organization', name: p.domain || 'BuyWhere' },
+                seller: { '@type': 'Organization', '@id': `${base}/#organization`, name: p.domain || 'BuyWhere' },
             };
             if (p.price)
                 offer.price = parseFloat(p.price);
@@ -73,9 +75,11 @@ router.get('/', async (req, res) => {
     const itemList = {
         '@context': 'https://schema.org',
         '@type': 'ItemList',
+        '@id': `${base}/#item-list`,
         name: `Compare: ${products.map((p) => p.title.split(' ').slice(0, 4).join(' ')).join(' vs ')} | BuyWhere`,
-        url: `${base}/compare?ids=${ids.join(',')}`,
+        url: compareUrl,
         numberOfItems: products.length,
+        mainEntityOfPage: compareUrl,
         itemListElement: products.map((p, i) => ({
             '@type': 'ListItem',
             position: i + 1,
@@ -86,6 +90,8 @@ router.get('/', async (req, res) => {
                 name: p.title,
                 image: p.image_url || undefined,
                 url: `${base}/p/${p.id}`,
+                ...(p.source_id ? { sku: p.source_id } : {}),
+                ...(p.mpn ? { mpn: p.mpn } : {}),
                 ...(p.brand ? { brand: { '@type': 'Brand', name: p.brand } } : {}),
                 ...(p.rating
                     ? {
@@ -104,7 +110,7 @@ router.get('/', async (req, res) => {
                     availability: p.availability === 'out_of_stock'
                         ? 'https://schema.org/OutOfStock'
                         : 'https://schema.org/InStock',
-                    seller: { '@type': 'Organization', name: p.domain || 'BuyWhere' },
+                    seller: { '@type': 'Organization', '@id': `${base}/#organization`, name: p.domain || 'BuyWhere' },
                     url: p.url,
                     ...(p.price ? { price: parseFloat(p.price) } : {}),
                 },

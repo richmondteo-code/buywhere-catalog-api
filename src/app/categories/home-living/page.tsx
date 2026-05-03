@@ -14,6 +14,7 @@ export default function HomeLivingCategoryPage() {
     "@graph": [
       {
         "@type": "BreadcrumbList",
+        "@id": "https://buywhere.ai/#breadcrumb",
         itemListElement: [
           {
             "@type": "ListItem",
@@ -30,17 +31,21 @@ export default function HomeLivingCategoryPage() {
           {
             "@type": "ListItem",
             position: 3,
-            name: "Home & Living"
+            name: "Home & Living",
+            item: "https://buywhere.ai/categories/home-living"
           }
         ]
       },
       {
         "@type": "CollectionPage",
+        "@id": "https://buywhere.ai/categories/home-living#collection",
         name: "Home & Living Singapore | Compare Best Prices on Furniture & Household Items",
         description: "Shop home and living products in Singapore. Compare cheapest prices on furniture, kitchen appliances, bedding, and home decor from IKEA, Courts, and top retailers.",
         url: "https://buywhere.ai/categories/home-living",
+        mainEntityOfPage: "https://buywhere.ai/categories/home-living",
         publisher: {
           "@type": "Organization",
+          "@id": "https://buywhere.ai/#organization",
           name: "BuyWhere",
           url: "https://buywhere.ai"
         },

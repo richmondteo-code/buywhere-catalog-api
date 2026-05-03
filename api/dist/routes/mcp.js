@@ -5,6 +5,7 @@ const config_1 = require("../config");
 const apiKey_1 = require("../middleware/apiKey");
 const queryLog_1 = require("../middleware/queryLog");
 const errors_1 = require("../middleware/errors");
+const response_1 = require("../lib/response");
 const router = (0, express_1.Router)();
 // MCP tools manifest
 const TOOLS = [
@@ -96,8 +97,6 @@ const TOOLS = [
         },
     },
 ];
-// Static approximate exchange rates to USD — used for normalized_price_usd only.
-const MCP_TO_USD = { USD: 1, SGD: 0.74, VND: 0.000039, THB: 0.028, MYR: 0.22 };
 // Tool handlers
 async function handleSearchProducts(args) {
     const t0 = Date.now();
@@ -114,18 +113,15 @@ async function handleSearchProducts(args) {
     const limit = Math.min(Number(args.limit) || 20, 100);
     const offset = Number(args.offset) || 0;
     const compact = args.compact === true;
-    // Infer default currency from country_code; price filters apply in this currency
-    const COUNTRY_CURRENCY = { SG: 'SGD', US: 'USD', VN: 'VND', TH: 'THB', MY: 'MYR' };
-    const currency = country ? (COUNTRY_CURRENCY[country] || 'SGD') : 'SGD';
+    const currency = country ? (response_1.COUNTRY_CURRENCY[country] || 'SGD') : 'SGD';
     const cacheKey = `fts:${q}:${domain}:${region}:${country}:${category}:${currency}:${minPrice}:${maxPrice}:${limit}:${offset}:${compact ? 'c' : 'f'}`;
     try {
         const cached = await config_1.redis.get(cacheKey);
         if (cached) {
             const parsed = JSON.parse(cached);
-            if (parsed.meta) {
-                return { ...parsed, meta: { ...parsed.meta, cached: true, response_time_ms: Date.now() - t0 } };
+            if (parsed.results) {
+                return { ...parsed, cached: true, response_time_ms: Date.now() - t0 };
             }
-            return { ...parsed, cached: true, response_time_ms: Date.now() - t0 };
         }
     }
     catch (_) { /* redis miss — proceed */ }
@@ -202,60 +198,8 @@ async function handleSearchProducts(args) {
        LIMIT $${params.length - 1} OFFSET $${params.length}`, params);
         rows = result.rows;
     }
-    const data = rows.map(r => {
-        const cur = r.currency || currency;
-        const amount = r.price != null ? parseFloat(r.price) : null;
-        if (compact) {
-            const meta = r.metadata;
-            const structured_specs = {};
-            for (const k of ['brand', 'category', 'model', 'size', 'color', 'material', 'weight']) {
-                const v = meta?.[k];
-                if (v != null)
-                    structured_specs[k] = v;
-            }
-            const comparison_attributes = [];
-            if (structured_specs.brand != null)
-                comparison_attributes.push({ key: 'brand', label: 'Brand', value: structured_specs.brand });
-            if (structured_specs.category != null)
-                comparison_attributes.push({ key: 'category', label: 'Category', value: structured_specs.category });
-            if (amount != null)
-                comparison_attributes.push({ key: 'price', label: `Price (${cur})`, value: amount });
-            if (structured_specs.model != null)
-                comparison_attributes.push({ key: 'model', label: 'Model', value: structured_specs.model });
-            const rate = MCP_TO_USD[cur] ?? null;
-            const normalized_price_usd = amount != null && rate != null ? +(amount * rate).toFixed(4) : null;
-            return {
-                id: r.id,
-                canonical_id: r.id,
-                title: r.title,
-                price: { amount, currency: cur },
-                normalized_price_usd,
-                merchant: r.domain,
-                url: r.url,
-                region: r.region || null,
-                country_code: r.country_code || null,
-                structured_specs,
-                comparison_attributes,
-            };
-        }
-        return {
-            id: r.id,
-            source: r.source,
-            domain: r.domain,
-            url: r.url,
-            title: r.title,
-            price: amount,
-            currency: cur,
-            image_url: r.image_url,
-            metadata: r.metadata,
-            region: r.region || null,
-            country_code: r.country_code || null,
-            updated_at: r.updated_at,
-        };
-    });
-    const result = compact
-        ? { results: data, total: total, page: { limit, offset }, response_time_ms: Date.now() - t0, cached: false }
-        : { data, meta: { total: total, limit, offset, response_time_ms: Date.now() - t0, cached: false } };
+    const products = rows.map(r => (0, response_1.buildProduct)(r, currency, compact));
+    const result = (0, response_1.buildSearchResponse)(products, total, limit, offset, Date.now() - t0, false);
     try {
         await config_1.redis.set(cacheKey, JSON.stringify(result), 'EX', 60);
     }
@@ -277,7 +221,8 @@ async function handleGetProduct(args) {
     }
     if (!result.rows.length)
         throw { code: -32001, message: 'Product not found' };
-    return { data: result.rows[0], meta: { response_time_ms: Date.now() - t0 } };
+    const product = (0, response_1.buildProduct)(result.rows[0], 'SGD', false);
+    return (0, response_1.buildSearchResponse)([product], 1, 1, 0, Date.now() - t0, false);
 }
 async function handleCompareProducts(args) {
     const t0 = Date.now();
@@ -289,7 +234,8 @@ async function handleCompareProducts(args) {
             price, currency, image_url, brand, category_path,
             avg_rating AS rating, review_count, metadata, updated_at, region, country_code
      FROM products WHERE id IN (${placeholders})`, ids);
-    return { data: result.rows, meta: { count: result.rows.length, response_time_ms: Date.now() - t0 } };
+    const products = result.rows.map((r) => (0, response_1.buildProduct)(r, 'SGD', false));
+    return (0, response_1.buildSearchResponse)(products, products.length, ids.length, 0, Date.now() - t0, false);
 }
 async function handleGetDeals(args) {
     const t0 = Date.now();
@@ -304,16 +250,16 @@ async function handleGetDeals(args) {
         const cached = await config_1.redis.get(cacheKey);
         if (cached) {
             const parsed = JSON.parse(cached);
-            return {
-                ...parsed,
-                meta: { ...parsed.meta, cached: true, response_time_ms: Date.now() - t0 },
-            };
+            if (parsed.results) {
+                return { ...parsed, cached: true, response_time_ms: Date.now() - t0 };
+            }
         }
     }
     catch (_) { }
     const conditions = [
         `currency = $1`,
         `(metadata->>'original_price')::numeric > price`,
+        `(metadata->>'original_price')::numeric < price * 100`,
         `price > 0`,
         `(1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100 >= $2`,
     ];
@@ -343,16 +289,9 @@ async function handleGetDeals(args) {
          LIMIT $${limitIdx} OFFSET $${offsetIdx}`, dataParams);
         })(),
     ]);
-    const result = {
-        data: dataResult.rows,
-        meta: {
-            total: parseInt(countResult.rows[0].count, 10),
-            limit,
-            offset,
-            response_time_ms: Date.now() - t0,
-            cached: false,
-        },
-    };
+    const products = dataResult.rows.map((r) => (0, response_1.buildProduct)(r, currency, false));
+    const total = parseInt(countResult.rows[0].count, 10);
+    const result = (0, response_1.buildSearchResponse)(products, total, limit, offset, Date.now() - t0, false);
     config_1.redis.set(cacheKey, JSON.stringify(result), 'EX', 60).catch(() => { });
     return result;
 }
@@ -412,16 +351,14 @@ async function handleFindBestPrice(args) {
      FROM products ${where}
      ORDER BY price ASC, rank DESC
      LIMIT $${params.length}`, params);
-    const COUNTRY_CURRENCY = { SG: 'SGD', US: 'USD', VN: 'VND', TH: 'THB', MY: 'MYR' };
-    const currency = COUNTRY_CURRENCY[country] || 'SGD';
-    const toUsd = MCP_TO_USD[currency] ?? 1;
+    const currency = response_1.COUNTRY_CURRENCY[country] || 'SGD';
+    const toUsd = response_1.CURRENCY_RATES[currency] ?? 1;
     const data = result.rows.map((r) => ({
         id: r.id,
         title: r.title,
-        price: r.price,
-        currency: r.currency || currency,
+        price: { amount: r.price != null ? parseFloat(r.price) : null, currency: r.currency || currency },
         normalized_price_usd: r.price != null ? Math.round(Number(r.price) * toUsd * 100) / 100 : null,
-        domain: r.domain,
+        merchant: r.domain,
         url: r.url,
         image_url: r.image_url,
         country_code: r.country_code,

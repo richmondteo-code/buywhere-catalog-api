@@ -293,6 +293,7 @@ export default function RetailersPage() {
         "@id": "https://buywhere.ai/#website",
         url: "https://buywhere.ai",
         name: "BuyWhere",
+        inLanguage: "en",
         publisher: { "@id": "https://buywhere.ai/#organization" },
         potentialAction: {
           "@type": "SearchAction",
@@ -305,9 +306,12 @@ export default function RetailersPage() {
       },
       {
         "@type": "ItemList",
+        "@id": "https://buywhere.ai/retailers#item-list",
         name: "Retailer Coverage",
         description: "Supported merchants, coverage depth, and data freshness for the BuyWhere product catalog.",
         numberOfItems: retailers.length,
+        url: "https://buywhere.ai/retailers",
+        mainEntityOfPage: "https://buywhere.ai/retailers",
         itemListElement: retailers.map((retailer, index) => ({
           "@type": "ListItem",
           position: index + 1,

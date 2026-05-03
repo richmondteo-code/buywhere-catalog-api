@@ -1,0 +1,10 @@
+# Google Shopping feed URLs - test set
+# These are common feed paths to probe for XML/CSV merchant feeds
+https://www.nuvanta.com.sg/feed/googlebase.xml
+https://www.spectaclehut.com.sg/feed/googlebase.xml
+https://www.spectaclehut.com.sg/?feed=googlebase
+https://www.monoprice.com/feed/googlebase.xml
+https://www.monoprice.com/googlebase.xml
+https://www.anker.com/googlebase.xml
+https://www.leatherman.com/googlebase.xml
+https://burst.shopify.com/products.xml

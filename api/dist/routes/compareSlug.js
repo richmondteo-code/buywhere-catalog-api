@@ -17,6 +17,8 @@ function buildStructuredData(page, prices, base) {
         description: page.description,
         image: page.hero_image_url || page.image_url,
         brand: page.brand ? { '@type': 'Brand', name: page.brand } : undefined,
+        sku: page.sku || undefined,
+        mpn: page.mpn || undefined,
         gtin: page.gtin || undefined,
         offers: prices.length > 0 ? {
             '@type': 'AggregateOffer',
@@ -34,13 +36,14 @@ function buildStructuredData(page, prices, base) {
                         ? 'https://schema.org/PreOrder'
                         : 'https://schema.org/InStock',
                 url: p.affiliate_url || p.url,
-                seller: { '@type': 'Organization', name: p.retailer_name, url: p.retailer_domain ? `https://${p.retailer_domain}` : undefined },
+                seller: { '@type': 'Organization', '@id': `${base}/#organization`, name: p.retailer_name, url: p.retailer_domain ? `https://${p.retailer_domain}` : undefined },
             })),
         } : undefined,
     };
     const breadcrumb = {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
+        '@id': `${base}/#breadcrumb`,
         itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: base },
             { '@type': 'ListItem', position: 2, name: 'Compare', item: `${base}/compare` },
@@ -54,6 +57,8 @@ function buildStructuredData(page, prices, base) {
         ld.push({
             '@context': 'https://schema.org',
             '@type': 'FAQPage',
+            '@id': `${base}/compare/${page.slug}#faq`,
+            mainEntityOfPage: `${base}/compare/${page.slug}`,
             mainEntity: metadata.faq.map((item) => ({
                 '@type': 'Question',
                 name: item.q,
@@ -135,7 +140,8 @@ router.get('/:slug', async (req, res) => {
     }
     // Fetch all products in this comparison group, ordered by SGD price ascending
     const productsResult = await config_1.db.query(`SELECT id, title, brand, image_url, description, category_path,
-            price, currency, url, source, is_active, updated_at
+            price, currency, url, source, is_active, updated_at, gtin,
+            sku, mpn
      FROM products
      WHERE id = ANY($1::uuid[]) AND url IS NOT NULL
      ORDER BY price::numeric ASC NULLS LAST`, [productIds]).catch(() => null);
@@ -182,7 +188,7 @@ router.get('/:slug', async (req, res) => {
             id: String(canonical?.id ?? productIds[0]),
             title: canonical?.title ?? slug,
             brand: canonical?.brand ?? null,
-            gtin: null,
+            gtin: canonical?.gtin || null,
             description: canonical?.description ?? null,
             image_url: page.hero_image_url || canonical?.image_url || null,
             category_path: canonical?.category_path ?? [],
@@ -205,7 +211,7 @@ router.get('/:slug', async (req, res) => {
             { name: page.category.charAt(0).toUpperCase() + page.category.slice(1), url: `${base}/compare?category=${page.category}` },
             { name: canonical?.title ?? slug, url: `${base}/compare/${slug}` },
         ],
-        structured_data: buildStructuredData({ ...page, title: canonical?.title, brand: canonical?.brand, image_url: page.hero_image_url || canonical?.image_url }, retailers.map((r) => ({ price: r.price, availability: r.availability, url: r.url, retailer_name: r.retailer_name, retailer_domain: r.retailer_domain })), base),
+        structured_data: buildStructuredData({ ...page, title: canonical?.title, brand: canonical?.brand, gtin: canonical?.gtin, sku: canonical?.sku, mpn: canonical?.mpn, image_url: page.hero_image_url || canonical?.image_url }, retailers.map((r) => ({ price: r.price, availability: r.availability, url: r.url, retailer_name: r.retailer_name, retailer_domain: r.retailer_domain })), base),
         seo: {
             title: `Compare ${canonical?.brand ? `${canonical.brand} ` : ''}${canonical?.title ?? slug} prices across ${retailers.length} Singapore retailers — BuyWhere`,
             description: `Find the best price for ${canonical?.title ?? slug} in Singapore. Compare live prices${retailers.length > 0 ? ` from ${retailers.slice(0, 3).map((r) => r.retailer_name).join(', ')}` : ''}${lowestPriceNum ? `. From ${formatPrice(lowestPriceNum)}` : ''}.`.slice(0, 155),

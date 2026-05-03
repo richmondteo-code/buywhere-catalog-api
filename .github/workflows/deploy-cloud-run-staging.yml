@@ -162,6 +162,7 @@ jobs:
       - name: Run API latency smoke test
         env:
           API_BASE_URL: ${{ needs.deploy-cloud-run.outputs.url }}
+          K6_API_KEY: ${{ secrets.K6_API_KEY_STAGING }}
         run: |
           chmod +x scripts/cloud-run-latency-smoke-test.sh
           ./scripts/cloud-run-latency-smoke-test.sh "$API_BASE_URL"

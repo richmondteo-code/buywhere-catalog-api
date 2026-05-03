@@ -1,6 +1,7 @@
 import { getAllBlogPosts } from "@/lib/blog";
 import { PRODUCT_TAXONOMY, US_CATEGORY_META } from "@/lib/taxonomy";
 import { getUSProducts, type USProductForSitemap } from "@/lib/us-products";
+import { getSGProducts, type SGProductForSitemap } from "@/lib/sg-products";
 
 export const SITEMAP_BASE_URL = "https://buywhere.ai";
 export const MAX_URLS_PER_SITEMAP = 50_000;
@@ -212,6 +213,28 @@ export async function getProductSitemapChunkCount(): Promise<number> {
 
 export async function getProductSitemapChunk(page: number): Promise<SitemapUrlEntry[]> {
   const products = await getProductSitemapEntries();
+  const start = (page - 1) * MAX_URLS_PER_SITEMAP;
+  return products.slice(start, start + MAX_URLS_PER_SITEMAP);
+}
+
+export async function getSGProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
+  const products = await getSGProducts({ allowMockFallback: false });
+
+  return products.map((product: SGProductForSitemap) => ({
+    url: `${SITEMAP_BASE_URL}/products/sg/${product.slug}/`,
+    lastModified: product.lastUpdated,
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+}
+
+export async function getSGProductSitemapChunkCount(): Promise<number> {
+  const products = await getSGProducts({ allowMockFallback: false });
+  return Math.max(1, Math.ceil(products.length / MAX_URLS_PER_SITEMAP));
+}
+
+export async function getSGProductSitemapChunk(page: number): Promise<SitemapUrlEntry[]> {
+  const products = await getSGProductSitemapEntries();
   const start = (page - 1) * MAX_URLS_PER_SITEMAP;
   return products.slice(start, start + MAX_URLS_PER_SITEMAP);
 }

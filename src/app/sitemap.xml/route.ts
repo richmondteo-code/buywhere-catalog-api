@@ -1,13 +1,20 @@
-import { buildSitemapResponse, getProductSitemapChunkCount, renderSitemapIndex, SITEMAP_BASE_URL } from "@/lib/sitemaps";
+import { buildSitemapResponse, getProductSitemapChunkCount, getSGProductSitemapChunkCount, renderSitemapIndex, SITEMAP_BASE_URL } from "@/lib/sitemaps";
 
 export async function GET(): Promise<Response> {
   const now = new Date();
   let productChunkCount = 0;
+  let sgProductChunkCount = 0;
 
   try {
     productChunkCount = await getProductSitemapChunkCount();
   } catch {
     productChunkCount = 0;
+  }
+
+  try {
+    sgProductChunkCount = await getSGProductSitemapChunkCount();
+  } catch {
+    sgProductChunkCount = 0;
   }
 
   const sitemapEntries = [
@@ -20,6 +27,15 @@ export async function GET(): Promise<Response> {
 
       return {
         url: `${SITEMAP_BASE_URL}/sitemap-products.xml${suffix}`,
+        lastModified: now,
+      };
+    }),
+    ...Array.from({ length: sgProductChunkCount }, (_, index) => {
+      const page = index + 1;
+      const suffix = page === 1 ? "" : `?page=${page}`;
+
+      return {
+        url: `${SITEMAP_BASE_URL}/sitemap-products-sg.xml${suffix}`,
         lastModified: now,
       };
     }),

@@ -302,11 +302,13 @@ export class BuyWhereClient {
   }
 
   async getProduct(productId: number): Promise<ProductDetail> {
-    return this.request<ProductDetail>(`/v1/products/${productId}`);
+    const response = await this.request<SearchResponse>(`/v1/products/${productId}`);
+    return response.results?.[0] ?? null as unknown as ProductDetail;
   }
 
   async getProductByParams(params: GetProductParams): Promise<ProductDetail> {
-    return this.request<ProductDetail>(`/v1/products/${params.product_id}`);
+    const response = await this.request<SearchResponse>(`/v1/products/${params.product_id}`);
+    return response.results?.[0] ?? null as unknown as ProductDetail;
   }
 
   async priceHistory(
@@ -418,11 +420,11 @@ export class BuyWhereClient {
       if (error) {
         errors.push({ index, error });
         results.push({
+          results: [],
           total: 0,
-          limit: 0,
-          offset: 0,
-          has_more: false,
-          items: [],
+          page: { limit: 0, offset: 0 },
+          response_time_ms: 0,
+          cached: false,
         });
       } else if (result) {
         results.push(result);

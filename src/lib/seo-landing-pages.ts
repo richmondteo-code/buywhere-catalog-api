@@ -179,6 +179,7 @@ export function buildSeoLandingSchema(config: SeoLandingPageConfig, products: La
     "@graph": [
       {
         "@type": "BreadcrumbList",
+        "@id": `${BASE_URL}/#breadcrumb`,
         itemListElement: [
           {
             "@type": "ListItem",
@@ -196,11 +197,14 @@ export function buildSeoLandingSchema(config: SeoLandingPageConfig, products: La
       },
       {
         "@type": "CollectionPage",
+        "@id": `${canonical}#collection`,
         name: config.heroTitle,
         description: config.description,
         url: canonical,
+        mainEntityOfPage: canonical,
         isPartOf: {
           "@type": "WebSite",
+          "@id": `${BASE_URL}/#website`,
           name: "BuyWhere",
           url: BASE_URL,
         },
@@ -235,6 +239,7 @@ export function buildSeoLandingSchema(config: SeoLandingPageConfig, products: La
                       availability: "https://schema.org/InStock",
                       seller: {
                         "@type": "Organization",
+                        "@id": `${BASE_URL}/#organization`,
                         name: product.merchant,
                       },
                       url: product.href,
@@ -246,6 +251,8 @@ export function buildSeoLandingSchema(config: SeoLandingPageConfig, products: La
       },
       {
         "@type": "FAQPage",
+        "@id": `${canonical}#faq`,
+        mainEntityOfPage: canonical,
         mainEntity: config.faqs.map((faq) => ({
           "@type": "Question",
           name: faq.question,

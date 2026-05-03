@@ -101,6 +101,8 @@ def record_to_row(record):
         "indexed_at": now,
         "updated_at": now,
         "is_deal": False,
+        "gtin": record.get("gtin") or None,
+        "mpn": record.get("mpn") or None,
     }
 
 INSERT_SQL = text("""
@@ -108,17 +110,19 @@ INSERT_SQL = text("""
         id, sku, platform, platform_id, name, description, brand, price,
         currency, original_price, category_path, availability, condition,
         merchant_id, merchant_name, image_url, images, rating, review_count,
-        tags, product_url, indexed_at, updated_at, is_deal
+        tags, product_url, indexed_at, updated_at, is_deal, gtin, mpn
     ) VALUES (
         :id, :sku, :platform, :platform_id, :name, :description, :brand, :price,
         :currency, :original_price, :category_path, :availability, :condition,
         :merchant_id, :merchant_name, :image_url, :images, :rating, :review_count,
-        :tags, :product_url, :indexed_at, :updated_at, :is_deal
+        :tags, :product_url, :indexed_at, :updated_at, :is_deal, :gtin, :mpn
     )
     ON CONFLICT (platform, sku) DO UPDATE SET
         name = EXCLUDED.name,
         price = EXCLUDED.price,
         availability = EXCLUDED.availability,
+        gtin = COALESCE(EXCLUDED.gtin, products.gtin),
+        mpn = COALESCE(EXCLUDED.mpn, products.mpn),
         updated_at = EXCLUDED.updated_at
 """)
 

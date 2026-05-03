@@ -36,6 +36,7 @@ import cloudscraper
 from playwright.async_api import async_playwright
 
 from scrapers.base_scraper import BaseScraper
+from scrapers.jsonld_utils import enrich_batch_with_identifiers
 from scrapers.scraper_registry import register
 
 MERCHANT_ID = "lazada_sg_eng03"
@@ -135,11 +136,13 @@ class LazadaSGEng03Scraper(BaseScraper):
         target_products: int = 50000,
         max_pages_per_category: int = 200,
         scraperapi_key: str | None = None,
+        extract_gtin: bool = False,
     ):
         self.max_concurrent = max_concurrent
         self.target_products = target_products
         self.max_pages_per_category = max_pages_per_category
         self.scraperapi_key = scraperapi_key or os.environ.get("SCRAPERAPI_KEY")
+        self.extract_gtin = extract_gtin
         self._semaphore: asyncio.Semaphore | None = None
         self._products_outfile: str | None = None
         self._playwright = None
@@ -442,6 +445,8 @@ class LazadaSGEng03Scraper(BaseScraper):
 
             return {
                 "sku": sku,
+                "gtin": raw.get("gtin13") or raw.get("gtin") or "",
+                "mpn": raw.get("mpn") or "",
                 "merchant_id": MERCHANT_ID,
                 "title": name,
                 "description": raw.get("description", "") or raw.get("productDescription", "") or "",
@@ -521,6 +526,8 @@ class LazadaSGEng03Scraper(BaseScraper):
                         self.total_scraped += 1
 
                         if len(batch) >= self.batch_size:
+                            if self.extract_gtin:
+                                await enrich_batch_with_identifiers(batch, "url", self.client, max_concurrent=5)
                             i, u, f = await self.ingest_batch(batch)
                             counts["ingested"] += i
                             counts["updated"] += u
@@ -540,6 +547,8 @@ class LazadaSGEng03Scraper(BaseScraper):
                 await asyncio.sleep(self.delay)
 
             if batch:
+                if self.extract_gtin:
+                    await enrich_batch_with_identifiers(batch, "url", self.client, max_concurrent=5)
                 i, u, f = await self.ingest_batch(batch)
                 counts["ingested"] += i
                 counts["updated"] += u
@@ -599,6 +608,7 @@ class LazadaSGEng03Scraper(BaseScraper):
         parser.add_argument("--target", type=int, default=50000, help="Target number of products")
         parser.add_argument("--max-pages", type=int, default=200, help="Max pages per category")
         parser.add_argument("--scraperapi-key", default=None, help="ScraperAPI key for anti-bot bypass (or set SCRAPERAPI_KEY env var)")
+        parser.add_argument("--extract-gtin", action="store_true", help="Fetch product pages to extract GTIN/EAN/UPC from JSON-LD")
 
     @classmethod
     def from_args(cls, args: argparse.Namespace) -> "LazadaSGEng03Scraper":
@@ -614,6 +624,7 @@ class LazadaSGEng03Scraper(BaseScraper):
             target_products=args.target,
             max_pages_per_category=args.max_pages,
             scraperapi_key=args.scraperapi_key,
+            extract_gtin=args.extract_gtin,
         )
 
 

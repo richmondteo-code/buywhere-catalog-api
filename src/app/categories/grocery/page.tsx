@@ -14,6 +14,7 @@ export default function GroceryCategoryPage() {
     "@graph": [
       {
         "@type": "BreadcrumbList",
+        "@id": "https://buywhere.ai/#breadcrumb",
         itemListElement: [
           {
             "@type": "ListItem",
@@ -30,17 +31,21 @@ export default function GroceryCategoryPage() {
           {
             "@type": "ListItem",
             position: 3,
-            name: "Grocery"
+            name: "Grocery",
+            item: "https://buywhere.ai/categories/grocery"
           }
         ]
       },
       {
         "@type": "CollectionPage",
+        "@id": "https://buywhere.ai/categories/grocery#collection",
         name: "Grocery Singapore | Compare Prices on Food, Beverages & Daily Essentials",
         description: "Compare grocery prices in Singapore. Find cheapest deals on rice, cooking ingredients, snacks, beverages, and daily essentials from NTUC, Sheng Siong, Cold Storage, and more.",
         url: "https://buywhere.ai/categories/grocery",
+        mainEntityOfPage: "https://buywhere.ai/categories/grocery",
         publisher: {
           "@type": "Organization",
+          "@id": "https://buywhere.ai/#organization",
           name: "BuyWhere",
           url: "https://buywhere.ai"
         },

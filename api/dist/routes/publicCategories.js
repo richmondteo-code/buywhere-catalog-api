@@ -66,7 +66,8 @@ router.get('/:slug', async (req, res) => {
     let productsResult, subCatsResult;
     try {
         [productsResult, subCatsResult] = await Promise.all([
-            config_1.db.query(`SELECT id, name AS title, price, currency, image_url, platform::text AS domain, product_url AS url
+            config_1.db.query(`SELECT id, name AS title, price, currency, image_url, platform::text AS domain, product_url AS url,
+                sku, mpn
          FROM products
          WHERE currency = 'SGD' AND category_path[1] = $1
          ORDER BY updated_at DESC LIMIT $2`, [categoryName, limit]),
@@ -84,14 +85,17 @@ router.get('/:slug', async (req, res) => {
     }
     const products = productsResult.rows;
     const subCats = subCatsResult?.rows || [];
+    const categoryUrl = `${base}/c/${slug}`;
     // Schema.org ItemList
     const itemList = {
         '@context': 'https://schema.org',
         '@type': 'ItemList',
+        '@id': `${base}/#item-list`,
         name: `${categoryName} — BuyWhere`,
         description: `Browse ${products.length}+ ${categoryName} products from Singapore's top merchants.`,
-        url: `${base}/c/${slug}`,
+        url: categoryUrl,
         numberOfItems: products.length,
+        mainEntityOfPage: categoryUrl,
         itemListElement: products.map((p, i) => {
             const item = {
                 '@type': 'ListItem',
@@ -105,12 +109,14 @@ router.get('/:slug', async (req, res) => {
                     name: p.title,
                     image: p.image_url || undefined,
                     url: `${base}/p/${p.id}`,
+                    ...(p.sku ? { sku: p.sku } : {}),
+                    ...(p.mpn ? { mpn: p.mpn } : {}),
                     offers: {
                         '@type': 'Offer',
                         price: parseFloat(p.price),
                         priceCurrency: p.currency || 'SGD',
                         availability: 'https://schema.org/InStock',
-                        seller: { '@type': 'Organization', name: p.domain || 'BuyWhere' },
+                        seller: { '@type': 'Organization', '@id': `${base}/#organization`, name: p.domain || 'BuyWhere' },
                         url: p.url,
                     },
                 };
@@ -122,9 +128,10 @@ router.get('/:slug', async (req, res) => {
     const breadcrumb = {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
+        '@id': `${base}/#breadcrumb`,
         itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'BuyWhere', item: `${base}/` },
-            { '@type': 'ListItem', position: 2, name: categoryName, item: `${base}/c/${slug}` },
+            { '@type': 'ListItem', position: 2, name: categoryName, item: categoryUrl },
         ],
     };
     const subCatHtml = subCats.length

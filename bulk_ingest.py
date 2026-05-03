@@ -153,26 +153,36 @@ def record_to_row(record: dict, platform: str) -> dict | None:
         "indexed_at": now,
         "updated_at": now,
         "is_deal": False,
+        "gtin": record.get("gtin") or None,
+        "mpn": record.get("mpn") or None,
     }
 
+
+MERCHANT_UPSERT_SQL = text("""
+    INSERT INTO merchants (id, name, source, country, is_active, onboarding_stage)
+    VALUES (:id, :name, :source, :country, true, 'active')
+    ON CONFLICT (id) DO NOTHING
+""")
 
 INSERT_SQL = text("""
     INSERT INTO products (
         id, sku, platform, platform_id, name, description, brand, price,
         currency, original_price, category_path, availability, condition,
         merchant_id, merchant_name, image_url, images, rating, review_count,
-        tags, product_url, indexed_at, updated_at, is_deal
+        tags, product_url, indexed_at, updated_at, is_deal, gtin, mpn
     ) VALUES (
         :id, :sku, :platform, :platform_id, :name, :description, :brand, :price,
         :currency, :original_price, :category_path, :availability, :condition,
         :merchant_id, :merchant_name, :image_url, :images, :rating, :review_count,
-        :tags, :product_url, :indexed_at, :updated_at, :is_deal
+        :tags, :product_url, :indexed_at, :updated_at, :is_deal, :gtin, :mpn
     )
     ON CONFLICT (platform, sku) DO UPDATE SET
         name = EXCLUDED.name,
         price = EXCLUDED.price,
         original_price = EXCLUDED.original_price,
         availability = EXCLUDED.availability,
+        gtin = COALESCE(EXCLUDED.gtin, products.gtin),
+        mpn = COALESCE(EXCLUDED.mpn, products.mpn),
         updated_at = EXCLUDED.updated_at
 """)
 
@@ -199,6 +209,24 @@ async def ingest_file(engine, filepath: Path, platform: str):
                 continue
 
             if len(batch) >= BATCH_SIZE:
+                # Auto-create merchant records (BUY-8788)
+                seen_merchants = {}
+                for row in batch:
+                    mid = row["merchant_id"]
+                    if mid and mid not in seen_merchants:
+                        seen_merchants[mid] = {
+                            "id": mid,
+                            "name": row.get("merchant_name", mid),
+                            "source": row.get("platform", mid),
+                            "country": "SG",
+                        }
+                if seen_merchants:
+                    try:
+                        async with engine.begin() as conn:
+                            await conn.execute(MERCHANT_UPSERT_SQL, list(seen_merchants.values()))
+                    except Exception:
+                        pass
+
                 async with engine.begin() as conn:
                     try:
                         await conn.execute(INSERT_SQL, batch)
@@ -215,6 +243,24 @@ async def ingest_file(engine, filepath: Path, platform: str):
 
     # Final batch
     if batch:
+        # Auto-create merchant records (BUY-8788)
+        seen_merchants = {}
+        for row in batch:
+            mid = row["merchant_id"]
+            if mid and mid not in seen_merchants:
+                seen_merchants[mid] = {
+                    "id": mid,
+                    "name": row.get("merchant_name", mid),
+                    "source": row.get("platform", mid),
+                    "country": "SG",
+                }
+        if seen_merchants:
+            try:
+                async with engine.begin() as conn:
+                    await conn.execute(MERCHANT_UPSERT_SQL, list(seen_merchants.values()))
+            except Exception:
+                pass
+
         async with engine.begin() as conn:
             try:
                 await conn.execute(INSERT_SQL, batch)

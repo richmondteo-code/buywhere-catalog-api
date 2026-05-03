@@ -3,6 +3,7 @@ import { db, redis } from '../config';
 import { requireApiKey, checkRateLimit } from '../middleware/apiKey';
 import { queryLogMiddleware } from '../middleware/queryLog';
 import { buildErrorEnvelope, ErrorCode, ErrorCodeType } from '../middleware/errors';
+import { buildProduct, buildSearchResponse, COUNTRY_CURRENCY, CURRENCY_RATES } from '../lib/response';
 
 const router = Router();
 
@@ -97,9 +98,6 @@ const TOOLS = [
   },
 ];
 
-// Static approximate exchange rates to USD — used for normalized_price_usd only.
-const MCP_TO_USD: Record<string, number> = { USD: 1, SGD: 0.74, VND: 0.000039, THB: 0.028, MYR: 0.22 };
-
 // Tool handlers
 async function handleSearchProducts(args: Record<string, unknown>) {
   const t0 = Date.now();
@@ -116,8 +114,6 @@ async function handleSearchProducts(args: Record<string, unknown>) {
   const limit = Math.min(Number(args.limit) || 20, 100);
   const offset = Number(args.offset) || 0;
   const compact = args.compact === true;
-  // Infer default currency from country_code; price filters apply in this currency
-  const COUNTRY_CURRENCY: Record<string, string> = { SG: 'SGD', US: 'USD', VN: 'VND', TH: 'THB', MY: 'MYR' };
   const currency = country ? (COUNTRY_CURRENCY[country] || 'SGD') : 'SGD';
 
   const cacheKey = `fts:${q}:${domain}:${region}:${country}:${category}:${currency}:${minPrice}:${maxPrice}:${limit}:${offset}:${compact ? 'c' : 'f'}`;
@@ -125,10 +121,9 @@ async function handleSearchProducts(args: Record<string, unknown>) {
     const cached = await redis.get(cacheKey);
     if (cached) {
       const parsed = JSON.parse(cached);
-      if (parsed.meta) {
-        return { ...parsed, meta: { ...parsed.meta, cached: true, response_time_ms: Date.now() - t0 } };
+      if (parsed.results) {
+        return { ...parsed, cached: true, response_time_ms: Date.now() - t0 };
       }
-      return { ...parsed, cached: true, response_time_ms: Date.now() - t0 };
     }
   } catch (_) { /* redis miss — proceed */ }
 
@@ -221,60 +216,13 @@ async function handleSearchProducts(args: Record<string, unknown>) {
     rows = result.rows;
   }
 
-  const data = (rows as Record<string, unknown>[]).map(r => {
-    const cur = (r.currency as string) || currency;
-    const amount = r.price != null ? parseFloat(r.price as string) : null;
-    if (compact) {
-      const meta = r.metadata as Record<string, unknown> | null;
-      const structured_specs: Record<string, unknown> = {};
-      for (const k of ['brand', 'category', 'model', 'size', 'color', 'material', 'weight']) {
-        const v = meta?.[k];
-        if (v != null) structured_specs[k] = v;
-      }
-      const comparison_attributes: { key: string; label: string; value: unknown }[] = [];
-      if (structured_specs.brand != null)
-        comparison_attributes.push({ key: 'brand', label: 'Brand', value: structured_specs.brand });
-      if (structured_specs.category != null)
-        comparison_attributes.push({ key: 'category', label: 'Category', value: structured_specs.category });
-      if (amount != null)
-        comparison_attributes.push({ key: 'price', label: `Price (${cur})`, value: amount });
-      if (structured_specs.model != null)
-        comparison_attributes.push({ key: 'model', label: 'Model', value: structured_specs.model });
-      const rate = MCP_TO_USD[cur] ?? null;
-      const normalized_price_usd = amount != null && rate != null ? +(amount * rate).toFixed(4) : null;
-      return {
-        id: r.id,
-        canonical_id: r.id,
-        title: r.title,
-        price: { amount, currency: cur },
-        normalized_price_usd,
-        merchant: r.domain,
-        url: r.url,
-        region: r.region || null,
-        country_code: r.country_code || null,
-        structured_specs,
-        comparison_attributes,
-      };
-    }
-    return {
-      id: r.id,
-      source: r.source,
-      domain: r.domain,
-      url: r.url,
-      title: r.title,
-      price: amount,
-      currency: cur,
-      image_url: r.image_url,
-      metadata: r.metadata,
-      region: r.region || null,
-      country_code: r.country_code || null,
-      updated_at: r.updated_at,
-    };
-  });
+  const products = (rows as Record<string, unknown>[]).map(r =>
+    buildProduct(r, currency, compact)
+  );
 
-  const result = compact
-    ? { results: data, total: total!, page: { limit, offset }, response_time_ms: Date.now() - t0, cached: false }
-    : { data, meta: { total: total!, limit, offset, response_time_ms: Date.now() - t0, cached: false } };
+  const result = buildSearchResponse(
+    products, total!, limit, offset, Date.now() - t0, false
+  );
 
   try {
     await redis.set(cacheKey, JSON.stringify(result), 'EX', 60);
@@ -299,7 +247,8 @@ async function handleGetProduct(args: Record<string, unknown>) {
     throw { code: -32001, message: 'Product not found' };
   }
   if (!result.rows.length) throw { code: -32001, message: 'Product not found' };
-  return { data: result.rows[0], meta: { response_time_ms: Date.now() - t0 } };
+  const product = buildProduct(result.rows[0] as Record<string, unknown>, 'SGD', false);
+  return buildSearchResponse([product], 1, 1, 0, Date.now() - t0, false);
 }
 
 async function handleCompareProducts(args: Record<string, unknown>) {
@@ -314,7 +263,8 @@ async function handleCompareProducts(args: Record<string, unknown>) {
      FROM products WHERE id IN (${placeholders})`,
     ids
   );
-  return { data: result.rows, meta: { count: result.rows.length, response_time_ms: Date.now() - t0 } };
+  const products = result.rows.map((r: Record<string, unknown>) => buildProduct(r, 'SGD', false));
+  return buildSearchResponse(products, products.length, ids.length, 0, Date.now() - t0, false);
 }
 
 async function handleGetDeals(args: Record<string, unknown>) {
@@ -331,10 +281,9 @@ async function handleGetDeals(args: Record<string, unknown>) {
     const cached = await redis.get(cacheKey);
     if (cached) {
       const parsed = JSON.parse(cached);
-      return {
-        ...parsed,
-        meta: { ...parsed.meta, cached: true, response_time_ms: Date.now() - t0 },
-      };
+      if (parsed.results) {
+        return { ...parsed, cached: true, response_time_ms: Date.now() - t0 };
+      }
     }
   } catch (_) {}
 
@@ -381,16 +330,11 @@ async function handleGetDeals(args: Record<string, unknown>) {
     })(),
   ]);
 
-  const result = {
-    data: dataResult.rows,
-    meta: {
-      total: parseInt(countResult.rows[0].count, 10),
-      limit,
-      offset,
-      response_time_ms: Date.now() - t0,
-      cached: false,
-    },
-  };
+  const products = dataResult.rows.map((r: Record<string, unknown>) =>
+    buildProduct(r, currency, false)
+  );
+  const total = parseInt(countResult.rows[0].count, 10);
+  const result = buildSearchResponse(products, total, limit, offset, Date.now() - t0, false);
 
   redis.set(cacheKey, JSON.stringify(result), 'EX', 60).catch(() => {});
 
@@ -464,20 +408,18 @@ async function handleFindBestPrice(args: Record<string, unknown>) {
     params
   );
 
-  const COUNTRY_CURRENCY: Record<string, string> = { SG: 'SGD', US: 'USD', VN: 'VND', TH: 'THB', MY: 'MYR' };
   const currency = COUNTRY_CURRENCY[country] || 'SGD';
-  const toUsd = MCP_TO_USD[currency] ?? 1;
+  const toUsd = CURRENCY_RATES[currency] ?? 1;
 
   const data = result.rows.map((r: Record<string, unknown>) => ({
     id: r.id,
     title: r.title,
-    price: r.price,
-    currency: r.currency || currency,
+    price: { amount: r.price != null ? parseFloat(r.price as string) : null, currency: r.currency || currency },
     normalized_price_usd: r.price != null ? Math.round(Number(r.price) * toUsd * 100) / 100 : null,
-    domain: r.domain,
-    url: r.url,
-    image_url: r.image_url,
-    country_code: r.country_code,
+    merchant: r.domain as string,
+    url: r.url as string,
+    image_url: r.image_url as string,
+    country_code: r.country_code as string,
   }));
 
   return {

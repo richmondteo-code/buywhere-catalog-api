@@ -25,6 +25,7 @@ const sitemapCompare_1 = __importDefault(require("./routes/sitemapCompare"));
 const landing_1 = __importDefault(require("./routes/landing"));
 const clicks_1 = __importDefault(require("./routes/clicks"));
 const merchants_1 = __importDefault(require("./routes/merchants"));
+const ingest_1 = __importDefault(require("./routes/ingest"));
 function createApp() {
     const app = (0, express_1.default)();
     app.use((0, cors_1.default)({
@@ -36,7 +37,7 @@ function createApp() {
         res.set('X-Frame-Options', 'DENY');
         next();
     });
-    app.use(express_1.default.json());
+    app.use(express_1.default.json({ limit: '10mb' }));
     app.use(express_1.default.urlencoded({ extended: false }));
     // Sentry request context — attaches user/country/method for error tracking
     app.use(sentry_1.sentryRequestHandler);
@@ -74,6 +75,7 @@ function createApp() {
     app.use('/v2/products', products_1.default);
     app.use('/v1/categories', categories_1.default);
     app.use('/v1/merchants', merchants_1.default);
+    app.use('/v1/ingest', ingest_1.default);
     // Backward-compat alias: /v1/search → /v1/products/search
     app.get("/v1/search", (req, res) => {
         const qs = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";

@@ -303,6 +303,7 @@ export default async function USCategoryPage({ params }: CategoryPageProps) {
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": "https://buywhere.ai/#breadcrumb",
     itemListElement: [
       {
         "@type": "ListItem",

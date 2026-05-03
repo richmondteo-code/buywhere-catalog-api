@@ -165,6 +165,7 @@ jobs:
         env:
           API_BASE_URL: ${{ needs.deploy-cloud-run.outputs.service_url }}
           DEPLOYMENT_ID: ${{ needs.deploy-cloud-run.outputs.deployment_id }}
+          K6_API_KEY: ${{ secrets.K6_API_KEY_PRODUCTION }}
         run: |
           chmod +x scripts/cloud-run-latency-smoke-test.sh
 

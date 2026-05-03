@@ -96,6 +96,8 @@ const faqs = [
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
+  "@id": "https://buywhere.ai/#faq",
+  mainEntityOfPage: "https://buywhere.ai",
   mainEntity: faqs.map((faq) => ({
     "@type": "Question",
     name: faq.q,

@@ -27,6 +27,8 @@ from typing import Any
 
 import httpx
 
+from scrapers.jsonld_utils import enrich_batch_with_identifiers, looks_like_gtin
+
 MERCHANT_ID = "shopee_sg"
 SOURCE = "shopee_sg"
 BASE_URL = "https://www.shopee.sg"
@@ -70,12 +72,14 @@ class ShopeeScraper:
         batch_size: int = 100,
         delay: float = 1.0,
         scrape_only: bool = False,
+        extract_gtin: bool = False,
     ):
         self.api_key = api_key
         self.api_base = api_base.rstrip("/")
         self.batch_size = batch_size
         self.delay = delay
         self.scrape_only = scrape_only
+        self.extract_gtin = extract_gtin
         self.client = httpx.AsyncClient(timeout=30.0, headers=HEADERS)
         self.total_scraped = 0
         self.total_ingested = 0
@@ -182,8 +186,17 @@ class ShopeeScraper:
             tier_variations = item_basic.get("tier_variations", []) or []
             has_variants = len(tier_variations) > 0
 
+            item_sku_raw = str(item_basic.get("item_sku", "") or "")
+            gtin_val = ""
+            if looks_like_gtin(item_sku_raw):
+                gtin_val = item_sku_raw
+
+            mpn = item_basic.get("mpn", "") or ""
+
             return {
                 "sku": sku,
+                "gtin": gtin_val,
+                "mpn": mpn,
                 "merchant_id": MERCHANT_ID,
                 "title": name,
                 "description": "",
@@ -275,6 +288,8 @@ class ShopeeScraper:
                     counts["scraped"] += 1
 
                     if len(batch) >= self.batch_size:
+                        if self.extract_gtin:
+                            await enrich_batch_with_identifiers(batch, "url", self.client, max_concurrent=5)
                         i, u, f = await self.ingest_batch(batch)
                         counts["ingested"] += i
                         counts["updated"] += u
@@ -285,7 +300,7 @@ class ShopeeScraper:
                         batch = []
                         await asyncio.sleep(self.delay)
 
-            print(f"scraped={counts['scraped']}")
+            print(f"Page {page}: scraped={counts['scraped']}{', gtin=enabled' if self.extract_gtin else ''}")
 
             if len(products) < 60:
                 break
@@ -294,6 +309,8 @@ class ShopeeScraper:
             await asyncio.sleep(self.delay)
 
         if batch:
+            if self.extract_gtin:
+                await enrich_batch_with_identifiers(batch, "url", self.client, max_concurrent=5)
             i, u, f = await self.ingest_batch(batch)
             counts["ingested"] += i
             counts["updated"] += u
@@ -349,6 +366,7 @@ async def main():
     parser.add_argument("--batch-size", type=int, default=100)
     parser.add_argument("--delay", type=float, default=1.0, help="Delay between batches (seconds)")
     parser.add_argument("--scrape-only", action="store_true", help="Save to JSONL without ingesting")
+    parser.add_argument("--extract-gtin", action="store_true", help="Fetch product pages to extract GTIN/EAN/UPC from JSON-LD")
     args = parser.parse_args()
 
     scraper = ShopeeScraper(
@@ -357,6 +375,7 @@ async def main():
         batch_size=args.batch_size,
         delay=args.delay,
         scrape_only=args.scrape_only,
+        extract_gtin=args.extract_gtin,
     )
 
     try:

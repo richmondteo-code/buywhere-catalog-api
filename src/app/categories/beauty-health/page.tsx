@@ -14,6 +14,7 @@ export default function BeautyHealthCategoryPage() {
     "@graph": [
       {
         "@type": "BreadcrumbList",
+        "@id": "https://buywhere.ai/#breadcrumb",
         itemListElement: [
           {
             "@type": "ListItem",
@@ -30,17 +31,21 @@ export default function BeautyHealthCategoryPage() {
           {
             "@type": "ListItem",
             position: 3,
-            name: "Beauty & Health"
+            name: "Beauty & Health",
+            item: "https://buywhere.ai/categories/beauty-health"
           }
         ]
       },
       {
         "@type": "CollectionPage",
+        "@id": "https://buywhere.ai/categories/beauty-health#collection",
         name: "Beauty & Health Singapore | Compare Best Skincare, Makeup & Wellness Prices",
         description: "Find the best beauty products in Singapore. Compare cheapest prices on skincare, makeup, fragrances, and health supplements from Watsons, Guardian, Sephora, and more.",
         url: "https://buywhere.ai/categories/beauty-health",
+        mainEntityOfPage: "https://buywhere.ai/categories/beauty-health",
         publisher: {
           "@type": "Organization",
+          "@id": "https://buywhere.ai/#organization",
           name: "BuyWhere",
           url: "https://buywhere.ai"
         },
