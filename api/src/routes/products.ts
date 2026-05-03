@@ -4,15 +4,9 @@ import { requireApiKey, checkRateLimit, hashKey } from '../middleware/apiKey';
 import { agentDetectMiddleware } from '../middleware/agentDetect';
 import { trackApiQuery, trackProductSearch, trackProductView } from '../analytics/posthog';
 import { queryLogMiddleware } from '../middleware/queryLog';
+import { buildProduct, buildSearchResponse, COUNTRY_CURRENCY } from '../lib/response';
 
 const SEARCH_CACHE_TTL_SECONDS = 60;
-
-// Maps ISO country code to native currency — used for both query inference and ingest defaults.
-const COUNTRY_CURRENCY: Record<string, string> = { SG: 'SGD', US: 'USD', GB: 'GBP', VN: 'VND', TH: 'THB', MY: 'MYR' };
-
-// Static approximate exchange rates to USD — used for normalized_price_usd only (not billing).
-// Approximate rates as of 2026-Q1; good enough for cross-currency ordering by agents.
-const TO_USD: Record<string, number> = { USD: 1, GBP: 0.79, SGD: 0.74, VND: 0.000039, THB: 0.028, MYR: 0.22 };
 
 const router = Router();
 
@@ -51,14 +45,8 @@ router.get(
       if (cached) {
         const parsed = JSON.parse(cached);
         const elapsed = Date.now() - requestStart;
-        // compact envelope uses flat keys; legacy uses nested meta
-        if (parsed.meta) {
-          parsed.meta.cached = true;
-          parsed.meta.response_time_ms = elapsed;
-        } else {
-          parsed.cached = true;
-          parsed.response_time_ms = elapsed;
-        }
+        parsed.cached = true;
+        parsed.response_time_ms = elapsed;
         return res.json(parsed);
       }
     } catch (_) {
@@ -175,88 +163,13 @@ router.get(
     const total = parseInt(countResult.rows[0].count, 10);
     const responseTimeMs = Date.now() - requestStart;
 
-    const products = dataResult.rows.map((row) => {
-      if (compact) {
-        // Compact format for AI agents (BUY-2073): Phase 2 shape.
-        // ?compact=true opt-in only; no auto-default by UA.
-        const meta = row.metadata as Record<string, unknown> | null;
-        const amount = row.price ? parseFloat(row.price) : null;
-        const cur: string = row.currency || 'SGD';
+    const products = dataResult.rows.map((row) =>
+      buildProduct(row as Record<string, unknown>, currency, compact)
+    );
 
-        // structured_specs: explicit key-value object for agent consumption.
-        const structured_specs: Record<string, unknown> = {};
-        for (const k of ['brand', 'category', 'model', 'size', 'color', 'material', 'weight']) {
-          const v = meta?.[k];
-          if (v != null) structured_specs[k] = v;
-        }
-
-        // comparison_attributes: flat array suited for LLM tool-use comparison tasks.
-        const comparison_attributes: { key: string; label: string; value: unknown }[] = [];
-        if (structured_specs.brand != null)
-          comparison_attributes.push({ key: 'brand', label: 'Brand', value: structured_specs.brand });
-        if (structured_specs.category != null)
-          comparison_attributes.push({ key: 'category', label: 'Category', value: structured_specs.category });
-        if (amount != null)
-          comparison_attributes.push({ key: 'price', label: `Price (${cur})`, value: amount });
-        if (structured_specs.model != null)
-          comparison_attributes.push({ key: 'model', label: 'Model', value: structured_specs.model });
-        if (structured_specs.color != null)
-          comparison_attributes.push({ key: 'color', label: 'Color', value: structured_specs.color });
-
-        // normalized_price_usd: cross-currency comparison anchor (approx rates, not billing).
-        const rate = TO_USD[cur] ?? null;
-        const normalized_price_usd = amount != null && rate != null ? +(amount * rate).toFixed(4) : null;
-
-        return {
-          id: row.id,
-          canonical_id: row.id,
-          title: row.title,
-          price: { amount, currency: cur },
-          normalized_price_usd,
-          merchant: row.domain,
-          url: row.url,
-          region: row.region || null,
-          country_code: row.country_code || null,
-          structured_specs,
-          comparison_attributes,
-        };
-      }
-      return {
-        id: row.id,
-        source: row.source_id,
-        domain: row.domain,
-        url: row.url,
-        title: row.title,
-        price: row.price ? parseFloat(row.price) : null,
-        currency: row.currency,
-        image_url: row.image_url,
-        metadata: row.metadata,
-        region: row.region || null,
-        country_code: row.country_code || null,
-        updated_at: row.updated_at,
-      };
-    });
-
-    // Compact responses use a flattened envelope (results/total/page) per approved spec.
-    // Standard responses keep the legacy data/meta shape for backwards-compat.
-    const responseBody = compact
-      ? {
-          results: products,
-          total,
-          page: { limit, offset },
-          response_time_ms: responseTimeMs,
-          cached: false,
-        }
-      : {
-          data: products,
-          meta: {
-            total,
-            limit,
-            offset,
-            response_time_ms: responseTimeMs,
-            cached: false,
-          },
-        };
+    const responseBody = buildSearchResponse(
+      products, total, limit, offset, responseTimeMs, false
+    );
 
     // Cache result in Redis (fire-and-forget)
     redis.set(cacheKey, JSON.stringify(responseBody), 'EX', SEARCH_CACHE_TTL_SECONDS).catch(() => {});
@@ -312,8 +225,8 @@ router.get(
       const cached = await redis.get(cacheKey);
       if (cached) {
         const parsed = JSON.parse(cached);
-        parsed.meta.cached = true;
-        parsed.meta.response_time_ms = Date.now() - start;
+        parsed.cached = true;
+        parsed.response_time_ms = Date.now() - start;
         return res.json(parsed);
       }
     } catch (_) {}
@@ -356,27 +269,12 @@ router.get(
       ),
     ]);
 
-    const deals = dataResult.rows.map((row) => ({
-      id: row.id,
-      source: row.source_id,
-      domain: row.domain,
-      url: row.url,
-      title: row.title,
-      price: row.price ? parseFloat(row.price) : null,
-      original_price: row.original_price ? parseFloat(row.original_price) : null,
-      discount_pct: row.discount_pct ? parseFloat(row.discount_pct) : null,
-      currency: row.currency,
-      image_url: row.image_url,
-      metadata: row.metadata,
-      region: row.region || null,
-      country_code: row.country_code || null,
-      updated_at: row.updated_at,
-    }));
+    const deals = dataResult.rows.map((row) =>
+      buildProduct(row as Record<string, unknown>, currency, false)
+    );
+    const total = parseInt(countResult.rows[0].count, 10);
 
-    const responseBody = {
-      data: deals,
-      meta: { total: parseInt(countResult.rows[0].count, 10), limit, offset, response_time_ms: Date.now() - start, cached: false },
-    };
+    const responseBody = buildSearchResponse(deals, total, limit, offset, Date.now() - start, false);
     redis.set(cacheKey, JSON.stringify(responseBody), 'EX', SEARCH_CACHE_TTL_SECONDS).catch(() => {});
     res.json(responseBody);
   }
@@ -406,38 +304,20 @@ router.get(
       ids
     );
 
-    const products = result.rows.map((row) => ({
-      id: row.id,
-      source: row.source_id,
-      domain: row.domain,
-      url: row.url,
-      title: row.title,
-      price: row.price ? parseFloat(row.price) : null,
-      currency: row.currency,
-      image_url: row.image_url,
-      brand: row.brand,
-      category_path: row.category_path,
-      rating: row.rating ? parseFloat(row.rating) : null,
-      review_count: row.review_count,
-      metadata: row.metadata,
-      region: row.region || null,
-      country_code: row.country_code || null,
-      updated_at: row.updated_at,
-    }));
+    const products = result.rows.map((row) =>
+      buildProduct(row as Record<string, unknown>, 'SGD', false)
+    );
 
-    const uniqueCurrencies = [...new Set(products.map((p) => p.currency).filter(Boolean))];
+    const uniqueCurrencies = [...new Set(result.rows.map((r: Record<string, unknown>) => r.currency).filter(Boolean) as string[])];
     const currenciesMixed = uniqueCurrencies.length > 1;
 
+    const responseBody = buildSearchResponse(products, products.length, ids.length, 0, Date.now() - start, false);
     res.json({
-      data: products,
-      meta: {
-        count: products.length,
-        response_time_ms: Date.now() - start,
-        currencies_mixed: currenciesMixed,
-        ...(currenciesMixed && {
-          currency_warning: `Products span multiple currencies (${uniqueCurrencies.join(', ')}). Prices are not comparable across currencies — do not aggregate or rank by price in comparison_summary.`,
-        }),
-      },
+      ...responseBody,
+      currencies_mixed: currenciesMixed,
+      ...(currenciesMixed && {
+        currency_warning: `Products span multiple currencies (${uniqueCurrencies.join(', ')}). Prices are not comparable across currencies — do not aggregate or rank by price in comparison_summary.`,
+      }),
     });
   }
 );
@@ -697,24 +577,7 @@ router.get(
     }
 
     const row = result.rows[0];
-    const product = {
-      id: row.id,
-      source: row.source_id,
-      domain: row.domain,
-      url: row.url,
-      title: row.title,
-      price: row.price ? parseFloat(row.price) : null,
-      currency: row.currency,
-      image_url: row.image_url,
-      brand: row.brand || null,
-      category_path: row.category_path || null,
-      rating: row.rating ? parseFloat(row.rating) : null,
-      review_count: row.review_count || null,
-      metadata: row.metadata,
-      region: row.region || null,
-      country_code: row.country_code || null,
-      updated_at: row.updated_at,
-    };
+    const product = buildProduct(row as Record<string, unknown>, 'SGD', false);
 
     if (req.apiKeyRecord) {
       trackApiQuery({
@@ -738,7 +601,8 @@ router.get(
       });
     }
 
-    res.json({ data: product });
+    const responseBody = buildSearchResponse([product], 1, 1, 0, Date.now() - start, false);
+    res.json(responseBody);
   }
 );
 
@@ -913,11 +777,12 @@ router.post(
   }
 );
 
-function extractCategories(products: Array<{ domain?: string; metadata?: Record<string, unknown> | null }>): string[] {
+function extractCategories(products: Array<{ domain?: string; merchant?: string; metadata?: Record<string, unknown> | null }>): string[] {
   const cats = new Set<string>();
   for (const p of products) {
-    if (p.domain) {
-      const domain = p.domain.replace('.sg', '').replace('.com', '');
+    const source = p.domain || p.merchant;
+    if (source) {
+      const domain = source.replace('.sg', '').replace('.com', '');
       cats.add(domain);
     }
     if (p.metadata && typeof p.metadata === 'object') {
