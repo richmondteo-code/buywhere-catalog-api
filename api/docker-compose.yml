@@ -65,6 +65,8 @@ services:
       REDIS_PORT: "6379"
       PORT: "3000"
       API_BASE_URL: https://api.buywhere.ai
+      # Paperclip JWT auth (BUY-8065) — verify agent tokens
+      PAPERCLIP_API_URL: ${PAPERCLIP_API_URL:-https://api.paperclip.ai}
       # Sentry error tracking (BUY-3415) — set via AWS Secrets Manager in prod
       SENTRY_DSN: ${SENTRY_DSN:-}
       # Awin affiliate programme (BUY-6873) — set via secrets manager in prod
