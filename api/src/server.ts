@@ -1,7 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import { Sentry } from './sentry';
+import { agentDetectMiddleware, agentDiscoveryHeaders } from './middleware/agentDetect';
 import authRouter from './routes/auth';
+import keysRouter from './routes/keys';
+import { requireApiKey } from './middleware/apiKey';
 import productsRouter from './routes/products';
 import categoriesRouter from './routes/categories';
 import redirectRouter from './routes/redirect';
@@ -18,6 +21,10 @@ import revenueRouter from './routes/revenue';
 import sitemapCompareRouter from './routes/sitemapCompare';
 import landingRouter from './routes/landing';
 import clicksRouter from './routes/clicks';
+import metricsRouter from './routes/metrics';
+import developersRouter from './routes/developers';
+import ingestRouter from './routes/ingest';
+import { a2aRouter } from './routes/a2a';
 import { db } from './config';
 
 export function createApp() {
@@ -32,7 +39,9 @@ export function createApp() {
     res.set('X-Frame-Options', 'DENY');
     next();
   });
-  app.use(express.json());
+  app.use(agentDiscoveryHeaders);
+  app.use(agentDetectMiddleware);
+  app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: false }));
 
   // Health check - fast in-process check as required by BUY-3280
@@ -69,12 +78,60 @@ export function createApp() {
   // MCP JSON-RPC endpoint (Model Context Protocol)
   app.use('/mcp', mcpRouter);
 
+  // A2A Agent-to-Agent protocol endpoint (Google A2A 1.0)
+  app.use('/a2a', a2aRouter);
+
   // v1 API
   app.use('/v1/auth', authRouter);
   app.use('/v1/products', productsRouter);
   // v2 alias — same router, extends v1 contract with country_code + multi-region currency inference
   app.use('/v2/products', productsRouter);
   app.use('/v1/categories', categoriesRouter);
+  app.use('/v1/developers', developersRouter);
+  app.use('/v1/keys', keysRouter);
+  // Scraper agent ingest compat: POST /v1/ingest/products (used by all scrapers)
+  app.use('/v1/ingest', ingestRouter);
+
+  // GET /v1/usage — daily usage for the authenticated developer
+  app.get('/v1/usage', requireApiKey, async (req, res) => {
+    const { id, tier } = req.apiKeyRecord!;
+    const days = Math.min(parseInt((req.query.days as string) || '30'), 90);
+
+    const [usageResult, tierResult] = await Promise.all([
+      db.query(
+        `SELECT date_trunc('day', created_at)::date AS day,
+                COUNT(*) AS request_count
+         FROM query_log
+         WHERE api_key_id = $1
+           AND created_at >= NOW() - ($2 || ' days')::interval
+         GROUP BY day ORDER BY day DESC`,
+        [id, days]
+      ),
+      db.query(
+        `SELECT tier, rpm_limit, daily_limit FROM api_keys WHERE id = $1`,
+        [id]
+      ),
+    ]);
+
+    const dailyUsage = usageResult.rows.map((r: any) => ({
+      day: r.day,
+      request_count: parseInt(r.request_count),
+    }));
+    const total = dailyUsage.reduce((s: number, d: any) => s + d.request_count, 0);
+    const limits = tierResult.rows[0] || {};
+    const limit = parseInt(limits.daily_limit) || 1000;
+    const today = dailyUsage.find((d: any) => d.day === new Date().toISOString().slice(0, 10));
+    const todayTotal = today?.request_count || 0;
+
+    res.json({
+      daily_usage: dailyUsage,
+      total,
+      tier: limits.tier || tier,
+      limit,
+      usage_today: todayTotal,
+      usage_remaining: Math.max(0, limit - todayTotal),
+    });
+  });
 
   // Backward-compat alias: /v1/search → /v1/products/search
   app.get("/v1/search", (req, res) => {
@@ -92,6 +149,7 @@ export function createApp() {
   // Outbound click tracking (BUY-4869): /api/click redirect + /admin/clicks analytics
   app.use('/api', clicksRouter);
   app.use('/admin', clicksRouter);
+  app.use('/admin', metricsRouter);
 
   // Affiliate redirect (no /v1 prefix — short URLs)
   app.use('/r', redirectRouter);
