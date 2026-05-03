@@ -6,6 +6,7 @@ import { sendError, sendRateLimitError, ErrorCode } from './errors';
 const PAPERCLIP_API_URL = process.env.PAPERCLIP_API_URL || 'https://api.paperclip.ai';
 
 const TIER_LIMITS: Record<string, { rpm: number; daily: number }> = {
+  unverified: { rpm: 5, daily: 50 },
   free: FREE_TIER,
   pro: { rpm: 300, daily: 10000 },
   enterprise: { rpm: 1000, daily: 100000 },

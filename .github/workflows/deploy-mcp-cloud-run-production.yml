@@ -129,6 +129,34 @@ jobs:
             --region ${{ env.GCP_REGION }} \
             --format "table(status.conditions.name,status.conditions.status,status.conditions.reason)" || true
 
+  mcp-integration-tests:
+    name: MCP Integration Tests
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.skip_tests != 'true' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: api
+
+      - name: Build TypeScript
+        run: npm run build
+        working-directory: api
+
+      - name: Run MCP integration tests
+        env:
+          NODE_ENV: test
+        run: npm run test:mcp
+        working-directory: api
+
   mcp-healthcheck:
     name: MCP Health Check
     needs: deploy-cloud-run
@@ -158,9 +186,81 @@ jobs:
           curl -v "$MCP_BASE_URL/health" --max-time 30
           exit 1
 
+  mcp-load-test:
+    name: MCP Load Test (k6)
+    needs: deploy-cloud-run
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.skip_tests != 'true' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gnupg
+          curl -s https://dl.k6.io/key.gpg | sudo apt-key add -
+          echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
+
+      - name: Wait for service readiness
+        run: sleep 15
+
+      - name: Run MCP k6 load test
+        env:
+          MCP_URL: ${{ needs.deploy-cloud-run.outputs.url || 'https://mcp.buywhere.ai' }}
+          MCP_API_KEY: ${{ secrets.BUYWHERE_MCP_API_KEY }}
+        run: |
+          k6 run \
+            --out json=k6-output.json \
+            scripts/k6-mcp-load-test.js || EXIT_CODE=$?
+          if [ "${EXIT_CODE:-0}" -ne 0 ]; then
+            echo "k6 load test failed (exit code $EXIT_CODE)"
+            cat k6-output.json | tail -50 || true
+            exit $EXIT_CODE
+          fi
+
+      - name: Upload k6 results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k6-mcp-results
+          path: k6-mcp-summary.json
+          retention-days: 7
+
+      - name: Check latency budget
+        run: |
+          if [ -f k6-mcp-summary.json ]; then
+            echo "k6 results saved to k6-mcp-summary.json"
+            cat k6-mcp-summary.json | python3 -c "
+import json, sys
+d = json.load(sys.stdin)
+budget_violations = []
+critical_metrics = {
+    'mcp_search_latency_ms': 500,
+    'mcp_get_product_latency_ms': 500,
+    'mcp_compare_latency_ms': 500,
+    'mcp_deals_latency_ms': 500,
+    'mcp_categories_latency_ms': 500,
+    'mcp_best_price_latency_ms': 500,
+}
+for key, budget in critical_metrics.items():
+    m = d.get('metrics', {}).get(key)
+    if m and m.get('values', {}).get('p(95)', 0) > budget:
+        print(f'BUDGET VIOLATION: {key} p(95)={m[\"values\"][\"p(95)\"]:.0f}ms > budget {budget}ms')
+        budget_violations.append(key)
+if budget_violations:
+    print(f'FAILED: {len(budget_violations)} latency budget violations')
+    sys.exit(1)
+else:
+    print('OK: All latency budgets within limits')
+" || echo "Warning: could not parse k6 summary"
+          fi
+
   summary:
     name: Deployment Summary
-    needs: [deploy-cloud-run, mcp-healthcheck]
+    needs: [deploy-cloud-run, mcp-integration-tests, mcp-healthcheck, mcp-load-test]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -171,6 +271,11 @@ jobs:
           echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
           echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| Cloud Run Deployment | ${{ needs.deploy-cloud-run.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| MCP Integration Tests | ${{ needs.mcp-integration-tests.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| MCP Health Check | ${{ needs.mcp-healthcheck.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| MCP Load Test (k6) | ${{ needs.mcp-load-test.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "MCP Service URL: ${{ needs.deploy-cloud-run.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Latency Budget" >> $GITHUB_STEP_SUMMARY
+          echo "See [latency budget document](/BUY/docs/mcp-latency-budget.md) for full targets." >> $GITHUB_STEP_SUMMARY

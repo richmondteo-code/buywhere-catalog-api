@@ -8,6 +8,7 @@ const config_1 = require("../config");
 const errors_1 = require("./errors");
 const PAPERCLIP_API_URL = process.env.PAPERCLIP_API_URL || 'https://api.paperclip.ai';
 const TIER_LIMITS = {
+    unverified: { rpm: 5, daily: 50 },
     free: config_1.FREE_TIER,
     pro: { rpm: 300, daily: 10000 },
     enterprise: { rpm: 1000, daily: 100000 },
@@ -136,7 +137,6 @@ async function requireApiKey(req, res, next) {
         signupChannel: row.signup_channel,
         attributionSource: row.attribution_source,
     };
-    // Update last_used_at (fire-and-forget)
     config_1.db.query('UPDATE api_keys SET last_used_at = NOW() WHERE key_hash = $1', [keyHash]).catch(() => { });
     next();
 }

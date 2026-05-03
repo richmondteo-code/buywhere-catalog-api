@@ -12,10 +12,9 @@ export const db = new Pool({
 export const redis = new Redis({
   host: process.env.REDIS_HOST || '127.0.0.1',
   port: parseInt(process.env.REDIS_PORT || '6380'),
-  maxRetriesPerRequest: 1,
-  commandTimeout: 500,
-  enableOfflineQueue: false,
-  retryStrategy: (times) => Math.min(times * 100, 1000),
+  maxRetriesPerRequest: 3,
+  commandTimeout: 1000,
+  retryStrategy: (times) => Math.min(times * 200, 2000),
 });
 // Suppress unhandled-error crashes from Redis reconnect attempts
 redis.on('error', (err) => {

@@ -146,6 +146,19 @@ export async function shutdownPostHog(): Promise<void> {
   }
 }
 
+export function trackEmailVerified(apiKeyId: string, email: string): void {
+  const ph = getClient();
+  if (!ph) return;
+  ph.capture({
+    distinctId: apiKeyId,
+    event: 'email_verified',
+    properties: {
+      email,
+      verified_at: new Date().toISOString(),
+    },
+  });
+}
+
 export interface ProductSearchEvent {
   apiKey: string;
   queryText: string;

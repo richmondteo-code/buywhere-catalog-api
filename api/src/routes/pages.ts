@@ -63,7 +63,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     `SELECT id, sku AS source_id, source AS domain, url,
             title, price, currency, image_url,
             brand, description, category_path, avg_rating AS rating, review_count,
-            in_stock, metadata, updated_at
+            in_stock, metadata, updated_at, gtin, mpn
      FROM products WHERE id = $1`,
     [id]
   ).catch(() => null);
@@ -88,6 +88,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     url: p.url,
     seller: {
       '@type': 'Organization',
+      '@id': `${base}/#organization`,
       name: p.domain || 'BuyWhere',
     },
   };
@@ -96,14 +97,20 @@ router.get('/:id', async (req: Request, res: Response) => {
   const jsonld: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Product',
+    '@id': `${base}/p/${p.id}`,
     name: p.title,
     url: `${base}/p/${p.id}`,
+    mainEntityOfPage: `${base}/p/${p.id}`,
     offers: offerBase,
   };
 
   if (p.description) jsonld.description = p.description;
   if (p.image_url) jsonld.image = p.image_url;
   if (p.brand) jsonld.brand = { '@type': 'Brand', name: p.brand };
+  if (p.source_id) jsonld.sku = p.source_id;
+  if (p.mpn) jsonld.mpn = p.mpn;
+  if (p.gtin) jsonld.gtin = p.gtin;
+  if (p.category_path && p.category_path.length > 0) jsonld.category = p.category_path[0];
   if (p.rating) {
     jsonld.aggregateRating = {
       '@type': 'AggregateRating',
@@ -118,6 +125,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   const breadcrumb = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
+    '@id': `${base}/#breadcrumb`,
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'BuyWhere', item: `${base}/` },
       ...categoryPath.map((cat: string, i: number) => ({

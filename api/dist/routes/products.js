@@ -8,10 +8,10 @@ const posthog_1 = require("../analytics/posthog");
 const queryLog_1 = require("../middleware/queryLog");
 const SEARCH_CACHE_TTL_SECONDS = 60;
 // Maps ISO country code to native currency — used for both query inference and ingest defaults.
-const COUNTRY_CURRENCY = { SG: 'SGD', US: 'USD', VN: 'VND', TH: 'THB', MY: 'MYR' };
+const COUNTRY_CURRENCY = { SG: 'SGD', US: 'USD', GB: 'GBP', VN: 'VND', TH: 'THB', MY: 'MYR' };
 // Static approximate exchange rates to USD — used for normalized_price_usd only (not billing).
 // Approximate rates as of 2026-Q1; good enough for cross-currency ordering by agents.
-const TO_USD = { USD: 1, SGD: 0.74, VND: 0.000039, THB: 0.028, MYR: 0.22 };
+const TO_USD = { USD: 1, GBP: 0.79, SGD: 0.74, VND: 0.000039, THB: 0.028, MYR: 0.22 };
 const router = (0, express_1.Router)();
 // GET /v1/products/search
 // Query params: q, domain, region, country, category, min_price, max_price, currency, limit, offset, source_page
@@ -272,10 +272,11 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
 router.get('/deals', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey, apiKey_1.checkRateLimit, (0, queryLog_1.queryLogMiddleware)('products.deals'), async (req, res) => {
     const start = Date.now();
     const currency = req.query.currency || 'SGD';
+    const countryCode = (req.query.country_code || req.query.country)?.toUpperCase() || undefined;
     const minDiscount = parseFloat(req.query.min_discount || '10');
     const limit = Math.min(parseInt(req.query.limit || '20'), 100);
     const offset = parseInt(req.query.offset || '0');
-    const cacheKey = `deals:${currency}:${minDiscount}:${limit}:${offset}`;
+    const cacheKey = `deals:${currency}:${countryCode || ''}:${minDiscount}:${limit}:${offset}`;
     try {
         const cached = await config_1.redis.get(cacheKey);
         if (cached) {
@@ -286,23 +287,31 @@ router.get('/deals', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey
         }
     }
     catch (_) { }
-    // Deals: use metadata->'original_price' if available, or price_sgd comparison
+    // Deals: use metadata->'original_price' if available
+    const dealConditions = ['currency = $1'];
+    const dealParams = [currency];
+    let dealIdx = 2;
+    dealConditions.push(`(metadata->>'original_price')::numeric > price`);
+    dealConditions.push(`(((metadata->>'original_price')::numeric - price) / (metadata->>'original_price')::numeric * 100) >= $${dealIdx}`);
+    dealParams.push(minDiscount);
+    dealIdx++;
+    if (countryCode) {
+        dealConditions.push(`country_code = $${dealIdx}`);
+        dealParams.push(countryCode);
+        dealIdx++;
+    }
+    const dealWhere = dealConditions.join(' AND ');
     const [countResult, dataResult] = await Promise.all([
-        config_1.db.query(`SELECT COUNT(*) FROM products
-         WHERE currency = $1
-           AND (metadata->>'original_price')::numeric > price
-           AND (((metadata->>'original_price')::numeric - price) / (metadata->>'original_price')::numeric * 100) >= $2`, [currency, minDiscount]),
+        config_1.db.query(`SELECT COUNT(*) FROM products WHERE ${dealWhere}`, dealParams),
         config_1.db.query(`SELECT id, sku AS source_id, source AS domain, url,
                 title, price, (metadata->>'original_price')::numeric AS original_price,
                 currency, image_url, metadata, updated_at,
                 region, country_code,
                 ROUND((((metadata->>'original_price')::numeric - price) / (metadata->>'original_price')::numeric * 100)::numeric, 1) AS discount_pct
          FROM products
-         WHERE currency = $1
-           AND (metadata->>'original_price')::numeric > price
-           AND (((metadata->>'original_price')::numeric - price) / (metadata->>'original_price')::numeric * 100) >= $2
+         WHERE ${dealWhere}
          ORDER BY (((metadata->>'original_price')::numeric - price) / (metadata->>'original_price')::numeric) DESC, updated_at DESC
-         LIMIT $3 OFFSET $4`, [currency, minDiscount, limit, offset]),
+         LIMIT $${dealIdx} OFFSET $${dealIdx + 1}`, [...dealParams, limit, offset]),
     ]);
     const deals = dataResult.rows.map((row) => ({
         id: row.id,
@@ -466,7 +475,7 @@ router.get('/:id/similar', agentDetect_1.agentDetectMiddleware, apiKey_1.require
     const { id } = req.params;
     const limit = Math.min(parseInt(req.query.limit || '8'), 20);
     // Fetch the source product
-    const srcResult = await config_1.db.query(`SELECT id, title, brand, category_path, currency, search_vector
+    const srcResult = await config_1.db.query(`SELECT id, title, brand, category_path, currency, country_code, search_vector
        FROM products WHERE id = $1`, [id]);
     if (srcResult.rows.length === 0) {
         res.status(404).json({ error: 'Product not found' });
@@ -474,20 +483,25 @@ router.get('/:id/similar', agentDetect_1.agentDetectMiddleware, apiKey_1.require
     }
     const src = srcResult.rows[0];
     const currency = src.currency || 'SGD';
+    const sourceCountry = src.country_code || null;
     // Phase 1: same brand + same first category element (indexed columns)
     const brand = src.brand || null;
     const topCategory = src.category_path?.[0] || null;
     let similar = [];
     if (brand && topCategory) {
+        const brandCatParams = [id, brand, topCategory, currency];
+        let brandCatWhere = `id != $1 AND brand = $2 AND category_path[1] = $3 AND currency = $4`;
+        if (sourceCountry) {
+            brandCatWhere += ` AND country_code = $5`;
+            brandCatParams.push(sourceCountry);
+        }
+        brandCatParams.push(limit);
         const brandCatResult = await config_1.db.query(`SELECT id, sku AS source_id, source AS domain, url, title, price, currency,
                 image_url, brand, category_path, region, country_code
          FROM products
-         WHERE id != $1
-           AND brand = $2
-           AND category_path[1] = $3
-           AND currency = $4
+         WHERE ${brandCatWhere}
          ORDER BY updated_at DESC
-         LIMIT $5`, [id, brand, topCategory, currency, limit]);
+         LIMIT $${brandCatParams.length}`, brandCatParams);
         similar = brandCatResult.rows;
     }
     // Phase 2: FTS on title to pad remaining slots (if < limit results so far)
@@ -495,15 +509,26 @@ router.get('/:id/similar', agentDetect_1.agentDetectMiddleware, apiKey_1.require
         const needed = limit - similar.length;
         const existingIds = [id, ...similar.map((r) => r.id)];
         const placeholders = existingIds.map((_, i) => `$${i + 1}`).join(',');
+        let ftsIdx = existingIds.length + 1;
+        let ftsWhere = `id NOT IN (${placeholders}) AND currency = $${ftsIdx}`;
+        const ftsParams = [...existingIds, currency];
+        ftsIdx++;
+        ftsWhere += ` AND search_vector @@ plainto_tsquery('english', $${ftsIdx})`;
+        ftsParams.push(src.title);
+        ftsIdx++;
+        if (sourceCountry) {
+            ftsWhere += ` AND country_code = $${ftsIdx}`;
+            ftsParams.push(sourceCountry);
+            ftsIdx++;
+        }
+        ftsParams.push(needed);
         const ftsResult = await config_1.db.query(`SELECT id, sku AS source_id, source AS domain, url, title, price, currency,
                 image_url, brand, category_path, region, country_code
          FROM products
-         WHERE id NOT IN (${placeholders})
-           AND currency = $${existingIds.length + 1}
-           AND search_vector @@ plainto_tsquery('english', $${existingIds.length + 2})
+         WHERE ${ftsWhere}
          ORDER BY ts_rank(search_vector, plainto_tsquery('english', $${existingIds.length + 2})) DESC,
                   updated_at DESC
-         LIMIT $${existingIds.length + 3}`, [...existingIds, currency, src.title, needed]);
+         LIMIT $${ftsParams.length}`, ftsParams);
         similar = [...similar, ...ftsResult.rows];
     }
     const data = similar.map((row) => ({
@@ -526,10 +551,17 @@ router.get('/:id/similar', agentDetect_1.agentDetectMiddleware, apiKey_1.require
 router.get('/:id', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey, apiKey_1.checkRateLimit, (0, queryLog_1.queryLogMiddleware)('products.get'), async (req, res) => {
     const start = Date.now();
     const { id } = req.params;
-    const result = await config_1.db.query(`SELECT id, sku AS source_id, source AS domain, url,
-              title, price, currency, image_url, metadata, updated_at,
-              region, country_code, brand, category_path, avg_rating AS rating, review_count
-       FROM products WHERE id = $1`, [id]);
+    let result;
+    try {
+        result = await config_1.db.query(`SELECT id, sku AS source_id, source AS domain, url,
+                title, price, currency, image_url, metadata, updated_at,
+                region, country_code, brand, category_path, avg_rating AS rating, review_count
+         FROM products WHERE id = $1`, [id]);
+    }
+    catch {
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+    }
     if (result.rows.length === 0) {
         res.status(404).json({ error: 'Product not found' });
         return;
@@ -605,11 +637,11 @@ router.post('/ingest', apiKey_1.requireApiKey, async (req, res) => {
         return;
     }
     const VALID_PLATFORMS = new Set([
-        'amazon_sg', 'asos', 'audiohouse', 'bestdenki', 'books_com_tw', 'bukalapak',
+        'amazon_sg', 'amazon_uk', 'amazon_us', 'asos', 'audiohouse', 'bestdenki', 'books_com_tw', 'bukalapak',
         'carousell', 'castlery', 'challenger', 'coldstorage', 'coupang', 'courts',
         'decathlon', 'ezbuy', 'fairprice', 'flipkart', 'fortytwo', 'gaincity', 'giant',
-        'guardian', 'harvey_norman', 'hipvan', 'iherb', 'ikea', 'ishopchangi', 'kohepets',
-        'lazada', 'lovebonito', 'maybelline', 'merchant_direct', 'metro', 'mothercare',
+        'guardian', 'harvey_norman', 'hengfohtong', 'hipvan', 'iherb', 'ikea', 'ishopchangi', 'kohepets',
+        'lazada', 'lovebonito', 'maybelline', 'merchant_direct', 'metro', 'mothercare', 'motherswork',
         'mustafa', 'myntra', 'nike', 'petloverscentre', 'popular', 'qoo10', 'rakuten',
         'redmart', 'robinsons', 'sasa', 'sephora', 'shein', 'shengsiong', 'shopee',
         'stereo', 'tangs', 'tiki', 'tokopedia', 'toysrus', 'uniqlo', 'vuori', 'watsons', 'zalora',

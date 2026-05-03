@@ -19,6 +19,8 @@ function buildStructuredData(page: Record<string, unknown>, prices: Record<strin
     description: page.description,
     image: page.hero_image_url || page.image_url,
     brand: page.brand ? { '@type': 'Brand', name: page.brand } : undefined,
+    sku: page.sku || undefined,
+    mpn: page.mpn || undefined,
     gtin: page.gtin || undefined,
     offers: prices.length > 0 ? {
       '@type': 'AggregateOffer',
@@ -36,7 +38,7 @@ function buildStructuredData(page: Record<string, unknown>, prices: Record<strin
           ? 'https://schema.org/PreOrder'
           : 'https://schema.org/InStock',
         url: p.affiliate_url || p.url,
-        seller: { '@type': 'Organization', name: p.retailer_name, url: p.retailer_domain ? `https://${p.retailer_domain}` : undefined },
+        seller: { '@type': 'Organization', '@id': `${base}/#organization`, name: p.retailer_name, url: p.retailer_domain ? `https://${p.retailer_domain}` : undefined },
       })),
     } : undefined,
   };
@@ -44,6 +46,7 @@ function buildStructuredData(page: Record<string, unknown>, prices: Record<strin
   const breadcrumb = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
+    '@id': `${base}/#breadcrumb`,
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: base },
       { '@type': 'ListItem', position: 2, name: 'Compare', item: `${base}/compare` },
@@ -59,6 +62,8 @@ function buildStructuredData(page: Record<string, unknown>, prices: Record<strin
     ld.push({
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
+      '@id': `${base}/compare/${page.slug}#faq`,
+      mainEntityOfPage: `${base}/compare/${page.slug}`,
       mainEntity: (metadata.faq as Array<{ q: string; a: string }>).map((item) => ({
         '@type': 'Question',
         name: item.q,
@@ -151,9 +156,11 @@ router.get('/:slug', async (req: Request, res: Response) => {
     description: string | null; category_path: string[] | null;
     price: string | null; currency: string | null;
     url: string; source: string; is_active: boolean | null; updated_at: string;
+    gtin: string | null; sku: string | null; mpn: string | null;
   }>(
     `SELECT id, title, brand, image_url, description, category_path,
-            price, currency, url, source, is_active, updated_at
+            price, currency, url, source, is_active, updated_at, gtin,
+            sku, mpn
      FROM products
      WHERE id = ANY($1::uuid[]) AND url IS NOT NULL
      ORDER BY price::numeric ASC NULLS LAST`,
@@ -209,7 +216,7 @@ router.get('/:slug', async (req: Request, res: Response) => {
       id: String(canonical?.id ?? productIds[0]),
       title: canonical?.title ?? slug,
       brand: canonical?.brand ?? null,
-      gtin: null,
+      gtin: canonical?.gtin || null,
       description: canonical?.description ?? null,
       image_url: page.hero_image_url || canonical?.image_url || null,
       category_path: canonical?.category_path ?? [],
@@ -233,7 +240,7 @@ router.get('/:slug', async (req: Request, res: Response) => {
       { name: canonical?.title ?? slug, url: `${base}/compare/${slug}` },
     ],
     structured_data: buildStructuredData(
-      { ...page, title: canonical?.title, brand: canonical?.brand, image_url: page.hero_image_url || canonical?.image_url } as Record<string, unknown>,
+      { ...page, title: canonical?.title, brand: canonical?.brand, gtin: canonical?.gtin, sku: canonical?.sku, mpn: canonical?.mpn, image_url: page.hero_image_url || canonical?.image_url } as Record<string, unknown>,
       retailers.map((r) => ({ price: r.price, availability: r.availability, url: r.url, retailer_name: r.retailer_name, retailer_domain: r.retailer_domain })) as Record<string, unknown>[],
       base
     ),

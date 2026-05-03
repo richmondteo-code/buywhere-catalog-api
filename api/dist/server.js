@@ -24,6 +24,7 @@ const revenue_1 = __importDefault(require("./routes/revenue"));
 const sitemapCompare_1 = __importDefault(require("./routes/sitemapCompare"));
 const landing_1 = __importDefault(require("./routes/landing"));
 const clicks_1 = __importDefault(require("./routes/clicks"));
+const merchants_1 = __importDefault(require("./routes/merchants"));
 function createApp() {
     const app = (0, express_1.default)();
     app.use((0, cors_1.default)({
@@ -37,6 +38,8 @@ function createApp() {
     });
     app.use(express_1.default.json());
     app.use(express_1.default.urlencoded({ extended: false }));
+    // Sentry request context — attaches user/country/method for error tracking
+    app.use(sentry_1.sentryRequestHandler);
     // Health check - fast in-process check as required by BUY-3280
     app.get('/health', (_req, res) => {
         res.json({
@@ -66,19 +69,11 @@ function createApp() {
     app.use('/mcp', mcp_1.default);
     // v1 API
     app.use('/v1/auth', auth_1.default);
-    // Compat: GET /v1/products (no subpath) → /v1/products/search (BUY-6484)
-    // @buywhere/mcp-server@0.1.1 calls /v1/products instead of /v1/products/search;
-    // this rewrite unblocks all existing installs without a redirect (auth flows normally).
-    app.use('/v1/products', (req, _res, next) => {
-        if (req.method === 'GET' && req.path === '/') {
-            req.url = req.url.replace(/^\/(\?|$)/, '/search$1');
-        }
-        next();
-    });
     app.use('/v1/products', products_1.default);
     // v2 alias — same router, extends v1 contract with country_code + multi-region currency inference
     app.use('/v2/products', products_1.default);
     app.use('/v1/categories', categories_1.default);
+    app.use('/v1/merchants', merchants_1.default);
     // Backward-compat alias: /v1/search → /v1/products/search
     app.get("/v1/search", (req, res) => {
         const qs = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
@@ -158,7 +153,7 @@ function createApp() {
     app.get('/llms.txt', (_req, res) => {
         res.set('X-Robots-Tag', 'ai-index');
         res.set('Cache-Control', 'public, max-age=86400');
-        res.type('text/plain').send(`# BuyWhere\n\nBuyWhere is a structured product catalog and price comparison API for AI agents and LLM applications. We provide real-time pricing, availability, and product data from Singapore's major e-commerce platforms (Lazada, Shopee, Best Denki, and others).\n\n## What we offer\n- REST API: GET /v1/products, GET /v1/offers, GET /v1/categories\n- MCP endpoint: https://mcp.buywhere.ai/mcp\n- Schema.org-compatible product data (Product, Offer, ItemList)\n- Coverage: 2M+ Singapore products across 40+ merchants\n- Use cases: price comparison agents, shopping assistants, market research tools\n\n## Documentation\n- API docs: https://docs.buywhere.ai\n- MCP guide: https://api.buywhere.ai/docs/guides/mcp\n- GitHub: https://github.com/BuyWhere/buywhere\n\n## Licensing\nFree tier: 1,000 API calls/month. Commercial plans available.\n`);
+        res.type('text/plain').send(`# BuyWhere\n\nBuyWhere is a structured product catalog and price comparison API for AI agents and LLM applications. We provide real-time pricing, availability, and product data from Singapore's major e-commerce platforms (Lazada, Shopee, Best Denki, and others).\n\n## What we offer\n- REST API: GET /v1/products, GET /v1/offers, GET /v1/categories\n- MCP endpoint: https://api.buywhere.ai/mcp\n- Schema.org-compatible product data (Product, Offer, ItemList)\n- Coverage: 2M+ Singapore products across 40+ merchants\n- Use cases: price comparison agents, shopping assistants, market research tools\n\n## Documentation\n- API docs: https://docs.buywhere.ai\n- MCP guide: https://api.buywhere.ai/docs/guides/mcp\n- GitHub: https://github.com/BuyWhere/buywhere\n\n## Licensing\nFree tier: 1,000 API calls/month. Commercial plans available.\n`);
     });
     // Landing pages — homepage (en_SG) and US edition (en_US)
     app.use(landing_1.default);

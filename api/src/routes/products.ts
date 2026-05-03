@@ -8,11 +8,11 @@ import { queryLogMiddleware } from '../middleware/queryLog';
 const SEARCH_CACHE_TTL_SECONDS = 60;
 
 // Maps ISO country code to native currency — used for both query inference and ingest defaults.
-const COUNTRY_CURRENCY: Record<string, string> = { SG: 'SGD', US: 'USD', VN: 'VND', TH: 'THB', MY: 'MYR' };
+const COUNTRY_CURRENCY: Record<string, string> = { SG: 'SGD', US: 'USD', GB: 'GBP', VN: 'VND', TH: 'THB', MY: 'MYR' };
 
 // Static approximate exchange rates to USD — used for normalized_price_usd only (not billing).
 // Approximate rates as of 2026-Q1; good enough for cross-currency ordering by agents.
-const TO_USD: Record<string, number> = { USD: 1, SGD: 0.74, VND: 0.000039, THB: 0.028, MYR: 0.22 };
+const TO_USD: Record<string, number> = { USD: 1, GBP: 0.79, SGD: 0.74, VND: 0.000039, THB: 0.028, MYR: 0.22 };
 
 const router = Router();
 
@@ -302,11 +302,12 @@ router.get(
   async (req: Request, res: Response) => {
     const start = Date.now();
     const currency = (req.query.currency as string) || 'SGD';
+    const countryCode = ((req.query.country_code as string | undefined) || (req.query.country as string | undefined))?.toUpperCase() || undefined;
     const minDiscount = parseFloat((req.query.min_discount as string) || '10');
     const limit = Math.min(parseInt((req.query.limit as string) || '20'), 100);
     const offset = parseInt((req.query.offset as string) || '0');
 
-    const cacheKey = `deals:${currency}:${minDiscount}:${limit}:${offset}`;
+    const cacheKey = `deals:${currency}:${countryCode || ''}:${minDiscount}:${limit}:${offset}`;
     try {
       const cached = await redis.get(cacheKey);
       if (cached) {
@@ -317,28 +318,41 @@ router.get(
       }
     } catch (_) {}
 
-    // Deals: use metadata->'original_price' if available, or price_sgd comparison
+    // Deals: use metadata->'original_price' if available
+    const dealConditions: string[] = ['currency = $1'];
+    const dealParams: unknown[] = [currency];
+    let dealIdx = 2;
+
+    dealConditions.push(`(metadata->>'original_price')::numeric > price`);
+    dealConditions.push(`(metadata->>'original_price')::numeric < price * 100`);
+    dealConditions.push(`((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100) >= $${dealIdx}`);
+    dealParams.push(minDiscount);
+    dealIdx++;
+
+    if (countryCode) {
+      dealConditions.push(`country_code = $${dealIdx}`);
+      dealParams.push(countryCode);
+      dealIdx++;
+    }
+
+    const dealWhere = dealConditions.join(' AND ');
+
     const [countResult, dataResult] = await Promise.all([
       db.query(
-        `SELECT COUNT(*) FROM products
-         WHERE currency = $1
-           AND (metadata->>'original_price')::numeric > price
-           AND (((metadata->>'original_price')::numeric - price) / (metadata->>'original_price')::numeric * 100) >= $2`,
-        [currency, minDiscount]
+        `SELECT COUNT(*) FROM products WHERE ${dealWhere}`,
+        dealParams
       ),
       db.query(
         `SELECT id, sku AS source_id, source AS domain, url,
                 title, price, (metadata->>'original_price')::numeric AS original_price,
                 currency, image_url, metadata, updated_at,
                 region, country_code,
-                ROUND((((metadata->>'original_price')::numeric - price) / (metadata->>'original_price')::numeric * 100)::numeric, 1) AS discount_pct
+                ROUND(((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100)::numeric, 1) AS discount_pct
          FROM products
-         WHERE currency = $1
-           AND (metadata->>'original_price')::numeric > price
-           AND (((metadata->>'original_price')::numeric - price) / (metadata->>'original_price')::numeric * 100) >= $2
-         ORDER BY (((metadata->>'original_price')::numeric - price) / (metadata->>'original_price')::numeric) DESC, updated_at DESC
-         LIMIT $3 OFFSET $4`,
-        [currency, minDiscount, limit, offset]
+         WHERE ${dealWhere}
+         ORDER BY (1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) DESC, updated_at DESC
+         LIMIT $${dealIdx} OFFSET $${dealIdx + 1}`,
+        [...dealParams, limit, offset]
       ),
     ]);
 
@@ -564,7 +578,7 @@ router.get(
 
     // Fetch the source product
     const srcResult = await db.query(
-      `SELECT id, title, brand, category_path, currency, search_vector
+      `SELECT id, title, brand, category_path, currency, country_code, search_vector
        FROM products WHERE id = $1`,
       [id]
     );
@@ -574,6 +588,7 @@ router.get(
     }
     const src = srcResult.rows[0];
     const currency = src.currency || 'SGD';
+    const sourceCountry = src.country_code || null;
 
     // Phase 1: same brand + same first category element (indexed columns)
     const brand = src.brand || null;
@@ -582,17 +597,21 @@ router.get(
     let similar: unknown[] = [];
 
     if (brand && topCategory) {
+      const brandCatParams: unknown[] = [id, brand, topCategory, currency];
+      let brandCatWhere = `id != $1 AND brand = $2 AND category_path[1] = $3 AND currency = $4`;
+      if (sourceCountry) {
+        brandCatWhere += ` AND country_code = $5`;
+        brandCatParams.push(sourceCountry);
+      }
+      brandCatParams.push(limit);
       const brandCatResult = await db.query(
         `SELECT id, sku AS source_id, source AS domain, url, title, price, currency,
                 image_url, brand, category_path, region, country_code
          FROM products
-         WHERE id != $1
-           AND brand = $2
-           AND category_path[1] = $3
-           AND currency = $4
+         WHERE ${brandCatWhere}
          ORDER BY updated_at DESC
-         LIMIT $5`,
-        [id, brand, topCategory, currency, limit]
+         LIMIT $${brandCatParams.length}`,
+        brandCatParams
       );
       similar = brandCatResult.rows;
     }
@@ -602,17 +621,28 @@ router.get(
       const needed = limit - similar.length;
       const existingIds = [id, ...(similar as Array<{ id: string }>).map((r) => r.id)];
       const placeholders = existingIds.map((_, i) => `$${i + 1}`).join(',');
+      let ftsIdx = existingIds.length + 1;
+      let ftsWhere = `id NOT IN (${placeholders}) AND currency = $${ftsIdx}`;
+      const ftsParams: unknown[] = [...existingIds, currency];
+      ftsIdx++;
+      ftsWhere += ` AND search_vector @@ plainto_tsquery('english', $${ftsIdx})`;
+      ftsParams.push(src.title);
+      ftsIdx++;
+      if (sourceCountry) {
+        ftsWhere += ` AND country_code = $${ftsIdx}`;
+        ftsParams.push(sourceCountry);
+        ftsIdx++;
+      }
+      ftsParams.push(needed);
       const ftsResult = await db.query(
         `SELECT id, sku AS source_id, source AS domain, url, title, price, currency,
                 image_url, brand, category_path, region, country_code
          FROM products
-         WHERE id NOT IN (${placeholders})
-           AND currency = $${existingIds.length + 1}
-           AND search_vector @@ plainto_tsquery('english', $${existingIds.length + 2})
+         WHERE ${ftsWhere}
          ORDER BY ts_rank(search_vector, plainto_tsquery('english', $${existingIds.length + 2})) DESC,
                   updated_at DESC
-         LIMIT $${existingIds.length + 3}`,
-        [...existingIds, currency, src.title, needed]
+         LIMIT $${ftsParams.length}`,
+        ftsParams
       );
       similar = [...similar, ...ftsResult.rows];
     }
@@ -647,13 +677,19 @@ router.get(
     const start = Date.now();
     const { id } = req.params;
 
-    const result = await db.query(
-      `SELECT id, sku AS source_id, source AS domain, url,
-              title, price, currency, image_url, metadata, updated_at,
-              region, country_code, brand, category_path, avg_rating AS rating, review_count
-       FROM products WHERE id = $1`,
-      [id]
-    );
+    let result;
+    try {
+      result = await db.query(
+        `SELECT id, sku AS source_id, source AS domain, url,
+                title, price, currency, image_url, metadata, updated_at,
+                region, country_code, brand, category_path, avg_rating AS rating, review_count
+         FROM products WHERE id = $1`,
+        [id]
+      );
+    } catch {
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
 
     if (result.rows.length === 0) {
       res.status(404).json({ error: 'Product not found' });
@@ -737,11 +773,11 @@ router.post(
     }
 
     const VALID_PLATFORMS = new Set([
-      'amazon_sg','amazon_us','asos','audiohouse','bestdenki','books_com_tw','bukalapak',
+      'amazon_sg','amazon_uk','amazon_us','asos','audiohouse','bestdenki','books_com_tw','bukalapak',
       'carousell','castlery','challenger','coldstorage','coupang','courts',
       'decathlon','ezbuy','fairprice','flipkart','fortytwo','gaincity','giant',
-      'guardian','harvey_norman','hipvan','iherb','ikea','ishopchangi','kohepets',
-      'lazada','lovebonito','maybelline','merchant_direct','metro','mothercare',
+      'guardian','harvey_norman','hengfohtong','hipvan','iherb','ikea','ishopchangi','kohepets',
+      'lazada','lovebonito','maybelline','merchant_direct','metro','mothercare','motherswork',
       'mustafa','myntra','nike','petloverscentre','popular','qoo10','rakuten',
       'redmart','robinsons','sasa','sephora','shein','shengsiong','shopee',
       'stereo','tangs','tiki','tokopedia','toysrus','uniqlo','vuori','watsons','zalora',
@@ -754,6 +790,7 @@ router.post(
       description?: string; imageUrl?: string; images?: string[];
       categoryPath: string[]; availability: string;
       region?: string; countryCode?: string;
+      gtin?: string; mpn?: string;
     }> = [];
 
     const errors: string[] = [];
@@ -777,17 +814,25 @@ router.post(
         name: String(p.name).slice(0, 1000),
         price: parseFloat(p.price),
         currency: p.currency || (p.country_code ? COUNTRY_CURRENCY[(p.country_code as string).toUpperCase()] : null) || (p.countryCode ? COUNTRY_CURRENCY[(p.countryCode as string).toUpperCase()] : null) || 'SGD',
+        gtin: p.gtin ? String(p.gtin).slice(0, 14) : undefined,
+        mpn: p.mpn ? String(p.mpn).slice(0, 100) : undefined,
         productUrl: p.product_url || p.productUrl,
         merchantId: p.merchant_id || p.merchantId || p.platform,
         merchantName: p.merchant_name || p.merchantName || p.platform,
-        originalPrice: p.original_price || p.originalPrice ? parseFloat(p.original_price || p.originalPrice) : undefined,
+        originalPrice: p.original_price || p.originalPrice
+          ? (() => {
+              const op = parseFloat(p.original_price || p.originalPrice);
+              const cp = parseFloat(p.price);
+              return !isNaN(op) && !isNaN(cp) && op > cp && op <= cp * 10 ? op : undefined;
+            })()
+          : undefined,
         brand: p.brand ? String(p.brand).slice(0, 200) : undefined,
         description: p.description ? String(p.description).slice(0, 5000) : undefined,
         imageUrl: p.image_url || p.imageUrl || undefined,
         images: Array.isArray(p.images) ? p.images.slice(0, 20) : undefined,
         categoryPath: Array.isArray(p.category_path || p.categoryPath)
           ? (p.category_path || p.categoryPath).slice(0, 10)
-          : [],
+          : ['Uncategorized'],
         availability: p.availability || 'in_stock',
         region: p.region || undefined,
         countryCode: p.country_code || p.countryCode || undefined,
@@ -799,6 +844,26 @@ router.post(
       return;
     }
 
+    // Auto-create merchant records for any new merchant IDs (BUY-8788)
+    const uniqueMerchants = new Map<string, { name: string; source: string; country: string }>();
+    for (const r of rows) {
+      if (!uniqueMerchants.has(r.merchantId)) {
+        uniqueMerchants.set(r.merchantId, {
+          name: r.merchantName,
+          source: r.platform,
+          country: r.countryCode || 'SG',
+        });
+      }
+    }
+    for (const [mid, info] of uniqueMerchants) {
+      await db.query(
+        `INSERT INTO merchants (id, name, source, country, is_active, onboarding_stage)
+         VALUES ($1, $2, $3, $4, true, 'active')
+         ON CONFLICT (id) DO NOTHING`,
+        [mid, info.name, info.source, info.country]
+      ).catch(() => {});
+    }
+
     let inserted = 0;
     let updated = 0;
 
@@ -806,16 +871,19 @@ router.post(
       const result = await db.query(
         `INSERT INTO products
            (sku, source, merchant_id, title, description, price, currency, url,
-            image_url, category_path, brand, metadata, is_active, region, country_code)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,$13,$14)
+            image_url, category_path, brand, metadata, is_active, region, country_code, gtin, mpn)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,$13,$14,$15,$16)
          ON CONFLICT (sku, source)
          DO UPDATE SET
            title = EXCLUDED.title,
            price = EXCLUDED.price,
            currency = EXCLUDED.currency,
            image_url = EXCLUDED.image_url,
+           metadata = products.metadata || EXCLUDED.metadata,
            region = COALESCE(EXCLUDED.region, products.region),
            country_code = COALESCE(EXCLUDED.country_code, products.country_code),
+           gtin = COALESCE(EXCLUDED.gtin, products.gtin),
+           mpn = COALESCE(EXCLUDED.mpn, products.mpn),
            updated_at = NOW()
          RETURNING (xmax = 0) AS is_insert`,
         [
@@ -825,6 +893,7 @@ router.post(
           r.brand || null,
           JSON.stringify({ original_price: r.originalPrice, merchant_name: r.merchantName, availability: r.availability }),
           r.region || null, r.countryCode || null,
+          r.gtin || null, r.mpn || null,
         ]
       ).catch(() => null);
 

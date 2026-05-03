@@ -6,6 +6,7 @@ exports.trackRegistration = trackRegistration;
 exports.trackComparePageView = trackComparePageView;
 exports.trackCompareRetailerClick = trackCompareRetailerClick;
 exports.shutdownPostHog = shutdownPostHog;
+exports.trackEmailVerified = trackEmailVerified;
 exports.trackProductSearch = trackProductSearch;
 exports.trackProductView = trackProductView;
 const posthog_node_1 = require("posthog-node");
@@ -114,6 +115,19 @@ async function shutdownPostHog() {
     if (client) {
         await client.shutdown();
     }
+}
+function trackEmailVerified(apiKeyId, email) {
+    const ph = getClient();
+    if (!ph)
+        return;
+    ph.capture({
+        distinctId: apiKeyId,
+        event: 'email_verified',
+        properties: {
+            email,
+            verified_at: new Date().toISOString(),
+        },
+    });
 }
 function trackProductSearch(event) {
     const ph = getClient();

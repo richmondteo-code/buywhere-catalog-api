@@ -58,13 +58,15 @@ const TOOLS = [
   },
   {
     name: 'get_deals',
-    description: 'Get discounted products sorted by discount percentage. Returns products with original price and discount percentage. Supports region (sea, us, eu, au) and country (SG, US, VN, MY, ...) filters.',
+    description: 'Get discounted products sorted by discount percentage. Returns products with original price and discount percentage. Supports currency, region (sea, us, eu, au) and country (SG, US, VN, MY, ...) filters.',
     inputSchema: {
       type: 'object',
       properties: {
         min_discount: { type: 'number', description: 'Minimum discount percentage (default 10)', default: 10 },
+        currency: { type: 'string', description: 'Filter by currency code (SGD, USD, MYR, VND, THB). Defaults to SGD.', default: 'SGD' },
         region: { type: 'string', description: 'Filter by region (sea, us, eu, au)' },
-        country: { type: 'string', description: 'Filter by ISO country code (SG, US, VN, MY)' },
+        country_code: { type: 'string', enum: ['SG', 'US', 'VN', 'TH', 'MY'], description: 'Filter by ISO country code. Alias: country.' },
+        country: { type: 'string', description: 'Alias for country_code (deprecated, use country_code)' },
         limit: { type: 'integer', description: 'Number of results (max 100, default 20)', default: 20 },
         offset: { type: 'integer', description: 'Pagination offset', default: 0 },
       },
@@ -87,7 +89,8 @@ const TOOLS = [
       properties: {
         product_name: { type: 'string', description: 'Product name to find best price for (e.g., "iphone 15 pro 256gb", "samsung galaxy s24")' },
         category: { type: 'string', description: 'Category to filter by (e.g., "electronics", "fashion")' },
-        country: { type: 'string', enum: ['SG', 'MY', 'TH', 'PH', 'VN', 'ID', 'US'], description: 'Country to search in (defaults to SG)' },
+        country_code: { type: 'string', enum: ['SG', 'MY', 'TH', 'PH', 'VN', 'ID', 'US'], description: 'Country to search in (defaults to SG). Alias: country.' },
+        country: { type: 'string', description: 'Alias for country_code (deprecated, use country_code)' },
         region: { type: 'string', enum: ['us', 'sea'], description: 'Region filter - use "us" for United States or "sea" for Southeast Asia' },
       },
     },
@@ -283,13 +286,18 @@ async function handleSearchProducts(args: Record<string, unknown>) {
 async function handleGetProduct(args: Record<string, unknown>) {
   const t0 = Date.now();
   const { id } = args;
-  const result = await db.query(
-    `SELECT id, sku AS source, source AS domain, url, title,
-            price, currency, image_url, brand, category_path,
-            avg_rating AS rating, review_count, metadata, updated_at, region, country_code
-     FROM products WHERE id = $1`,
-    [id]
-  );
+  let result;
+  try {
+    result = await db.query(
+      `SELECT id, sku AS source, source AS domain, url, title,
+              price, currency, image_url, brand, category_path,
+              avg_rating AS rating, review_count, metadata, updated_at, region, country_code
+       FROM products WHERE id = $1`,
+      [id]
+    );
+  } catch {
+    throw { code: -32001, message: 'Product not found' };
+  }
   if (!result.rows.length) throw { code: -32001, message: 'Product not found' };
   return { data: result.rows[0], meta: { response_time_ms: Date.now() - t0 } };
 }
@@ -312,17 +320,32 @@ async function handleCompareProducts(args: Record<string, unknown>) {
 async function handleGetDeals(args: Record<string, unknown>) {
   const t0 = Date.now();
   const minDiscount = Number(args.min_discount) || 10;
+  const currency = ((args.currency as string) || 'SGD').toUpperCase();
   const region = (args.region as string) || '';
-  const country = (args.country as string) || '';
+  const country = ((args.country_code as string) || (args.country as string) || '').toUpperCase();
   const limit = Math.min(Number(args.limit) || 20, 100);
   const offset = Number(args.offset) || 0;
 
+  const cacheKey = `deals_mcp:${currency}:${minDiscount}:${region}:${country}:${limit}:${offset}`;
+  try {
+    const cached = await redis.get(cacheKey);
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      return {
+        ...parsed,
+        meta: { ...parsed.meta, cached: true, response_time_ms: Date.now() - t0 },
+      };
+    }
+  } catch (_) {}
+
   const conditions: string[] = [
+    `currency = $1`,
     `(metadata->>'original_price')::numeric > price`,
+    `(metadata->>'original_price')::numeric < price * 100`,
     `price > 0`,
-    `(1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100 >= $1`,
+    `(1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100 >= $2`,
   ];
-  const params: unknown[] = [minDiscount];
+  const params: unknown[] = [currency, minDiscount];
 
   if (region) {
     params.push(region);
@@ -334,35 +357,57 @@ async function handleGetDeals(args: Record<string, unknown>) {
   }
 
   const whereClause = conditions.join(' AND ');
-  params.push(limit, offset);
-  const limitIdx = params.length - 1;
-  const offsetIdx = params.length;
 
-  const result = await db.query(
-    `SELECT id, sku AS source, source AS domain, url, title,
-            price, (metadata->>'original_price')::numeric AS original_price,
-            currency, image_url, metadata, updated_at, region, country_code,
-            ROUND((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100) AS discount_pct
-     FROM products
-     WHERE ${whereClause}
-     ORDER BY discount_pct DESC
-     LIMIT $${limitIdx} OFFSET $${offsetIdx}`,
-    params
-  );
+  const [countResult, dataResult] = await Promise.all([
+    db.query(
+      `SELECT COUNT(*) FROM products WHERE ${whereClause}`,
+      params
+    ),
+    (() => {
+      const dataParams = [...params, limit, offset];
+      const limitIdx = dataParams.length - 1;
+      const offsetIdx = dataParams.length;
+      return db.query(
+        `SELECT id, sku AS source, source AS domain, url, title,
+                price, (metadata->>'original_price')::numeric AS original_price,
+                currency, image_url, metadata, updated_at, region, country_code,
+                ROUND((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100) AS discount_pct
+         FROM products
+         WHERE ${whereClause}
+         ORDER BY discount_pct DESC
+         LIMIT $${limitIdx} OFFSET $${offsetIdx}`,
+        dataParams
+      );
+    })(),
+  ]);
 
-  const countResult = await db.query(
-    `SELECT COUNT(*) FROM products WHERE ${whereClause}`,
-    params.slice(0, params.length - 2)
-  );
-
-  return {
-    data: result.rows,
-    meta: { total: parseInt(countResult.rows[0].count, 10), limit, offset, response_time_ms: Date.now() - t0 },
+  const result = {
+    data: dataResult.rows,
+    meta: {
+      total: parseInt(countResult.rows[0].count, 10),
+      limit,
+      offset,
+      response_time_ms: Date.now() - t0,
+      cached: false,
+    },
   };
+
+  redis.set(cacheKey, JSON.stringify(result), 'EX', 60).catch(() => {});
+
+  return result;
 }
 
 async function handleListCategories(_args: Record<string, unknown>) {
   const t0 = Date.now();
+  const cacheKey = 'categories_mcp:top100';
+  try {
+    const cached = await redis.get(cacheKey);
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      return { ...parsed, meta: { ...parsed.meta, cached: true, response_time_ms: Date.now() - t0 } };
+    }
+  } catch (_) {}
+
   const result = await db.query(
     `SELECT category_path[1] AS slug,
             category_path[1] AS name,
@@ -373,7 +418,9 @@ async function handleListCategories(_args: Record<string, unknown>) {
      ORDER BY product_count DESC
      LIMIT 100`
   );
-  return { data: result.rows, meta: { total: result.rows.length, response_time_ms: Date.now() - t0 } };
+  const data = { data: result.rows, meta: { total: result.rows.length, response_time_ms: Date.now() - t0, cached: false } };
+  redis.set(cacheKey, JSON.stringify(data), 'EX', 300).catch(() => {});
+  return data;
 }
 
 async function handleFindBestPrice(args: Record<string, unknown>) {
@@ -381,7 +428,7 @@ async function handleFindBestPrice(args: Record<string, unknown>) {
   const productName = (args.product_name as string) || '';
   if (!productName) throw { code: -32602, message: 'product_name is required' };
 
-  const country = ((args.country as string) || 'SG').toUpperCase();
+  const country = (((args.country_code as string) || (args.country as string)) || 'SG').toUpperCase();
   const region = (args.region as string) || '';
   const category = (args.category as string) || '';
   const limit = 10;
@@ -535,7 +582,7 @@ router.post('/', requireApiKey, checkRateLimit, queryLogMiddleware('mcp'), async
     }
   } catch (err: unknown) {
     const e = err as { code?: number; message?: string };
-    if (e.code && e.message) {
+    if (typeof e.code === 'number' && e.message) {
       const envelopeCode = e.code === -32001 ? ErrorCode.NOT_FOUND
         : e.code === -32602 ? ErrorCode.INVALID_PARAMETER
         : ErrorCode.INTERNAL_ERROR;

@@ -15,13 +15,15 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS is_active      BOOLEAN NOT NULL DE
 ALTER TABLE products ADD COLUMN IF NOT EXISTS search_vector  TSVECTOR;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS region         VARCHAR(10);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS country_code   VARCHAR(2);
+ALTER TABLE products ADD COLUMN IF NOT EXISTS gtin           VARCHAR(14);
+ALTER TABLE products ADD COLUMN IF NOT EXISTS mpn            VARCHAR(100);
 
 -- Full-text search support on products table
 CREATE INDEX IF NOT EXISTS idx_products_search_vector ON products USING GIN(search_vector);
 
 -- Drop the old broken trigger that referenced non-existent columns (name, tags).
 DROP TRIGGER IF EXISTS products_search_vector_trig ON products;
-DROP FUNCTION IF EXISTS products_search_vector_update();
+DROP FUNCTION IF EXISTS products_search_vector_update() CASCADE;
 
 -- GEO indexes (now safe — is_active, region, country_code columns exist above)
 CREATE INDEX IF NOT EXISTS idx_products_is_active     ON products(is_active);
@@ -30,6 +32,8 @@ CREATE INDEX IF NOT EXISTS idx_products_country_code  ON products(country_code);
 CREATE INDEX IF NOT EXISTS idx_products_region_active ON products(region, is_active) WHERE is_active = true;
 CREATE INDEX IF NOT EXISTS idx_products_search_region  ON products USING gin(search_vector, region);
 CREATE INDEX IF NOT EXISTS idx_products_search_country ON products USING gin(search_vector, country_code);
+CREATE INDEX IF NOT EXISTS idx_products_currency     ON products(currency);
+CREATE INDEX IF NOT EXISTS idx_products_category_path ON products USING GIN(category_path);
 
 -- api_keys: create if not exists, then add any missing columns
 CREATE TABLE IF NOT EXISTS api_keys (
@@ -47,12 +51,21 @@ ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS attribution_source TEXT;
 ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS utm_source         TEXT;
 ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS utm_medium         TEXT;
 ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS utm_campaign       TEXT;
-ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS contact            TEXT;
-ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS use_case           TEXT;
-ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS developer_id       TEXT;
-ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS last_used_at       TIMESTAMPTZ;
+ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS contact                     TEXT;
+ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS email                       TEXT;
+ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS use_case                    TEXT;
+ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS developer_id                TEXT;
+ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS last_used_at                 TIMESTAMPTZ;
+ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS email_verified               BOOLEAN     NOT NULL DEFAULT false;
+ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS email_verification_token     TEXT;
+ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS email_verification_sent_at   TIMESTAMPTZ;
+ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS email_verification_expires_at TIMESTAMPTZ;
+
+-- Backfill: mark existing keys with a contact email as verified
+UPDATE api_keys SET email_verified = true WHERE contact IS NOT NULL AND contact != '' AND email_verified = false;
 
 CREATE INDEX IF NOT EXISTS idx_api_keys_key_hash ON api_keys(key_hash);
+CREATE INDEX IF NOT EXISTS idx_api_keys_email_token ON api_keys(email_verification_token) WHERE email_verification_token IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_api_keys_created_at ON api_keys(created_at);
 
 -- Affiliate redirect click log
@@ -86,6 +99,13 @@ CREATE TABLE IF NOT EXISTS affiliate_links (
 -- Note: idx_affiliate_links_slug intentionally omitted — affiliate_links table already
 -- exists in this DB without a slug column; the index is not applicable here.
 
+-- B-tree index on category_path[1] for fast GROUP BY / WHERE queries (BUY-8715)
+CREATE INDEX IF NOT EXISTS idx_products_category_path_first ON products USING btree ((category_path[1]));
+
+-- Backfill empty category_path to prevent 0-category results (BUY-8715)
+UPDATE products SET category_path = ARRAY['Uncategorized']::text[]
+WHERE category_path = '{}' OR array_length(category_path, 1) = 0;
+
 -- GEO fields (BUY-1970, BUY-1979): columns and indexes handled at top of migration
 
 -- Comparison pages curation table (BUY-2273)
@@ -114,7 +134,9 @@ BEGIN
   FROM information_schema.columns
   WHERE table_name = 'comparison_pages' AND column_name = 'product_ids';
   IF col_type = '_int8' THEN
+    ALTER TABLE comparison_pages ALTER COLUMN product_ids DROP DEFAULT;
     ALTER TABLE comparison_pages ALTER COLUMN product_ids TYPE UUID[] USING '{}'::UUID[];
+    ALTER TABLE comparison_pages ALTER COLUMN product_ids SET DEFAULT '{}';
   END IF;
 END$$;
 
@@ -188,6 +210,8 @@ CREATE TABLE IF NOT EXISTS clicks (
   clicked_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Ensure merchant_id column exists on clicks table (BUY-8716: handle pre-existing tables)
+ALTER TABLE clicks ADD COLUMN IF NOT EXISTS merchant_id TEXT;
 CREATE INDEX IF NOT EXISTS idx_clicks_product    ON clicks(product_id);
 CREATE INDEX IF NOT EXISTS idx_clicks_merchant   ON clicks(merchant_id);
 CREATE INDEX IF NOT EXISTS idx_clicks_clicked_at ON clicks(clicked_at);

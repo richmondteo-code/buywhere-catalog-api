@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { Sentry } from './sentry';
+import { Sentry, sentryRequestHandler } from './sentry';
 import authRouter from './routes/auth';
 import productsRouter from './routes/products';
 import categoriesRouter from './routes/categories';
@@ -35,6 +35,9 @@ export function createApp() {
   });
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
+
+  // Sentry request context — attaches user/country/method for error tracking
+  app.use(sentryRequestHandler);
 
   // Health check - fast in-process check as required by BUY-3280
   app.get('/health', (_req, res) => {

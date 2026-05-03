@@ -35,6 +35,46 @@ function classifyIsAgent(req: Request): boolean {
 }
 
 /**
+ * Extract result count from a response body.
+ * Handles standard REST and JSON-RPC MCP envelopes.
+ *
+ * - Array data/results → length
+ * - Single object data → 1 (product lookup, category detail)
+ * - Error responses (4xx+) → null
+ * - JSON-RPC → unwrap text content and recurse
+ */
+function extractResultCount(body: unknown, statusCode: number): number | null {
+  if (statusCode >= 400) return null;
+  if (!body || typeof body !== 'object') return null;
+
+  const b = body as Record<string, unknown>;
+
+  // JSON-RPC MCP envelope — unwrap text content
+  if (b.jsonrpc === '2.0') {
+    const result = b.result;
+    if (result && typeof result === 'object') {
+      const r = result as Record<string, unknown>;
+      if (Array.isArray(r.content) && r.content.length === 1) {
+        const content = r.content[0] as Record<string, unknown>;
+        if (content.type === 'text' && typeof content.text === 'string') {
+          try {
+            const inner = JSON.parse(content.text);
+            return extractResultCount(inner, 200);
+          } catch { /* not JSON — skip */ }
+        }
+      }
+    }
+    return null;
+  }
+
+  if (Array.isArray(b.data)) return b.data.length;
+  if (Array.isArray(b.results)) return b.results.length;
+  if (b.data && typeof b.data === 'object') return 1;
+
+  return null;
+}
+
+/**
  * Express middleware that logs authenticated API requests to the query_log table.
  * Fire-and-forget — never blocks the response.
  *
@@ -45,7 +85,15 @@ export function queryLogMiddleware(endpoint: string) {
   return (req: Request, res: Response, next: NextFunction): void => {
     const start = Date.now();
 
-    // Hook into response finish to capture status code and timing
+    // Intercept res.json to capture result count from the response body
+    // before it's sent to the client (the finish handler reads res.locals).
+    const originalJson = res.json.bind(res);
+    res.json = function (body: unknown) {
+      res.locals.resultCount = extractResultCount(body, res.statusCode);
+      return originalJson(body);
+    };
+
+    // Hook into response finish to capture status code, timing, and result count
     res.on('finish', () => {
       const apiKeyRecord = req.apiKeyRecord;
       // Log all requests — unauthenticated ones recorded with null api_key_id
@@ -71,7 +119,7 @@ export function queryLogMiddleware(endpoint: string) {
           isAgent,
           endpoint,
           queryText,
-          null, // result_count filled by specific endpoints if needed
+          res.locals.resultCount ?? null,
           responseTimeMs,
           res.statusCode,
           req.ip || null,
