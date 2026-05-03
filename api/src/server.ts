@@ -34,7 +34,7 @@ export function createApp() {
     res.set('X-Frame-Options', 'DENY');
     next();
   });
-  app.use(express.json());
+  app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: false }));
 
   // Sentry request context — attaches user/country/method for error tracking
