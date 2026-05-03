@@ -226,33 +226,38 @@ router.get('/openapi.json', (_req: Request, res: Response) => {
 // Ref: https://smithery.ai/docs/build/publish#troubleshooting
 router.get('/mcp/server-card.json', (_req: Request, res: Response) => {
   res.json({
-    name: 'BuyWhere Product Catalog',
-    description: "The only agent-native product catalog API built for Southeast Asia. Real-time search, price comparison, and deal discovery across 1M+ products from Shopee, Lazada, Amazon SG, and 50+ Singapore merchants.",
-    version: '1.0.0',
+    serverInfo: {
+      name: 'BuyWhere Product Catalog',
+      version: '1.0.0',
+    },
+    description: "Agent-native product catalog API for Southeast Asia and US commerce. Search 1.5M+ products across Shopee, Lazada, Amazon SG, Amazon US, Walmart, Carousell, FairPrice, Harvey Norman, and 20+ e-commerce platforms. Compare prices across merchants, discover deals, browse categories — all through a single MCP endpoint.",
     contact: { email: 'api@buywhere.ai', url: 'https://buywhere.ai' },
-    license: { name: 'Commercial', url: 'https://buywhere.ai/terms' },
+    license: 'MIT',
     servers: [
       {
         url: 'https://mcp.buywhere.ai/mcp',
-        description: 'Production MCP endpoint (Singapore)',
+        description: 'Production MCP endpoint (Streamable HTTP + SSE)',
         transport: ['streamable-http', 'sse'],
       },
     ],
     tools: [
-      { name: 'search_products', description: 'Full-text product search with price, category, merchant, and region filters across 1M+ Singapore products' },
-      { name: 'get_product', description: 'Get a specific product by ID including full details and current price' },
-      { name: 'compare_products', description: 'Compare multiple products side-by-side: price, brand, rating, category' },
-      { name: 'get_deals', description: 'Get discounted products sorted by discount percentage, optionally filtered by region/country' },
-      { name: 'list_categories', description: 'List top-level product categories available in the BuyWhere catalog' },
+      { name: 'search_products', description: 'Full-text product search with price, category, merchant, region, and rating filters across 1.5M+ products from 20+ e-commerce platforms. Supports multiple currencies and compact JSON mode for AI agents.', inputSchema: { type: 'object', properties: { q: { type: 'string' }, country_code: { type: 'string', enum: ['SG', 'US', 'VN', 'TH', 'MY'] }, domain: { type: 'string' }, min_price: { type: 'number' }, max_price: { type: 'number' }, currency: { type: 'string' }, limit: { type: 'integer', default: 20 }, offset: { type: 'integer', default: 0 } } } },
+      { name: 'get_product', description: 'Get a specific product by ID including full details, current price, brand, category, ratings, merchant info, and specifications.', inputSchema: { type: 'object', properties: { id: { type: 'string' }, currency: { type: 'string' } }, required: ['id'] } },
+      { name: 'compare_products', description: 'Compare multiple products side-by-side across merchants: price, brand, rating, category path, and merchant for each product. For AI agent price comparison shopping.', inputSchema: { type: 'object', properties: { ids: { type: 'array', items: { type: 'string' } } }, required: ['ids'] } },
+      { name: 'get_deals', description: 'Get discounted products sorted by discount percentage across all merchants. Returns original price, current price, and discount percentage.', inputSchema: { type: 'object', properties: { min_discount: { type: 'number', default: 10 }, country: { type: 'string' }, limit: { type: 'integer', default: 20 }, offset: { type: 'integer', default: 0 } } } },
+      { name: 'list_categories', description: 'List top-level product categories available in the BuyWhere catalog with slugs, names, and product counts.', inputSchema: { type: 'object', properties: { currency: { type: 'string' } } } },
     ],
     authentication: {
       required: true,
       type: 'bearer',
       register_url: 'https://api.buywhere.ai/v1/auth/register',
-      description: 'Register for a free API key. Free tier: 1,000 calls/month.',
+      description: 'Register for a free API key. Free tier: 1,000 calls/month. No credit card required.',
     },
     documentation: 'https://api.buywhere.ai/docs/guides/mcp',
     homepage: 'https://buywhere.ai',
+    repository: 'https://github.com/BuyWhere/buywhere',
+    categories: ['Commerce', 'Shopping', 'Price Comparison', 'e-commerce', 'product-search'],
+    keywords: ['shopping', 'ecommerce', 'price comparison', 'product search', 'singapore', 'southeast asia', 'shopee', 'lazada', 'amazon', 'fairprice', 'deals', 'ai agent', 'mcp'],
   });
 });
 

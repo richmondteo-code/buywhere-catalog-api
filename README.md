@@ -3,6 +3,7 @@
 Agent-native product catalog API for Southeast Asia commerce. Search 1.5M+ products across Shopee, Lazada, Amazon, Walmart, and 20+ e-commerce platforms. Compare prices, find deals, browse categories.
 
 [![Glama Score](https://glama.ai/mcp/servers/BuyWhere/buywhere/badges/score.svg)](https://glama.ai/mcp/servers/BuyWhere/buywhere)
+<!-- Smithery badge: [![Smithery](https://smithery.ai/server/buywhere/badge)](https://smithery.ai/server/buywhere) -- add after listing is live -->
 
 ## Installation
 
