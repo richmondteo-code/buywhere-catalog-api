@@ -253,31 +253,65 @@ CREATE INDEX IF NOT EXISTS idx_merchant_events_merchant_id ON merchant_events(me
 CREATE INDEX IF NOT EXISTS idx_merchant_events_event_type ON merchant_events(event_type);
 `;
 
+// Merchants tables — created separately from main migration so they
+// are not blocked if an earlier migration statement fails.
+const MERCHANTS_MIGRATION = `
+CREATE TABLE IF NOT EXISTS merchants (
+  id              TEXT        PRIMARY KEY,
+  name            TEXT        NOT NULL,
+  source          TEXT        NOT NULL,
+  country         VARCHAR(2)  NOT NULL DEFAULT 'SG',
+  domain          TEXT,
+  contact_email   TEXT,
+  contact_phone   TEXT,
+  scraping_priority TEXT     DEFAULT 'medium',
+  is_active       BOOLEAN    NOT NULL DEFAULT true,
+  onboarding_stage TEXT      NOT NULL DEFAULT 'interested',
+  first_indexed_at TIMESTAMPTZ,
+  products_count  INTEGER,
+  last_scraped_at  TIMESTAMPTZ,
+  scrape_error    TEXT,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_merchants_source ON merchants(source);
+CREATE INDEX IF NOT EXISTS idx_merchants_onboarding_stage ON merchants(onboarding_stage);
+CREATE INDEX IF NOT EXISTS idx_merchants_country ON merchants(country);
+
+CREATE TABLE IF NOT EXISTS merchant_events (
+  id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  merchant_id     TEXT        NOT NULL REFERENCES merchants(id) ON DELETE CASCADE,
+  event_type      TEXT        NOT NULL,
+  event_data      JSONB,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_merchant_events_merchant_id ON merchant_events(merchant_id);
+CREATE INDEX IF NOT EXISTS idx_merchant_events_event_type ON merchant_events(event_type);
+`;
+
 export async function runMigrations() {
   console.log('Running migrations...');
 
-  // Split migration into individual statements so a failure in one
-  // does not block subsequent schema changes (e.g. extensions vs tables).
-  const statements = MIGRATION
-    .split(';')
-    .map((s) => s.trim())
-    .filter((s) => s.length > 0);
-
-  let succeeded = 0;
-  let failed = 0;
-
-  for (const stmt of statements) {
-    try {
-      await db.query(stmt + ';');
-      succeeded++;
-    } catch (err: any) {
-      failed++;
-      console.warn(`[migration] statement failed (non-fatal): ${err.message?.slice(0, 200)}`);
-      console.warn(`[migration] SQL: ${stmt.slice(0, 120)}...`);
-    }
+  // Run full migration block as-is (best-effort, may fail on extensions or
+  // products columns if those tables/perms don't exist yet).
+  try {
+    await db.query(MIGRATION);
+    console.log('Full migration completed.');
+  } catch (err: any) {
+    console.warn(`[migration] Full migration block failed (non-fatal): ${err.message?.slice(0, 200)}`);
   }
 
-  console.log(`Migrations complete. ${succeeded} succeeded, ${failed} failed.`);
+  // Separately ensure merchants tables exist — not blocked by failures above.
+  try {
+    await db.query(MERCHANTS_MIGRATION);
+    console.log('Merchants migration completed.');
+  } catch (err: any) {
+    console.error(`[migration] Merchants table creation failed: ${err.message?.slice(0, 200)}`);
+  }
+
+  console.log('Migrations complete.');
 }
 
 async function migrate() {
