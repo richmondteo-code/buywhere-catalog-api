@@ -16,17 +16,32 @@ function buildMcpGuideMarkdown(baseUrl, mcpUrl) {
 
 BuyWhere exposes its product catalog as an MCP (Model Context Protocol) server. AI agents can search, compare, and retrieve product data without writing HTTP glue code.
 
-**Transport:** HTTP (\`POST ${mcpUrl}\`) for remote agents. STDIO (local process) coming soon via npm.
+**Transport:** HTTP (\`POST ${mcpUrl}\`) for remote agents. STDIO/local process available via the published \`@buywhere/mcp-server\` npm package.
 
 ## Install
 
-**The hosted MCP server is live.** Point your MCP client directly at \`${mcpUrl}\` — no local install required.
+Use one of two supported setup paths:
 
-> **Note:** The \`buywhere-mcp\` npm package (for STDIO / local process mode) is not yet published. Use the HTTP transport below until it is available.
+- **Hosted MCP:** point your MCP client directly at \`${mcpUrl}\`
+- **Local MCP package:** run \`npx -y @buywhere/mcp-server\`
 
 ## Configure Claude Desktop
 
-Add to \`~/Library/Application Support/Claude/claude_desktop_config.json\` (macOS) or \`%APPDATA%\\Claude\\claude_desktop_config.json\` (Windows):
+Add to \`~/Library/Application Support/Claude/claude_desktop_config.json\` (macOS) or \`%APPDATA%\\Claude\\claude_desktop_config.json\` (Windows) for local STDIO mode:
+
+\`\`\`json
+{
+  "mcpServers": {
+    "buywhere": {
+      "command": "npx",
+      "args": ["-y", "@buywhere/mcp-server"],
+      "env": { "BUYWHERE_API_KEY": "bw_live_xxx" }
+    }
+  }
+}
+\`\`\`
+
+Or for hosted HTTP transport:
 
 \`\`\`json
 {
@@ -43,18 +58,23 @@ Restart Claude Desktop. The BuyWhere tools appear automatically.
 
 ## Configure Cursor
 
-In \`.cursor/mcp.json\` in your project root (or \`~/.cursor/mcp.json\` globally):
+In \`.cursor/mcp.json\` in your project root (or \`~/.cursor/mcp.json\` globally) for local STDIO mode:
 
 \`\`\`json
 {
   "mcpServers": {
     "buywhere": {
-      "url": "${mcpUrl}",
-      "headers": { "Authorization": "Bearer bw_live_xxx" }
+      "command": "npx",
+      "args": ["-y", "@buywhere/mcp-server"],
+      "env": { "BUYWHERE_API_KEY": "bw_live_xxx" }
     }
   }
 }
 \`\`\`
+
+Hosted HTTP transport remains valid for cloud or remote setups.
+
+Restart Cursor. The BuyWhere tools appear automatically.
 
 ## Remote HTTP Transport
 
@@ -262,16 +282,27 @@ router.get('/guides/mcp', (req, res) => {
 <body>
 <h1>BuyWhere MCP Integration</h1>
 <p>BuyWhere exposes its product catalog as an MCP (Model Context Protocol) server. AI agents can search, compare, and retrieve product data without writing HTTP glue code.</p>
-<p><strong>Transport:</strong> HTTP (<code>POST ${mcpUrl}</code>) for remote agents. STDIO (local process) coming soon via npm.</p>
+<p><strong>Transport:</strong> HTTP (<code>POST ${mcpUrl}</code>) for remote agents. STDIO/local process available via the published <code>@buywhere/mcp-server</code> npm package.</p>
 
 <h2>Install</h2>
-<p><strong>The hosted MCP server is live.</strong> Point your MCP client directly at <code>${mcpUrl}</code> — no local install required.</p>
-<div class="callout">
-  <strong>Note:</strong> The <code>buywhere-mcp</code> npm package (for STDIO / local process mode) is not yet published. Use the HTTP transport below until it is available.
-</div>
+<p>Use one of two supported setup paths:</p>
+<ul>
+<li><strong>Hosted MCP:</strong> point your MCP client directly at <code>${mcpUrl}</code></li>
+<li><strong>Local MCP package:</strong> run <code>npx -y @buywhere/mcp-server</code></li>
+</ul>
 
 <h2>Configure Claude Desktop</h2>
-<p>Add to <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (macOS) or <code>%APPDATA%\\Claude\\claude_desktop_config.json</code> (Windows):</p>
+<p>Add to <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (macOS) or <code>%APPDATA%\\Claude\\claude_desktop_config.json</code> (Windows) for local STDIO mode:</p>
+<pre><code>{
+  "mcpServers": {
+    "buywhere": {
+      "command": "npx",
+      "args": ["-y", "@buywhere/mcp-server"],
+      "env": { "BUYWHERE_API_KEY": "bw_live_xxx" }
+    }
+  }
+}</code></pre>
+<p>Or for hosted HTTP transport:</p>
 <pre><code>{
   "mcpServers": {
     "buywhere": {
@@ -280,6 +311,21 @@ router.get('/guides/mcp', (req, res) => {
     }
   }
 }</code></pre>
+<p>Restart Claude Desktop. The BuyWhere tools appear automatically.</p>
+
+<h2>Configure Cursor</h2>
+<p>In <code>.cursor/mcp.json</code> in your project root (or <code>~/.cursor/mcp.json</code> globally) for local STDIO mode:</p>
+<pre><code>{
+  "mcpServers": {
+    "buywhere": {
+      "command": "npx",
+      "args": ["-y", "@buywhere/mcp-server"],
+      "env": { "BUYWHERE_API_KEY": "bw_live_xxx" }
+    }
+  }
+}</code></pre>
+<p>Hosted HTTP transport remains valid for cloud or remote setups.</p>
+<p>Restart Cursor. The BuyWhere tools appear automatically.</p>
 <p>Restart Claude Desktop. The BuyWhere tools appear automatically.</p>
 
 <h2>Configure Cursor</h2>

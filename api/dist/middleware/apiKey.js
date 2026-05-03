@@ -136,7 +136,6 @@ async function requireApiKey(req, res, next) {
         signupChannel: row.signup_channel,
         attributionSource: row.attribution_source,
     };
-    // Update last_used_at (fire-and-forget)
     config_1.db.query('UPDATE api_keys SET last_used_at = NOW() WHERE key_hash = $1', [keyHash]).catch(() => { });
     next();
 }

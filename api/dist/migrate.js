@@ -4,6 +4,7 @@ const config_1 = require("./config");
 const MIGRATION = `
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE EXTENSION IF NOT EXISTS "btree_gin";
+CREATE EXTENSION IF NOT EXISTS "pg_trgm";
 
 -- Ensure products has all columns before any indexes or triggers reference them
 ALTER TABLE products ADD COLUMN IF NOT EXISTS sku            TEXT;
@@ -16,6 +17,9 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS is_active      BOOLEAN NOT NULL DE
 ALTER TABLE products ADD COLUMN IF NOT EXISTS search_vector  TSVECTOR;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS region         VARCHAR(10);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS country_code   VARCHAR(2);
+ALTER TABLE products ADD COLUMN IF NOT EXISTS gtin           VARCHAR(14);
+ALTER TABLE products ADD COLUMN IF NOT EXISTS mpn            VARCHAR(100);
+ALTER TABLE products ADD COLUMN IF NOT EXISTS canonical_group_id UUID;
 
 -- Full-text search support on products table
 CREATE INDEX IF NOT EXISTS idx_products_search_vector ON products USING GIN(search_vector);
@@ -31,6 +35,8 @@ CREATE INDEX IF NOT EXISTS idx_products_country_code  ON products(country_code);
 CREATE INDEX IF NOT EXISTS idx_products_region_active ON products(region, is_active) WHERE is_active = true;
 CREATE INDEX IF NOT EXISTS idx_products_search_region  ON products USING gin(search_vector, region);
 CREATE INDEX IF NOT EXISTS idx_products_search_country ON products USING gin(search_vector, country_code);
+CREATE INDEX IF NOT EXISTS idx_products_category_path ON products USING GIN(category_path);
+CREATE INDEX IF NOT EXISTS idx_products_canonical_group_id ON products(canonical_group_id);
 
 -- api_keys: create if not exists, then add any missing columns
 CREATE TABLE IF NOT EXISTS api_keys (
@@ -192,6 +198,42 @@ CREATE TABLE IF NOT EXISTS clicks (
 CREATE INDEX IF NOT EXISTS idx_clicks_product    ON clicks(product_id);
 CREATE INDEX IF NOT EXISTS idx_clicks_merchant   ON clicks(merchant_id);
 CREATE INDEX IF NOT EXISTS idx_clicks_clicked_at ON clicks(clicked_at);
+
+-- Merchants onboarding table (BUY-6932)
+CREATE TABLE IF NOT EXISTS merchants (
+  id              TEXT        PRIMARY KEY,
+  name            TEXT        NOT NULL,
+  source          TEXT        NOT NULL,
+  country         VARCHAR(2)  NOT NULL DEFAULT 'SG',
+  domain          TEXT,
+  contact_email   TEXT,
+  contact_phone   TEXT,
+  scraping_priority TEXT     DEFAULT 'medium',
+  is_active       BOOLEAN    NOT NULL DEFAULT true,
+  onboarding_stage TEXT      NOT NULL DEFAULT 'interested',
+  first_indexed_at TIMESTAMPTZ,
+  products_count  INTEGER,
+  last_scraped_at  TIMESTAMPTZ,
+  scrape_error    TEXT,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_merchants_source ON merchants(source);
+CREATE INDEX IF NOT EXISTS idx_merchants_onboarding_stage ON merchants(onboarding_stage);
+CREATE INDEX IF NOT EXISTS idx_merchants_country ON merchants(country);
+
+-- Merchant events log (BUY-6932)
+CREATE TABLE IF NOT EXISTS merchant_events (
+  id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  merchant_id     TEXT        NOT NULL REFERENCES merchants(id) ON DELETE CASCADE,
+  event_type      TEXT        NOT NULL,
+  event_data      JSONB,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_merchant_events_merchant_id ON merchant_events(merchant_id);
+CREATE INDEX IF NOT EXISTS idx_merchant_events_event_type ON merchant_events(event_type);
 `;
 async function migrate() {
     console.log('Running migrations...');
