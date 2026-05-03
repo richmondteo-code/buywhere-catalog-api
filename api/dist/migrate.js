@@ -256,8 +256,26 @@ CREATE INDEX IF NOT EXISTS idx_merchant_events_event_type ON merchant_events(eve
 `;
 async function runMigrations() {
     console.log('Running migrations...');
-    await config_1.db.query(MIGRATION);
-    console.log('Migrations complete.');
+    // Split migration into individual statements so a failure in one
+    // does not block subsequent schema changes (e.g. extensions vs tables).
+    const statements = MIGRATION
+        .split(';')
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
+    let succeeded = 0;
+    let failed = 0;
+    for (const stmt of statements) {
+        try {
+            await config_1.db.query(stmt + ';');
+            succeeded++;
+        }
+        catch (err) {
+            failed++;
+            console.warn(`[migration] statement failed (non-fatal): ${err.message?.slice(0, 200)}`);
+            console.warn(`[migration] SQL: ${stmt.slice(0, 120)}...`);
+        }
+    }
+    console.log(`Migrations complete. ${succeeded} succeeded, ${failed} failed.`);
 }
 async function migrate() {
     await runMigrations();
