@@ -20,6 +20,8 @@ import landingRouter from './routes/landing';
 import clicksRouter from './routes/clicks';
 import merchantsRouter from './routes/merchants';
 import ingestRouter from './routes/ingest';
+import catalogRouter from './routes/catalog';
+import keysRouter from './routes/keys';
 import { db } from './config';
 
 export function createApp() {
@@ -90,6 +92,8 @@ export function createApp() {
   });
   app.use('/v1/analytics', analyticsRouter);
   app.use('/v1/revenue', revenueRouter);
+  app.use('/v1/catalog', catalogRouter);
+  app.use('/v1/keys', keysRouter);
   app.use('/v1/compare', aiCrawlerHeaders, compareSlugRouter);
   app.use('/api/v1/compare', aiCrawlerHeaders, compareSlugRouter); // alias — FE integration uses /api prefix
 

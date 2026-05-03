@@ -26,6 +26,8 @@ const landing_1 = __importDefault(require("./routes/landing"));
 const clicks_1 = __importDefault(require("./routes/clicks"));
 const merchants_1 = __importDefault(require("./routes/merchants"));
 const ingest_1 = __importDefault(require("./routes/ingest"));
+const catalog_1 = __importDefault(require("./routes/catalog"));
+const keys_1 = __importDefault(require("./routes/keys"));
 function createApp() {
     const app = (0, express_1.default)();
     app.use((0, cors_1.default)({
@@ -83,6 +85,8 @@ function createApp() {
     });
     app.use('/v1/analytics', analytics_1.default);
     app.use('/v1/revenue', revenue_1.default);
+    app.use('/v1/catalog', catalog_1.default);
+    app.use('/v1/keys', keys_1.default);
     app.use('/v1/compare', aiCrawlerHeaders, compareSlug_1.default);
     app.use('/api/v1/compare', aiCrawlerHeaders, compareSlug_1.default); // alias — FE integration uses /api prefix
     // Admin editorial CRUD (ADMIN_API_KEY auth, not rate-limited)
