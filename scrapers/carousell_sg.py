@@ -370,7 +370,8 @@ async def main():
     parser = argparse.ArgumentParser(description="Carousell SG Scraper — High Volume C2C Marketplace")
     parser.add_argument("--api-key", required=False, help="BuyWhere API key")
     parser.add_argument("--api-base", default="http://localhost:8000", help="BuyWhere API base URL")
-    parser.add_argument("--batch-size", type=int, default=500)
+    parser.add_argument("--batch-size", type=int, default=250,
+        help="Products per ingestion batch (API limit ~1000 products / ~5MB per request)")
     parser.add_argument("--delay", type=float, default=0.5, help="Delay between batches (seconds)")
     parser.add_argument("--scrape-only", action="store_true", help="Save to JSONL without ingesting")
     parser.add_argument("--continuous", action="store_true", help="Run continuously with periodic refresh")
