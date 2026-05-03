@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { db, redis } from '../config';
 import { requireApiKey, checkRateLimit } from '../middleware/apiKey';
 import { queryLogMiddleware } from '../middleware/queryLog';
+import { buildErrorEnvelope, ErrorCode } from '../middleware/errors';
 
 const router = Router();
 
@@ -74,6 +75,20 @@ const TOOLS = [
     inputSchema: {
       type: 'object',
       properties: {},
+    },
+  },
+  {
+    name: 'find_best_price',
+    description: 'Use this whenever a user asks about prices, wants to find the cheapest option, or asks "what\'s the best price for X" or "where can I buy X for the lowest price". This finds the best current price across all merchants.',
+    inputSchema: {
+      type: 'object',
+      required: ['product_name'],
+      properties: {
+        product_name: { type: 'string', description: 'Product name to find best price for (e.g., "iphone 15 pro 256gb", "samsung galaxy s24")' },
+        category: { type: 'string', description: 'Category to filter by (e.g., "electronics", "fashion")' },
+        country: { type: 'string', enum: ['SG', 'MY', 'TH', 'PH', 'VN', 'ID', 'US'], description: 'Country to search in (defaults to SG)' },
+        region: { type: 'string', enum: ['us', 'sea'], description: 'Region filter - use "us" for United States or "sea" for Southeast Asia' },
+      },
     },
   },
 ];
@@ -353,6 +368,70 @@ async function handleListCategories(_args: Record<string, unknown>) {
   return { data: result.rows, meta: { total: result.rows.length, response_time_ms: Date.now() - t0 } };
 }
 
+async function handleFindBestPrice(args: Record<string, unknown>) {
+  const t0 = Date.now();
+  const productName = (args.product_name as string) || '';
+  if (!productName) throw { code: -32602, message: 'product_name is required' };
+
+  const country = ((args.country as string) || 'SG').toUpperCase();
+  const region = (args.region as string) || '';
+  const category = (args.category as string) || '';
+  const limit = 10;
+
+  const conditions: string[] = ['is_active = true'];
+  const params: unknown[] = [];
+
+  params.push(productName);
+  conditions.push(`search_vector @@ plainto_tsquery('english', $${params.length})`);
+
+  if (country) {
+    params.push(country);
+    conditions.push(`country_code = $${params.length}`);
+  }
+  if (region) {
+    params.push(region);
+    conditions.push(`region = $${params.length}`);
+  }
+  if (category) {
+    params.push(`%${category}%`);
+    conditions.push(`category ILIKE $${params.length}`);
+  }
+
+  params.push(limit);
+  const where = `WHERE ${conditions.join(' AND ')}`;
+  const result = await db.query(
+    `SELECT id, title, price, currency, source AS domain, url, image_url,
+            country_code,
+            ts_rank(search_vector, plainto_tsquery('english', $1)) AS rank
+     FROM products ${where}
+     ORDER BY price ASC, rank DESC
+     LIMIT $${params.length}`,
+    params
+  );
+
+  const COUNTRY_CURRENCY: Record<string, string> = { SG: 'SGD', US: 'USD', VN: 'VND', TH: 'THB', MY: 'MYR' };
+  const currency = COUNTRY_CURRENCY[country] || 'SGD';
+  const toUsd = MCP_TO_USD[currency] ?? 1;
+
+  const data = result.rows.map((r: Record<string, unknown>) => ({
+    id: r.id,
+    title: r.title,
+    price: r.price,
+    currency: r.currency || currency,
+    normalized_price_usd: r.price != null ? Math.round(Number(r.price) * toUsd * 100) / 100 : null,
+    domain: r.domain,
+    url: r.url,
+    image_url: r.image_url,
+    country_code: r.country_code,
+  }));
+
+  return {
+    best_price: data[0] ?? null,
+    alternatives: data.slice(1),
+    meta: { total: data.length, country, response_time_ms: Date.now() - t0 },
+  };
+}
+
 async function dispatchTool(name: string, args: Record<string, unknown>) {
   switch (name) {
     case 'search_products':  return handleSearchProducts(args);
@@ -360,6 +439,7 @@ async function dispatchTool(name: string, args: Record<string, unknown>) {
     case 'compare_products': return handleCompareProducts(args);
     case 'get_deals':        return handleGetDeals(args);
     case 'list_categories':  return handleListCategories(args);
+    case 'find_best_price':  return handleFindBestPrice(args);
     default:
       throw { code: -32601, message: `Unknown tool: ${name}` };
   }
@@ -369,8 +449,12 @@ async function dispatchTool(name: string, args: Record<string, unknown>) {
 function jsonrpcOk(id: unknown, result: unknown) {
   return { jsonrpc: '2.0', id, result };
 }
-function jsonrpcErr(id: unknown, code: number, message: string, data?: unknown) {
-  return { jsonrpc: '2.0', id, error: { code, message, ...(data != null ? { data } : {}) } };
+function jsonrpcErr(id: unknown, code: number, message: string, data?: unknown, envelopeCode?: string) {
+  const errorData: Record<string, unknown> = data != null ? { detail: data } : {};
+  if (envelopeCode) {
+    errorData.envelope = buildErrorEnvelope(envelopeCode as ErrorCode, message);
+  }
+  return { jsonrpc: '2.0', id, error: { code, message, ...(Object.keys(errorData).length ? { data: errorData } : {}) } };
 }
 
 // GET /mcp — info endpoint for browser / reviewer verification.
@@ -418,7 +502,7 @@ router.post('/', requireApiKey, checkRateLimit, queryLogMiddleware('mcp'), async
 
   // Validate JSON-RPC envelope
   if (!body || body.jsonrpc !== '2.0' || !body.method) {
-    return res.status(400).json(jsonrpcErr(body?.id ?? null, -32600, 'Invalid JSON-RPC request'));
+    return res.status(400).json(jsonrpcErr(body?.id ?? null, -32600, 'Invalid JSON-RPC request', undefined, ErrorCode.INVALID_JSON));
   }
 
   const { id, method, params } = body;
@@ -444,10 +528,13 @@ router.post('/', requireApiKey, checkRateLimit, queryLogMiddleware('mcp'), async
   } catch (err: unknown) {
     const e = err as { code?: number; message?: string };
     if (e.code && e.message) {
-      return res.json(jsonrpcErr(id, e.code, e.message));
+      const envelopeCode = e.code === -32001 ? ErrorCode.NOT_FOUND
+        : e.code === -32602 ? ErrorCode.INVALID_PARAMETER
+        : ErrorCode.INTERNAL_ERROR;
+      return res.json(jsonrpcErr(id, e.code, e.message, undefined, envelopeCode));
     }
     console.error('[mcp] error:', err);
-    return res.json(jsonrpcErr(id, -32603, 'Internal error'));
+    return res.json(jsonrpcErr(id, -32603, 'Internal error', undefined, ErrorCode.INTERNAL_ERROR));
   }
 });
 
