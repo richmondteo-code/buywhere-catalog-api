@@ -19,6 +19,7 @@ import sitemapCompareRouter from './routes/sitemapCompare';
 import landingRouter from './routes/landing';
 import clicksRouter from './routes/clicks';
 import merchantsRouter from './routes/merchants';
+import ingestRouter from './routes/ingest';
 import { db } from './config';
 
 export function createApp() {
@@ -80,6 +81,7 @@ export function createApp() {
   app.use('/v2/products', productsRouter);
   app.use('/v1/categories', categoriesRouter);
   app.use('/v1/merchants', merchantsRouter);
+  app.use('/v1/ingest', ingestRouter);
 
   // Backward-compat alias: /v1/search → /v1/products/search
   app.get("/v1/search", (req, res) => {
