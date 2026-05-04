@@ -21,6 +21,10 @@ COMPARE_SITEMAP="${COMPARE_SITEMAP:-sitemap-compare.xml}"
 
 SITEMAP_INDEX_URL="${SITE_URL}/${SITEMAP_PATH}"
 COMPARE_SITEMAP_URL="${SITE_URL}/${COMPARE_SITEMAP}"
+PAGES_SITEMAP_URL="${SITE_URL}/sitemap-pages.xml"
+CATEGORIES_SITEMAP_URL="${SITE_URL}/sitemap-categories.xml"
+PRODUCTS_SITEMAP_URL="${SITE_URL}/sitemap-products.xml"
+SG_PRODUCTS_SITEMAP_URL="${SITE_URL}/sitemap-products-sg.xml"
 
 # Derive Google Search Console API endpoint base
 GSC_API="https://www.googleapis.com/webmasters/v3"
@@ -64,6 +68,10 @@ echo ""
 
 submit_sitemap "$SITEMAP_INDEX_URL"
 submit_sitemap "$COMPARE_SITEMAP_URL"
+submit_sitemap "$PAGES_SITEMAP_URL"
+submit_sitemap "$CATEGORIES_SITEMAP_URL"
+submit_sitemap "$PRODUCTS_SITEMAP_URL"
+submit_sitemap "$SG_PRODUCTS_SITEMAP_URL"
 
 echo ""
 echo "Done. GSC may take up to 48h to index the submitted sitemaps."
