@@ -29,6 +29,7 @@ const ingest_1 = __importDefault(require("./routes/ingest"));
 const catalog_1 = __importDefault(require("./routes/catalog"));
 const keys_1 = __importDefault(require("./routes/keys"));
 const webhooks_1 = __importDefault(require("./routes/webhooks"));
+const metrics_1 = __importDefault(require("./routes/metrics"));
 function createApp() {
     const app = (0, express_1.default)();
     app.use((0, cors_1.default)({
@@ -98,6 +99,8 @@ function createApp() {
     // Outbound click tracking (BUY-4869): /api/click redirect + /admin/clicks analytics
     app.use('/api', clicks_1.default);
     app.use('/admin', clicks_1.default);
+    // Admin KPI metrics — product count, merchant count, platform count (BUY-8959)
+    app.use('/admin/metrics', metrics_1.default);
     // Affiliate redirect (no /v1 prefix — short URLs)
     app.use('/r', redirect_1.default);
     // Public HTML pages with Schema.org JSON-LD (no auth — crawlable by AI agents)

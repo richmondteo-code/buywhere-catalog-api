@@ -221,7 +221,7 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
     const dataResult = await config_1.db.query(dataQuery, params);
     const total = parseInt(countResult.rows[0].count, 10);
     const responseTimeMs = Date.now() - requestStart;
-    const products = dataResult.rows.map((row) => (0, response_1.buildProduct)(row, currency, compact, true));
+    const products = dataResult.rows.map((row) => (0, response_1.buildProduct)(row, currency, compact));
     // Apply field selection if `fields` param is specified
     let filteredProducts = products;
     if (fields && fields.length > 0) {
@@ -729,7 +729,7 @@ router.post('/ingest', apiKey_1.requireApiKey, async (req, res) => {
 function extractCategories(products) {
     const cats = new Set();
     for (const p of products) {
-        const source = p.domain || (p.merchant?.domain) || '';
+        const source = p.domain || (typeof p.merchant === 'string' ? p.merchant : p.merchant?.domain) || '';
         if (source) {
             const domainName = source.replace('.sg', '').replace('.com', '');
             cats.add(domainName);

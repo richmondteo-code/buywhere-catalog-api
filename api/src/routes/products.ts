@@ -234,7 +234,7 @@ router.get(
     const responseTimeMs = Date.now() - requestStart;
 
     const products = dataResult.rows.map((row) =>
-      buildProduct(row as Record<string, unknown>, currency, compact, true)
+      buildProduct(row as Record<string, unknown>, currency, compact)
     );
 
     // Apply field selection if `fields` param is specified
@@ -874,10 +874,10 @@ router.post(
   }
 );
 
-function extractCategories(products: Array<{ domain?: string; merchant?: { id: string; name: string | null; domain: string }; metadata?: Record<string, unknown> | null }>): string[] {
+function extractCategories(products: Array<{ domain?: string; merchant?: string | { id: string; name: string | null; domain: string }; metadata?: Record<string, unknown> | null }>): string[] {
   const cats = new Set<string>();
   for (const p of products) {
-    const source = p.domain || (p.merchant?.domain) || '';
+    const source = p.domain || (typeof p.merchant === 'string' ? p.merchant : p.merchant?.domain) || '';
     if (source) {
       const domainName = source.replace('.sg', '').replace('.com', '');
       cats.add(domainName);

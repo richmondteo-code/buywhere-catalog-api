@@ -263,4 +263,52 @@ router.get('/mcp/server-card.json', (_req, res) => {
 router.get('/mcp-registry-auth', (_req, res) => {
     res.type('text/plain').send('v=MCPv1; k=ed25519; p=h7SEyb+uUyDnAuhTuNfFKVLgvbKI+4eIJQQCfXiccxs=');
 });
+// GET /.well-known/llms.txt — AI crawler discoverability (BUY-10937)
+// Serves identical content to buywhere.ai/llms.txt so AI crawlers
+// following the well-known URI spec can auto-discover our llms.txt.
+// Ref: https://llmstxt.org/
+router.get('/llms.txt', (_req, res) => {
+    res.set('X-Robots-Tag', 'ai-index');
+    res.set('Cache-Control', 'public, max-age=86400');
+    res.type('text/plain').send([
+        '# BuyWhere',
+        '',
+        '> BuyWhere is a product catalog API for AI agents. Supports semantic search, normalized pricing, and real-time availability across Singapore retailers.',
+        '',
+        '## API Endpoints',
+        '',
+        '- Search: https://api.buywhere.ai/v1/search',
+        '- Product Detail: https://api.buywhere.ai/v1/products/{id}',
+        '- Best Price: https://api.buywhere.ai/v1/products/best-price',
+        '- Deals: https://api.buywhere.ai/v1/deals',
+        '- Categories: https://api.buywhere.ai/v1/categories',
+        '',
+        '## Authentication',
+        '',
+        'Authorization: Bearer bw_live_YOUR_API_KEY',
+        'Get key: https://buywhere.ai/quickstart',
+        '',
+        '## Rate Limits',
+        '',
+        'Free: 10 req/min, 1K queries/month',
+        'Starter: 60 req/min, 100K queries/month',
+        'Growth: 300 req/min, 1M queries/month',
+        '',
+        '## Documentation',
+        '',
+        '- API Reference: https://api.buywhere.ai/docs',
+        '- Quickstart Guide: https://buywhere.ai/quickstart',
+        '- Pricing: https://buywhere.ai/pricing',
+        '- GitHub: https://github.com/BuyWhere/buywhere',
+        '',
+        '## MCP Server',
+        '',
+        'npx -y @buywhere/mcp-server',
+        '',
+        '## Support',
+        '',
+        'BuyWhere Pte. Ltd. — hello@buywhere.ai',
+        '',
+    ].join('\n'));
+});
 exports.default = router;

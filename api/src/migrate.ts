@@ -18,6 +18,21 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS country_code   VARCHAR(2);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS gtin           VARCHAR(14);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS mpn            VARCHAR(100);
 
+-- Unique constraint for ingest upsert (ON CONFLICT (sku, source)) — BUY-10814 / BUY-10929 blocker
+-- 1. Remove rows with null sku/source (unique constraint allows multiple NULLs)
+DELETE FROM products WHERE sku IS NULL AND source IS NULL;
+-- 2. Remove duplicate (sku, source) pairs keeping newest row (highest ctid)
+--    This is safe for re-run: idempotent, only fires when duplicates exist
+DELETE FROM products a
+USING products b
+WHERE a.ctid < b.ctid
+  AND a.sku = b.sku
+  AND a.source = b.source
+  AND a.sku IS NOT NULL
+  AND a.source IS NOT NULL;
+-- 3. Create the constraint — now safe because duplicates are gone
+ALTER TABLE products ADD CONSTRAINT IF NOT EXISTS products_sku_source_unique UNIQUE (sku, source);
+
 -- Full-text search support on products table
 CREATE INDEX IF NOT EXISTS idx_products_search_vector ON products USING GIN(search_vector);
 
@@ -248,6 +263,23 @@ CREATE TABLE IF NOT EXISTS merchant_events (
   event_data      JSONB,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Paperclip outbox — durable queue for webhook alerts posted to Paperclip issues (BUY-10989)
+CREATE TABLE IF NOT EXISTS paperclip_outbox (
+  id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  issue_id        TEXT        NOT NULL,
+  comment_body    TEXT        NOT NULL,
+  status          TEXT        NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'sent', 'failed', 'permanent_failure')),
+  error_message   TEXT,
+  attempt_count   INTEGER     NOT NULL DEFAULT 0,
+  last_attempt_at TIMESTAMPTZ,
+  next_retry_at   TIMESTAMPTZ,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  sent_at         TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_outbox_pending ON paperclip_outbox(status, next_retry_at)
+  WHERE status = 'pending' AND (next_retry_at IS NULL OR next_retry_at <= NOW());
 
 CREATE INDEX IF NOT EXISTS idx_merchant_events_merchant_id ON merchant_events(merchant_id);
 CREATE INDEX IF NOT EXISTS idx_merchant_events_event_type ON merchant_events(event_type);
