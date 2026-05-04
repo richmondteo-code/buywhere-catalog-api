@@ -54,7 +54,7 @@ spec:
                   name: buywhere-posthog-api-key
                   key: latest
             - name: PAPERCLIP_API_URL
-              value: "https://api.paperclip.ai"
+              value: "http://gaia-agents-first.tail547291.ts.net:3100"
             - name: PAPERCLIP_API_KEY
               valueFrom:
                 secretKeyRef:
