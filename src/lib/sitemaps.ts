@@ -1,6 +1,19 @@
 import { getAllBlogPosts } from "@/lib/blog";
 import { PRODUCT_TAXONOMY, US_CATEGORY_META } from "@/lib/taxonomy";
 import { getUSProducts, type USProductForSitemap } from "@/lib/us-products";
+import { getSGProducts, type SGProductForSitemap } from "@/lib/sg-products";
+import fs from "node:fs";
+
+function safeGetBlogPosts() {
+  try {
+    if (fs.existsSync(process.cwd() + "/content/blog")) {
+      return getAllBlogPosts();
+    }
+  } catch {
+    // blog directory not available at runtime
+  }
+  return [];
+}
 
 export const SITEMAP_BASE_URL = "https://buywhere.ai";
 export const MAX_URLS_PER_SITEMAP = 50_000;
@@ -31,32 +44,34 @@ const CATEGORY_PAGE_SLUGS = [
 
 const STATIC_SITEMAP_ROUTES = [
   { path: "/", priority: 1.0, changeFrequency: "weekly" as const },
-  { path: "/docs", priority: 1.0, changeFrequency: "weekly" as const },
-  { path: "/developers", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/agents", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/docs/", priority: 1.0, changeFrequency: "weekly" as const },
+  { path: "/developers/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/agents/", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/blog/", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/quickstart", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/integrate", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/api-keys", priority: 0.9, changeFrequency: "monthly" as const },
+  { path: "/quickstart/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/integrate/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/api-keys/", priority: 0.9, changeFrequency: "monthly" as const },
   { path: "/docs/API_DOCUMENTATION/", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/docs/quickstart-mcp", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/docs/developer-quickstart-sea-shopping-agent", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/docs/agent-onboarding-flow", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/docs/rate-limits", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/us", priority: 0.8, changeFrequency: "weekly" as const },
-  { path: "/us/signup", priority: 0.8, changeFrequency: "weekly" as const },
-  { path: "/merchants", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/partnership", priority: 0.8, changeFrequency: "weekly" as const },
-  { path: "/partners", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/use-cases", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/pricing", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/about", priority: 0.6, changeFrequency: "monthly" as const },
-  { path: "/contact", priority: 0.5, changeFrequency: "monthly" as const },
-  { path: "/best-gaming-laptops-us", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/iphone-16-price-singapore", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/best-robot-vacuums-2026", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/privacy", priority: 0.3, changeFrequency: "yearly" as const },
-  { path: "/terms", priority: 0.3, changeFrequency: "yearly" as const },
+  { path: "/docs/quickstart-mcp/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/docs/developer-quickstart-sea-shopping-agent/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/docs/agent-onboarding-flow/", priority: 0.8, changeFrequency: "monthly" as const },
+  { path: "/docs/rate-limits/", priority: 0.8, changeFrequency: "monthly" as const },
+  { path: "/us/", priority: 0.8, changeFrequency: "weekly" as const },
+  { path: "/us/signup/", priority: 0.8, changeFrequency: "weekly" as const },
+  { path: "/merchants/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/partnership/", priority: 0.8, changeFrequency: "weekly" as const },
+  { path: "/partners/", priority: 0.8, changeFrequency: "monthly" as const },
+  { path: "/use-cases/", priority: 0.8, changeFrequency: "monthly" as const },
+  { path: "/pricing/", priority: 0.8, changeFrequency: "monthly" as const },
+  { path: "/about/", priority: 0.6, changeFrequency: "monthly" as const },
+  { path: "/contact/", priority: 0.5, changeFrequency: "monthly" as const },
+  { path: "/best-gaming-laptops-us/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/iphone-16-price-singapore/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/laptop-singapore/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/air-purifier-singapore/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/best-robot-vacuums-2026/", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/privacy/", priority: 0.3, changeFrequency: "yearly" as const },
+  { path: "/terms/", priority: 0.3, changeFrequency: "yearly" as const },
 ] as const;
 
 function xmlEscape(value: string): string {
@@ -121,7 +136,7 @@ export function renderSitemapIndex(urls: Array<{ url: string; lastModified: Date
 
 export function getStaticSitemapEntries(): SitemapUrlEntry[] {
   const now = new Date();
-  const blogPosts = getAllBlogPosts();
+  const blogPosts = safeGetBlogPosts();
 
   return [
     ...STATIC_SITEMAP_ROUTES.map(({ path, priority, changeFrequency }) => ({
@@ -152,9 +167,9 @@ export function getCategorySitemapEntries(): SitemapUrlEntry[] {
     });
   };
 
-  addEntry("/categories", 0.9);
-  addEntry("/compare", 0.9);
-  addEntry("/compare/us", 0.9);
+  addEntry("/categories/", 0.9);
+  addEntry("/compare/", 0.9);
+  addEntry("/compare/us/", 0.9);
 
   for (const slug of CATEGORY_PAGE_SLUGS) {
     addEntry(`/categories/${slug}`, 0.8);
@@ -184,11 +199,11 @@ export function getCompareSitemapEntries(): SitemapUrlEntry[] {
     });
   };
 
-  addEntry("/compare", 0.9);
-  addEntry("/compare/us", 0.9);
+  addEntry("/compare/", 0.9);
+  addEntry("/compare/us/", 0.9);
 
   for (const category of PRODUCT_TAXONOMY) {
-    addEntry(`/compare/${category.slug}`, 0.8);
+    addEntry(`/compare/${category.slug}/`, 0.8);
   }
 
   return Array.from(entries.values());
@@ -198,7 +213,7 @@ export async function getProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
   const products = await getUSProducts({ allowMockFallback: false });
 
   return products.map((product: USProductForSitemap) => ({
-    url: `${SITEMAP_BASE_URL}/products/us/${product.slug}`,
+    url: `${SITEMAP_BASE_URL}/products/us/${product.slug}/`,
     lastModified: product.lastUpdated,
     changeFrequency: "weekly",
     priority: 0.7,
@@ -212,6 +227,28 @@ export async function getProductSitemapChunkCount(): Promise<number> {
 
 export async function getProductSitemapChunk(page: number): Promise<SitemapUrlEntry[]> {
   const products = await getProductSitemapEntries();
+  const start = (page - 1) * MAX_URLS_PER_SITEMAP;
+  return products.slice(start, start + MAX_URLS_PER_SITEMAP);
+}
+
+export async function getSGProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
+  const products = await getSGProducts({ allowMockFallback: false });
+
+  return products.map((product: SGProductForSitemap) => ({
+    url: `${SITEMAP_BASE_URL}/products/sg/${product.slug}/`,
+    lastModified: product.lastUpdated,
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+}
+
+export async function getSGProductSitemapChunkCount(): Promise<number> {
+  const products = await getSGProducts({ allowMockFallback: false });
+  return Math.max(1, Math.ceil(products.length / MAX_URLS_PER_SITEMAP));
+}
+
+export async function getSGProductSitemapChunk(page: number): Promise<SitemapUrlEntry[]> {
+  const products = await getSGProductSitemapEntries();
   const start = (page - 1) * MAX_URLS_PER_SITEMAP;
   return products.slice(start, start + MAX_URLS_PER_SITEMAP);
 }
