@@ -106,7 +106,7 @@ jobs:
         run: |
           echo "Deploying to Cloud Run staging..."
           echo "Using image: $AR_IMAGE"
-          SERVICE_URL=$(gcloud run deploy ${{ env.CLOUD_RUN_SERVICE }} \
+          gcloud run deploy ${{ env.CLOUD_RUN_SERVICE }} \
             --project ${{ env.GCP_PROJECT_ID }} \
             --region ${{ env.GCP_REGION }} \
             --image $AR_IMAGE \
@@ -120,16 +120,19 @@ jobs:
             --set-env-vars "API_KEY_SECRET=${{ secrets.API_KEY_SECRET_STAGING }}" \
             --set-env-vars "SENTRY_DSN=${{ secrets.SENTRY_DSN_STAGING }}" \
             --set-env-vars "POSTHOG_PROJECT_KEY=${{ secrets.POSTHOG_API_KEY_PRODUCTION }}" \
-            --port 8000 \
+            --set-env-vars "PAPERCLIP_API_KEY=${{ secrets.PAPERCLIP_API_KEY }}" \
+            --set-env-vars "PAPERCLIP_API_URL=${{ secrets.PAPERCLIP_API_URL }}" \
+            --port 3000 \
             --memory 1Gi \
             --cpu 2 \
             --min-instances 1 \
             --max-instances 10 \
             --concurrency 80 \
             --timeout 60s \
-            --output json 2>&1 | tee /tmp/deploy_output.json | jq -r '.status.url')
+            --format json 2>&1 | tee /tmp/deploy_output.json
           echo "Full deploy output:"
           cat /tmp/deploy_output.json
+          SERVICE_URL=$(jq -r '.status.url' /tmp/deploy_output.json)
           if [ -z "$SERVICE_URL" ] || [ "$SERVICE_URL" = "null" ]; then
             echo "ERROR: Deploy failed, no URL captured"
             echo "Checking service status..."
