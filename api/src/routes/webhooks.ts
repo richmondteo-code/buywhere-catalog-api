@@ -74,6 +74,11 @@ async function postPaperclipComment(
   console.log('[webhooks] Paperclip comment posted successfully');
 }
 
+// GET /webhooks/uptime-robot — health check / diagnostic
+router.get('/uptime-robot', (_req: Request, res: Response) => {
+  res.json({ status: 'ok', mode: 'diagnostic' });
+});
+
 // POST /webhooks/uptime-robot
 router.post('/uptime-robot', async (req: Request, res: Response) => {
   // Validate shared secret if configured
