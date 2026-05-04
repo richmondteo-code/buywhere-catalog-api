@@ -10,8 +10,6 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS source         TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS merchant_id    TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS description    TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS category_path  TEXT[] NOT NULL DEFAULT '{}';
-ALTER TABLE products ADD COLUMN IF NOT EXISTS category_id    TEXT;
-CREATE INDEX IF NOT EXISTS idx_products_category_id ON products(category_id);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS brand          TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS is_active      BOOLEAN NOT NULL DEFAULT true;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS search_vector  TSVECTOR;
@@ -20,46 +18,27 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS country_code   VARCHAR(2);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS gtin           VARCHAR(14);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS mpn            VARCHAR(100);
 
--- Unique constraint for ingest upsert (ON CONFLICT (sku, source)) — BUY-10814 / BUY-10929 blocker
--- Uses a PL/pgSQL block with nested exception handling to safely dedup and create the constraint.
--- If the constraint already exists, skip. If duplicates exist, dedup then constrain.
+-- Unique constraint for ingest upsert (ON CONFLICT (sku, source)) -- BUY-10814 / BUY-10929 blocker
 DO $$
-DECLARE
-  dup_count BIGINT;
+DECLARE dup_count BIGINT;
 BEGIN
-  -- Check if constraint already exists (idempotent for re-runs)
   IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'products_sku_source_unique') THEN
-    RAISE NOTICE 'Constraint products_sku_source_unique already exists, skipping.';
     RETURN;
   END IF;
-
-  -- Count duplicate (sku, source) pairs
   SELECT COUNT(*) INTO dup_count FROM (
-    SELECT sku, source, COUNT(*) AS cnt
-    FROM products
+    SELECT sku, source, COUNT(*) AS cnt FROM products
     WHERE sku IS NOT NULL AND source IS NOT NULL
-    GROUP BY sku, source
-    HAVING COUNT(*) > 1
+    GROUP BY sku, source HAVING COUNT(*) > 1
   ) dups;
-
-  -- Dedup if needed: keep the row with the highest id for each (sku, source) pair
   IF dup_count > 0 THEN
-    RAISE NOTICE 'Dedup: removing % duplicate (sku, source) pairs.', dup_count;
-    DELETE FROM products
-    WHERE id IN (
+    DELETE FROM products WHERE id IN (
       SELECT id FROM (
-        SELECT id,
-               ROW_NUMBER() OVER (PARTITION BY sku, source ORDER BY id DESC) AS rn
-        FROM products
-        WHERE sku IS NOT NULL AND source IS NOT NULL
-      ) ranked
-      WHERE rn > 1
+        SELECT id, ROW_NUMBER() OVER (PARTITION BY sku, source ORDER BY id DESC) AS rn
+        FROM products WHERE sku IS NOT NULL AND source IS NOT NULL
+      ) ranked WHERE rn > 1
     );
   END IF;
-
-  -- Create the constraint
   ALTER TABLE products ADD CONSTRAINT products_sku_source_unique UNIQUE (sku, source);
-  RAISE NOTICE 'Constraint products_sku_source_unique created successfully.';
 EXCEPTION WHEN OTHERS THEN
   RAISE WARNING 'Could not create constraint: %', SQLERRM;
 END $$;
@@ -295,23 +274,6 @@ CREATE TABLE IF NOT EXISTS merchant_events (
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Paperclip outbox — durable queue for webhook alerts posted to Paperclip issues (BUY-10989)
-CREATE TABLE IF NOT EXISTS paperclip_outbox (
-  id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-  issue_id        TEXT        NOT NULL,
-  comment_body    TEXT        NOT NULL,
-  status          TEXT        NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'sent', 'failed', 'permanent_failure')),
-  error_message   TEXT,
-  attempt_count   INTEGER     NOT NULL DEFAULT 0,
-  last_attempt_at TIMESTAMPTZ,
-  next_retry_at   TIMESTAMPTZ,
-  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  sent_at         TIMESTAMPTZ
-);
-
-CREATE INDEX IF NOT EXISTS idx_outbox_pending ON paperclip_outbox(status, next_retry_at)
-  WHERE status = 'pending' AND (next_retry_at IS NULL OR next_retry_at <= NOW());
-
 CREATE INDEX IF NOT EXISTS idx_merchant_events_merchant_id ON merchant_events(merchant_id);
 CREATE INDEX IF NOT EXISTS idx_merchant_events_event_type ON merchant_events(event_type);
 `;
@@ -354,23 +316,11 @@ CREATE INDEX IF NOT EXISTS idx_merchant_events_merchant_id ON merchant_events(me
 CREATE INDEX IF NOT EXISTS idx_merchant_events_event_type ON merchant_events(event_type);
 `;
 
-const ALERT_OUTBOX_MIGRATION = `
-CREATE TABLE IF NOT EXISTS alert_outbox (
-  id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-  issue_id        TEXT        NOT NULL,
-  comment_body    TEXT        NOT NULL,
-  status          TEXT        NOT NULL DEFAULT 'pending',
-  error           TEXT,
-  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  posted_at       TIMESTAMPTZ
-);
-
-CREATE INDEX IF NOT EXISTS idx_alert_outbox_status ON alert_outbox(status);
-`;
-
 export async function runMigrations() {
   console.log('Running migrations...');
 
+  // Run full migration block as-is (best-effort, may fail on extensions or
+  // products columns if those tables/perms don't exist yet).
   try {
     await db.query(MIGRATION);
     console.log('Full migration completed.');
@@ -378,18 +328,12 @@ export async function runMigrations() {
     console.warn(`[migration] Full migration block failed (non-fatal): ${err.message?.slice(0, 200)}`);
   }
 
+  // Separately ensure merchants tables exist — not blocked by failures above.
   try {
     await db.query(MERCHANTS_MIGRATION);
     console.log('Merchants migration completed.');
   } catch (err: any) {
     console.error(`[migration] Merchants table creation failed: ${err.message?.slice(0, 200)}`);
-  }
-
-  try {
-    await db.query(ALERT_OUTBOX_MIGRATION);
-    console.log('Alert outbox migration completed.');
-  } catch (err: any) {
-    console.warn(`[migration] Alert outbox table creation failed: ${err.message?.slice(0, 200)}`);
   }
 
   console.log('Migrations complete.');

@@ -20,20 +20,30 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS country_code   VARCHAR(2);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS gtin           VARCHAR(14);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS mpn            VARCHAR(100);
 
--- Unique constraint for ingest upsert (ON CONFLICT (sku, source)) — BUY-10814 / BUY-10929 blocker
--- 1. Remove rows with null sku/source (unique constraint allows multiple NULLs)
-DELETE FROM products WHERE sku IS NULL AND source IS NULL;
--- 2. Remove duplicate (sku, source) pairs keeping newest row (highest ctid)
---    This is safe for re-run: idempotent, only fires when duplicates exist
-DELETE FROM products a
-USING products b
-WHERE a.ctid < b.ctid
-  AND a.sku = b.sku
-  AND a.source = b.source
-  AND a.sku IS NOT NULL
-  AND a.source IS NOT NULL;
--- 3. Create the constraint — now safe because duplicates are gone
-ALTER TABLE products ADD CONSTRAINT IF NOT EXISTS products_sku_source_unique UNIQUE (sku, source);
+-- Unique constraint for ingest upsert (ON CONFLICT (sku, source)) -- BUY-10814 / BUY-10929 blocker
+DO $$
+DECLARE dup_count BIGINT;
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'products_sku_source_unique') THEN
+    RETURN;
+  END IF;
+  SELECT COUNT(*) INTO dup_count FROM (
+    SELECT sku, source, COUNT(*) AS cnt FROM products
+    WHERE sku IS NOT NULL AND source IS NOT NULL
+    GROUP BY sku, source HAVING COUNT(*) > 1
+  ) dups;
+  IF dup_count > 0 THEN
+    DELETE FROM products WHERE id IN (
+      SELECT id FROM (
+        SELECT id, ROW_NUMBER() OVER (PARTITION BY sku, source ORDER BY id DESC) AS rn
+        FROM products WHERE sku IS NOT NULL AND source IS NOT NULL
+      ) ranked WHERE rn > 1
+    );
+  END IF;
+  ALTER TABLE products ADD CONSTRAINT products_sku_source_unique UNIQUE (sku, source);
+EXCEPTION WHEN OTHERS THEN
+  RAISE WARNING 'Could not create constraint: %', SQLERRM;
+END $$;
 
 -- Full-text search support on products table
 CREATE INDEX IF NOT EXISTS idx_products_search_vector ON products USING GIN(search_vector);
