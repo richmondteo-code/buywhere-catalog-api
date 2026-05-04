@@ -1,4 +1,4 @@
-name: Deploy MCP to Cloud Run (Production)
+name: Deploy MCP to Cloud Run Production
 
 on:
   workflow_dispatch:
