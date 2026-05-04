@@ -228,28 +228,28 @@ jobs:
           if [ -f k6-mcp-summary.json ]; then
             echo "k6 results saved to k6-mcp-summary.json"
             cat k6-mcp-summary.json | python3 -c "
-import json, sys
-d = json.load(sys.stdin)
-budget_violations = []
-critical_metrics = {
-    'mcp_search_latency_ms': 500,
-    'mcp_get_product_latency_ms': 500,
-    'mcp_compare_latency_ms': 500,
-    'mcp_deals_latency_ms': 500,
-    'mcp_categories_latency_ms': 500,
-    'mcp_best_price_latency_ms': 500,
-}
-for key, budget in critical_metrics.items():
-    m = d.get('metrics', {}).get(key)
-    if m and m.get('values', {}).get('p(95)', 0) > budget:
-        print(f'BUDGET VIOLATION: {key} p(95)={m[\"values\"][\"p(95)\"]:.0f}ms > budget {budget}ms')
-        budget_violations.append(key)
-if budget_violations:
-    print(f'FAILED: {len(budget_violations)} latency budget violations')
-    sys.exit(1)
-else:
-    print('OK: All latency budgets within limits')
-" || echo "Warning: could not parse k6 summary"
+          import json, sys
+          d = json.load(sys.stdin)
+          budget_violations = []
+          critical_metrics = {
+              'mcp_search_latency_ms': 500,
+              'mcp_get_product_latency_ms': 500,
+              'mcp_compare_latency_ms': 500,
+              'mcp_deals_latency_ms': 500,
+              'mcp_categories_latency_ms': 500,
+              'mcp_best_price_latency_ms': 500,
+          }
+          for key, budget in critical_metrics.items():
+              m = d.get('metrics', {}).get(key)
+              if m and m.get('values', {}).get('p(95)', 0) > budget:
+                  print(f'BUDGET VIOLATION: {key} p(95)={m[\"values\"][\"p(95)\"]:.0f}ms > budget {budget}ms')
+                  budget_violations.append(key)
+          if budget_violations:
+              print(f'FAILED: {len(budget_violations)} latency budget violations')
+              sys.exit(1)
+          else:
+              print('OK: All latency budgets within limits')
+          " || echo "Warning: could not parse k6 summary"
           fi
 
   summary:
