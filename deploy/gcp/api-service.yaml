@@ -53,6 +53,15 @@ spec:
                 secretKeyRef:
                   name: buywhere-posthog-api-key
                   key: latest
+            - name: PAPERCLIP_API_URL
+              value: "https://api.paperclip.ai"
+            - name: PAPERCLIP_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: buywhere-paperclip-api-key
+                  key: latest
+            - name: UPTIMEROBOT_ISSUE_ID
+              value: "0d3648af-2d05-4494-9ffe-0199de71cd57"
           resources:
             limits:
               cpu: "1"
