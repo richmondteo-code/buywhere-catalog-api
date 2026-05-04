@@ -20,6 +20,16 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS country_code   VARCHAR(2);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS gtin           VARCHAR(14);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS mpn            VARCHAR(100);
 
+-- Dedup (BUY-11074): remove duplicate (sku, source) rows before creating the unique index.
+-- Only runs when the unique index does not yet exist. Keeps the higher-id (newer) row.
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'products_sku_source_unique') THEN
+    DELETE FROM products a USING products b
+    WHERE a.id < b.id AND a.sku = b.sku AND a.source = b.source;
+  END IF;
+END$$;
+
 -- Unique index for ingest upsert (ON CONFLICT (sku, source)) -- BUY-10814 / BUY-10929 blocker
 -- Using CREATE UNIQUE INDEX (not CONSTRAINT) for broader PostgreSQL compatibility
 CREATE UNIQUE INDEX IF NOT EXISTS products_sku_source_unique ON products (sku, source);
