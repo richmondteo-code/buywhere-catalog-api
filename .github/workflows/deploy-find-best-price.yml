@@ -2,12 +2,6 @@ name: Deploy MCP to Cloud Run (Production)
 
 on:
   workflow_dispatch:
-    inputs:
-      skip_tests:
-        description: 'Skip smoke tests'
-        required: false
-        default: 'false'
-        type: boolean
 
 permissions:
   contents: read
