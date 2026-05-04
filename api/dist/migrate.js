@@ -20,18 +20,8 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS country_code   VARCHAR(2);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS gtin           VARCHAR(14);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS mpn            VARCHAR(100);
 
--- Dedup (BUY-11074): remove duplicate (sku, source) rows before creating the unique index.
--- Only runs when the unique index does not yet exist. Keeps the higher-id (newer) row.
-DO $$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'products_sku_source_unique') THEN
-    DELETE FROM products a USING products b
-    WHERE a.id < b.id AND a.sku = b.sku AND a.source = b.source;
-  END IF;
-END$$;
-
 -- Unique index for ingest upsert (ON CONFLICT (sku, source)) -- BUY-10814 / BUY-10929 blocker
--- Using CREATE UNIQUE INDEX (not CONSTRAINT) for broader PostgreSQL compatibility
+-- Dedup runs separately before this migration (see runMigrations dedup step)
 CREATE UNIQUE INDEX IF NOT EXISTS products_sku_source_unique ON products (sku, source);
 
 -- Full-text search support on products table
@@ -307,6 +297,24 @@ CREATE INDEX IF NOT EXISTS idx_merchant_events_event_type ON merchant_events(eve
 `;
 async function runMigrations() {
     console.log('Running migrations...');
+    // Run dedup first — standalone query so failure doesn't abort other migrations.
+    try {
+        await config_1.db.query(`
+      DO $$
+      BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'products_sku_source_unique') THEN
+          DELETE FROM products a USING products b
+          WHERE a.id < b.id AND a.sku = b.sku AND a.source = b.source;
+        END IF;
+      EXCEPTION WHEN OTHERS THEN
+        RAISE WARNING 'Dedup failed (non-fatal): %', SQLERRM;
+      END $$;
+    `);
+        console.log('Dedup migration completed.');
+    }
+    catch (err) {
+        console.warn(`[migration] Dedup failed (non-fatal): ${err.message?.slice(0, 200)}`);
+    }
     // Run full migration block as-is (best-effort, may fail on extensions or
     // products columns if those tables/perms don't exist yet).
     try {
