@@ -1,0 +1,10 @@
+name: Deploy MCP Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Placeholder - full workflow lives in deploy-mcp-cloud-run-production.yml"
