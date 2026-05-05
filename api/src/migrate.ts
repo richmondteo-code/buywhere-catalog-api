@@ -18,6 +18,8 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS country_code   VARCHAR(2);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS gtin           VARCHAR(14);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS mpn            VARCHAR(100);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS category_id    TEXT;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS avg_rating     NUMERIC;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS review_count   INTEGER DEFAULT 0;
 
 -- Unique index for ingest upsert (ON CONFLICT (sku, source)) -- BUY-10814 / BUY-10929 blocker
 -- Dedup runs separately before this migration (see runMigrations dedup step)

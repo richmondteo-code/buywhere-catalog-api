@@ -243,8 +243,9 @@ async function handleGetProduct(args: Record<string, unknown>) {
        FROM products WHERE id = $1`,
       [id]
     );
-  } catch {
-    throw { code: -32001, message: 'Product not found' };
+  } catch (err) {
+    console.error('[mcp] get_product query error:', err);
+    throw { code: -32603, message: 'Internal error' };
   }
   if (!result.rows.length) throw { code: -32001, message: 'Product not found' };
   const product = buildProduct(result.rows[0] as Record<string, unknown>, 'SGD', false);
