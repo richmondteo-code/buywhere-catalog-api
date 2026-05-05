@@ -13,6 +13,14 @@ exports.db = new pg_1.Pool({
     connectionTimeoutMillis: 5000,
     statement_timeout: 10000,
 });
+// Prevent unhandled errors from idle pool connections crashing the process
+// pg.Pool auto-reconnects on the next connect() call; this handler keeps
+// transient network blips from propagating as uncaught exceptions.
+exports.db.on('error', (err) => {
+    if (process.env.NODE_ENV !== 'test') {
+        console.warn('[pg-pool] connection error:', err.message);
+    }
+});
 exports.redis = new ioredis_1.default({
     host: process.env.REDIS_HOST || '127.0.0.1',
     port: parseInt(process.env.REDIS_PORT || '6380'),

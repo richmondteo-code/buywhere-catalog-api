@@ -17,6 +17,7 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS region         VARCHAR(10);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS country_code   VARCHAR(2);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS gtin           VARCHAR(14);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS mpn            VARCHAR(100);
+ALTER TABLE products ADD COLUMN IF NOT EXISTS category_id    TEXT;
 
 -- Unique index for ingest upsert (ON CONFLICT (sku, source)) -- BUY-10814 / BUY-10929 blocker
 -- Dedup runs separately before this migration (see runMigrations dedup step)
@@ -64,6 +65,7 @@ ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS email_verified               BOOLE
 ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS email_verification_token     TEXT;
 ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS email_verification_sent_at   TIMESTAMPTZ;
 ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS email_verification_expires_at TIMESTAMPTZ;
+ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS total_queries                BIGINT      NOT NULL DEFAULT 0;
 
 -- Backfill: mark existing keys with a contact email as verified
 UPDATE api_keys SET email_verified = true WHERE contact IS NOT NULL AND contact != '' AND email_verified = false;

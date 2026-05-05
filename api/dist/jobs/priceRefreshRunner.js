@@ -49,6 +49,20 @@ function schedule() {
         `(03:00 SGT) — in ${formatDelay(delay)}`);
     setTimeout(tick, delay);
 }
+function fatalShutdown(exitCode) {
+    console.log(`[price-refresh-runner] Fatal shutdown with code ${exitCode}`);
+    config_1.db.end().catch(() => { });
+    config_1.redis.disconnect();
+    process.exit(exitCode);
+}
+process.on('uncaughtException', (err) => {
+    console.error('[price-refresh-runner] Uncaught exception:', err);
+    fatalShutdown(1);
+});
+process.on('unhandledRejection', (reason) => {
+    console.error('[price-refresh-runner] Unhandled rejection:', reason);
+    fatalShutdown(1);
+});
 async function main() {
     console.log(`[price-refresh-runner] Starting. Schedule: daily ${HOUR_UTC.toString().padStart(2, '0')}:${MIN_UTC.toString().padStart(2, '0')} UTC (03:00 SGT)`);
     // Handle graceful shutdown

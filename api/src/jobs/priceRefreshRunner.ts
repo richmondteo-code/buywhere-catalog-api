@@ -57,6 +57,23 @@ function schedule(): void {
   setTimeout(tick, delay);
 }
 
+function fatalShutdown(exitCode: number): void {
+  console.log(`[price-refresh-runner] Fatal shutdown with code ${exitCode}`);
+  db.end().catch(() => {});
+  redis.disconnect();
+  process.exit(exitCode);
+}
+
+process.on('uncaughtException', (err) => {
+  console.error('[price-refresh-runner] Uncaught exception:', err);
+  fatalShutdown(1);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('[price-refresh-runner] Unhandled rejection:', reason);
+  fatalShutdown(1);
+});
+
 async function main(): Promise<void> {
   console.log(
     `[price-refresh-runner] Starting. Schedule: daily ${HOUR_UTC.toString().padStart(2, '0')}:${MIN_UTC.toString().padStart(2, '0')} UTC (03:00 SGT)`
