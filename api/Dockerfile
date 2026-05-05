@@ -1,5 +1,7 @@
 FROM node:20-slim
 ARG CACHE_BUST=1
+ARG SENTRY_DSN
+ENV SENTRY_DSN=$SENTRY_DSN
 RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY package*.json ./

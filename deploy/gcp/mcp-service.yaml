@@ -14,6 +14,8 @@ spec:
         autoscaling.knative.dev/maxScale: "10"
         run.googleapis.com/cloudsql-instances: "PROJECT_ID:asia-southeast1:buywhere-staging"
         run.googleapis.com/execution-environment: gen2
+        run.googleapis.com/vpc-access-connector: projects/PROJECT_ID/locations/asia-southeast1/connectors/buywhere-api-redis
+        run.googleapis.com/vpc-access-egress: private-ranges-only
     spec:
       containerConcurrency: 200
       timeoutSeconds: 10
@@ -44,6 +46,11 @@ spec:
                   key: latest
             - name: REDIS_PORT
               value: "6379"
+            - name: SENTRY_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: buywhere-sentry-dsn
+                  key: latest
           resources:
             limits:
               cpu: "1"

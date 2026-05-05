@@ -51,6 +51,25 @@ jobs:
           docker build -t "$FULL_IMAGE" ./api
           docker push "$FULL_IMAGE"
 
+      - name: Ensure GCP secret for Sentry DSN
+        run: |
+          SECRET_NAME="buywhere-sentry-dsn"
+          if gcloud secrets describe "$SECRET_NAME" --project "${{ env.GCP_PROJECT_ID }}" &>/dev/null; then
+            echo "Secret $SECRET_NAME already exists"
+          else
+            echo "Creating secret $SECRET_NAME..."
+            gcloud secrets create "$SECRET_NAME" \
+              --project "${{ env.GCP_PROJECT_ID }}" \
+              --replication-policy="automatic"
+          fi
+
+      - name: Set Sentry DSN secret value
+        run: |
+          echo "${{ secrets.SENTRY_DSN_PRODUCTION }}" | \
+            gcloud secrets versions add buywhere-sentry-dsn \
+              --project "${{ env.GCP_PROJECT_ID }}" \
+              --data-file=-
+
       - name: Deploy MCP service to Cloud Run
         env:
           IMAGE_TAG: ${{ steps.tag.outputs.image_tag }}

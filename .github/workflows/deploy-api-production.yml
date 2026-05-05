@@ -78,6 +78,25 @@ jobs:
               --project "${{ env.GCP_PROJECT_ID }}" \
               --data-file=-
 
+      - name: Ensure GCP secret for Sentry DSN
+        run: |
+          SECRET_NAME="buywhere-sentry-dsn"
+          if gcloud secrets describe "$SECRET_NAME" --project "${{ env.GCP_PROJECT_ID }}" &>/dev/null; then
+            echo "Secret $SECRET_NAME already exists"
+          else
+            echo "Creating secret $SECRET_NAME..."
+            gcloud secrets create "$SECRET_NAME" \
+              --project "${{ env.GCP_PROJECT_ID }}" \
+              --replication-policy="automatic"
+          fi
+
+      - name: Set Sentry DSN secret value
+        run: |
+          echo "${{ secrets.SENTRY_DSN_PRODUCTION }}" | \
+            gcloud secrets versions add buywhere-sentry-dsn \
+              --project "${{ env.GCP_PROJECT_ID }}" \
+              --data-file=-
+
       - name: Deploy API service to Cloud Run
         env:
           IMAGE_TAG: ${{ steps.tag.outputs.image_tag }}
@@ -131,4 +150,28 @@ jobs:
           HTTP=$(curl -s -o /dev/null -w "%{http_code}" "$BASE/health")
           echo "GET /health → HTTP ${HTTP}"
           [[ "$HTTP" == "200" ]] || exit 1
+          echo "=== A2A tasks/send (search intent) ==="
+          BODY=$(curl -sf -X POST "$BASE/a2a/tasks/send" \
+            -H "Content-Type: application/json" \
+            -d '{"jsonrpc":"2.0","id":"smoke","method":"tasks/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"search for Dyson hair dryer"}]}}}' \
+            --max-time 30)
+          STATUS=$(echo "$BODY" | python3 -c "import sys,json; print(json.load(sys.stdin).get('result',{}).get('status','missing'))")
+          echo "POST /a2a/tasks/send → status=${STATUS}"
+          [[ "$STATUS" == "completed" ]] || { echo "FAIL: expected 'completed' got '${STATUS}'"; exit 1; }
+          echo "=== A2A tasks/send (deals intent) ==="
+          BODY=$(curl -sf -X POST "$BASE/a2a/tasks/send" \
+            -H "Content-Type: application/json" \
+            -d '{"jsonrpc":"2.0","id":"smoke2","method":"tasks/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"show me deals"}]}}}' \
+            --max-time 30)
+          STATUS=$(echo "$BODY" | python3 -c "import sys,json; print(json.load(sys.stdin).get('result',{}).get('status','missing'))")
+          echo "POST /a2a/tasks/send (deals) → status=${STATUS}"
+          [[ "$STATUS" == "completed" ]] || { echo "FAIL: expected 'completed' got '${STATUS}'"; exit 1; }
+          echo "=== A2A tasks/send (fallback intent) ==="
+          BODY=$(curl -sf -X POST "$BASE/a2a/tasks/send" \
+            -H "Content-Type: application/json" \
+            -d '{"jsonrpc":"2.0","id":"smoke3","method":"tasks/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"what can you do"}]}}}' \
+            --max-time 30)
+          STATUS=$(echo "$BODY" | python3 -c "import sys,json; print(json.load(sys.stdin).get('result',{}).get('status','missing'))")
+          echo "POST /a2a/tasks/send (fallback) → status=${STATUS}"
+          [[ "$STATUS" == "completed" ]] || { echo "FAIL: expected 'completed' got '${STATUS}'"; exit 1; }
           echo "All smoke tests passed"
