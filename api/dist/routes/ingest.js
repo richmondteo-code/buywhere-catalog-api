@@ -172,7 +172,7 @@ router.post('/products', apiKey_1.requireApiKey, async (req, res) => {
                 metadata.is_available = p.is_available;
             if (p.last_checked !== undefined)
                 metadata.last_checked = p.last_checked;
-            values.push(p.sku, source, p.merchant_id, p.title, p.description || null, p.price, p.currency || 'SGD', p.url, p.image_url || null, buildCategoryPathLiteral(p.category_path), p.brand || null, JSON.stringify(metadata), p.is_active !== false, p.region || null, p.country_code || null, p.url || null, source);
+            values.push(p.sku, source, p.merchant_id, p.title, p.description || null, p.price, p.currency || 'SGD', p.url, p.image_url || null, buildCategoryPathLiteral(p.category_path), p.brand || null, JSON.stringify(metadata), p.is_active !== false, p.region || null, p.country_code || null, p.url || null, source); // url_hash, source_id
             placeholders.push(`($${base},$${base + 1},$${base + 2},$${base + 3},$${base + 4},$${base + 5},$${base + 6},$${base + 7},$${base + 8},$${base + 9},$${base + 10},$${base + 11},$${base + 12},$${base + 13},$${base + 14},$${base + 15},$${base + 16})`);
         }
         await config_1.db.query(`INSERT INTO products
