@@ -47,6 +47,10 @@ def upgrade() -> None:
         $$ LANGUAGE plpgsql
     """)
 
+    # Drop old trigger if it exists (leftover from BUY-8859 manual fix)
+    # before creating the new one — PostgreSQL does not support CREATE OR REPLACE TRIGGER
+    op.execute("DROP TRIGGER IF EXISTS trg_products_search_vector ON products")
+
     # Create trigger on INSERT or UPDATE of title or description
     op.execute("""
         CREATE TRIGGER trg_products_search_vector
