@@ -29,7 +29,7 @@ const ingest_1 = __importDefault(require("./routes/ingest"));
 const catalog_1 = __importDefault(require("./routes/catalog"));
 const keys_1 = __importDefault(require("./routes/keys"));
 const webhooks_1 = __importDefault(require("./routes/webhooks"));
-const metrics_1 = __importDefault(require("./routes/metrics"));
+const a2a_1 = __importDefault(require("./routes/a2a"));
 function createApp() {
     const app = (0, express_1.default)();
     app.use((0, cors_1.default)({
@@ -72,6 +72,8 @@ function createApp() {
     app.get('/quickstart', aiCrawlerHeaders, (_req, res) => res.redirect(301, '/docs/guides/mcp'));
     // MCP JSON-RPC endpoint (Model Context Protocol)
     app.use('/mcp', mcp_1.default);
+    // A2A (Agent-to-Agent) protocol — Google A2A 1.0 task endpoints
+    app.use('/a2a', a2a_1.default);
     // Webhook receivers (UptimeRobot, etc.)
     app.use('/webhooks', webhooks_1.default);
     // v1 API
@@ -98,8 +100,6 @@ function createApp() {
     // Outbound click tracking (BUY-4869): /api/click redirect + /admin/clicks analytics
     app.use('/api', clicks_1.default);
     app.use('/admin', clicks_1.default);
-    // Admin KPI metrics — product count, merchant count, platform count (BUY-8959)
-    app.use('/admin/metrics', metrics_1.default);
     // Affiliate redirect (no /v1 prefix — short URLs)
     app.use('/r', redirect_1.default);
     // Public HTML pages with Schema.org JSON-LD (no auth — crawlable by AI agents)

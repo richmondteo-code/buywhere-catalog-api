@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const crypto_1 = __importDefault(require("crypto"));
 const config_1 = require("../config");
 const router = (0, express_1.Router)();
 // GET /.well-known/ai-plugin.json — MCP/OpenAI plugin discovery
@@ -263,52 +267,93 @@ router.get('/mcp/server-card.json', (_req, res) => {
 router.get('/mcp-registry-auth', (_req, res) => {
     res.type('text/plain').send('v=MCPv1; k=ed25519; p=h7SEyb+uUyDnAuhTuNfFKVLgvbKI+4eIJQQCfXiccxs=');
 });
-// GET /.well-known/llms.txt — AI crawler discoverability (BUY-10937)
-// Serves identical content to buywhere.ai/llms.txt so AI crawlers
-// following the well-known URI spec can auto-discover our llms.txt.
-// Ref: https://llmstxt.org/
-router.get('/llms.txt', (_req, res) => {
-    res.set('X-Robots-Tag', 'ai-index');
-    res.set('Cache-Control', 'public, max-age=86400');
-    res.type('text/plain').send([
-        '# BuyWhere',
-        '',
-        '> BuyWhere is a product catalog API for AI agents. Supports semantic search, normalized pricing, and real-time availability across Singapore retailers.',
-        '',
-        '## API Endpoints',
-        '',
-        '- Search: https://api.buywhere.ai/v1/search',
-        '- Product Detail: https://api.buywhere.ai/v1/products/{id}',
-        '- Best Price: https://api.buywhere.ai/v1/products/best-price',
-        '- Deals: https://api.buywhere.ai/v1/deals',
-        '- Categories: https://api.buywhere.ai/v1/categories',
-        '',
-        '## Authentication',
-        '',
-        'Authorization: Bearer bw_live_YOUR_API_KEY',
-        'Get key: https://buywhere.ai/quickstart',
-        '',
-        '## Rate Limits',
-        '',
-        'Free: 10 req/min, 1K queries/month',
-        'Starter: 60 req/min, 100K queries/month',
-        'Growth: 300 req/min, 1M queries/month',
-        '',
-        '## Documentation',
-        '',
-        '- API Reference: https://api.buywhere.ai/docs',
-        '- Quickstart Guide: https://buywhere.ai/quickstart',
-        '- Pricing: https://buywhere.ai/pricing',
-        '- GitHub: https://github.com/BuyWhere/buywhere',
-        '',
-        '## MCP Server',
-        '',
-        'npx -y @buywhere/mcp-server',
-        '',
-        '## Support',
-        '',
-        'BuyWhere Pte. Ltd. — hello@buywhere.ai',
-        '',
-    ].join('\n'));
+// Ed25519 key pair for JWS-signed Agent Card
+// Load from env vars for production, generate at startup for local dev
+function loadAgentCardKeys() {
+    const privateKeyPem = process.env.AGENT_CARD_PRIVATE_KEY;
+    const publicKeyPem = process.env.AGENT_CARD_PUBLIC_KEY;
+    if (privateKeyPem && publicKeyPem) {
+        const privateKey = crypto_1.default.createPrivateKey(privateKeyPem.replace(/\\n/g, '\n'));
+        const publicKeyObj = crypto_1.default.createPublicKey(publicKeyPem.replace(/\\n/g, '\n'));
+        const publicKeyDer = publicKeyObj.export({ type: 'spki', format: 'der' });
+        const publicKeyB64 = Buffer.from(publicKeyDer).toString('base64');
+        return { privateKey, publicKeyB64, publicKeyDer };
+    }
+    const { privateKey, publicKey } = crypto_1.default.generateKeyPairSync('ed25519', {
+        publicKeyEncoding: { type: 'spki', format: 'der' },
+        privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
+    });
+    const publicKeyB64 = Buffer.from(publicKey).toString('base64');
+    return { privateKey: privateKey, publicKeyB64, publicKeyDer: publicKey };
+}
+const agentCardKeys = loadAgentCardKeys();
+function base64url(buf) {
+    return buf.toString('base64url');
+}
+function createJws(payload) {
+    const header = { alg: 'EdDSA', kid: 'buywhere-agent-card-v1', typ: 'JWT' };
+    const headerB64 = base64url(Buffer.from(JSON.stringify(header)));
+    const payloadB64 = base64url(Buffer.from(JSON.stringify(payload)));
+    const signingInput = `${headerB64}.${payloadB64}`;
+    const signature = crypto_1.default.sign(null, Buffer.from(signingInput), agentCardKeys.privateKey);
+    return `${signingInput}.${base64url(signature)}`;
+}
+// GET /.well-known/jwks.json — JSON Web Key Set for the agent card signing key
+router.get('/jwks.json', (_req, res) => {
+    res.json({
+        keys: [
+            {
+                kty: 'OKP',
+                crv: 'Ed25519',
+                kid: 'buywhere-agent-card-v1',
+                x: agentCardKeys.publicKeyB64,
+            },
+        ],
+    });
+});
+// GET /.well-known/agent-card — JWS-signed Agent Card (Google A2A spec)
+// Returns compact JWS: BASE64URL(header).BASE64URL(payload).BASE64URL(signature)
+router.get('/agent-card', (_req, res) => {
+    const card = {
+        name: 'BuyWhere Product Catalog',
+        description: 'Agent-native product catalog API for AI agent commerce. Search 1.5M+ products across 20+ e-commerce platforms in Singapore, US, and Southeast Asia.',
+        url: `${config_1.API_BASE_URL}/a2a`,
+        version: '1.0.0',
+        capabilities: {
+            streaming: true,
+            pushNotifications: false,
+            state: 'stateless',
+        },
+        authentication: {
+            schemes: [
+                {
+                    type: 'bearer',
+                    description: 'Register for a free API key at /v1/auth/register',
+                    registerUrl: `${config_1.API_BASE_URL}/v1/auth/register`,
+                },
+            ],
+        },
+        skills: [
+            { id: 'search_products', name: 'Search Products', description: 'Full-text product search with price, category, merchant, region filters' },
+            { id: 'get_product', name: 'Get Product', description: 'Get a specific product by ID with full details' },
+            { id: 'compare_products', name: 'Compare Products', description: 'Compare multiple products side-by-side' },
+            { id: 'get_deals', name: 'Get Deals', description: 'Get discounted products sorted by discount percentage' },
+            { id: 'list_categories', name: 'List Categories', description: 'List top-level product categories' },
+            { id: 'find_best_price', name: 'Find Best Price', description: 'Find the best current price across all merchants' },
+        ],
+        jwks: {
+            keys: [
+                {
+                    kty: 'OKP',
+                    crv: 'Ed25519',
+                    kid: 'buywhere-agent-card-v1',
+                    x: agentCardKeys.publicKeyB64,
+                },
+            ],
+        },
+    };
+    const jws = createJws(card);
+    res.set('Content-Type', 'application/jose');
+    res.send(jws);
 });
 exports.default = router;
