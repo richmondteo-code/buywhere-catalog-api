@@ -1,0 +1,13 @@
+{
+  "keys": [
+    {
+      "kty": "EC",
+      "crv": "P-256",
+      "kid": "buywhere-agent-card",
+      "x": "EAthO9bZtzei1xOS_WWUTtR-cXmV7TVD-R96Drds1K8",
+      "y": "sy2GWuXrLGzb-lBV59hYDNnQlOR0o8klB9v7ZNXieKs",
+      "alg": "ES256",
+      "use": "sig"
+    }
+  ]
+}
