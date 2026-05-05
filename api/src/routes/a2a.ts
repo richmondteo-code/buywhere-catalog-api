@@ -32,22 +32,65 @@ function jsonrpcErr(id: unknown, code: number, message: string) {
   return { jsonrpc: '2.0', id, error: { code, message } };
 }
 
-async function executeTask(method: string, params: Record<string, unknown>) {
-  switch (method) {
-    case 'tools/call':
-    case 'tasks/send':
-    case 'tasks/sendSubscribe': {
-      const toolName = params.name as string;
-      const toolArgs = (params.arguments && typeof params.arguments === 'object')
-        ? params.arguments as Record<string, unknown>
-        : {};
-      if (!toolName) throw { code: -32602, message: 'Missing tool name' };
-      const result = await dispatchTool(toolName, toolArgs);
-      return { content: [{ type: 'text', text: JSON.stringify(result) }] };
-    }
-    default:
-      throw { code: -32601, message: `Unknown method: ${method}` };
+function extractMessageText(params: Record<string, unknown>): string {
+  try {
+    const msg = params.message as Record<string, unknown>;
+    const parts = msg.parts as Array<Record<string, unknown>>;
+    return (parts[0]?.text as string) || '';
+  } catch {
+    return '';
   }
+}
+
+function routeIntent(text: string): { tool: string; args: Record<string, unknown> } {
+  const lower = text.toLowerCase();
+
+  if (/search|find/i.test(lower)) {
+    const q = text.replace(/^(search|find)\s*(for\s*)?/i, '').trim() || text;
+    return { tool: 'search_products', args: { q, limit: 10 } };
+  }
+  if (/match|equivalent/i.test(lower)) {
+    const q = text.replace(/^(match|find equivalent of?)\s*/i, '').trim() || text;
+    return { tool: 'search_products', args: { q: `${q} equivalent`, limit: 10 } };
+  }
+  if (/best.?price|cheapest/i.test(lower)) {
+    const productName = text.replace(/^(best\s*price\s*for\s*|cheapest\s*|find\s*cheapest\s*)/i, '').trim();
+    return { tool: 'find_best_price', args: { product_name: productName || text } };
+  }
+  if (/deal|discount/i.test(lower)) {
+    return { tool: 'get_deals', args: { limit: 10, min_discount: 10 } };
+  }
+  if (/price|history/i.test(lower)) {
+    const q = text.replace(/^(price\s*history\s*of\s*|price\s*of\s*)/i, '').trim() || text;
+    return { tool: 'search_products', args: { q, limit: 5, compact: true } };
+  }
+  if (/categories|category/i.test(lower)) {
+    return { tool: 'list_categories', args: {} };
+  }
+
+  return { tool: '', args: {} };
+}
+
+function capabilityDescription() {
+  return "I can help you search products, find best prices, discover deals, match products across markets, and browse categories. Try asking: 'search for Dyson hair dryer', 'find the cheapest iPhone 16', or 'show me current deals'.";
+}
+
+async function executeTask(_method: string, params: Record<string, unknown>) {
+  const text = extractMessageText(params);
+  const { tool, args } = routeIntent(text);
+
+  if (!tool) {
+    return {
+      intent: 'capability_description',
+      content: [{ type: 'text', text: capabilityDescription() }],
+    };
+  }
+
+  const result = await dispatchTool(tool, args);
+  return {
+    intent: tool,
+    content: [{ type: 'json', text: JSON.stringify(result) }],
+  };
 }
 
 router.post('/tasks/send', requireApiKey, checkRateLimit, async (req: Request, res: Response) => {
@@ -70,7 +113,7 @@ router.post('/tasks/send', requireApiKey, checkRateLimit, async (req: Request, r
       id: taskId,
       taskId,
       status: 'completed',
-      artifacts: result,
+      artifacts: result.content,
     }));
   } catch (err: unknown) {
     const e = err as { code?: number; message?: string };
@@ -85,7 +128,7 @@ router.post('/tasks/sendSubscribe', requireApiKey, checkRateLimit, async (req: R
   if (!body || body.jsonrpc !== '2.0' || !body.method) {
     return res.status(400).json(jsonrpcErr(body?.id ?? null, -32600, 'Invalid JSON-RPC 2.0 request'));
   }
-  const { id, method } = body;
+  const { id: _id, method } = body;
   const params = (body.params && typeof body.params === 'object' && !Array.isArray(body.params))
     ? body.params as Record<string, unknown>
     : {};
@@ -124,7 +167,7 @@ router.post('/tasks/sendSubscribe', requireApiKey, checkRateLimit, async (req: R
     task.status = 'completed';
     task.result = result;
     sendSSE('task_status', { taskId, status: 'completed' });
-    sendSSE('task_result', { taskId, artifacts: result });
+    sendSSE('task_result', { taskId, artifacts: result.content });
     if (!res.writableEnded && !res.destroyed) res.end();
   } catch (err: unknown) {
     if (aborted) return;
