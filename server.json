@@ -1,0 +1,40 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "ai.buywhere/catalog-api",
+  "description": "Search 1.5M+ products across 20+ platforms. Compare prices, find deals, browse categories.",
+  "repository": {
+    "url": "https://github.com/BuyWhere/buywhere-mcp",
+    "source": "github"
+  },
+  "homepage": "https://buywhere.com",
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@buywhere/mcp-server",
+      "version": "1.0.0",
+      "transport": {
+        "type": "streamable-http"
+      },
+      "endpoint": {
+        "url": "https://mcp.buywhere.ai/mcp"
+      },
+      "environmentVariables": [
+        {
+          "description": "BuyWhere API key (register at https://api.buywhere.ai/v1/auth/register)",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true,
+          "name": "BUYWHERE_API_KEY"
+        },
+        {
+          "description": "API base URL override",
+          "isRequired": false,
+          "format": "string",
+          "name": "BUYWHERE_API_URL",
+          "default": "https://api.buywhere.ai"
+        }
+      ]
+    }
+  ]
+}
