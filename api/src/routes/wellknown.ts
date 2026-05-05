@@ -272,24 +272,30 @@ router.get('/mcp-registry-auth', (_req: Request, res: Response) => {
 
 // Ed25519 key pair for JWS-signed Agent Card
 // Load from env vars for production, generate at startup for local dev
-function loadAgentCardKeys(): { privateKey: crypto.KeyObject; publicKeyB64: string; publicKeyDer: Buffer } {
+function loadAgentCardKeys(): { privateKey: crypto.KeyObject; publicKeyB64: string } {
   const privateKeyPem = process.env.AGENT_CARD_PRIVATE_KEY;
   const publicKeyPem = process.env.AGENT_CARD_PUBLIC_KEY;
 
+  let publicKeyObj: crypto.KeyObject;
+  let privateKeyObj: crypto.KeyObject;
+
   if (privateKeyPem && publicKeyPem) {
-    const privateKey = crypto.createPrivateKey(privateKeyPem.replace(/\\n/g, '\n'));
-    const publicKeyObj = crypto.createPublicKey(publicKeyPem.replace(/\\n/g, '\n'));
-    const publicKeyDer = publicKeyObj.export({ type: 'spki', format: 'der' });
-    const publicKeyB64 = Buffer.from(publicKeyDer).toString('base64');
-    return { privateKey, publicKeyB64, publicKeyDer };
+    privateKeyObj = crypto.createPrivateKey(privateKeyPem.replace(/\\n/g, '\n'));
+    publicKeyObj = crypto.createPublicKey(publicKeyPem.replace(/\\n/g, '\n'));
+  } else {
+    const pair = crypto.generateKeyPairSync('ed25519', {
+      publicKeyEncoding: { type: 'spki', format: 'der' },
+      privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
+    });
+    privateKeyObj = pair.privateKey as any;
+    publicKeyObj = crypto.createPublicKey({ key: pair.publicKey as any, format: 'der', type: 'spki' });
   }
 
-  const { privateKey, publicKey } = crypto.generateKeyPairSync('ed25519', {
-    publicKeyEncoding: { type: 'spki', format: 'der' },
-    privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
-  });
-  const publicKeyB64 = Buffer.from(publicKey as any).toString('base64');
-  return { privateKey: privateKey as any, publicKeyB64, publicKeyDer: publicKey as any };
+  // Extract raw 32-byte public key from SPKI DER for JWK x field (RFC 8037)
+  const publicKeyDer = publicKeyObj.export({ type: 'spki', format: 'der' });
+  const rawKey = publicKeyDer.subarray(-32);
+  const publicKeyB64 = rawKey.toString('base64url');
+  return { privateKey: privateKeyObj, publicKeyB64 };
 }
 
 const agentCardKeys = loadAgentCardKeys();

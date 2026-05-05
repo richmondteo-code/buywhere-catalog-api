@@ -272,19 +272,25 @@ router.get('/mcp-registry-auth', (_req, res) => {
 function loadAgentCardKeys() {
     const privateKeyPem = process.env.AGENT_CARD_PRIVATE_KEY;
     const publicKeyPem = process.env.AGENT_CARD_PUBLIC_KEY;
+    let publicKeyObj;
+    let privateKeyObj;
     if (privateKeyPem && publicKeyPem) {
-        const privateKey = crypto_1.default.createPrivateKey(privateKeyPem.replace(/\\n/g, '\n'));
-        const publicKeyObj = crypto_1.default.createPublicKey(publicKeyPem.replace(/\\n/g, '\n'));
-        const publicKeyDer = publicKeyObj.export({ type: 'spki', format: 'der' });
-        const publicKeyB64 = Buffer.from(publicKeyDer).toString('base64');
-        return { privateKey, publicKeyB64, publicKeyDer };
+        privateKeyObj = crypto_1.default.createPrivateKey(privateKeyPem.replace(/\\n/g, '\n'));
+        publicKeyObj = crypto_1.default.createPublicKey(publicKeyPem.replace(/\\n/g, '\n'));
     }
-    const { privateKey, publicKey } = crypto_1.default.generateKeyPairSync('ed25519', {
-        publicKeyEncoding: { type: 'spki', format: 'der' },
-        privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
-    });
-    const publicKeyB64 = Buffer.from(publicKey).toString('base64');
-    return { privateKey: privateKey, publicKeyB64, publicKeyDer: publicKey };
+    else {
+        const pair = crypto_1.default.generateKeyPairSync('ed25519', {
+            publicKeyEncoding: { type: 'spki', format: 'der' },
+            privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
+        });
+        privateKeyObj = pair.privateKey;
+        publicKeyObj = crypto_1.default.createPublicKey({ key: pair.publicKey, format: 'der', type: 'spki' });
+    }
+    // Extract raw 32-byte public key from SPKI DER for JWK x field (RFC 8037)
+    const publicKeyDer = publicKeyObj.export({ type: 'spki', format: 'der' });
+    const rawKey = publicKeyDer.subarray(-32);
+    const publicKeyB64 = rawKey.toString('base64url');
+    return { privateKey: privateKeyObj, publicKeyB64 };
 }
 const agentCardKeys = loadAgentCardKeys();
 function base64url(buf) {
