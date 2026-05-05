@@ -99,12 +99,22 @@ jobs:
             --role="roles/run.invoker" \
             2>/dev/null || true
 
+      - name: Get Cloud Run URL
+        id: cloud_run_url
+        run: |
+          URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
+            --region="${{ env.GCP_REGION }}" \
+            --project="${{ env.GCP_PROJECT_ID }}" \
+            --format='value(status.url)')
+          echo "url=${URL}" >> "$GITHUB_OUTPUT"
+          echo "Cloud Run URL: ${URL}"
+
       - name: Wait for service to stabilize
         run: sleep 30
 
       - name: Smoke test A2A endpoints
         run: |
-          BASE="https://api.buywhere.ai"
+          BASE="${{ steps.cloud_run_url.outputs.url }}"
           echo "=== A2A discovery ==="
           HTTP=$(curl -s -o /dev/null -w "%{http_code}" "$BASE/a2a")
           echo "GET /a2a → HTTP ${HTTP}"
