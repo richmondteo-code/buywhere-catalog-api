@@ -19,6 +19,10 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS gtin           VARCHAR(14);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS mpn            VARCHAR(100);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS category_id    TEXT;
 
+-- url_hash column exists in legacy schema but ingest endpoint doesn't populate it.
+-- Make nullable so ingest INSERT doesn't fail on missing url_hash.
+ALTER TABLE products ALTER COLUMN url_hash DROP NOT NULL;
+
 -- Unique index for ingest upsert (ON CONFLICT (sku, source)) -- BUY-10814 / BUY-10929 blocker
 -- Dedup runs separately before this migration (see runMigrations dedup step)
 CREATE UNIQUE INDEX IF NOT EXISTS products_sku_source_unique ON products (sku, source);
