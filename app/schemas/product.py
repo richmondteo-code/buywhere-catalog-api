@@ -120,6 +120,8 @@ class ProductListResponse(BaseModel):
     next_cursor: Optional[int] = None
     facets: Optional[Any] = None
     highlights: Optional[Dict[str, str]] = None
+    applied_filters: Optional[Dict[str, Any]] = None
+    suggestion: Optional[str] = None
 
 
 class V1ProductSearchItem(BaseModel):

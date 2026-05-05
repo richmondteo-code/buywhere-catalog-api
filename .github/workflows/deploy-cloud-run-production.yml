@@ -174,7 +174,7 @@ jobs:
           PROXY_PID=$!
           sleep 5
 
-          pip install -q asyncpg
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
 
           if [ -f alembic.ini ] && [ -d alembic/versions ]; then
             echo "Running alembic upgrade head..."

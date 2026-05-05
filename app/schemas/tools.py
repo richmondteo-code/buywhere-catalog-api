@@ -180,7 +180,19 @@ MCP_TOOLS = [
                 "min_price": {"type": "number", "description": "Minimum price in SGD."},
                 "max_price": {"type": "number", "description": "Maximum price in SGD."},
                 "source": {"type": "string", "description": "Platform filter (lazada_sg, shopee_sg, etc.)."},
-                "limit": {"type": "integer", "description": "Max results (default 10, max 50).", "default": 10, "minimum": 1, "maximum": 50}
+                "limit": {"type": "integer", "description": "Max results (default 10, max 50).", "default": 10, "minimum": 1, "maximum": 50},
+                "filters": {
+                    "type": "object",
+                    "properties": {
+                        "price_min": {"type": "number", "description": "Minimum price filter."},
+                        "price_max": {"type": "number", "description": "Maximum price filter."},
+                        "brand": {"type": "array", "items": {"type": "string"}, "description": "Brand filters (OR-combined)."},
+                        "category": {"type": "string", "description": "Category filter."},
+                        "in_stock": {"type": "boolean", "description": "In-stock only."},
+                        "merchant": {"type": "string", "description": "Platform/source filter."},
+                        "sort_by": {"type": "string", "enum": ["relevance", "price_asc", "price_desc", "newest"], "description": "Sort order."}
+                    }
+                }
             },
             "required": ["query"]
         }

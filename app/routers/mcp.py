@@ -21,6 +21,107 @@ router = APIRouter(prefix="/mcp", tags=["mcp"])
 
 _api_server: Server | None = None
 
+_MCP_TOOLS = [
+    Tool(
+        name="search_products",
+        description=(
+            "Search the BuyWhere product catalog by keyword. "
+            "Returns ranked results from Singapore e-commerce platforms "
+            "(Lazada, Shopee, Qoo10, Carousell)."
+        ),
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "Product search query."},
+                "category": {"type": "string", "description": "Optional category filter."},
+                "min_price": {"type": "number", "description": "Minimum price in SGD."},
+                "max_price": {"type": "number", "description": "Maximum price in SGD."},
+                "source": {"type": "string", "description": "Platform filter (lazada_sg, shopee_sg, etc.)."},
+                "limit": {"type": "integer", "description": "Max results (default 10, max 50).", "default": 10, "minimum": 1, "maximum": 50},
+                "filters": {
+                    "type": "object",
+                    "properties": {
+                        "price_min": {"type": "number", "description": "Minimum price filter."},
+                        "price_max": {"type": "number", "description": "Maximum price filter."},
+                        "brand": {"type": "array", "items": {"type": "string"}, "description": "Brand filters (OR-combined)."},
+                        "category": {"type": "string", "description": "Category filter."},
+                        "in_stock": {"type": "boolean", "description": "In-stock only."},
+                        "merchant": {"type": "string", "description": "Platform/source filter."},
+                        "sort_by": {"type": "string", "enum": ["relevance", "price_asc", "price_desc", "newest"], "description": "Sort order."},
+                    },
+                },
+            },
+            "required": ["query"],
+        },
+    ),
+    Tool(
+        name="get_product",
+        description="Retrieve full details for a specific product by its BuyWhere ID.",
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "product_id": {"type": "integer", "description": "The BuyWhere product ID."},
+            },
+            "required": ["product_id"],
+        },
+    ),
+    Tool(
+        name="find_best_price",
+        description=(
+            "Find the single cheapest listing for a product across all Singapore "
+            "e-commerce platforms. Returns the platform, price, and affiliate URL "
+            "for the lowest available price."
+        ),
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "product_name": {"type": "string", "description": "Product name or search query."},
+                "category": {"type": "string", "description": "Optional category to narrow the search."},
+            },
+            "required": ["product_name"],
+        },
+    ),
+    Tool(
+        name="get_deals",
+        description=(
+            "Find products with significant price drops compared to their original "
+            "price. Returns deals sorted by discount percentage with current price, "
+            "original price, and savings."
+        ),
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "category": {"type": "string", "description": "Optional category filter (e.g. 'electronics')."},
+                "min_discount_pct": {"type": "number", "description": "Minimum discount percentage (default 10).", "default": 10, "minimum": 0, "maximum": 100},
+                "limit": {"type": "integer", "description": "Max results (default 10, max 50).", "default": 10, "minimum": 1, "maximum": 50},
+            },
+            "required": [],
+        },
+    ),
+    Tool(
+        name="list_categories",
+        description="Browse available product categories. Returns the category taxonomy and product counts.",
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "parent_id": {"type": "integer", "description": "Parent category ID to get subcategories."},
+            },
+            "required": [],
+        },
+    ),
+    Tool(
+        name="compare_products",
+        description="Side-by-side price comparison of products across platforms.",
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "product_ids": {"type": "array", "items": {"type": "integer"}, "description": "Product IDs to compare."},
+            },
+            "required": ["product_ids"],
+        },
+    ),
+]
+
 
 def get_mcp_server() -> Server:
     global _api_server
@@ -29,129 +130,33 @@ def get_mcp_server() -> Server:
 
         @server.list_tools()
         async def list_tools() -> ListToolsResult:
-            return ListToolsResult(
-                tools=[
-                    Tool(
-                        name="search_products",
-                        description=(
-                            "Search the BuyWhere product catalog by keyword. "
-                            "Returns ranked results from Singapore e-commerce platforms "
-                            "(Lazada, Shopee, Qoo10, Carousell)."
-                        ),
-                        inputSchema={
-                            "type": "object",
-                            "properties": {
-                                "query": {"type": "string", "description": "Product search query."},
-                                "category": {"type": "string", "description": "Optional category filter."},
-                                "min_price": {"type": "number", "description": "Minimum price in SGD."},
-                                "max_price": {"type": "number", "description": "Maximum price in SGD."},
-                                "source": {
-                                    "type": "string",
-                                    "description": "Platform filter (lazada_sg, shopee_sg, etc.).",
-                                },
-                                "limit": {
-                                    "type": "integer",
-                                    "description": "Max results (default 10, max 50).",
-                                    "default": 10,
-                                    "minimum": 1,
-                                    "maximum": 50,
-                                },
-                            },
-                            "required": ["query"],
-                        },
-                    ),
-                    Tool(
-                        name="get_product",
-                        description="Retrieve full details for a specific product by its BuyWhere ID.",
-                        inputSchema={
-                            "type": "object",
-                            "properties": {
-                                "product_id": {
-                                    "type": "integer",
-                                    "description": "The BuyWhere product ID.",
-                                },
-                            },
-                            "required": ["product_id"],
-                        },
-                    ),
-                    Tool(
-                        name="find_best_price",
-                        description=(
-                            "Find the single cheapest listing for a product across all Singapore "
-                            "e-commerce platforms. Returns the platform, price, and affiliate URL "
-                            "for the lowest available price."
-                        ),
-                        inputSchema={
-                            "type": "object",
-                            "properties": {
-                                "product_name": {
-                                    "type": "string",
-                                    "description": "Product name or search query.",
-                                },
-                                "category": {
-                                    "type": "string",
-                                    "description": "Optional category to narrow the search.",
-                                },
-                            },
-                            "required": ["product_name"],
-                        },
-                    ),
-                    Tool(
-                        name="get_deals",
-                        description=(
-                            "Find products with significant price drops compared to their original "
-                            "price. Returns deals sorted by discount percentage with current price, "
-                            "original price, and savings."
-                        ),
-                        inputSchema={
-                            "type": "object",
-                            "properties": {
-                                "category": {
-                                    "type": "string",
-                                    "description": "Optional category filter (e.g. 'electronics').",
-                                },
-                                "min_discount_pct": {
-                                    "type": "number",
-                                    "description": "Minimum discount percentage (default 10).",
-                                    "default": 10,
-                                    "minimum": 0,
-                                    "maximum": 100,
-                                },
-                                "limit": {
-                                    "type": "integer",
-                                    "description": "Max results (default 10, max 50).",
-                                    "default": 10,
-                                    "minimum": 1,
-                                    "maximum": 50,
-                                },
-                            },
-                            "required": [],
-                        },
-                    ),
-                ]
-            )
+            return ListToolsResult(tools=_MCP_TOOLS)
 
         @server.call_tool()
         async def call_tool(name: str, arguments: dict[str, Any]) -> CallToolResult:
-            if name == "search_products":
-                return await _handle_search_products(arguments)
-            if name == "get_product":
-                return await _handle_get_product(arguments)
-            if name == "find_best_price":
-                return await _handle_find_best_price(arguments)
-            if name == "get_deals":
-                return await _handle_get_deals(arguments)
-            return CallToolResult(
-                content=[TextContent(type="text", text=f"Unknown tool: {name}")],
-                isError=True,
-            )
+            handlers = {
+                "search_products": _handle_search_products,
+                "get_product": _handle_get_product,
+                "find_best_price": _handle_find_best_price,
+                "get_deals": _handle_get_deals,
+                "list_categories": _handle_list_categories,
+                "compare_products": _handle_compare_products,
+            }
+            handler = handlers.get(name)
+            if handler is None:
+                return CallToolResult(
+                    content=[TextContent(type="text", text=f"Unknown tool: {name}")],
+                    isError=True,
+                )
+            result, _ = await handler(arguments)
+            return result
 
         _api_server = server
 
     return _api_server
 
 
-async def _handle_search_products(args: dict[str, Any]) -> CallToolResult:
+async def _handle_search_products(args: dict[str, Any]) -> tuple[CallToolResult, dict | None]:
     from unittest.mock import AsyncMock
 
     query = str(args.get("query", "")).strip()
@@ -159,41 +164,79 @@ async def _handle_search_products(args: dict[str, Any]) -> CallToolResult:
         return CallToolResult(
             content=[TextContent(type="text", text="Error: query is required")],
             isError=True,
-        )
+        ), None
 
+    # Build flat params from filters object + flat args
     params = {"q": query, "limit": min(int(args.get("limit", 10)), 50)}
+
+    # Process structured filters
+    filters = args.get("filters") or {}
+    if isinstance(filters, dict):
+        if filters.get("category") is not None:
+            params["category"] = filters["category"]
+        if filters.get("price_min") is not None:
+            params["price_min"] = filters["price_min"]
+        if filters.get("price_max") is not None:
+            params["price_max"] = filters["price_max"]
+        if filters.get("merchant") is not None:
+            params["platform"] = filters["merchant"]
+        if filters.get("in_stock") is not None:
+            params["in_stock"] = str(filters["in_stock"]).lower()
+        if filters.get("sort_by") is not None:
+            params["sort_by"] = filters["sort_by"]
+        # Brand: send as comma-separated for OR logic on backend
+        if filters.get("brand"):
+            params["brand"] = ",".join(filters["brand"])
+
+    # Flat args as fallback (filters object wins on conflict)
     for key in ("category", "min_price", "max_price", "source"):
-        if args.get(key) is not None:
+        if args.get(key) is not None and key not in params:
             params[key] = args[key]
 
+    # Map flat args to backend params
+    if "min_price" in params:
+        params["price_min"] = params.pop("min_price")
+    if "max_price" in params:
+        params["price_max"] = params.pop("max_price")
+    if "source" in params:
+        params["platform"] = params.pop("source")
+
     try:
-        data = await _api_get("/v1/products", params)
+        data = await _api_get("/v1/products/search", params)
     except Exception as exc:
         logger.exception("search_products API error for %r", query)
         return CallToolResult(
             content=[TextContent(type="text", text=f"Search failed: {exc}")],
             isError=True,
-        )
+        ), None
 
     items = data.get("items", []) if isinstance(data, dict) else []
     if not items:
-        return CallToolResult(
-            content=[TextContent(type="text", text=f"No products found for: {query}")]
-        )
+        msg = f"No products found for: {query}"
+        # Include suggestion if provided by backend
+        suggestion = data.get("suggestion") if isinstance(data, dict) else None
+        if suggestion:
+            msg += f"\nSuggestion: {suggestion}"
+        return CallToolResult(content=[TextContent(type="text", text=msg)]), data
 
-    lines = [f"Found {len(items)} product(s) for **{query}**:\n"]
+    lines = [f"Found {len(items)} product(s) for **{query}**:"]
+    # Echo applied filters if provided
+    applied = data.get("applied_filters") if isinstance(data, dict) else None
+    if applied:
+        lines.append(f"Filters applied: {applied}")
+    lines.append("")
     for i, p in enumerate(items, 1):
         lines.append(_fmt_product_summary(i, p))
-    return CallToolResult(content=[TextContent(type="text", text="\n".join(lines))])
+    return CallToolResult(content=[TextContent(type="text", text="\n".join(lines))]), data
 
 
-async def _handle_get_product(args: dict[str, Any]) -> CallToolResult:
+async def _handle_get_product(args: dict[str, Any]) -> tuple[CallToolResult, dict | None]:
     product_id = args.get("product_id")
     if not product_id:
         return CallToolResult(
             content=[TextContent(type="text", text="Error: product_id is required")],
             isError=True,
-        )
+        ), None
     try:
         data = await _api_get(f"/v1/products/{product_id}")
     except Exception as exc:
@@ -201,17 +244,17 @@ async def _handle_get_product(args: dict[str, Any]) -> CallToolResult:
         return CallToolResult(
             content=[TextContent(type="text", text=f"Fetch failed: {exc}")],
             isError=True,
-        )
-    return CallToolResult(content=[TextContent(type="text", text=_fmt_product_detail(data))])
+        ), None
+    return CallToolResult(content=[TextContent(type="text", text=_fmt_product_detail(data))]), data
 
 
-async def _handle_find_best_price(args: dict[str, Any]) -> CallToolResult:
+async def _handle_find_best_price(args: dict[str, Any]) -> tuple[CallToolResult, dict | None]:
     product_name = str(args.get("product_name", "")).strip()
     if not product_name:
         return CallToolResult(
             content=[TextContent(type="text", text="Error: product_name is required")],
             isError=True,
-        )
+        ), None
     params = {"q": product_name}
     if args.get("category"):
         params["category"] = args["category"]
@@ -223,12 +266,12 @@ async def _handle_find_best_price(args: dict[str, Any]) -> CallToolResult:
         return CallToolResult(
             content=[TextContent(type="text", text=f"Search failed: {exc}")],
             isError=True,
-        )
+        ), None
 
     if not p or not isinstance(p, dict):
         return CallToolResult(
             content=[TextContent(type="text", text=f"No products found for: {product_name}")]
-        )
+        ), None
 
     price_str = _fmt_price(p.get("price"), p.get("currency", "SGD"))
     affiliate = p.get("affiliate_url") or p.get("buy_url") or ""
@@ -241,10 +284,10 @@ async def _handle_find_best_price(args: dict[str, Any]) -> CallToolResult:
     if affiliate:
         lines.append(f"**Affiliate URL:** {affiliate}")
     lines.append(f"**Product ID:** {p.get('id', '')}")
-    return CallToolResult(content=[TextContent(type="text", text="\n".join(lines))])
+    return CallToolResult(content=[TextContent(type="text", text="\n".join(lines))]), p
 
 
-async def _handle_get_deals(args: dict[str, Any]) -> CallToolResult:
+async def _handle_get_deals(args: dict[str, Any]) -> tuple[CallToolResult, dict | None]:
     min_discount_pct = float(args.get("min_discount_pct", 10))
     limit = min(int(args.get("limit", 10)), 50)
     params = {"min_discount_pct": min_discount_pct, "limit": limit}
@@ -258,13 +301,13 @@ async def _handle_get_deals(args: dict[str, Any]) -> CallToolResult:
         return CallToolResult(
             content=[TextContent(type="text", text=f"Deals fetch failed: {exc}")],
             isError=True,
-        )
+        ), None
 
     items = data.get("items", []) if isinstance(data, dict) else []
     if not items:
         return CallToolResult(
             content=[TextContent(type="text", text=f"No deals found with >={min_discount_pct}% discount.")]
-        )
+        ), None
 
     lines = [f"Found {len(items)} deal(s) with >={min_discount_pct}% discount:\n"]
     for i, d in enumerate(items, 1):
@@ -276,7 +319,59 @@ async def _handle_get_deals(args: dict[str, Any]) -> CallToolResult:
             f"   Current: {current} | Was: {original} | Discount: {discount}%\n"
             f"   Platform: {d.get('source', 'unknown')} | ID: {d.get('id', '')}\n"
         )
-    return CallToolResult(content=[TextContent(type="text", text="\n".join(lines))])
+    return CallToolResult(content=[TextContent(type="text", text="\n".join(lines))]), data
+
+
+async def _handle_list_categories(args: dict[str, Any]) -> tuple[CallToolResult, dict | None]:
+    params = {}
+    if args.get("parent_id") is not None:
+        params["parent_id"] = args["parent_id"]
+    try:
+        data = await _api_get("/v1/categories", params)
+    except Exception as exc:
+        logger.exception("list_categories API error")
+        return CallToolResult(
+            content=[TextContent(type="text", text=f"Categories fetch failed: {exc}")],
+            isError=True,
+        ), None
+    categories = data.get("categories", []) if isinstance(data, dict) else []
+    total = data.get("total", len(categories)) if isinstance(data, dict) else 0
+    if not categories:
+        return CallToolResult(
+            content=[TextContent(type="text", text="No categories found.")]
+        ), None
+    lines = [f"Found {total} categor{'ies' if total != 1 else 'y'}:\n"]
+    for c in categories:
+        name = c.get("name") or c.get("category") or "Unknown"
+        count = c.get("count") or c.get("product_count") or 0
+        lines.append(f"- **{name}** ({count} products)")
+    return CallToolResult(content=[TextContent(type="text", text="\n".join(lines))]), data
+
+
+async def _handle_compare_products(args: dict[str, Any]) -> tuple[CallToolResult, dict | None]:
+    product_ids = args.get("product_ids")
+    if not product_ids or not isinstance(product_ids, list) or len(product_ids) < 2:
+        return CallToolResult(
+            content=[TextContent(type="text", text="Error: At least 2 product_ids are required for comparison.")],
+            isError=True,
+        ), None
+    try:
+        data = await _api_get("/v1/products/compare", {"ids": ",".join(str(i) for i in product_ids)})
+    except Exception as exc:
+        logger.exception("compare_products API error for ids %r", product_ids)
+        return CallToolResult(
+            content=[TextContent(type="text", text=f"Comparison failed: {exc}")],
+            isError=True,
+        ), None
+    items = data.get("items", []) if isinstance(data, dict) else []
+    if not items:
+        return CallToolResult(
+            content=[TextContent(type="text", text="No comparison results found.")]
+        ), None
+    lines = [f"Comparison of {len(items)} products:\n"]
+    for i, p in enumerate(items, 1):
+        lines.append(_fmt_product_summary(i, p))
+    return CallToolResult(content=[TextContent(type="text", text="\n".join(lines))]), data
 
 
 async def _api_get(path: str, params: dict[str, Any] | None = None) -> Any:

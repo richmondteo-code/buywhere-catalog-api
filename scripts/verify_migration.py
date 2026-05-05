@@ -1,26 +1,37 @@
-import asyncio, asyncpg, os, sys
-from urllib.parse import urlparse, urlunparse
+#!/usr/bin/env python3
+import os, subprocess, sys, re
 
-async def verify():
-    raw = os.environ['DATABASE_URL']
-    clean = raw.replace('+asyncpg', '')
-    parsed = urlparse(clean)
-    url = urlunparse(parsed._replace(netloc=f'{parsed.username}:{parsed.password}@127.0.0.1:65432'))
-    try:
-        row = await conn.fetchrow('SELECT version_num FROM alembic_version')
-        print(f'Alembic version: {row["version_num"]}')
-        rows = await conn.fetchrow(
-            'SELECT count(*) as total, '
-            'count(*) FILTER (WHERE search_vector IS NULL) as null_search, '
-            'count(*) FILTER (WHERE title_search_vector IS NULL) as null_title '
-            'FROM products'
-        )
-        print(f'Products: {rows["total"]}, NULL search: {rows["null_search"]}, NULL title: {rows["null_title"]}')
-        if rows['null_search'] > 0 or rows['null_title'] > 0:
-            print('WARNING: NULL search vectors still exist!')
-            sys.exit(1)
-        print('Migration verification passed.')
-    finally:
-        await conn.close()
+raw = os.environ['DATABASE_URL']
+m = re.match(r'postgresql(?:\+asyncpg)?://([^:]+):([^@]+)@[^/]+/(\S+)', raw)
+if not m:
+    print(f'ERROR: could not parse DATABASE_URL: {raw}', file=sys.stderr)
+    sys.exit(1)
+user, password, dbname = m.group(1), m.group(2), m.group(3)
 
-asyncio.run(verify())
+env = os.environ.copy()
+env['PGPASSWORD'] = password
+
+queries = {
+    'alembic_version': "SELECT version_num FROM alembic_version",
+    'null_search_vector': "SELECT count(*) FROM products WHERE search_vector IS NULL",
+    'trigger_exists': "SELECT tgname FROM pg_trigger WHERE tgname = 'trg_products_search_vector'",
+}
+
+all_ok = True
+for label, sql in queries.items():
+    result = subprocess.run(
+        ['psql', '-h', '127.0.0.1', '-p', '65432', '-U', user, '-d', dbname,
+         '-c', sql, '-t', '-A'],
+        env=env, capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        print(f'ERROR: {label} query failed', file=sys.stderr)
+        print(result.stderr, file=sys.stderr)
+        all_ok = False
+    else:
+        output = result.stdout.strip()
+        print(f'{label}: {output}')
+
+if not all_ok:
+    sys.exit(1)
+print('Migration verification passed.')

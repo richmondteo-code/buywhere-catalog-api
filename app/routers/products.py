@@ -160,6 +160,13 @@ router = APIRouter(prefix="/products", tags=["products"])
 @limiter.limit(rate_limit_from_request)
 async def list_products(
     request: Request,
+    q: Optional[str] = Query(None, max_length=500, description="Full-text search query (max 500 chars)"),
+    category: Optional[str] = Query(None, max_length=200, description="Filter by category"),
+    price_min: Optional[Decimal] = Query(None, ge=0, description="Minimum price filter"),
+    price_max: Optional[Decimal] = Query(None, ge=0, description="Maximum price filter"),
+    platform: Optional[str] = Query(None, max_length=100, description="Filter by platform/source"),
+    brand: Optional[str] = Query(None, max_length=500, description="Comma-separated brand filter (OR-combined)"),
+    in_stock: Optional[bool] = Query(None, description="Filter by stock status"),
     limit: int = Query(20, ge=1, le=100, description="Results per page (1-100)"),
     offset: int = Query(0, ge=0, le=10000, description="Pagination offset (0-10000)"),
     sort_by: Optional[str] = Query(None, description="Sort order: relevance, price_asc, price_desc, newest"),
@@ -171,9 +178,16 @@ async def list_products(
 
     cache_key = cache.build_cache_key(
         "v1:products:list",
+        q=q,
+        category=category,
+        price_min=str(price_min) if price_min is not None else None,
+        price_max=str(price_max) if price_max is not None else None,
+        platform=platform,
+        brand=brand,
+        in_stock=in_stock,
+        sort_by=sort_by,
         limit=limit,
         offset=offset,
-        sort_by=sort_by,
     )
 
     cached = await cache.cache_get(cache_key)
@@ -183,13 +197,34 @@ async def list_products(
     base_query = select(Product).where(Product.is_active)
 
     if sort_by == "price_asc":
-        base_query = base_query.order_by(Product.price.asc())
+        base_query = base_query.order_by(func.coalesce(Product.price_sgd, Product.price).asc())
     elif sort_by == "price_desc":
-        base_query = base_query.order_by(Product.price.desc())
+        base_query = base_query.order_by(func.coalesce(Product.price_sgd, Product.price).desc())
     elif sort_by == "newest":
-        base_query = base_query.order_by(Product.created_at.desc())
+        base_query = base_query.order_by(func.coalesce(Product.data_updated_at, Product.updated_at).desc())
+    elif q:
+        base_query = base_query.where(
+            text("search_vector @@ plainto_tsquery('english', :q)").bindparams(q=q)
+        ).order_by(
+            text("ts_rank(search_vector, plainto_tsquery('english', :q_rank), 32) DESC").bindparams(q_rank=q)
+        )
     else:
         base_query = base_query.order_by(Product.updated_at.desc())
+
+    if category:
+        base_query = base_query.where(Product.category.ilike(f"%{category}%"))
+    if price_min is not None:
+        base_query = base_query.where(Product.price >= price_min)
+    if price_max is not None:
+        base_query = base_query.where(Product.price <= price_max)
+    if platform:
+        base_query = base_query.where(Product.source == platform)
+    if brand:
+        brand_list = [b.strip() for b in brand.split(",") if b.strip()]
+        if brand_list:
+            base_query = base_query.where(Product.brand.in_(brand_list))
+    if in_stock is not None:
+        base_query = base_query.where(Product.in_stock == in_stock)
 
     if offset == 0:
         count_query = select(func.count()).select_from(base_query.subquery())
@@ -205,12 +240,29 @@ async def list_products(
     effective_total = total if total is not None else offset + len(items)
     has_more = len(items) == limit if total is None else (offset + limit) < total
 
+    applied_filters = {}
+    if q: applied_filters["query"] = q
+    if category: applied_filters["category"] = category
+    if price_min is not None: applied_filters["price_min"] = str(price_min)
+    if price_max is not None: applied_filters["price_max"] = str(price_max)
+    if platform: applied_filters["platform"] = platform
+    if brand: applied_filters["brand"] = brand.split(",")
+    if in_stock is not None: applied_filters["in_stock"] = in_stock
+    if sort_by: applied_filters["sort_by"] = sort_by
+
+    suggestion = None
+    if not products and applied_filters:
+        active = ", ".join(applied_filters.keys())
+        suggestion = f"No results with current filters ({active}). Try removing or broadening them."
+
     response = ProductListResponse(
         total=effective_total,
         limit=limit,
         offset=offset,
         items=items,
         has_more=has_more,
+        applied_filters=applied_filters or None,
+        suggestion=suggestion,
     )
 
     await cache.cache_set(cache_key, response.model_dump(mode="json"), ttl_seconds=600)
@@ -376,6 +428,8 @@ async def v1_product_search(
     country: Optional[str] = Query(None, max_length=2, description="Filter by country code (e.g., SG, US, VN)"),
     country_code: Optional[str] = Query(None, max_length=2, description="Alias for country"),
     sort_by: Optional[str] = Query(None, description="Sort order: relevance, price_asc, price_desc, newest"),
+    brand: Optional[str] = Query(None, max_length=500, description="Comma-separated brand filter (OR-combined)"),
+    in_stock: Optional[bool] = Query(None, description="Filter by stock status"),
     limit: int = Query(20, ge=1, le=100, description="Results per page (1-100)"),
     offset: int = Query(0, ge=0, le=10000, description="Pagination offset (0-10000)"),
     include_facets: bool = Query(False, description="Include facet counts in response"),
@@ -425,6 +479,8 @@ async def v1_product_search(
         platform=platform,
         country=country.upper() if country else None,
         sort_by=sort_by,
+        brand=brand,
+        in_stock=in_stock,
         limit=limit,
         offset=offset,
     )
@@ -436,12 +492,17 @@ async def v1_product_search(
     base_query = select(Product).where(Product.is_active)
     highlight_query = None
 
-    if q:
+    if sort_by == "price_asc":
+        base_query = base_query.order_by(func.coalesce(Product.price_sgd, Product.price).asc())
+    elif sort_by == "price_desc":
+        base_query = base_query.order_by(func.coalesce(Product.price_sgd, Product.price).desc())
+    elif sort_by == "newest":
+        base_query = base_query.order_by(func.coalesce(Product.data_updated_at, Product.updated_at).desc())
+    elif q:
         base_query = base_query.where(
             text("search_vector @@ plainto_tsquery('english', :q)").bindparams(q=q)
         ).order_by(
-            text("ts_rank(search_vector, plainto_tsquery('english', :q_rank), 32) DESC").bindparams(q_rank=q),
-            Product.updated_at.desc()
+            text("ts_rank(search_vector, plainto_tsquery('english', :q_rank), 32) DESC").bindparams(q_rank=q)
         )
         highlight_query = text(
             "ts_headline('english', coalesce(title, '') || ' ' || coalesce(description, ''), "
@@ -460,6 +521,12 @@ async def v1_product_search(
         base_query = base_query.where(Product.source == platform)
     if country:
         base_query = base_query.where(Product.country_code == country.upper())
+    if brand:
+        brand_list = [b.strip() for b in brand.split(",") if b.strip()]
+        if brand_list:
+            base_query = base_query.where(Product.brand.in_(brand_list))
+    if in_stock is not None:
+        base_query = base_query.where(Product.in_stock == in_stock)
 
     if offset == 0:
         count_query = select(func.count()).select_from(base_query.subquery())
@@ -559,6 +626,21 @@ async def v1_product_search(
     effective_total = total if total is not None else offset + len(items)
     has_more = len(items) == limit if total is None else (offset + limit) < total
 
+    applied_filters = {}
+    if q: applied_filters["query"] = q
+    if category: applied_filters["category"] = category
+    if price_min is not None: applied_filters["price_min"] = str(price_min)
+    if price_max is not None: applied_filters["price_max"] = str(price_max)
+    if platform: applied_filters["platform"] = platform
+    if brand: applied_filters["brand"] = brand.split(",")
+    if in_stock is not None: applied_filters["in_stock"] = in_stock
+    if sort_by: applied_filters["sort_by"] = sort_by
+
+    suggestion = None
+    if not products and applied_filters:
+        active = ", ".join(applied_filters.keys())
+        suggestion = f"No results with current filters ({active}). Try removing or broadening them."
+
     response = ProductListResponse(
         total=effective_total,
         limit=limit,
@@ -567,6 +649,8 @@ async def v1_product_search(
         has_more=has_more,
         facets=facets,
         highlights=highlights if highlights else None,
+        applied_filters=applied_filters or None,
+        suggestion=suggestion,
     )
 
     if currency:
