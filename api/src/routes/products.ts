@@ -131,7 +131,7 @@ router.get(
       idx += categoryPath.length;
     }
     if (merchantId) {
-      conditions.push(`merchant_id = $${idx}`);
+      conditions.push(`products.merchant_id = $${idx}`);
       params.push(merchantId);
       idx++;
     }
@@ -179,14 +179,15 @@ router.get(
     // then return the top N. This gives relevance ordering at a fraction of the cost.
     // For small result sets (<= 1000 rows), ts_rank over all matches is fast.
     const CANDIDATE_LIMIT = Math.max(500, (limit + offset) * 10);
-    const specColumns = `created_at, description, brand, mpn, gtin, category_path, category, category_id, merchant_id, avg_rating, review_count`;
+    const innerSpecColumns = `products.created_at, products.description, products.brand, products.mpn, products.gtin, products.category_path, products.category, products.category_id, products.merchant_id, products.avg_rating, products.review_count`;
+    const outerSpecColumns = `created_at, description, brand, mpn, gtin, category_path, category, category_id, merchant_id, avg_rating, review_count`;
     let dataQuery: string;
     if (useFtsRanking && approxCount <= 1000) {
       dataQuery = `
-        SELECT id, sku AS source_id, source AS domain, url,
+        SELECT products.id, sku AS source_id, source AS domain, url,
                al.destination_url AS affiliate_url,
                title, price, currency, image_url, metadata, updated_at,
-               region, country_code, ${specColumns}
+               region, country_code, ${innerSpecColumns}
         FROM products
         LEFT JOIN affiliate_links al ON al.product_id = products.id::text AND al.merchant_id = products.merchant_id
         ${whereClause}
@@ -198,12 +199,12 @@ router.get(
         SELECT id, source_id, domain, url,
                affiliate_url,
                title, price, currency, image_url, metadata, updated_at,
-               region, country_code, ${specColumns}
+               region, country_code, ${outerSpecColumns}
         FROM (
-          SELECT id, sku AS source_id, source AS domain, url,
+          SELECT products.id, sku AS source_id, source AS domain, url,
                  al.destination_url AS affiliate_url,
                  title, price, currency, image_url, metadata, updated_at,
-                 region, country_code, ${specColumns},
+                 region, country_code, ${innerSpecColumns},
                  ts_rank(search_vector, plainto_tsquery('english', $${ftsParamIdx})) AS rank
           FROM products
           LEFT JOIN affiliate_links al ON al.product_id = products.id::text AND al.merchant_id = products.merchant_id
@@ -215,10 +216,10 @@ router.get(
       `;
     } else {
       dataQuery = `
-        SELECT id, sku AS source_id, source AS domain, url,
+        SELECT products.id, sku AS source_id, source AS domain, url,
                al.destination_url AS affiliate_url,
                title, price, currency, image_url, metadata, updated_at,
-               region, country_code, ${specColumns}
+               region, country_code, ${innerSpecColumns}
         FROM products
         LEFT JOIN affiliate_links al ON al.product_id = products.id::text AND al.merchant_id = products.merchant_id
         ${whereClause}

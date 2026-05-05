@@ -25,7 +25,9 @@ function jsonrpcErr(id, code, message) {
 }
 async function executeTask(method, params) {
     switch (method) {
-        case 'tools/call': {
+        case 'tools/call':
+        case 'tasks/send':
+        case 'tasks/sendSubscribe': {
             const toolName = params.name;
             const toolArgs = (params.arguments && typeof params.arguments === 'object')
                 ? params.arguments
@@ -86,30 +88,45 @@ router.post('/tasks/sendSubscribe', apiKey_1.requireApiKey, apiKey_1.checkRateLi
     res.setHeader('Connection', 'keep-alive');
     res.flushHeaders();
     const sendSSE = (event, data) => {
-        res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+        if (!res.writableEnded && !res.destroyed) {
+            res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+        }
     };
     sendSSE('task_status', { taskId, status: 'working' });
-    try {
-        const result = await executeTask(method, params);
-        task.status = 'completed';
-        task.result = result;
-        sendSSE('task_status', { taskId, status: 'completed' });
-        sendSSE('task_result', { taskId, artifacts: result });
-        res.end();
-    }
-    catch (err) {
-        const e = err;
-        task.status = 'failed';
-        task.error = { code: e.code ?? -32603, message: e.message ?? 'Internal error' };
-        sendSSE('task_status', { taskId, status: 'failed', error: task.error });
-        res.end();
-    }
+    let aborted = false;
     req.on('close', () => {
+        aborted = true;
         if (task.status === 'working') {
             task.status = 'failed';
             task.error = { code: -32800, message: 'Client disconnected' };
         }
     });
+    res.on('error', () => {
+        aborted = true;
+        if (!res.destroyed)
+            res.destroy();
+    });
+    try {
+        const result = await executeTask(method, params);
+        if (aborted)
+            return;
+        task.status = 'completed';
+        task.result = result;
+        sendSSE('task_status', { taskId, status: 'completed' });
+        sendSSE('task_result', { taskId, artifacts: result });
+        if (!res.writableEnded && !res.destroyed)
+            res.end();
+    }
+    catch (err) {
+        if (aborted)
+            return;
+        const e = err;
+        task.status = 'failed';
+        task.error = { code: e.code ?? -32603, message: e.message ?? 'Internal error' };
+        sendSSE('task_status', { taskId, status: 'failed', error: task.error });
+        if (!res.writableEnded && !res.destroyed)
+            res.end();
+    }
 });
 router.get('/tasks/:taskId', apiKey_1.requireApiKey, apiKey_1.checkRateLimit, (req, res) => {
     const task = taskStore.get(req.params.taskId);
@@ -156,7 +173,7 @@ router.get('/', (_req, res) => {
             'GET /a2a/tasks/:taskId/status': 'Lightweight task status check.',
             'DELETE /a2a/tasks/:taskId': 'Cancel a pending or in-progress task.',
         },
-        methods: ['tools/call'],
+        methods: ['tools/call', 'tasks/send', 'tasks/sendSubscribe'],
         tools: ['search_products', 'get_product', 'compare_products', 'get_deals', 'list_categories', 'find_best_price'],
         auth: 'Bearer token — register at https://api.buywhere.ai/v1/auth/register',
     });

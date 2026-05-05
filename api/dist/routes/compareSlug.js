@@ -103,7 +103,7 @@ function formatPrice(price) {
 // GET /v1/compare/:slug — public comparison page payload
 // 5-min Redis cache; 404 on draft/archived/missing
 router.get('/:slug', async (req, res) => {
-    const slug = req.params.slug;
+    const { slug } = req.params;
     if (!isValidSlug(slug)) {
         res.status(404).json({ error: 'Not found' });
         return;
@@ -242,7 +242,7 @@ router.get('/:slug', async (req, res) => {
 // Body: { retailer: string, price: number|null, rank: number }
 // Falls back gracefully if PostHog is not configured.
 router.post('/:slug/click', (req, res) => {
-    const slug = req.params.slug;
+    const { slug } = req.params;
     const { retailer, price, rank } = req.body;
     if (!isValidSlug(slug) || typeof retailer !== 'string' || typeof rank !== 'number') {
         res.status(400).json({ error: 'Missing required fields: retailer (string), rank (number)' });

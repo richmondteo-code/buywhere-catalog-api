@@ -23,6 +23,7 @@ import ingestRouter from './routes/ingest';
 import catalogRouter from './routes/catalog';
 import keysRouter from './routes/keys';
 import webhooksRouter from './routes/webhooks';
+import a2aRouter from './routes/a2a';
 import { db } from './config';
 
 export function createApp() {
@@ -76,6 +77,9 @@ export function createApp() {
 
   // MCP JSON-RPC endpoint (Model Context Protocol)
   app.use('/mcp', mcpRouter);
+
+  // A2A (Agent-to-Agent) protocol — Google A2A 1.0 task endpoints
+  app.use('/a2a', a2aRouter);
 
   // Webhook receivers (UptimeRobot, etc.)
   app.use('/webhooks', webhooksRouter);

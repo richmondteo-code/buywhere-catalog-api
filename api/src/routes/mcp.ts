@@ -429,7 +429,7 @@ async function handleFindBestPrice(args: Record<string, unknown>) {
   };
 }
 
-async function dispatchTool(name: string, args: Record<string, unknown>) {
+export async function dispatchTool(name: string, args: Record<string, unknown>) {
   switch (name) {
     case 'search_products':  return handleSearchProducts(args);
     case 'get_product':      return handleGetProduct(args);

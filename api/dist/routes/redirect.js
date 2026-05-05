@@ -41,8 +41,7 @@ function isAllowedDestination(url) {
 // GET /r/:affiliateSlug/:productId
 // Log the affiliate click then redirect to destination
 router.get('/:affiliateSlug/:productId', async (req, res) => {
-    const affiliateSlug = req.params.affiliateSlug;
-    const productId = req.params.productId;
+    const { affiliateSlug, productId } = req.params;
     // Look up affiliate link
     const linkResult = await config_1.db.query(`SELECT id, merchant_id, affiliate_link_id, destination_url
      FROM affiliate_links WHERE slug = $1 AND product_id = $2`, [affiliateSlug, productId]);
