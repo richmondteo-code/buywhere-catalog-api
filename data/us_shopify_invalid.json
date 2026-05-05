@@ -1,0 +1,9792 @@
+{
+  "invalid": [
+    {
+      "domain": " japanesechefsknife.com"
+    },
+    {
+      "domain": "101cookbooks.com"
+    },
+    {
+      "domain": "1620workwear.com"
+    },
+    {
+      "domain": "1800lighting.com"
+    },
+    {
+      "domain": "1999.co.jp"
+    },
+    {
+      "domain": "1aauto.com"
+    },
+    {
+      "domain": "1lumen.com"
+    },
+    {
+      "domain": "2112percussion.com"
+    },
+    {
+      "domain": "22ple.com"
+    },
+    {
+      "domain": "23wards.com"
+    },
+    {
+      "domain": "3000toys.com"
+    },
+    {
+      "domain": "3m.com"
+    },
+    {
+      "domain": "3mshop.com"
+    },
+    {
+      "domain": "4wheelparts.com"
+    },
+    {
+      "domain": "999 games.com"
+    },
+    {
+      "domain": "a-lange.com"
+    },
+    {
+      "domain": "a1supplements.com"
+    },
+    {
+      "domain": "aardvarkclay.com"
+    },
+    {
+      "domain": "abercrombie.com"
+    },
+    {
+      "domain": "ableton.com"
+    },
+    {
+      "domain": "abode.com"
+    },
+    {
+      "domain": "absolutehome.com"
+    },
+    {
+      "domain": "absorbyourhealth.com"
+    },
+    {
+      "domain": "abugames.com"
+    },
+    {
+      "domain": "acacia swimwear.com"
+    },
+    {
+      "domain": "acana.com"
+    },
+    {
+      "domain": "accuphase.com"
+    },
+    {
+      "domain": "acebeam.com"
+    },
+    {
+      "domain": "acehardware.com"
+    },
+    {
+      "domain": "acer.com"
+    },
+    {
+      "domain": "acnestudios.com"
+    },
+    {
+      "domain": "activia.com"
+    },
+    {
+      "domain": "activision.com"
+    },
+    {
+      "domain": "adafruit.com"
+    },
+    {
+      "domain": "adagio.com"
+    },
+    {
+      "domain": "adagiotea.com"
+    },
+    {
+      "domain": "adam-audio.com"
+    },
+    {
+      "domain": "adams polishes.com"
+    },
+    {
+      "domain": "adaptive seeds.com"
+    },
+    {
+      "domain": "adata.com"
+    },
+    {
+      "domain": "adidas.com"
+    },
+    {
+      "domain": "adorama.com"
+    },
+    {
+      "domain": "adt.com"
+    },
+    {
+      "domain": "adventure sworn.com"
+    },
+    {
+      "domain": "ae.com"
+    },
+    {
+      "domain": "aemintakes.com"
+    },
+    {
+      "domain": "aeotec.com"
+    },
+    {
+      "domain": "aer.com"
+    },
+    {
+      "domain": "aerin rose.com"
+    },
+    {
+      "domain": "aesopskin.com"
+    },
+    {
+      "domain": "aftcogear.com"
+    },
+    {
+      "domain": "agama-rc.com"
+    },
+    {
+      "domain": "agentprovocateur.com"
+    },
+    {
+      "domain": "agoramodels.com"
+    },
+    {
+      "domain": "agrussell.com"
+    },
+    {
+      "domain": "agua bendita.com"
+    },
+    {
+      "domain": "aguitaramps.com"
+    },
+    {
+      "domain": "ahlcg.com"
+    },
+    {
+      "domain": "ahmadtea.com"
+    },
+    {
+      "domain": "aierloom.com"
+    },
+    {
+      "domain": "airfix.com"
+    },
+    {
+      "domain": "akai-pro.com"
+    },
+    {
+      "domain": "akg.com"
+    },
+    {
+      "domain": "akko.com"
+    },
+    {
+      "domain": "alarm.com"
+    },
+    {
+      "domain": "aldenshoe.com"
+    },
+    {
+      "domain": "aldo.com"
+    },
+    {
+      "domain": "alessandra rich.com"
+    },
+    {
+      "domain": "alexa.com"
+    },
+    {
+      "domain": "alexandalexa.com"
+    },
+    {
+      "domain": "alexandermcqueen.com"
+    },
+    {
+      "domain": "alexanderwang.com"
+    },
+    {
+      "domain": "alicea.com"
+    },
+    {
+      "domain": "aliceandolivia.com"
+    },
+    {
+      "domain": "alicelouise.com"
+    },
+    {
+      "domain": "align.com"
+    },
+    {
+      "domain": "all-clad.com"
+    },
+    {
+      "domain": "all-laundry.com"
+    },
+    {
+      "domain": "allcitycycles.com"
+    },
+    {
+      "domain": "allen-edmonds.com"
+    },
+    {
+      "domain": "allen-heath.com"
+    },
+    {
+      "domain": "allenamps.com"
+    },
+    {
+      "domain": "alleyoop.com"
+    },
+    {
+      "domain": "allisonkau.com"
+    },
+    {
+      "domain": "allmodern.com"
+    },
+    {
+      "domain": "allrecipes.com"
+    },
+    {
+      "domain": "allsaints.com"
+    },
+    {
+      "domain": "allstarhealth.com"
+    },
+    {
+      "domain": "almerick.com"
+    },
+    {
+      "domain": "aloyoga.com"
+    },
+    {
+      "domain": "alp n rock.com"
+    },
+    {
+      "domain": "alphabrain.com"
+    },
+    {
+      "domain": "alpsmountaineering.com"
+    },
+    {
+      "domain": "altardstate.com"
+    },
+    {
+      "domain": "altra running.com"
+    },
+    {
+      "domain": "alvarezguitars.com"
+    },
+    {
+      "domain": "alwaysdowhatyoushouldad.com"
+    },
+    {
+      "domain": "alyxstudio.com"
+    },
+    {
+      "domain": "amaco.com"
+    },
+    {
+      "domain": "amainhobbies.com"
+    },
+    {
+      "domain": "amateurstore.com"
+    },
+    {
+      "domain": "amazon.com"
+    },
+    {
+      "domain": "amberjack.com"
+    },
+    {
+      "domain": "americanmuscle.com"
+    },
+    {
+      "domain": "americanoptical.com"
+    },
+    {
+      "domain": "americanscalemodels.com"
+    },
+    {
+      "domain": "americantinshop.com"
+    },
+    {
+      "domain": "amerisleep.com"
+    },
+    {
+      "domain": "ami-paris.com"
+    },
+    {
+      "domain": "amiami.com"
+    },
+    {
+      "domain": "amika.com"
+    },
+    {
+      "domain": "amorepacific.com"
+    },
+    {
+      "domain": "amourvert.com"
+    },
+    {
+      "domain": "ampeg.com"
+    },
+    {
+      "domain": "amprobe.com"
+    },
+    {
+      "domain": "amway.com"
+    },
+    {
+      "domain": "analogman.com"
+    },
+    {
+      "domain": "analoguehaven.com"
+    },
+    {
+      "domain": "analuisa.com"
+    },
+    {
+      "domain": "ancestral supplements.com"
+    },
+    {
+      "domain": "ancientharvest.com"
+    },
+    {
+      "domain": "ancientnutrition.com"
+    },
+    {
+      "domain": "anderson-guitarworks.com"
+    },
+    {
+      "domain": "andotherstories.com"
+    },
+    {
+      "domain": "andysautosport.com"
+    },
+    {
+      "domain": "angel dear.com"
+    },
+    {
+      "domain": "anglerswarehouse.com"
+    },
+    {
+      "domain": "animation.com"
+    },
+    {
+      "domain": "anker.com"
+    },
+    {
+      "domain": "anntaylor.com"
+    },
+    {
+      "domain": "ansoon.co"
+    },
+    {
+      "domain": "antelopeaudio.com"
+    },
+    {
+      "domain": "anthropologie.com"
+    },
+    {
+      "domain": "antropologie.com"
+    },
+    {
+      "domain": "anycubic.com"
+    },
+    {
+      "domain": "aoeyewear.com"
+    },
+    {
+      "domain": "api audio.com"
+    },
+    {
+      "domain": "apilco.com"
+    },
+    {
+      "domain": "apogeedigital.com"
+    },
+    {
+      "domain": "apotheke.com"
+    },
+    {
+      "domain": "apple.com"
+    },
+    {
+      "domain": "applied nutrition.com"
+    },
+    {
+      "domain": "apt2b.com"
+    },
+    {
+      "domain": "aputure.com"
+    },
+    {
+      "domain": "aquariandrumheads.com"
+    },
+    {
+      "domain": "aquariuspuzzles.com"
+    },
+    {
+      "domain": "aquazzura.com"
+    },
+    {
+      "domain": "aquis.com"
+    },
+    {
+      "domain": "arbico-organics.com"
+    },
+    {
+      "domain": "arbonne.com"
+    },
+    {
+      "domain": "arbusa.com"
+    },
+    {
+      "domain": "archeim.com"
+    },
+    {
+      "domain": "archonia.com"
+    },
+    {
+      "domain": "arcteryx.com"
+    },
+    {
+      "domain": "ardenis.com"
+    },
+    {
+      "domain": "arduino.cc"
+    },
+    {
+      "domain": "arhaus.com"
+    },
+    {
+      "domain": "ariat.com"
+    },
+    {
+      "domain": "arisakadefense.com"
+    },
+    {
+      "domain": "aristidesinstruments.com"
+    },
+    {
+      "domain": "aritzia.com"
+    },
+    {
+      "domain": "arket.com"
+    },
+    {
+      "domain": "arlo.com"
+    },
+    {
+      "domain": "armani-beauty.com"
+    },
+    {
+      "domain": "armani.com"
+    },
+    {
+      "domain": "armarkat.com"
+    },
+    {
+      "domain": "armoire.style"
+    },
+    {
+      "domain": "armytek.com"
+    },
+    {
+      "domain": "arnette.com"
+    },
+    {
+      "domain": "aromandina.com"
+    },
+    {
+      "domain": "arri.com"
+    },
+    {
+      "domain": "arrma-rc.com"
+    },
+    {
+      "domain": "artandfablepuzzleco.com"
+    },
+    {
+      "domain": "artandlutherie.com"
+    },
+    {
+      "domain": "article.com"
+    },
+    {
+      "domain": "artifactuprising.com"
+    },
+    {
+      "domain": "artifox.com"
+    },
+    {
+      "domain": "arturia.com"
+    },
+    {
+      "domain": "arubanetworks.com"
+    },
+    {
+      "domain": "asapmob.com"
+    },
+    {
+      "domain": "ascolour.com"
+    },
+    {
+      "domain": "asiamn.com"
+    },
+    {
+      "domain": "asiatees.com"
+    },
+    {
+      "domain": "asics.com"
+    },
+    {
+      "domain": "asmodee.com"
+    },
+    {
+      "domain": "asos.com"
+    },
+    {
+      "domain": "asoscurve.com"
+    },
+    {
+      "domain": "astera.com"
+    },
+    {
+      "domain": "astonmics.com"
+    },
+    {
+      "domain": "astrolux.com"
+    },
+    {
+      "domain": "asus.com"
+    },
+    {
+      "domain": "atc.com"
+    },
+    {
+      "domain": "athena club.com"
+    },
+    {
+      "domain": "athleta.com"
+    },
+    {
+      "domain": "atkins.com"
+    },
+    {
+      "domain": "atlus.com"
+    },
+    {
+      "domain": "atomicempire.com"
+    },
+    {
+      "domain": "atomos.com"
+    },
+    {
+      "domain": "atomoshoes.com"
+    },
+    {
+      "domain": "attackdrumheads.com"
+    },
+    {
+      "domain": "audemarspiguet.com"
+    },
+    {
+      "domain": "audient.com"
+    },
+    {
+      "domain": "audio-technica.com"
+    },
+    {
+      "domain": "audiotechnica.com"
+    },
+    {
+      "domain": "austrianaudio.com"
+    },
+    {
+      "domain": "autelrobotics.com"
+    },
+    {
+      "domain": "autoaccessoriesgarage.com"
+    },
+    {
+      "domain": "autoanything.com"
+    },
+    {
+      "domain": "autodetailing.com"
+    },
+    {
+      "domain": "autogeek.com"
+    },
+    {
+      "domain": "autohausaz.com"
+    },
+    {
+      "domain": "automotiveparts.com"
+    },
+    {
+      "domain": "autopia-carcare.com"
+    },
+    {
+      "domain": "autoplicity.com"
+    },
+    {
+      "domain": "aveda.com"
+    },
+    {
+      "domain": "aveeno.com"
+    },
+    {
+      "domain": "avene.com"
+    },
+    {
+      "domain": "avent.com"
+    },
+    {
+      "domain": "avid.com"
+    },
+    {
+      "domain": "avrevolution.com"
+    },
+    {
+      "domain": "awake-ny.com"
+    },
+    {
+      "domain": "axelarigato.com"
+    },
+    {
+      "domain": "axialracing.com"
+    },
+    {
+      "domain": "axiwatches.com"
+    },
+    {
+      "domain": "b toys.com"
+    },
+    {
+      "domain": "babettejewelry.com"
+    },
+    {
+      "domain": "baby merlin's magicsleepsuit.com"
+    },
+    {
+      "domain": "babybjorn.com"
+    },
+    {
+      "domain": "babyeinstein.com"
+    },
+    {
+      "domain": "babyganics.com"
+    },
+    {
+      "domain": "babyjogger.com"
+    },
+    {
+      "domain": "babylist.com"
+    },
+    {
+      "domain": "babysense.com"
+    },
+    {
+      "domain": "babysmile.com"
+    },
+    {
+      "domain": "babyzen.com"
+    },
+    {
+      "domain": "bach remedies.com"
+    },
+    {
+      "domain": "backcountry.com"
+    },
+    {
+      "domain": "backpackinglight.com"
+    },
+    {
+      "domain": "bakerfurniture.com"
+    },
+    {
+      "domain": "bakerscreekseeds.com"
+    },
+    {
+      "domain": "bakindustries.com"
+    },
+    {
+      "domain": "balance of nature.com"
+    },
+    {
+      "domain": "balanceathletica.com"
+    },
+    {
+      "domain": "balenciaga.com"
+    },
+    {
+      "domain": "balmain.com"
+    },
+    {
+      "domain": "baloran.com"
+    },
+    {
+      "domain": "bambinomoon.co"
+    },
+    {
+      "domain": "bambulab.com"
+    },
+    {
+      "domain": "bananarepublic.com"
+    },
+    {
+      "domain": "bandainamco.com"
+    },
+    {
+      "domain": "bandier.com"
+    },
+    {
+      "domain": "bang-olufsen.com"
+    },
+    {
+      "domain": "baobab collection.com"
+    },
+    {
+      "domain": "barbour.com"
+    },
+    {
+      "domain": "bare blaze.com"
+    },
+    {
+      "domain": "bareapple.com"
+    },
+    {
+      "domain": "barebells.com"
+    },
+    {
+      "domain": "bareboneliving.com"
+    },
+    {
+      "domain": "barefootsound.com"
+    },
+    {
+      "domain": "bario neal.com"
+    },
+    {
+      "domain": "bark river knives.com"
+    },
+    {
+      "domain": "barkbox.com"
+    },
+    {
+      "domain": "barketplace.com"
+    },
+    {
+      "domain": "barleens.com"
+    },
+    {
+      "domain": "barneys.com"
+    },
+    {
+      "domain": "barrys tea.com"
+    },
+    {
+      "domain": "basecampgear.com"
+    },
+    {
+      "domain": "bassettfurniture.com"
+    },
+    {
+      "domain": "basspro.com"
+    },
+    {
+      "domain": "bathandbodyworks.com"
+    },
+    {
+      "domain": "bathingape.com"
+    },
+    {
+      "domain": "bcrich.com"
+    },
+    {
+      "domain": "beachbody.com"
+    },
+    {
+      "domain": "beambotanicals.com"
+    },
+    {
+      "domain": "bean'sprout.com"
+    },
+    {
+      "domain": "beanbox.com"
+    },
+    {
+      "domain": "beardsellguitars.com"
+    },
+    {
+      "domain": "beats.com"
+    },
+    {
+      "domain": "beauty collagen.com"
+    },
+    {
+      "domain": "beautybakerymakeup.com"
+    },
+    {
+      "domain": "beautyrest.com"
+    },
+    {
+      "domain": "beckertoy.com"
+    },
+    {
+      "domain": "bedsure.com"
+    },
+    {
+      "domain": "beech-nut.com"
+    },
+    {
+      "domain": "behringer.com"
+    },
+    {
+      "domain": "belkin.com"
+    },
+    {
+      "domain": "bellacor.com"
+    },
+    {
+      "domain": "bellroy.com"
+    },
+    {
+      "domain": "bells of steel.com"
+    },
+    {
+      "domain": "belltech.com"
+    },
+    {
+      "domain": "belstaff.com"
+    },
+    {
+      "domain": "benbridge.com"
+    },
+    {
+      "domain": "benchmade modern.com"
+    },
+    {
+      "domain": "benchmark abrasives.com"
+    },
+    {
+      "domain": "benefitcosmetics.com"
+    },
+    {
+      "domain": "benq.com"
+    },
+    {
+      "domain": "bensonamps.com"
+    },
+    {
+      "domain": "bentoncosmetics.com"
+    },
+    {
+      "domain": "bergan's.no"
+    },
+    {
+      "domain": "bernal cutlery.com"
+    },
+    {
+      "domain": "bernhardtdesign.com"
+    },
+    {
+      "domain": "bernicat.com"
+    },
+    {
+      "domain": "bershka.com"
+    },
+    {
+      "domain": "besteel.com"
+    },
+    {
+      "domain": "bestnootropic.org"
+    },
+    {
+      "domain": "bethesda.com"
+    },
+    {
+      "domain": "beyerdynamic.com"
+    },
+    {
+      "domain": "bhphotovideo.com"
+    },
+    {
+      "domain": "bianchi.com"
+    },
+    {
+      "domain": "bienanutrition.com"
+    },
+    {
+      "domain": "big jigs.com"
+    },
+    {
+      "domain": "bigbadtoystore.com"
+    },
+    {
+      "domain": "bigceramicstore.com"
+    },
+    {
+      "domain": "bigoven.com"
+    },
+    {
+      "domain": "bigpop.com"
+    },
+    {
+      "domain": "bike-discount.de"
+    },
+    {
+      "domain": "bike24.com"
+    },
+    {
+      "domain": "bikebling.com"
+    },
+    {
+      "domain": "biketiresdirect.com"
+    },
+    {
+      "domain": "billie.com"
+    },
+    {
+      "domain": "billionaireboysclub.com"
+    },
+    {
+      "domain": "bilstein.com"
+    },
+    {
+      "domain": "bio-botanical research.com"
+    },
+    {
+      "domain": "bioderma.com"
+    },
+    {
+      "domain": "biokleen.com"
+    },
+    {
+      "domain": "biokult.com"
+    },
+    {
+      "domain": "biotechusa.com"
+    },
+    {
+      "domain": "birchliving.com"
+    },
+    {
+      "domain": "birkenstock.com"
+    },
+    {
+      "domain": "bjfeguitars.com"
+    },
+    {
+      "domain": "bjornklader.com"
+    },
+    {
+      "domain": "black-corporation.com"
+    },
+    {
+      "domain": "blackboughswim.com"
+    },
+    {
+      "domain": "blackmachineguitars.com"
+    },
+    {
+      "domain": "blackmagicdesign.com"
+    },
+    {
+      "domain": "blackwow.com"
+    },
+    {
+      "domain": "bladehq.com"
+    },
+    {
+      "domain": "bladeops.com"
+    },
+    {
+      "domain": "blaklader.com"
+    },
+    {
+      "domain": "blancpain.com"
+    },
+    {
+      "domain": "bleu rod beattie.com"
+    },
+    {
+      "domain": "blickart.com"
+    },
+    {
+      "domain": "blink.com"
+    },
+    {
+      "domain": "blisprobiotics.com"
+    },
+    {
+      "domain": "blizzard.com"
+    },
+    {
+      "domain": "bloch.com"
+    },
+    {
+      "domain": "bloggercode.com"
+    },
+    {
+      "domain": "bloomingdales.com"
+    },
+    {
+      "domain": "bloomscape.com"
+    },
+    {
+      "domain": "blu guitar.com"
+    },
+    {
+      "domain": "bludotone.com"
+    },
+    {
+      "domain": "blueapron.com"
+    },
+    {
+      "domain": "bluebottlecoffee.com"
+    },
+    {
+      "domain": "bluebuffalo.com"
+    },
+    {
+      "domain": "bluebyadt.com"
+    },
+    {
+      "domain": "bluenile.com"
+    },
+    {
+      "domain": "blueridgeguitars.com"
+    },
+    {
+      "domain": "bluestonelane.com"
+    },
+    {
+      "domain": "bluetti.com"
+    },
+    {
+      "domain": "bluguitar.com"
+    },
+    {
+      "domain": "bmwpartspros.com"
+    },
+    {
+      "domain": "boardgameco.com"
+    },
+    {
+      "domain": "boardgamegeek.com"
+    },
+    {
+      "domain": "boardgameoracle.com"
+    },
+    {
+      "domain": "boardgames.ca"
+    },
+    {
+      "domain": "boardgametables.com"
+    },
+    {
+      "domain": "boardlandia.com"
+    },
+    {
+      "domain": "bobbibrown.com"
+    },
+    {
+      "domain": "bobgear.com"
+    },
+    {
+      "domain": "bobo choses.com"
+    },
+    {
+      "domain": "bobredmill.com"
+    },
+    {
+      "domain": "bobsfromskechers.com"
+    },
+    {
+      "domain": "boconcept.com"
+    },
+    {
+      "domain": "bodeefit.com"
+    },
+    {
+      "domain": "bodega.com"
+    },
+    {
+      "domain": "bodenusa.com"
+    },
+    {
+      "domain": "body solid.com"
+    },
+    {
+      "domain": "bogneramps.com"
+    },
+    {
+      "domain": "bogsfootwear.com"
+    },
+    {
+      "domain": "boiron.com"
+    },
+    {
+      "domain": "bokerusa.com"
+    },
+    {
+      "domain": "bolle.com"
+    },
+    {
+      "domain": "bolton fitness.com"
+    },
+    {
+      "domain": "bombababy.com"
+    },
+    {
+      "domain": "bombas.com"
+    },
+    {
+      "domain": "bonappetit.com"
+    },
+    {
+      "domain": "bondino.com"
+    },
+    {
+      "domain": "bondo.com"
+    },
+    {
+      "domain": "bonds.com.au"
+    },
+    {
+      "domain": "bonobos.com"
+    },
+    {
+      "domain": "boohoo.com"
+    },
+    {
+      "domain": "booninc.com"
+    },
+    {
+      "domain": "boppee.com"
+    },
+    {
+      "domain": "borla.com"
+    },
+    {
+      "domain": "boschtools.com"
+    },
+    {
+      "domain": "bose.com"
+    },
+    {
+      "domain": "bosphoruscymbals.com"
+    },
+    {
+      "domain": "boss.info"
+    },
+    {
+      "domain": "bosseffects.com"
+    },
+    {
+      "domain": "bostitch.com"
+    },
+    {
+      "domain": "botany.bio"
+    },
+    {
+      "domain": "bottegaveneta.com"
+    },
+    {
+      "domain": "bottomless.com"
+    },
+    {
+      "domain": "boucheron.com"
+    },
+    {
+      "domain": "boudreaux'sbuttpaste.com"
+    },
+    {
+      "domain": "bounce.com"
+    },
+    {
+      "domain": "bourgeoisguitars.com"
+    },
+    {
+      "domain": "bowerswilkins.com"
+    },
+    {
+      "domain": "bowflex.com"
+    },
+    {
+      "domain": "boy smells.com"
+    },
+    {
+      "domain": "bpracing.com"
+    },
+    {
+      "domain": "bradington young.com"
+    },
+    {
+      "domain": "bradsplantbased.com"
+    },
+    {
+      "domain": "brain boost.com"
+    },
+    {
+      "domain": "braindead.co"
+    },
+    {
+      "domain": "brauner-microphones.com"
+    },
+    {
+      "domain": "bravemen.com"
+    },
+    {
+      "domain": "breguet.com"
+    },
+    {
+      "domain": "breitling.com"
+    },
+    {
+      "domain": "brentandbeckysbulbs.com"
+    },
+    {
+      "domain": "bresciani.com"
+    },
+    {
+      "domain": "brew watch.com"
+    },
+    {
+      "domain": "brickell men's products.com"
+    },
+    {
+      "domain": "bricklink.com"
+    },
+    {
+      "domain": "brickmania.com"
+    },
+    {
+      "domain": "brickowl.com"
+    },
+    {
+      "domain": "brickwarriors.com"
+    },
+    {
+      "domain": "bridgewatercandle.com"
+    },
+    {
+      "domain": "brightland.com"
+    },
+    {
+      "domain": "brightstarts.com"
+    },
+    {
+      "domain": "brilliant.org"
+    },
+    {
+      "domain": "brilliantearth.com"
+    },
+    {
+      "domain": "briogeohair.com"
+    },
+    {
+      "domain": "brioni.com"
+    },
+    {
+      "domain": "britax.com"
+    },
+    {
+      "domain": "british-supplements.com"
+    },
+    {
+      "domain": "broncolor.com"
+    },
+    {
+      "domain": "brooksbrothers.com"
+    },
+    {
+      "domain": "brooksrunning.com"
+    },
+    {
+      "domain": "brotherwisegames.com"
+    },
+    {
+      "domain": "brown girl jane.com"
+    },
+    {
+      "domain": "brumate.com"
+    },
+    {
+      "domain": "brunellocucinelli.com"
+    },
+    {
+      "domain": "bsn.com"
+    },
+    {
+      "domain": "bubbles.com"
+    },
+    {
+      "domain": "bubs naturals.com"
+    },
+    {
+      "domain": "buckknives.com"
+    },
+    {
+      "domain": "buckleguy.com"
+    },
+    {
+      "domain": "buckmason.com"
+    },
+    {
+      "domain": "budgetlightforum.com"
+    },
+    {
+      "domain": "buffalogames.com"
+    },
+    {
+      "domain": "bugaboostrollers.com"
+    },
+    {
+      "domain": "build.com"
+    },
+    {
+      "domain": "builderssurplus.com"
+    },
+    {
+      "domain": "bulgari.com"
+    },
+    {
+      "domain": "bulk apothecary.com"
+    },
+    {
+      "domain": "bulk.com"
+    },
+    {
+      "domain": "bulkbox.com"
+    },
+    {
+      "domain": "bulkherbstore.com"
+    },
+    {
+      "domain": "bulkpowders.co.uk"
+    },
+    {
+      "domain": "bulkpowders.com"
+    },
+    {
+      "domain": "bulletproof.com"
+    },
+    {
+      "domain": "bullets2beans.com"
+    },
+    {
+      "domain": "bullionbelts.com"
+    },
+    {
+      "domain": "bumbleandbumble.com"
+    },
+    {
+      "domain": "buntanicals.com"
+    },
+    {
+      "domain": "burberry children.com"
+    },
+    {
+      "domain": "burberry.com"
+    },
+    {
+      "domain": "burlaudio.com"
+    },
+    {
+      "domain": "burmester.de"
+    },
+    {
+      "domain": "burpee.com"
+    },
+    {
+      "domain": "burrow.com"
+    },
+    {
+      "domain": "burt's bees baby.com"
+    },
+    {
+      "domain": "burton.co.uk"
+    },
+    {
+      "domain": "burton.com"
+    },
+    {
+      "domain": "bushcraft store.com"
+    },
+    {
+      "domain": "busykid.com"
+    },
+    {
+      "domain": "butterpat.com"
+    },
+    {
+      "domain": "buzzricksons.com"
+    },
+    {
+      "domain": "by humboldt.com"
+    },
+    {
+      "domain": "by-chari.com"
+    },
+    {
+      "domain": "byfreasth.com"
+    },
+    {
+      "domain": "byltbasics.com"
+    },
+    {
+      "domain": "byredo.com"
+    },
+    {
+      "domain": "c2f.com"
+    },
+    {
+      "domain": "cabelas.com"
+    },
+    {
+      "domain": "cabi candles.com"
+    },
+    {
+      "domain": "cafekitchenstore.com"
+    },
+    {
+      "domain": "cakewalk.com"
+    },
+    {
+      "domain": "calcarcover.com"
+    },
+    {
+      "domain": "caldigit.com"
+    },
+    {
+      "domain": "califlourfoods.com"
+    },
+    {
+      "domain": "california gold nutrition.com"
+    },
+    {
+      "domain": "californiafaucets.com"
+    },
+    {
+      "domain": "calleen cordero.com"
+    },
+    {
+      "domain": "calm.com"
+    },
+    {
+      "domain": "calpak.com"
+    },
+    {
+      "domain": "calvinklein.com"
+    },
+    {
+      "domain": "camden gray.com"
+    },
+    {
+      "domain": "campaign.com"
+    },
+    {
+      "domain": "campman.com"
+    },
+    {
+      "domain": "campsaver.com"
+    },
+    {
+      "domain": "canadagoose.com"
+    },
+    {
+      "domain": "candlelight.com"
+    },
+    {
+      "domain": "candlepowerforums.com"
+    },
+    {
+      "domain": "canidae.com"
+    },
+    {
+      "domain": "cannondale.com"
+    },
+    {
+      "domain": "canon.com"
+    },
+    {
+      "domain": "canopusdrums.com"
+    },
+    {
+      "domain": "canyon.com"
+    },
+    {
+      "domain": "capcom.com"
+    },
+    {
+      "domain": "capellin.com"
+    },
+    {
+      "domain": "capital lighting.com"
+    },
+    {
+      "domain": "capri blue.com"
+    },
+    {
+      "domain": "capriblue.com"
+    },
+    {
+      "domain": "carawayhome.com"
+    },
+    {
+      "domain": "carbon knife co.com"
+    },
+    {
+      "domain": "carcassonne.com"
+    },
+    {
+      "domain": "cardas.com"
+    },
+    {
+      "domain": "cardfight-online.com"
+    },
+    {
+      "domain": "cardhaus.com"
+    },
+    {
+      "domain": "cardkingdom.com"
+    },
+    {
+      "domain": "cardon.com"
+    },
+    {
+      "domain": "care of.com"
+    },
+    {
+      "domain": "careof.com"
+    },
+    {
+      "domain": "carhartt-wip.com"
+    },
+    {
+      "domain": "carhartt.com"
+    },
+    {
+      "domain": "carid.com"
+    },
+    {
+      "domain": "cariuma.com"
+    },
+    {
+      "domain": "carlhansen.com"
+    },
+    {
+      "domain": "carminashoemaker.com"
+    },
+    {
+      "domain": "carolina boots.com"
+    },
+    {
+      "domain": "carousell.com"
+    },
+    {
+      "domain": "carparts.com"
+    },
+    {
+      "domain": "carpro-us.com"
+    },
+    {
+      "domain": "carr-amps.com"
+    },
+    {
+      "domain": "carrera.com"
+    },
+    {
+      "domain": "carters.com"
+    },
+    {
+      "domain": "cartier.com"
+    },
+    {
+      "domain": "caru.com"
+    },
+    {
+      "domain": "cascadeyarns.com"
+    },
+    {
+      "domain": "casemate.com"
+    },
+    {
+      "domain": "casetify.com"
+    },
+    {
+      "domain": "casio.com"
+    },
+    {
+      "domain": "castlecreations.com"
+    },
+    {
+      "domain": "castlery.com"
+    },
+    {
+      "domain": "castorlandpuzzles.com"
+    },
+    {
+      "domain": "catan.com"
+    },
+    {
+      "domain": "catbird.com"
+    },
+    {
+      "domain": "catbirdnyc.com"
+    },
+    {
+      "domain": "cathartt.com"
+    },
+    {
+      "domain": "catimini.com"
+    },
+    {
+      "domain": "catrice.com"
+    },
+    {
+      "domain": "caudalie.com"
+    },
+    {
+      "domain": "cauliflowerfoods.com"
+    },
+    {
+      "domain": "cb2.com"
+    },
+    {
+      "domain": "cbd american shaman.com"
+    },
+    {
+      "domain": "cbd genesis.com"
+    },
+    {
+      "domain": "cbd lion.com"
+    },
+    {
+      "domain": "cbd wellness.com"
+    },
+    {
+      "domain": "cbd.co"
+    },
+    {
+      "domain": "cbd.com"
+    },
+    {
+      "domain": "cbdistillery.com"
+    },
+    {
+      "domain": "cdnsportlab.com"
+    },
+    {
+      "domain": "celestial seasonings.com"
+    },
+    {
+      "domain": "celine.com"
+    },
+    {
+      "domain": "celines.com"
+    },
+    {
+      "domain": "centellian.com"
+    },
+    {
+      "domain": "centuryfurniture.com"
+    },
+    {
+      "domain": "ceramicartsnetwork.com"
+    },
+    {
+      "domain": "ceramicpro.com"
+    },
+    {
+      "domain": "cerave.com"
+    },
+    {
+      "domain": "ceretropic.com"
+    },
+    {
+      "domain": "ceriatone.com"
+    },
+    {
+      "domain": "certina.com"
+    },
+    {
+      "domain": "cervorthos.com"
+    },
+    {
+      "domain": "cesareattolini.com"
+    },
+    {
+      "domain": "cetaphil.com"
+    },
+    {
+      "domain": "cettire.com"
+    },
+    {
+      "domain": "chacos.com"
+    },
+    {
+      "domain": "chainreactioncycles.com"
+    },
+    {
+      "domain": "chandlerexclusive.com"
+    },
+    {
+      "domain": "chanel.com"
+    },
+    {
+      "domain": "changeyou.com"
+    },
+    {
+      "domain": "channel islands surfboards.com"
+    },
+    {
+      "domain": "channel lock.com"
+    },
+    {
+      "domain": "channelfireball.com"
+    },
+    {
+      "domain": "chantelle.com"
+    },
+    {
+      "domain": "charles tyrwhitt.com"
+    },
+    {
+      "domain": "charleyssoap.com"
+    },
+    {
+      "domain": "charlieconstantino.com"
+    },
+    {
+      "domain": "charlottetilbury.com"
+    },
+    {
+      "domain": "charvel.com"
+    },
+    {
+      "domain": "chasebliss.com"
+    },
+    {
+      "domain": "chaseblissaudio.com"
+    },
+    {
+      "domain": "chaumet.com"
+    },
+    {
+      "domain": "chefknivestogo.com"
+    },
+    {
+      "domain": "chesapeakebaycandle.com"
+    },
+    {
+      "domain": "chewy.com"
+    },
+    {
+      "domain": "chicco.com"
+    },
+    {
+      "domain": "chicos.com"
+    },
+    {
+      "domain": "childlife.com"
+    },
+    {
+      "domain": "chilitechnology.com"
+    },
+    {
+      "domain": "chippewaboots.com"
+    },
+    {
+      "domain": "chloella.com"
+    },
+    {
+      "domain": "choiceorganics.com"
+    },
+    {
+      "domain": "choiceorganicteas.com"
+    },
+    {
+      "domain": "cholula.com"
+    },
+    {
+      "domain": "chopard.com"
+    },
+    {
+      "domain": "christianlouboutin.com"
+    },
+    {
+      "domain": "christophe robin.com"
+    },
+    {
+      "domain": "chromehearts.com"
+    },
+    {
+      "domain": "chuckit.com"
+    },
+    {
+      "domain": "church-footwear.com"
+    },
+    {
+      "domain": "chuu.us"
+    },
+    {
+      "domain": "ciate.com"
+    },
+    {
+      "domain": "cielo.ch"
+    },
+    {
+      "domain": "cinelli.it"
+    },
+    {
+      "domain": "cioks.com"
+    },
+    {
+      "domain": "cire trudon.com"
+    },
+    {
+      "domain": "citizenwatch.com"
+    },
+    {
+      "domain": "citychiconline.com"
+    },
+    {
+      "domain": "clark amplification.com"
+    },
+    {
+      "domain": "clarkjunglehammock.com"
+    },
+    {
+      "domain": "clarks.com"
+    },
+    {
+      "domain": "clarkson toys.com"
+    },
+    {
+      "domain": "clavia.se"
+    },
+    {
+      "domain": "clay-king.com"
+    },
+    {
+      "domain": "cleancult.com"
+    },
+    {
+      "domain": "cleanmama.com"
+    },
+    {
+      "domain": "cleanmyspace.com"
+    },
+    {
+      "domain": "cleanorigin.com"
+    },
+    {
+      "domain": "clearaudio.de"
+    },
+    {
+      "domain": "clementoni.com"
+    },
+    {
+      "domain": "cleverhiker.com"
+    },
+    {
+      "domain": "clinique.com"
+    },
+    {
+      "domain": "clipper teas.com"
+    },
+    {
+      "domain": "cloudnine.com"
+    },
+    {
+      "domain": "cmon.com"
+    },
+    {
+      "domain": "codakid.com"
+    },
+    {
+      "domain": "code drumheads.com"
+    },
+    {
+      "domain": "code.org"
+    },
+    {
+      "domain": "codecombat.com"
+    },
+    {
+      "domain": "codekeyboards.com"
+    },
+    {
+      "domain": "codemeister.com"
+    },
+    {
+      "domain": "codemonkey.com"
+    },
+    {
+      "domain": "codewizardshq.com"
+    },
+    {
+      "domain": "cognizin.com"
+    },
+    {
+      "domain": "cogumelos.com"
+    },
+    {
+      "domain": "coldsteel.com"
+    },
+    {
+      "domain": "collagen co.com"
+    },
+    {
+      "domain": "collagen for her.com"
+    },
+    {
+      "domain": "collagencompany.com"
+    },
+    {
+      "domain": "collectables.com"
+    },
+    {
+      "domain": "collectiblesdirect.com"
+    },
+    {
+      "domain": "collingsguitars.com"
+    },
+    {
+      "domain": "colorblends.com"
+    },
+    {
+      "domain": "columbia.com"
+    },
+    {
+      "domain": "columbuspercussion.com"
+    },
+    {
+      "domain": "commando.com"
+    },
+    {
+      "domain": "commedesgarcons.com"
+    },
+    {
+      "domain": "community playthings.com"
+    },
+    {
+      "domain": "competitivecyclist.com"
+    },
+    {
+      "domain": "concepts.com"
+    },
+    {
+      "domain": "conceptshop.com"
+    },
+    {
+      "domain": "conranshop.com"
+    },
+    {
+      "domain": "consumercrafts.com"
+    },
+    {
+      "domain": "consumerreports.org"
+    },
+    {
+      "domain": "contactrc.com"
+    },
+    {
+      "domain": "continentalclay.com"
+    },
+    {
+      "domain": "control4.com"
+    },
+    {
+      "domain": "converse.com"
+    },
+    {
+      "domain": "convoy flashlight.com"
+    },
+    {
+      "domain": "cookieandkate.com"
+    },
+    {
+      "domain": "cooklist.co"
+    },
+    {
+      "domain": "cooksmarts.com"
+    },
+    {
+      "domain": "coolstuffinc.com"
+    },
+    {
+      "domain": "cooperfx.com"
+    },
+    {
+      "domain": "copperbank.com"
+    },
+    {
+      "domain": "copperhead flashlight.com"
+    },
+    {
+      "domain": "cordobaguitars.com"
+    },
+    {
+      "domain": "corekites.com"
+    },
+    {
+      "domain": "cornfordamps.com"
+    },
+    {
+      "domain": "cornwelltools.com"
+    },
+    {
+      "domain": "coros.com"
+    },
+    {
+      "domain": "corpus naturals.com"
+    },
+    {
+      "domain": "corridor.com"
+    },
+    {
+      "domain": "corsair.com"
+    },
+    {
+      "domain": "cos.com"
+    },
+    {
+      "domain": "cosequinusa.com"
+    },
+    {
+      "domain": "cosmeticmarket.com"
+    },
+    {
+      "domain": "costadelmar.com"
+    },
+    {
+      "domain": "costco.com"
+    },
+    {
+      "domain": "coterie.com"
+    },
+    {
+      "domain": "courant.com"
+    },
+    {
+      "domain": "cove.com"
+    },
+    {
+      "domain": "covercraft.com"
+    },
+    {
+      "domain": "covergirl.com"
+    },
+    {
+      "domain": "covesmart.com"
+    },
+    {
+      "domain": "cowboy.com"
+    },
+    {
+      "domain": "cquartz.com"
+    },
+    {
+      "domain": "craftsman.com"
+    },
+    {
+      "domain": "cranesong.com"
+    },
+    {
+      "domain": "crateandbarrel.com"
+    },
+    {
+      "domain": "cravenspeed.com"
+    },
+    {
+      "domain": "crazy8.com"
+    },
+    {
+      "domain": "creality.com"
+    },
+    {
+      "domain": "createforless.com"
+    },
+    {
+      "domain": "creationcrate.com"
+    },
+    {
+      "domain": "crestron.com"
+    },
+    {
+      "domain": "crkt.com"
+    },
+    {
+      "domain": "crocs.com"
+    },
+    {
+      "domain": "crowdgames.com"
+    },
+    {
+      "domain": "crucial.com"
+    },
+    {
+      "domain": "ctfo.com"
+    },
+    {
+      "domain": "cuisinart.com"
+    },
+    {
+      "domain": "cultbeauty.com"
+    },
+    {
+      "domain": "curlssmith.com"
+    },
+    {
+      "domain": "current.com"
+    },
+    {
+      "domain": "custom knife factory.com"
+    },
+    {
+      "domain": "cutco.com"
+    },
+    {
+      "domain": "cutleryshoppe.com"
+    },
+    {
+      "domain": "cuup.com"
+    },
+    {
+      "domain": "cyberpowerpc.com"
+    },
+    {
+      "domain": "cybex-online.com"
+    },
+    {
+      "domain": "cybexintl.com"
+    },
+    {
+      "domain": "czechgames.com"
+    },
+    {
+      "domain": "d-link.com"
+    },
+    {
+      "domain": "dahawaii.com"
+    },
+    {
+      "domain": "daily-look.com"
+    },
+    {
+      "domain": "dallas sofa mart.com"
+    },
+    {
+      "domain": "dalluge.com"
+    },
+    {
+      "domain": "damasko.de"
+    },
+    {
+      "domain": "danactive.com"
+    },
+    {
+      "domain": "dancewearsolutions.com"
+    },
+    {
+      "domain": "danclarkaudio.com"
+    },
+    {
+      "domain": "dangelicoguitars.com"
+    },
+    {
+      "domain": "dantoy.com"
+    },
+    {
+      "domain": "das keyboard.com"
+    },
+    {
+      "domain": "dash.com"
+    },
+    {
+      "domain": "dasuquin.com"
+    },
+    {
+      "domain": "dave smith instruments.com"
+    },
+    {
+      "domain": "davidyurman.com"
+    },
+    {
+      "domain": "davinci games.com"
+    },
+    {
+      "domain": "davincilabs.com"
+    },
+    {
+      "domain": "dbrand.com"
+    },
+    {
+      "domain": "dbtechnologies.com"
+    },
+    {
+      "domain": "dccomics.com"
+    },
+    {
+      "domain": "ddrum.com"
+    },
+    {
+      "domain": "deagostini.com"
+    },
+    {
+      "domain": "deakinandblue.com"
+    },
+    {
+      "domain": "dean guitars.com"
+    },
+    {
+      "domain": "debeers.com"
+    },
+    {
+      "domain": "debuyer.com"
+    },
+    {
+      "domain": "deckardsdream.com"
+    },
+    {
+      "domain": "decktutor.com"
+    },
+    {
+      "domain": "decorplanet.com"
+    },
+    {
+      "domain": "delish.com"
+    },
+    {
+      "domain": "dell.com"
+    },
+    {
+      "domain": "denon.com"
+    },
+    {
+      "domain": "depop.com"
+    },
+    {
+      "domain": "dermstore.com"
+    },
+    {
+      "domain": "designsforhealth.com"
+    },
+    {
+      "domain": "designwithinreach.com"
+    },
+    {
+      "domain": "desitin.com"
+    },
+    {
+      "domain": "detailedimage.com"
+    },
+    {
+      "domain": "detailers helper.com"
+    },
+    {
+      "domain": "detailsupply.com"
+    },
+    {
+      "domain": "detroitaxle.com"
+    },
+    {
+      "domain": "detroitwatches.com"
+    },
+    {
+      "domain": "devialet.com"
+    },
+    {
+      "domain": "dewalt.com"
+    },
+    {
+      "domain": "dewalttool.com"
+    },
+    {
+      "domain": "dfhtyme.com"
+    },
+    {
+      "domain": "dia.com"
+    },
+    {
+      "domain": "diamondcbd.com"
+    },
+    {
+      "domain": "dickblick.com"
+    },
+    {
+      "domain": "dickssportinggoods.com"
+    },
+    {
+      "domain": "diecastdirect.com"
+    },
+    {
+      "domain": "diecastmodelswholesale.com"
+    },
+    {
+      "domain": "diesel.com"
+    },
+    {
+      "domain": "diestateleather.com"
+    },
+    {
+      "domain": "diezelamps.com"
+    },
+    {
+      "domain": "digico.biz"
+    },
+    {
+      "domain": "digitalstorm.com"
+    },
+    {
+      "domain": "digitech.com"
+    },
+    {
+      "domain": "dilmah tea.com"
+    },
+    {
+      "domain": "dinnerly.com"
+    },
+    {
+      "domain": "dinosaur.com"
+    },
+    {
+      "domain": "diode-dynamics.com"
+    },
+    {
+      "domain": "diono.com"
+    },
+    {
+      "domain": "dior.com"
+    },
+    {
+      "domain": "diorbeauty.com"
+    },
+    {
+      "domain": "diptyqueparis.com"
+    },
+    {
+      "domain": "dirgemachines.com"
+    },
+    {
+      "domain": "discountdance.com"
+    },
+    {
+      "domain": "discountschoolsupply.com"
+    },
+    {
+      "domain": "disneystore.com"
+    },
+    {
+      "domain": "dividedby13.com"
+    },
+    {
+      "domain": "dji.com"
+    },
+    {
+      "domain": "dlttrading.com"
+    },
+    {
+      "domain": "dmc.com"
+    },
+    {
+      "domain": "doamore.com"
+    },
+    {
+      "domain": "dockatot.com"
+    },
+    {
+      "domain": "doctorsbest.com"
+    },
+    {
+      "domain": "dod.com"
+    },
+    {
+      "domain": "doen.co"
+    },
+    {
+      "domain": "doitbest.com"
+    },
+    {
+      "domain": "dolce gabbana junior.com"
+    },
+    {
+      "domain": "dolcegabbana.com"
+    },
+    {
+      "domain": "dollarnutrition.com"
+    },
+    {
+      "domain": "donrightknives.com"
+    },
+    {
+      "domain": "doona.com"
+    },
+    {
+      "domain": "dorothyperkins.com"
+    },
+    {
+      "domain": "dorsey.co"
+    },
+    {
+      "domain": "dosist.com"
+    },
+    {
+      "domain": "doterra.com"
+    },
+    {
+      "domain": "douglascompany.com"
+    },
+    {
+      "domain": "dove.com"
+    },
+    {
+      "domain": "doverstreetmarket.com"
+    },
+    {
+      "domain": "downy.com"
+    },
+    {
+      "domain": "dpamicrophones.com"
+    },
+    {
+      "domain": "dpsnutrition.net"
+    },
+    {
+      "domain": "dr axe.com"
+    },
+    {
+      "domain": "dr bronners.com"
+    },
+    {
+      "domain": "dr formulas.com"
+    },
+    {
+      "domain": "dr scientist sounds.com"
+    },
+    {
+      "domain": "dr squatch.com"
+    },
+    {
+      "domain": "dr-martens.com"
+    },
+    {
+      "domain": "dragonalliance.com"
+    },
+    {
+      "domain": "drbeasleys.com"
+    },
+    {
+      "domain": "drberg.com"
+    },
+    {
+      "domain": "dreamcloudsleep.com"
+    },
+    {
+      "domain": "dreamlandbabyco.com"
+    },
+    {
+      "domain": "drhardick.com"
+    },
+    {
+      "domain": "driftaway.coffee"
+    },
+    {
+      "domain": "drinkalani.com"
+    },
+    {
+      "domain": "drinkbang.com"
+    },
+    {
+      "domain": "drinkbodyarmor.com"
+    },
+    {
+      "domain": "drinkbubly.com"
+    },
+    {
+      "domain": "drinkc4.com"
+    },
+    {
+      "domain": "drinkcelsius.com"
+    },
+    {
+      "domain": "drinkcorehydration.com"
+    },
+    {
+      "domain": "drinkcure.com"
+    },
+    {
+      "domain": "drinkdripdrop.com"
+    },
+    {
+      "domain": "drinkghostenergy.com"
+    },
+    {
+      "domain": "drinkglaceau.com"
+    },
+    {
+      "domain": "drinkhaus.com"
+    },
+    {
+      "domain": "drinkkin.com"
+    },
+    {
+      "domain": "drinkliquidiv.com"
+    },
+    {
+      "domain": "drinklmnt.com"
+    },
+    {
+      "domain": "drinknuun.com"
+    },
+    {
+      "domain": "drinkpolar.com"
+    },
+    {
+      "domain": "drinkrebbl.co"
+    },
+    {
+      "domain": "drinkrecess.com"
+    },
+    {
+      "domain": "drinkreign.com"
+    },
+    {
+      "domain": "drinkryze.com"
+    },
+    {
+      "domain": "drinkultima.com"
+    },
+    {
+      "domain": "drinkvitacoco.com"
+    },
+    {
+      "domain": "drinkwaterloo.com"
+    },
+    {
+      "domain": "drinkwyld.com"
+    },
+    {
+      "domain": "drjart.com"
+    },
+    {
+      "domain": "drjockers.com"
+    },
+    {
+      "domain": "drperlmutter.com"
+    },
+    {
+      "domain": "drruscio.com"
+    },
+    {
+      "domain": "drumfactory.com"
+    },
+    {
+      "domain": "drummax.com"
+    },
+    {
+      "domain": "drummersuperstore.com"
+    },
+    {
+      "domain": "drummerswarehouse.com"
+    },
+    {
+      "domain": "drumsonsale.com"
+    },
+    {
+      "domain": "drunkelephant.com"
+    },
+    {
+      "domain": "drzamps.com"
+    },
+    {
+      "domain": "dsi.com"
+    },
+    {
+      "domain": "dual health.com"
+    },
+    {
+      "domain": "duckychannel.com"
+    },
+    {
+      "domain": "duluthtrading.com"
+    },
+    {
+      "domain": "dumble-clones.com"
+    },
+    {
+      "domain": "dunlop.com"
+    },
+    {
+      "domain": "duns sweden.com"
+    },
+    {
+      "domain": "duotonesports.com"
+    },
+    {
+      "domain": "dutchwaregear.com"
+    },
+    {
+      "domain": "dwdrums.com"
+    },
+    {
+      "domain": "dwr.com"
+    },
+    {
+      "domain": "dymatize.com"
+    },
+    {
+      "domain": "dynamite-rc.com"
+    },
+    {
+      "domain": "dynaudio.com"
+    },
+    {
+      "domain": "dynojet.com"
+    },
+    {
+      "domain": "e-meals.com"
+    },
+    {
+      "domain": "ea.com"
+    },
+    {
+      "domain": "eaglemoss.com"
+    },
+    {
+      "domain": "eaglesnestoutfitters.com"
+    },
+    {
+      "domain": "eagletac.com"
+    },
+    {
+      "domain": "earth's best.com"
+    },
+    {
+      "domain": "earthbornholisticpetfood.com"
+    },
+    {
+      "domain": "earthquakerdevices.com"
+    },
+    {
+      "domain": "eastdane.com"
+    },
+    {
+      "domain": "eastmanguitars.com"
+    },
+    {
+      "domain": "eastmanleather.com"
+    },
+    {
+      "domain": "easton guitars.com"
+    },
+    {
+      "domain": "easy spirit.com"
+    },
+    {
+      "domain": "easyplant.com"
+    },
+    {
+      "domain": "eat sleep knit.com"
+    },
+    {
+      "domain": "eatnuttzo.com"
+    },
+    {
+      "domain": "eaton.com"
+    },
+    {
+      "domain": "eatprose.com"
+    },
+    {
+      "domain": "ebay.com"
+    },
+    {
+      "domain": "ecco.com"
+    },
+    {
+      "domain": "echelon.com"
+    },
+    {
+      "domain": "ecobee.com"
+    },
+    {
+      "domain": "ecos.com"
+    },
+    {
+      "domain": "ecover.com"
+    },
+    {
+      "domain": "ecstuning.com"
+    },
+    {
+      "domain": "edelrid.com"
+    },
+    {
+      "domain": "eden botanicals.com"
+    },
+    {
+      "domain": "educaborras.com"
+    },
+    {
+      "domain": "edwardgreen.com"
+    },
+    {
+      "domain": "ee.toys"
+    },
+    {
+      "domain": "eero.com"
+    },
+    {
+      "domain": "egnateramps.com"
+    },
+    {
+      "domain": "eightsleep.com"
+    },
+    {
+      "domain": "eileenfisher.com"
+    },
+    {
+      "domain": "eizo.com"
+    },
+    {
+      "domain": "ekejewelry.com"
+    },
+    {
+      "domain": "el yucateco.com"
+    },
+    {
+      "domain": "elderstatesman.com"
+    },
+    {
+      "domain": "electricharmonix.com"
+    },
+    {
+      "domain": "electro-harmonix.com"
+    },
+    {
+      "domain": "electrovoice.com"
+    },
+    {
+      "domain": "elegantadditions.com"
+    },
+    {
+      "domain": "elektron.se"
+    },
+    {
+      "domain": "elementbrand.com"
+    },
+    {
+      "domain": "elevatorsound.com"
+    },
+    {
+      "domain": "elgato.com"
+    },
+    {
+      "domain": "elinchrom.com"
+    },
+    {
+      "domain": "elite gourmet.com"
+    },
+    {
+      "domain": "elixirstrings.com"
+    },
+    {
+      "domain": "elleshop.com"
+    },
+    {
+      "domain": "elomilingerie.com"
+    },
+    {
+      "domain": "eloquii.com"
+    },
+    {
+      "domain": "elzetta.com"
+    },
+    {
+      "domain": "emerald guitars.com"
+    },
+    {
+      "domain": "emilehenry.com"
+    },
+    {
+      "domain": "emilylevine.com"
+    },
+    {
+      "domain": "emisar.com"
+    },
+    {
+      "domain": "empireabrasives.com"
+    },
+    {
+      "domain": "emporiaweather.com"
+    },
+    {
+      "domain": "emporioarmani.com"
+    },
+    {
+      "domain": "emser tile.com"
+    },
+    {
+      "domain": "endclothing.com"
+    },
+    {
+      "domain": "endgamegear.com"
+    },
+    {
+      "domain": "endoca.com"
+    },
+    {
+      "domain": "engelbert-strauss.com"
+    },
+    {
+      "domain": "engineeredgarments.com"
+    },
+    {
+      "domain": "engl-amps.com"
+    },
+    {
+      "domain": "enlightenedequipment.com"
+    },
+    {
+      "domain": "entertainmentearth.com"
+    },
+    {
+      "domain": "enwild.com"
+    },
+    {
+      "domain": "enzymatic therapy.com"
+    },
+    {
+      "domain": "epatagonia.com"
+    },
+    {
+      "domain": "epicfitness.com"
+    },
+    {
+      "domain": "epicgames.com"
+    },
+    {
+      "domain": "epicurious.com"
+    },
+    {
+      "domain": "epiphone.com"
+    },
+    {
+      "domain": "equipuk.com"
+    },
+    {
+      "domain": "ergobaby.com"
+    },
+    {
+      "domain": "ergodox-ez.com"
+    },
+    {
+      "domain": "erincondren.com"
+    },
+    {
+      "domain": "erlsn.com"
+    },
+    {
+      "domain": "ernieball.com"
+    },
+    {
+      "domain": "esalerugs.com"
+    },
+    {
+      "domain": "eshakti.com"
+    },
+    {
+      "domain": "eshatki.com"
+    },
+    {
+      "domain": "esp guitars.com"
+    },
+    {
+      "domain": "espguitars.com"
+    },
+    {
+      "domain": "essentialsofficial.com"
+    },
+    {
+      "domain": "esteelauder.com"
+    },
+    {
+      "domain": "estwing.com"
+    },
+    {
+      "domain": "ethanallen.com"
+    },
+    {
+      "domain": "etonshirts.com"
+    },
+    {
+      "domain": "etro.com"
+    },
+    {
+      "domain": "eucerin.com"
+    },
+    {
+      "domain": "eufy.com"
+    },
+    {
+      "domain": "eukanuba.com"
+    },
+    {
+      "domain": "eurographicspuzzles.com"
+    },
+    {
+      "domain": "evanscycles.com"
+    },
+    {
+      "domain": "evansdrumheads.com"
+    },
+    {
+      "domain": "eve-audio.com"
+    },
+    {
+      "domain": "eventideaudio.com"
+    },
+    {
+      "domain": "evereden.com"
+    },
+    {
+      "domain": "everspring.com"
+    },
+    {
+      "domain": "every man jack.com"
+    },
+    {
+      "domain": "everyplate.com"
+    },
+    {
+      "domain": "evga.com"
+    },
+    {
+      "domain": "evo.com"
+    },
+    {
+      "domain": "evodesk.com"
+    },
+    {
+      "domain": "exped.com"
+    },
+    {
+      "domain": "express.com"
+    },
+    {
+      "domain": "extech.com"
+    },
+    {
+      "domain": "extract labs.com"
+    },
+    {
+      "domain": "extremeterrain.com"
+    },
+    {
+      "domain": "eyebuydirect.com"
+    },
+    {
+      "domain": "fab cbd.com"
+    },
+    {
+      "domain": "fabletics.com"
+    },
+    {
+      "domain": "fabric.com"
+    },
+    {
+      "domain": "fabulousstationery.com"
+    },
+    {
+      "domain": "fabulousyarn.com"
+    },
+    {
+      "domain": "factor bikes.com"
+    },
+    {
+      "domain": "factor75.com"
+    },
+    {
+      "domain": "fairytalemodels.com"
+    },
+    {
+      "domain": "falcon-nw.com"
+    },
+    {
+      "domain": "falkcopper.com"
+    },
+    {
+      "domain": "falke.com"
+    },
+    {
+      "domain": "fancycolordiamonds.com"
+    },
+    {
+      "domain": "fantasie.com"
+    },
+    {
+      "domain": "fantasyflightgames.com"
+    },
+    {
+      "domain": "farfetch.com"
+    },
+    {
+      "domain": "farisjewelry.com"
+    },
+    {
+      "domain": "farmersdog.com"
+    },
+    {
+      "domain": "fascinations.com"
+    },
+    {
+      "domain": "fastcap.com"
+    },
+    {
+      "domain": "fastenal.com"
+    },
+    {
+      "domain": "fastrack.com"
+    },
+    {
+      "domain": "fastrax-rc.com"
+    },
+    {
+      "domain": "fatbraintoys.com"
+    },
+    {
+      "domain": "faucetdirect.com"
+    },
+    {
+      "domain": "fcp euro.com"
+    },
+    {
+      "domain": "feelunique.com"
+    },
+    {
+      "domain": "fein.com"
+    },
+    {
+      "domain": "feitoaks.com"
+    },
+    {
+      "domain": "feizy.com"
+    },
+    {
+      "domain": "fender.com"
+    },
+    {
+      "domain": "fendi kids.com"
+    },
+    {
+      "domain": "fendi.com"
+    },
+    {
+      "domain": "fenixlight.com"
+    },
+    {
+      "domain": "ferguson.com"
+    },
+    {
+      "domain": "ferragamo.com"
+    },
+    {
+      "domain": "ferrington guitars.com"
+    },
+    {
+      "domain": "festoolusa.com"
+    },
+    {
+      "domain": "feuerland-spiele.de"
+    },
+    {
+      "domain": "feynlab.com"
+    },
+    {
+      "domain": "ff-light.com"
+    },
+    {
+      "domain": "fi.com"
+    },
+    {
+      "domain": "fibaro.com"
+    },
+    {
+      "domain": "fiddleback forge.com"
+    },
+    {
+      "domain": "fieldtripjerky.com"
+    },
+    {
+      "domain": "filco.com"
+    },
+    {
+      "domain": "filippak.com"
+    },
+    {
+      "domain": "filippoloreti.com"
+    },
+    {
+      "domain": "fillmorethelabel.com"
+    },
+    {
+      "domain": "finalfantasytcg.com"
+    },
+    {
+      "domain": "finalmouse.com"
+    },
+    {
+      "domain": "finleyandharper.com"
+    },
+    {
+      "domain": "firestartoys.com"
+    },
+    {
+      "domain": "firmoo.com"
+    },
+    {
+      "domain": "first-oak.com"
+    },
+    {
+      "domain": "fisher-price.com"
+    },
+    {
+      "domain": "fishusa.com"
+    },
+    {
+      "domain": "fishwives.com"
+    },
+    {
+      "domain": "fitbit.com"
+    },
+    {
+      "domain": "fitnessfirst.com"
+    },
+    {
+      "domain": "fjallraven.com"
+    },
+    {
+      "domain": "flamingo.com"
+    },
+    {
+      "domain": "flashlightuniversity.com"
+    },
+    {
+      "domain": "flashpoint.com"
+    },
+    {
+      "domain": "fleetfeet.com"
+    },
+    {
+      "domain": "fleocollective.com"
+    },
+    {
+      "domain": "flexispot.com"
+    },
+    {
+      "domain": "flintandtinder.com"
+    },
+    {
+      "domain": "flir.com"
+    },
+    {
+      "domain": "flonty.com"
+    },
+    {
+      "domain": "floraandcurls.com"
+    },
+    {
+      "domain": "floretflowers.com"
+    },
+    {
+      "domain": "florihana.com"
+    },
+    {
+      "domain": "florsheim.com"
+    },
+    {
+      "domain": "flowmaster.com"
+    },
+    {
+      "domain": "flukepro.com"
+    },
+    {
+      "domain": "flysurfer.com"
+    },
+    {
+      "domain": "focal.com"
+    },
+    {
+      "domain": "focusrite.com"
+    },
+    {
+      "domain": "focusworks.com"
+    },
+    {
+      "domain": "foggodog.com"
+    },
+    {
+      "domain": "food52.com"
+    },
+    {
+      "domain": "foodnetwork.com"
+    },
+    {
+      "domain": "for-days.com"
+    },
+    {
+      "domain": "forbiddenplanet.com"
+    },
+    {
+      "domain": "forceofnatureclean.com"
+    },
+    {
+      "domain": "fordpartsgiant.com"
+    },
+    {
+      "domain": "forevermark.com"
+    },
+    {
+      "domain": "forksdrumcloset.com"
+    },
+    {
+      "domain": "forloveandlemons.com"
+    },
+    {
+      "domain": "formlabs.com"
+    },
+    {
+      "domain": "fornasetti.com"
+    },
+    {
+      "domain": "forum.com"
+    },
+    {
+      "domain": "fossil.com"
+    },
+    {
+      "domain": "four hands.com"
+    },
+    {
+      "domain": "fourigmatic.com"
+    },
+    {
+      "domain": "foursevens.com"
+    },
+    {
+      "domain": "foxcutlery.com"
+    },
+    {
+      "domain": "foxfactory.com"
+    },
+    {
+      "domain": "foxtaileather.com"
+    },
+    {
+      "domain": "fractalaudio.com"
+    },
+    {
+      "domain": "fragrancenet.com"
+    },
+    {
+      "domain": "fragrancex.com"
+    },
+    {
+      "domain": "francescas.com"
+    },
+    {
+      "domain": "francosarto.com"
+    },
+    {
+      "domain": "frankandroot.com"
+    },
+    {
+      "domain": "franksredhot.com"
+    },
+    {
+      "domain": "frazlabs.com"
+    },
+    {
+      "domain": "fredercia.com"
+    },
+    {
+      "domain": "free the tone.com"
+    },
+    {
+      "domain": "freefly apparel.com"
+    },
+    {
+      "domain": "freeflysystems.com"
+    },
+    {
+      "domain": "freeformfitness.com"
+    },
+    {
+      "domain": "freemotionfitness.com"
+    },
+    {
+      "domain": "freepeople.com"
+    },
+    {
+      "domain": "freewheel.co.uk"
+    },
+    {
+      "domain": "fresh.com"
+    },
+    {
+      "domain": "freshivy.com"
+    },
+    {
+      "domain": "freshly.com"
+    },
+    {
+      "domain": "freshnlean.com"
+    },
+    {
+      "domain": "freya.com"
+    },
+    {
+      "domain": "fridababy.com"
+    },
+    {
+      "domain": "fringe sport.com"
+    },
+    {
+      "domain": "frisco.com"
+    },
+    {
+      "domain": "froggybottomguitars.com"
+    },
+    {
+      "domain": "frommfamily.com"
+    },
+    {
+      "domain": "frontiercoop.com"
+    },
+    {
+      "domain": "frontpointsecurity.com"
+    },
+    {
+      "domain": "fry's electronics.com"
+    },
+    {
+      "domain": "frye.com"
+    },
+    {
+      "domain": "fryette.com"
+    },
+    {
+      "domain": "fstopgear.com"
+    },
+    {
+      "domain": "fuelmotousa.com"
+    },
+    {
+      "domain": "fujifilm.com"
+    },
+    {
+      "domain": "fulfill.com"
+    },
+    {
+      "domain": "fully.com"
+    },
+    {
+      "domain": "fumerie.com"
+    },
+    {
+      "domain": "function of beauty.com"
+    },
+    {
+      "domain": "fungiperfecti.com"
+    },
+    {
+      "domain": "funko.com"
+    },
+    {
+      "domain": "funktion-one.com"
+    },
+    {
+      "domain": "furbo.com"
+    },
+    {
+      "domain": "furhaven.com"
+    },
+    {
+      "domain": "further food.com"
+    },
+    {
+      "domain": "fwrd.com"
+    },
+    {
+      "domain": "gaia herbs.com"
+    },
+    {
+      "domain": "gain.com"
+    },
+    {
+      "domain": "galerieslafayette.com"
+    },
+    {
+      "domain": "galloacoustics.com"
+    },
+    {
+      "domain": "gallonproducts.com"
+    },
+    {
+      "domain": "galt toys.com"
+    },
+    {
+      "domain": "gamenerdz.com"
+    },
+    {
+      "domain": "gamenverdz.com"
+    },
+    {
+      "domain": "gamestop.com"
+    },
+    {
+      "domain": "ganeworld.com"
+    },
+    {
+      "domain": "ganni.com"
+    },
+    {
+      "domain": "gap kids.com"
+    },
+    {
+      "domain": "gap.com"
+    },
+    {
+      "domain": "garagegymreviews.com"
+    },
+    {
+      "domain": "garden of life.com"
+    },
+    {
+      "domain": "gardenharvestsupply.com"
+    },
+    {
+      "domain": "gardenoflife.com"
+    },
+    {
+      "domain": "gardnerbender.com"
+    },
+    {
+      "domain": "garmin.com"
+    },
+    {
+      "domain": "gatheredtable.com"
+    },
+    {
+      "domain": "gaya games.com"
+    },
+    {
+      "domain": "geminiscollectibles.com"
+    },
+    {
+      "domain": "genelec.com"
+    },
+    {
+      "domain": "genestra brands.com"
+    },
+    {
+      "domain": "gensace.com"
+    },
+    {
+      "domain": "gentlemonster.com"
+    },
+    {
+      "domain": "geomag.com"
+    },
+    {
+      "domain": "gerber.com"
+    },
+    {
+      "domain": "gerbergear.com"
+    },
+    {
+      "domain": "getdose.com"
+    },
+    {
+      "domain": "getfpv.com"
+    },
+    {
+      "domain": "getkisi.com"
+    },
+    {
+      "domain": "getnamenecklace.com"
+    },
+    {
+      "domain": "getrxd.com"
+    },
+    {
+      "domain": "ghsstrings.com"
+    },
+    {
+      "domain": "giant-bicycles.com"
+    },
+    {
+      "domain": "gianvitorossi.com"
+    },
+    {
+      "domain": "gigabyte.com"
+    },
+    {
+      "domain": "gilt.com"
+    },
+    {
+      "domain": "giorgioarmani.com"
+    },
+    {
+      "domain": "girard-perregaux.com"
+    },
+    {
+      "domain": "gitzo.com"
+    },
+    {
+      "domain": "givenchy.com"
+    },
+    {
+      "domain": "givenchybeauty.com"
+    },
+    {
+      "domain": "glashutte-original.com"
+    },
+    {
+      "domain": "glassesusa.com"
+    },
+    {
+      "domain": "glassybelts.com"
+    },
+    {
+      "domain": "global-knife.com"
+    },
+    {
+      "domain": "globalindustrial.com"
+    },
+    {
+      "domain": "glowforge.com"
+    },
+    {
+      "domain": "gnc.com"
+    },
+    {
+      "domain": "gnu.com"
+    },
+    {
+      "domain": "goat.com"
+    },
+    {
+      "domain": "godinguitars.com"
+    },
+    {
+      "domain": "godox.com"
+    },
+    {
+      "domain": "gohenry.com"
+    },
+    {
+      "domain": "golde.com"
+    },
+    {
+      "domain": "goldring.co.uk"
+    },
+    {
+      "domain": "goldsignjeans.com"
+    },
+    {
+      "domain": "goldwell.com"
+    },
+    {
+      "domain": "goodallguitars.com"
+    },
+    {
+      "domain": "goodearthtea.com"
+    },
+    {
+      "domain": "goodhousekeeping.com"
+    },
+    {
+      "domain": "goodmolecules.com"
+    },
+    {
+      "domain": "goodnightmacaroon.com"
+    },
+    {
+      "domain": "google.com"
+    },
+    {
+      "domain": "goop.com"
+    },
+    {
+      "domain": "gopro.com"
+    },
+    {
+      "domain": "gorillafitness.com"
+    },
+    {
+      "domain": "gorjana-griffin.com"
+    },
+    {
+      "domain": "gossard.com"
+    },
+    {
+      "domain": "gostwear.com"
+    },
+    {
+      "domain": "goumi.com"
+    },
+    {
+      "domain": "gourmet prep.com"
+    },
+    {
+      "domain": "govee.com"
+    },
+    {
+      "domain": "gpknives.com"
+    },
+    {
+      "domain": "graco.com"
+    },
+    {
+      "domain": "grado.com"
+    },
+    {
+      "domain": "graff.com"
+    },
+    {
+      "domain": "grailed.com"
+    },
+    {
+      "domain": "grailersleather.com"
+    },
+    {
+      "domain": "greatlakesgelatin.com"
+    },
+    {
+      "domain": "green gorilla.com"
+    },
+    {
+      "domain": "green thorn knives.com"
+    },
+    {
+      "domain": "green toys.com"
+    },
+    {
+      "domain": "green vibrance.com"
+    },
+    {
+      "domain": "greenchef.com"
+    },
+    {
+      "domain": "greeneryunlimited.com"
+    },
+    {
+      "domain": "greenlee.com"
+    },
+    {
+      "domain": "greenlight.com"
+    },
+    {
+      "domain": "greenpan.com"
+    },
+    {
+      "domain": "greenroads.com"
+    },
+    {
+      "domain": "greens first.com"
+    },
+    {
+      "domain": "greensfoods.com"
+    },
+    {
+      "domain": "gretschdrums.com"
+    },
+    {
+      "domain": "gretschguitars.com"
+    },
+    {
+      "domain": "greystone.com"
+    },
+    {
+      "domain": "grfxstudio.com"
+    },
+    {
+      "domain": "grimsmo-saga.com"
+    },
+    {
+      "domain": "griotsgarage.com"
+    },
+    {
+      "domain": "grizzly.com"
+    },
+    {
+      "domain": "grlfrnd.com"
+    },
+    {
+      "domain": "groovelabs.com"
+    },
+    {
+      "domain": "grovecollaborative.com"
+    },
+    {
+      "domain": "grovemade.com"
+    },
+    {
+      "domain": "growerssupply.com"
+    },
+    {
+      "domain": "gryphon-audio.com"
+    },
+    {
+      "domain": "gskill.com"
+    },
+    {
+      "domain": "gtechniq.com"
+    },
+    {
+      "domain": "gucci beauty.com"
+    },
+    {
+      "domain": "gucci kids.com"
+    },
+    {
+      "domain": "gucci.com"
+    },
+    {
+      "domain": "guildguitars.com"
+    },
+    {
+      "domain": "guitarcenter.com"
+    },
+    {
+      "domain": "gunsandknives.com"
+    },
+    {
+      "domain": "gussi hair.com"
+    },
+    {
+      "domain": "gutify.com"
+    },
+    {
+      "domain": "gwynniebee.com"
+    },
+    {
+      "domain": "gymboree.com"
+    },
+    {
+      "domain": "gymboxfitness.com"
+    },
+    {
+      "domain": "haglofs.com"
+    },
+    {
+      "domain": "half face blades.com"
+    },
+    {
+      "domain": "halfbakedharvest.com"
+    },
+    {
+      "domain": "hamiltonbeach.com"
+    },
+    {
+      "domain": "hamiltonwatch.com"
+    },
+    {
+      "domain": "hammer made.com"
+    },
+    {
+      "domain": "hammockgear.com"
+    },
+    {
+      "domain": "hampton suns.com"
+    },
+    {
+      "domain": "hancockandmoore.com"
+    },
+    {
+      "domain": "hanes.com"
+    },
+    {
+      "domain": "hannakids.com"
+    },
+    {
+      "domain": "hans-im-glueck.de"
+    },
+    {
+      "domain": "happiestbaby.com"
+    },
+    {
+      "domain": "happybaby.com"
+    },
+    {
+      "domain": "harborfreight.com"
+    },
+    {
+      "domain": "hardrhino.com"
+    },
+    {
+      "domain": "harrods.com"
+    },
+    {
+      "domain": "harrywinston.com"
+    },
+    {
+      "domain": "harttools.com"
+    },
+    {
+      "domain": "hasbropulse.com"
+    },
+    {
+      "domain": "hasselblad.com"
+    },
+    {
+      "domain": "hatchbaby.com"
+    },
+    {
+      "domain": "haworth.com"
+    },
+    {
+      "domain": "hawthornesupplyco.com"
+    },
+    {
+      "domain": "hay.com"
+    },
+    {
+      "domain": "hdslights.com"
+    },
+    {
+      "domain": "headlightrevolution.com"
+    },
+    {
+      "domain": "headrushfx.com"
+    },
+    {
+      "domain": "headster.com"
+    },
+    {
+      "domain": "headstrongamps.com"
+    },
+    {
+      "domain": "health naturals.com"
+    },
+    {
+      "domain": "healthspan.co.uk"
+    },
+    {
+      "domain": "healthwarrior.com"
+    },
+    {
+      "domain": "healthy cell.com"
+    },
+    {
+      "domain": "healthy origins.com"
+    },
+    {
+      "domain": "heddphone.com"
+    },
+    {
+      "domain": "hedgehogfibres.com"
+    },
+    {
+      "domain": "helixsleep.com"
+    },
+    {
+      "domain": "hello-molly.com"
+    },
+    {
+      "domain": "hellobello.com"
+    },
+    {
+      "domain": "hellofresh.com"
+    },
+    {
+      "domain": "hellyhansen.com"
+    },
+    {
+      "domain": "helmutlang.com"
+    },
+    {
+      "domain": "helzbergdiamonds.com"
+    },
+    {
+      "domain": "hempbombs.com"
+    },
+    {
+      "domain": "hempworx.com"
+    },
+    {
+      "domain": "henckels.com"
+    },
+    {
+      "domain": "herb pharm.com"
+    },
+    {
+      "domain": "herbalife.com"
+    },
+    {
+      "domain": "herbalistalchemi.com"
+    },
+    {
+      "domain": "herbco.com"
+    },
+    {
+      "domain": "hercules-stands.com"
+    },
+    {
+      "domain": "hermanmiller.com"
+    },
+    {
+      "domain": "hermes.com"
+    },
+    {
+      "domain": "heroes collectibles.com"
+    },
+    {
+      "domain": "herschel.com"
+    },
+    {
+      "domain": "heye-puzzle.com"
+    },
+    {
+      "domain": "hhkeyboard.com"
+    },
+    {
+      "domain": "hhmountain.com"
+    },
+    {
+      "domain": "hickorychair.com"
+    },
+    {
+      "domain": "hifiman.com"
+    },
+    {
+      "domain": "hifuture.com"
+    },
+    {
+      "domain": "highmowingseeds.com"
+    },
+    {
+      "domain": "hikelight.com"
+    },
+    {
+      "domain": "hikingwithdave.com"
+    },
+    {
+      "domain": "hilleberg.com"
+    },
+    {
+      "domain": "hills pet.com"
+    },
+    {
+      "domain": "hilti.com"
+    },
+    {
+      "domain": "hindererknives.com"
+    },
+    {
+      "domain": "hipchips.com"
+    },
+    {
+      "domain": "hippiesnacks.com"
+    },
+    {
+      "domain": "hitachi-powertools.com"
+    },
+    {
+      "domain": "hiwatt.org"
+    },
+    {
+      "domain": "hlj.com"
+    },
+    {
+      "domain": "hm kids.com"
+    },
+    {
+      "domain": "hm.com"
+    },
+    {
+      "domain": "hobbiescollectibles.com"
+    },
+    {
+      "domain": "hobbylinc.com"
+    },
+    {
+      "domain": "hobbylobby.com"
+    },
+    {
+      "domain": "hobbysearch.com"
+    },
+    {
+      "domain": "hobbyterra.com"
+    },
+    {
+      "domain": "hobbywing.com"
+    },
+    {
+      "domain": "hobbyworld-usa.com"
+    },
+    {
+      "domain": "hocho-knife.com"
+    },
+    {
+      "domain": "hokaoneone.com"
+    },
+    {
+      "domain": "holabirdsports.com"
+    },
+    {
+      "domain": "hollandandbarrett.com"
+    },
+    {
+      "domain": "hollisterco.com"
+    },
+    {
+      "domain": "holystone.com"
+    },
+    {
+      "domain": "holzkern.com"
+    },
+    {
+      "domain": "home-assistant.io"
+    },
+    {
+      "domain": "homechef.com"
+    },
+    {
+      "domain": "homedepot.com"
+    },
+    {
+      "domain": "homeperfect.com"
+    },
+    {
+      "domain": "homey.app"
+    },
+    {
+      "domain": "hondapartsnow.com"
+    },
+    {
+      "domain": "honestbaby.com"
+    },
+    {
+      "domain": "honor.com"
+    },
+    {
+      "domain": "hookerfurniture.com"
+    },
+    {
+      "domain": "hopetech.com"
+    },
+    {
+      "domain": "horizonhobby.com"
+    },
+    {
+      "domain": "hotbodies.com"
+    },
+    {
+      "domain": "hotoneaudio.com"
+    },
+    {
+      "domain": "hottoys.com"
+    },
+    {
+      "domain": "hourglass.com"
+    },
+    {
+      "domain": "houzz.com"
+    },
+    {
+      "domain": "hp.com"
+    },
+    {
+      "domain": "hpiracing.com"
+    },
+    {
+      "domain": "huawei.com"
+    },
+    {
+      "domain": "hubitat.com"
+    },
+    {
+      "domain": "hublot.com"
+    },
+    {
+      "domain": "hubsan.com"
+    },
+    {
+      "domain": "huckberry.com"
+    },
+    {
+      "domain": "huckleberrycare.com"
+    },
+    {
+      "domain": "hudabeauty.com"
+    },
+    {
+      "domain": "hudsongoods.com"
+    },
+    {
+      "domain": "hugermugger.com"
+    },
+    {
+      "domain": "hughes-and-kettner.com"
+    },
+    {
+      "domain": "hugoboss.com"
+    },
+    {
+      "domain": "hukfishing.com"
+    },
+    {
+      "domain": "hukgear.com"
+    },
+    {
+      "domain": "hum nutrition.com"
+    },
+    {
+      "domain": "hum-nutrition.com"
+    },
+    {
+      "domain": "humanscale.com"
+    },
+    {
+      "domain": "humnutrition.com"
+    },
+    {
+      "domain": "hungryroot.com"
+    },
+    {
+      "domain": "huron.com"
+    },
+    {
+      "domain": "husky.com"
+    },
+    {
+      "domain": "huskyliners.com"
+    },
+    {
+      "domain": "hussanddalton.com"
+    },
+    {
+      "domain": "hux baby.com"
+    },
+    {
+      "domain": "huyfong.com"
+    },
+    {
+      "domain": "hydroflask.com"
+    },
+    {
+      "domain": "hyland's.com"
+    },
+    {
+      "domain": "hyper-tough.com"
+    },
+    {
+      "domain": "hyperbiotics.com"
+    },
+    {
+      "domain": "iams.com"
+    },
+    {
+      "domain": "ibanez.com"
+    },
+    {
+      "domain": "ibiscycles.com"
+    },
+    {
+      "domain": "ibuypower.com"
+    },
+    {
+      "domain": "icecream.com"
+    },
+    {
+      "domain": "idealind.com"
+    },
+    {
+      "domain": "idealprotein.com"
+    },
+    {
+      "domain": "idealshape.com"
+    },
+    {
+      "domain": "igk.com"
+    },
+    {
+      "domain": "iglcoatings.com"
+    },
+    {
+      "domain": "igloohome.co"
+    },
+    {
+      "domain": "iherb.com"
+    },
+    {
+      "domain": "ikbc.com"
+    },
+    {
+      "domain": "ikea.com"
+    },
+    {
+      "domain": "ilj jewelry.com"
+    },
+    {
+      "domain": "illuminations.com"
+    },
+    {
+      "domain": "ilovevelvet.com"
+    },
+    {
+      "domain": "imalent.com"
+    },
+    {
+      "domain": "indigo perfume.com"
+    },
+    {
+      "domain": "indochino.com"
+    },
+    {
+      "domain": "industrialectric.com"
+    },
+    {
+      "domain": "industrialmusicelectronics.com"
+    },
+    {
+      "domain": "industrynine.com"
+    },
+    {
+      "domain": "industrywest.com"
+    },
+    {
+      "domain": "infantoptics.com"
+    },
+    {
+      "domain": "inkeylist.com"
+    },
+    {
+      "domain": "innate response.com"
+    },
+    {
+      "domain": "innisfree.com"
+    },
+    {
+      "domain": "inno.co.jp"
+    },
+    {
+      "domain": "inov8.com"
+    },
+    {
+      "domain": "insta360.com"
+    },
+    {
+      "domain": "instinctpetfood.com"
+    },
+    {
+      "domain": "instruomodular.com"
+    },
+    {
+      "domain": "integrative therapeutics.com"
+    },
+    {
+      "domain": "intellijel.com"
+    },
+    {
+      "domain": "intellimeds.net"
+    },
+    {
+      "domain": "intend-bc.com"
+    },
+    {
+      "domain": "interior define.com"
+    },
+    {
+      "domain": "interior-define.com"
+    },
+    {
+      "domain": "internethobbies.com"
+    },
+    {
+      "domain": "intimissimi.com"
+    },
+    {
+      "domain": "invictawatch.com"
+    },
+    {
+      "domain": "ion-products.com"
+    },
+    {
+      "domain": "ipdusa.com"
+    },
+    {
+      "domain": "irwin.com"
+    },
+    {
+      "domain": "isagenix.com"
+    },
+    {
+      "domain": "isai.it"
+    },
+    {
+      "domain": "islabis.com"
+    },
+    {
+      "domain": "islesurfboards.com"
+    },
+    {
+      "domain": "isopure.com"
+    },
+    {
+      "domain": "istanbulcymbals.com"
+    },
+    {
+      "domain": "it works greens.com"
+    },
+    {
+      "domain": "italeri.com"
+    },
+    {
+      "domain": "iwc.com"
+    },
+    {
+      "domain": "j crew crewcuts.com"
+    },
+    {
+      "domain": "jacadi.com"
+    },
+    {
+      "domain": "jack black.com"
+    },
+    {
+      "domain": "jackrabbit.com"
+    },
+    {
+      "domain": "jackson.com"
+    },
+    {
+      "domain": "jacquemus.com"
+    },
+    {
+      "domain": "jade traversy.com"
+    },
+    {
+      "domain": "jaeger-lecoultre.com"
+    },
+    {
+      "domain": "jaipurliving.com"
+    },
+    {
+      "domain": "james tyler guitars.com"
+    },
+    {
+      "domain": "jamesallen.com"
+    },
+    {
+      "domain": "jamie kay.com"
+    },
+    {
+      "domain": "jane.com"
+    },
+    {
+      "domain": "janeleslie.com"
+    },
+    {
+      "domain": "janelya.com"
+    },
+    {
+      "domain": "janieandjack.com"
+    },
+    {
+      "domain": "japanese knife imports.com"
+    },
+    {
+      "domain": "jared.com"
+    },
+    {
+      "domain": "jarvisdesk.com"
+    },
+    {
+      "domain": "javipuzle.com"
+    },
+    {
+      "domain": "jbl.com"
+    },
+    {
+      "domain": "jblpro.com"
+    },
+    {
+      "domain": "jconcepts.com"
+    },
+    {
+      "domain": "jcrew.com"
+    },
+    {
+      "domain": "jdslabs.com"
+    },
+    {
+      "domain": "jeanelise.com"
+    },
+    {
+      "domain": "jeep.com"
+    },
+    {
+      "domain": "jegs.com"
+    },
+    {
+      "domain": "jeka puzzles.com"
+    },
+    {
+      "domain": "jellycat.com"
+    },
+    {
+      "domain": "jenniferfisher.com"
+    },
+    {
+      "domain": "jensonusa.com"
+    },
+    {
+      "domain": "jerrysartarama.com"
+    },
+    {
+      "domain": "jetpens.com"
+    },
+    {
+      "domain": "jeunesseglobal.com"
+    },
+    {
+      "domain": "jhspedals.com"
+    },
+    {
+      "domain": "jigsawpuzzles.com"
+    },
+    {
+      "domain": "jilsander.com"
+    },
+    {
+      "domain": "jimmychoo.com"
+    },
+    {
+      "domain": "jjneedles.com"
+    },
+    {
+      "domain": "jo malone.com"
+    },
+    {
+      "domain": "joann.com"
+    },
+    {
+      "domain": "jockey.com"
+    },
+    {
+      "domain": "jocko fuel.com"
+    },
+    {
+      "domain": "john crane.com"
+    },
+    {
+      "domain": "johnfrieda.com"
+    },
+    {
+      "domain": "johnnyseeds.com"
+    },
+    {
+      "domain": "johnsmedley.com"
+    },
+    {
+      "domain": "johnstonmurphy.com"
+    },
+    {
+      "domain": "jojo maman bebe.com"
+    },
+    {
+      "domain": "jonesnowboards.com"
+    },
+    {
+      "domain": "joolz.com"
+    },
+    {
+      "domain": "journeyinstruments.com"
+    },
+    {
+      "domain": "junghans.de"
+    },
+    {
+      "domain": "junilearning.com"
+    },
+    {
+      "domain": "junior gaultier.com"
+    },
+    {
+      "domain": "just thrive.com"
+    },
+    {
+      "domain": "justfoodfordogs.com"
+    },
+    {
+      "domain": "justinboots.com"
+    },
+    {
+      "domain": "k2snow.com"
+    },
+    {
+      "domain": "ka-bar.com"
+    },
+    {
+      "domain": "kamikaze-collection.com"
+    },
+    {
+      "domain": "kanesso.com"
+    },
+    {
+      "domain": "kansasworkwear.com"
+    },
+    {
+      "domain": "kaplantoys.com"
+    },
+    {
+      "domain": "karaskustoms.com"
+    },
+    {
+      "domain": "kardiel.com"
+    },
+    {
+      "domain": "kartell.com"
+    },
+    {
+      "domain": "katscbd.com"
+    },
+    {
+      "domain": "kay.com"
+    },
+    {
+      "domain": "keapbk.com"
+    },
+    {
+      "domain": "keeleyelectronics.com"
+    },
+    {
+      "domain": "kemper-amps.com"
+    },
+    {
+      "domain": "kengurupro.com"
+    },
+    {
+      "domain": "kenzo kids.com"
+    },
+    {
+      "domain": "kerastase.com"
+    },
+    {
+      "domain": "kershawknives.com"
+    },
+    {
+      "domain": "keto.org"
+    },
+    {
+      "domain": "kettlebrand.com"
+    },
+    {
+      "domain": "keyapparel.com"
+    },
+    {
+      "domain": "khanacademy.org"
+    },
+    {
+      "domain": "khanacademylabs.org"
+    },
+    {
+      "domain": "kidizen.com"
+    },
+    {
+      "domain": "kiehls.com"
+    },
+    {
+      "domain": "kieselguitars.com"
+    },
+    {
+      "domain": "kiinde.com"
+    },
+    {
+      "domain": "kincorleather.com"
+    },
+    {
+      "domain": "kind snacks.com"
+    },
+    {
+      "domain": "kinesis-ergo.com"
+    },
+    {
+      "domain": "kingarthurbaking.com"
+    },
+    {
+      "domain": "kingoffroad.com"
+    },
+    {
+      "domain": "kingsdown.com"
+    },
+    {
+      "domain": "kingston.com"
+    },
+    {
+      "domain": "kinkychicks.com"
+    },
+    {
+      "domain": "kinsley gray.com"
+    },
+    {
+      "domain": "kitchenaid.com"
+    },
+    {
+      "domain": "kitmaker.com"
+    },
+    {
+      "domain": "kitnipbox.com"
+    },
+    {
+      "domain": "kitsch.com"
+    },
+    {
+      "domain": "kiwi.co"
+    },
+    {
+      "domain": "kiwico.com"
+    },
+    {
+      "domain": "klaire labs.com"
+    },
+    {
+      "domain": "klattermusen.com"
+    },
+    {
+      "domain": "kleinperfumery.com"
+    },
+    {
+      "domain": "kleintools.com"
+    },
+    {
+      "domain": "klipsch.com"
+    },
+    {
+      "domain": "knex.com"
+    },
+    {
+      "domain": "knfilters.com"
+    },
+    {
+      "domain": "knifeart.com"
+    },
+    {
+      "domain": "knifecenter.com"
+    },
+    {
+      "domain": "knifemerchant.com"
+    },
+    {
+      "domain": "knifeworks.com"
+    },
+    {
+      "domain": "knitpicks.com"
+    },
+    {
+      "domain": "knivesshipfree.com"
+    },
+    {
+      "domain": "knoll.com"
+    },
+    {
+      "domain": "knx.org"
+    },
+    {
+      "domain": "kobalt.com"
+    },
+    {
+      "domain": "koch-amps.com"
+    },
+    {
+      "domain": "koeitecmo.com"
+    },
+    {
+      "domain": "kokoa.com"
+    },
+    {
+      "domain": "komokomodo.com"
+    },
+    {
+      "domain": "kona-bicycles.com"
+    },
+    {
+      "domain": "konami.com"
+    },
+    {
+      "domain": "kongcompany.com"
+    },
+    {
+      "domain": "koni.com"
+    },
+    {
+      "domain": "kooding.com"
+    },
+    {
+      "domain": "koral.com"
+    },
+    {
+      "domain": "korg.com"
+    },
+    {
+      "domain": "kotn.com"
+    },
+    {
+      "domain": "kramerguitars.com"
+    },
+    {
+      "domain": "krankamps.com"
+    },
+    {
+      "domain": "kregtool.com"
+    },
+    {
+      "domain": "krissceylon.com"
+    },
+    {
+      "domain": "kudosy.com"
+    },
+    {
+      "domain": "kulikoo.com"
+    },
+    {
+      "domain": "kurgo.com"
+    },
+    {
+      "domain": "kvanbourgondien.com"
+    },
+    {
+      "domain": "kvd beauty.com"
+    },
+    {
+      "domain": "kyani.com"
+    },
+    {
+      "domain": "kyb.com"
+    },
+    {
+      "domain": "kyo-green.com"
+    },
+    {
+      "domain": "kyosho.com"
+    },
+    {
+      "domain": "l l boutique.com"
+    },
+    {
+      "domain": "l-acoustics.com"
+    },
+    {
+      "domain": "la roche-posay.com"
+    },
+    {
+      "domain": "laboga.pl"
+    },
+    {
+      "domain": "laco.de"
+    },
+    {
+      "domain": "lacruset.com"
+    },
+    {
+      "domain": "lafco.com"
+    },
+    {
+      "domain": "lakeshorelearning.com"
+    },
+    {
+      "domain": "lakland.com"
+    },
+    {
+      "domain": "lamaze.com"
+    },
+    {
+      "domain": "lamazetoys.com"
+    },
+    {
+      "domain": "lamberto.com"
+    },
+    {
+      "domain": "lampsplus.com"
+    },
+    {
+      "domain": "lancome.com"
+    },
+    {
+      "domain": "landbigfish.com"
+    },
+    {
+      "domain": "lane-eight.com"
+    },
+    {
+      "domain": "lanebryant.com"
+    },
+    {
+      "domain": "laneige.com"
+    },
+    {
+      "domain": "langlitz.com"
+    },
+    {
+      "domain": "langlitzleathers.com"
+    },
+    {
+      "domain": "laowalens.com"
+    },
+    {
+      "domain": "larabar.com"
+    },
+    {
+      "domain": "lariveeguitars.com"
+    },
+    {
+      "domain": "laroche-posay.com"
+    },
+    {
+      "domain": "lascana.com"
+    },
+    {
+      "domain": "latch.com"
+    },
+    {
+      "domain": "lauren manoogian.com"
+    },
+    {
+      "domain": "lautenaudio.com"
+    },
+    {
+      "domain": "laylasleep.com"
+    },
+    {
+      "domain": "lazarus naturals.com"
+    },
+    {
+      "domain": "lazboy.com"
+    },
+    {
+      "domain": "lazyjprojects.com"
+    },
+    {
+      "domain": "lc-king.com"
+    },
+    {
+      "domain": "le labo.com"
+    },
+    {
+      "domain": "le toy van.com"
+    },
+    {
+      "domain": "le toyvan.com"
+    },
+    {
+      "domain": "leaf shave.com"
+    },
+    {
+      "domain": "leapfrog.com"
+    },
+    {
+      "domain": "learningresources.com"
+    },
+    {
+      "domain": "leatherhidesonline.com"
+    },
+    {
+      "domain": "lee.com"
+    },
+    {
+      "domain": "leekumkee.com"
+    },
+    {
+      "domain": "leesa.com"
+    },
+    {
+      "domain": "leevalley.com"
+    },
+    {
+      "domain": "legendfitness.com"
+    },
+    {
+      "domain": "legionathletics.com"
+    },
+    {
+      "domain": "lego.com"
+    },
+    {
+      "domain": "legpuzz.com"
+    },
+    {
+      "domain": "legrand.com"
+    },
+    {
+      "domain": "lehighvalleyabrasives.com"
+    },
+    {
+      "domain": "lehmans.com"
+    },
+    {
+      "domain": "leica.com"
+    },
+    {
+      "domain": "leisurelakesbikes.com"
+    },
+    {
+      "domain": "lelabo.com"
+    },
+    {
+      "domain": "lelabofragrances.com"
+    },
+    {
+      "domain": "lenovo.com"
+    },
+    {
+      "domain": "lenscrafters.com"
+    },
+    {
+      "domain": "leonandgeorge.com"
+    },
+    {
+      "domain": "leonor greyl.com"
+    },
+    {
+      "domain": "leopold.com"
+    },
+    {
+      "domain": "letote.com"
+    },
+    {
+      "domain": "levana.com"
+    },
+    {
+      "domain": "level.co"
+    },
+    {
+      "domain": "levi.com"
+    },
+    {
+      "domain": "levis.com"
+    },
+    {
+      "domain": "leviton.com"
+    },
+    {
+      "domain": "lezyne.com"
+    },
+    {
+      "domain": "lg.com"
+    },
+    {
+      "domain": "lib-tech.com"
+    },
+    {
+      "domain": "libertylondon.com"
+    },
+    {
+      "domain": "lie-nielsen.com"
+    },
+    {
+      "domain": "life extension.com"
+    },
+    {
+      "domain": "lifefitness.com"
+    },
+    {
+      "domain": "lifestride.com"
+    },
+    {
+      "domain": "lifevantage.com"
+    },
+    {
+      "domain": "lifeway kefir.com"
+    },
+    {
+      "domain": "light-bikes.com"
+    },
+    {
+      "domain": "lightbot.com"
+    },
+    {
+      "domain": "lightingdirect.com"
+    },
+    {
+      "domain": "lightingnewyork.com"
+    },
+    {
+      "domain": "lightology.com"
+    },
+    {
+      "domain": "lilysilk.com"
+    },
+    {
+      "domain": "limited life nootropics.com"
+    },
+    {
+      "domain": "linari.com"
+    },
+    {
+      "domain": "line6.com"
+    },
+    {
+      "domain": "link interactive.com"
+    },
+    {
+      "domain": "lionsteel.it"
+    },
+    {
+      "domain": "liquidsurf.com"
+    },
+    {
+      "domain": "little creative factory.com"
+    },
+    {
+      "domain": "little marc jacobs.com"
+    },
+    {
+      "domain": "little remedys.com"
+    },
+    {
+      "domain": "little sleepies.com"
+    },
+    {
+      "domain": "littlebits.cc"
+    },
+    {
+      "domain": "littlepassports.com"
+    },
+    {
+      "domain": "littlespoon.com"
+    },
+    {
+      "domain": "liuteria.it"
+    },
+    {
+      "domain": "lively.com"
+    },
+    {
+      "domain": "livinthemargins.com"
+    },
+    {
+      "domain": "llbean.com"
+    },
+    {
+      "domain": "lncc.com"
+    },
+    {
+      "domain": "loake.com"
+    },
+    {
+      "domain": "local-eclectic.com"
+    },
+    {
+      "domain": "loccitane.com"
+    },
+    {
+      "domain": "lockstate.com"
+    },
+    {
+      "domain": "locollection.com"
+    },
+    {
+      "domain": "loewe.com"
+    },
+    {
+      "domain": "loft.com"
+    },
+    {
+      "domain": "logitechg.com"
+    },
+    {
+      "domain": "lone star percussion.com"
+    },
+    {
+      "domain": "lonelylabel.com"
+    },
+    {
+      "domain": "longines.com"
+    },
+    {
+      "domain": "longtallsally.com"
+    },
+    {
+      "domain": "lookfantastic.com"
+    },
+    {
+      "domain": "lookout-spiele.de"
+    },
+    {
+      "domain": "lora piana.com"
+    },
+    {
+      "domain": "lorealparis.com"
+    },
+    {
+      "domain": "lorealprofessionnel.com"
+    },
+    {
+      "domain": "loren stewart.com"
+    },
+    {
+      "domain": "losi.com"
+    },
+    {
+      "domain": "lostandfoundtoronto.com"
+    },
+    {
+      "domain": "lostsurfboards.com"
+    },
+    {
+      "domain": "lotsofbutter.com"
+    },
+    {
+      "domain": "lottie nyc.com"
+    },
+    {
+      "domain": "louboutin.com"
+    },
+    {
+      "domain": "louise-rc.com"
+    },
+    {
+      "domain": "louisvuitton.com"
+    },
+    {
+      "domain": "love to dream.com"
+    },
+    {
+      "domain": "loveandlemons.com"
+    },
+    {
+      "domain": "lovebonito.com"
+    },
+    {
+      "domain": "lovebug probiotics.com"
+    },
+    {
+      "domain": "lovecrafts.com"
+    },
+    {
+      "domain": "lovehomeandplanet.com"
+    },
+    {
+      "domain": "lovelyskin.com"
+    },
+    {
+      "domain": "lovevery.com"
+    },
+    {
+      "domain": "lowepro.com"
+    },
+    {
+      "domain": "lowes.com"
+    },
+    {
+      "domain": "lrpmotorsports.com"
+    },
+    {
+      "domain": "lslguitars.com"
+    },
+    {
+      "domain": "lt wright knives.com"
+    },
+    {
+      "domain": "ltdguitars.com"
+    },
+    {
+      "domain": "luckyscent.com"
+    },
+    {
+      "domain": "luckyvitamin.com"
+    },
+    {
+      "domain": "lucyandco.com"
+    },
+    {
+      "domain": "lucyinthesky.com"
+    },
+    {
+      "domain": "ludwig-drums.com"
+    },
+    {
+      "domain": "lululemon.com"
+    },
+    {
+      "domain": "lulus.com"
+    },
+    {
+      "domain": "lumens.com"
+    },
+    {
+      "domain": "lumentop.com"
+    },
+    {
+      "domain": "lumintop.com"
+    },
+    {
+      "domain": "lunautherapy.com"
+    },
+    {
+      "domain": "lutron.com"
+    },
+    {
+      "domain": "luxman.com"
+    },
+    {
+      "domain": "luxury scent box.com"
+    },
+    {
+      "domain": "lynxstudio.com"
+    },
+    {
+      "domain": "lyons tea.com"
+    },
+    {
+      "domain": "lyraswim.com"
+    },
+    {
+      "domain": "m-audio.com"
+    },
+    {
+      "domain": "mac tools.com"
+    },
+    {
+      "domain": "mac.com"
+    },
+    {
+      "domain": "macadamia hair.com"
+    },
+    {
+      "domain": "machinedpens.com"
+    },
+    {
+      "domain": "mackie.com"
+    },
+    {
+      "domain": "maclan-racing.com"
+    },
+    {
+      "domain": "macro greens.com"
+    },
+    {
+      "domain": "macys.com"
+    },
+    {
+      "domain": "mad professor amplification.com"
+    },
+    {
+      "domain": "madeincookware.com"
+    },
+    {
+      "domain": "madewell.com"
+    },
+    {
+      "domain": "madison-reed.com"
+    },
+    {
+      "domain": "magformers.com"
+    },
+    {
+      "domain": "magic bullet.com"
+    },
+    {
+      "domain": "magic.wizards.com"
+    },
+    {
+      "domain": "magicseaweed.com"
+    },
+    {
+      "domain": "magicsleepsuit.com"
+    },
+    {
+      "domain": "magicsuit.com"
+    },
+    {
+      "domain": "magictricks.com"
+    },
+    {
+      "domain": "magura.com"
+    },
+    {
+      "domain": "mainframe.com"
+    },
+    {
+      "domain": "maisonkitsune.com"
+    },
+    {
+      "domain": "maisonmargiela.com"
+    },
+    {
+      "domain": "makenoisemusic.com"
+    },
+    {
+      "domain": "makitatools.com"
+    },
+    {
+      "domain": "mala the brand.com"
+    },
+    {
+      "domain": "malabrigoyarn.com"
+    },
+    {
+      "domain": "malanika.com"
+    },
+    {
+      "domain": "maldonsalt.com"
+    },
+    {
+      "domain": "malfyn.com"
+    },
+    {
+      "domain": "malinandgoetz.com"
+    },
+    {
+      "domain": "mamaroo.com"
+    },
+    {
+      "domain": "mamasaidcook.com"
+    },
+    {
+      "domain": "mammut.com"
+    },
+    {
+      "domain": "manaola.com"
+    },
+    {
+      "domain": "manastash.com"
+    },
+    {
+      "domain": "maneclub.com"
+    },
+    {
+      "domain": "manfrotto.com"
+    },
+    {
+      "domain": "mango.com"
+    },
+    {
+      "domain": "manleylabs.com"
+    },
+    {
+      "domain": "mannatech.com"
+    },
+    {
+      "domain": "manoloblahnik.com"
+    },
+    {
+      "domain": "mapexdrums.com"
+    },
+    {
+      "domain": "mara hoffman.com"
+    },
+    {
+      "domain": "marantz.com"
+    },
+    {
+      "domain": "marathonsports.com"
+    },
+    {
+      "domain": "margarethowell.com"
+    },
+    {
+      "domain": "mariejo.com"
+    },
+    {
+      "domain": "marketatmos.com"
+    },
+    {
+      "domain": "marmot.com"
+    },
+    {
+      "domain": "marshall.com"
+    },
+    {
+      "domain": "martenero.com"
+    },
+    {
+      "domain": "martin-audio.com"
+    },
+    {
+      "domain": "martinez tools.com"
+    },
+    {
+      "domain": "martingro.com"
+    },
+    {
+      "domain": "martinguitar.com"
+    },
+    {
+      "domain": "martinlogan.com"
+    },
+    {
+      "domain": "martintoolsusa.com"
+    },
+    {
+      "domain": "marvel.com"
+    },
+    {
+      "domain": "mary's medicinals.com"
+    },
+    {
+      "domain": "mascotworkwear.com"
+    },
+    {
+      "domain": "massimodutti.com"
+    },
+    {
+      "domain": "masterworkcymbals.com"
+    },
+    {
+      "domain": "matchesfashion.com"
+    },
+    {
+      "domain": "matcotools.com"
+    },
+    {
+      "domain": "mate the label.com"
+    },
+    {
+      "domain": "mate-thelabel.com"
+    },
+    {
+      "domain": "mateminco.com"
+    },
+    {
+      "domain": "matferbourgeat.com"
+    },
+    {
+      "domain": "matrix.com"
+    },
+    {
+      "domain": "matrixfitness.com"
+    },
+    {
+      "domain": "matt black guitar.com"
+    },
+    {
+      "domain": "matterhackers.com"
+    },
+    {
+      "domain": "mattressnerd.com"
+    },
+    {
+      "domain": "matys.com"
+    },
+    {
+      "domain": "mauijim.com"
+    },
+    {
+      "domain": "mauviel.com"
+    },
+    {
+      "domain": "maxi-cosi.com"
+    },
+    {
+      "domain": "maybelline.com"
+    },
+    {
+      "domain": "maycocolors.com"
+    },
+    {
+      "domain": "maydaygames.com"
+    },
+    {
+      "domain": "mayones.com"
+    },
+    {
+      "domain": "mazaringo.com"
+    },
+    {
+      "domain": "mcarproducts.com"
+    },
+    {
+      "domain": "mcfarlane.com"
+    },
+    {
+      "domain": "mcggeeandco.com"
+    },
+    {
+      "domain": "mcintoshlabs.com"
+    },
+    {
+      "domain": "mcmaster.com"
+    },
+    {
+      "domain": "meadowbrook.com"
+    },
+    {
+      "domain": "mealime.com"
+    },
+    {
+      "domain": "mec.ca"
+    },
+    {
+      "domain": "mechforce.com"
+    },
+    {
+      "domain": "medela.com"
+    },
+    {
+      "domain": "medicube.com"
+    },
+    {
+      "domain": "mediherb.com"
+    },
+    {
+      "domain": "meeple.house"
+    },
+    {
+      "domain": "meeplemart.com"
+    },
+    {
+      "domain": "mega food.com"
+    },
+    {
+      "domain": "megahobby.com"
+    },
+    {
+      "domain": "meganmcduffee.com"
+    },
+    {
+      "domain": "meguires.com"
+    },
+    {
+      "domain": "meinlcymbals.com"
+    },
+    {
+      "domain": "meistersinger.com"
+    },
+    {
+      "domain": "mejuri.com"
+    },
+    {
+      "domain": "melaleuca.com"
+    },
+    {
+      "domain": "melancon guitars.com"
+    },
+    {
+      "domain": "melijoe.com"
+    },
+    {
+      "domain": "melissa maker.com"
+    },
+    {
+      "domain": "mellerio.com"
+    },
+    {
+      "domain": "melscience.com"
+    },
+    {
+      "domain": "meltoninternational.com"
+    },
+    {
+      "domain": "memebox.com"
+    },
+    {
+      "domain": "menu.com"
+    },
+    {
+      "domain": "mercari.com"
+    },
+    {
+      "domain": "mercedespartscenter.com"
+    },
+    {
+      "domain": "merging.com"
+    },
+    {
+      "domain": "meris.us"
+    },
+    {
+      "domain": "merlincycles.com"
+    },
+    {
+      "domain": "merrell.com"
+    },
+    {
+      "domain": "merrickpetcare.com"
+    },
+    {
+      "domain": "mes kids.com"
+    },
+    {
+      "domain": "mesaboogie.com"
+    },
+    {
+      "domain": "metabo.com"
+    },
+    {
+      "domain": "metagenics.com"
+    },
+    {
+      "domain": "metalcloak.com"
+    },
+    {
+      "domain": "metalearth.com"
+    },
+    {
+      "domain": "metallic-time.com"
+    },
+    {
+      "domain": "methodhome.com"
+    },
+    {
+      "domain": "metrostyle.com"
+    },
+    {
+      "domain": "meundies.com"
+    },
+    {
+      "domain": "meyer sound.com"
+    },
+    {
+      "domain": "mezcotoyz.com"
+    },
+    {
+      "domain": "mhlshop.com"
+    },
+    {
+      "domain": "mi.do.com"
+    },
+    {
+      "domain": "michaelkors.com"
+    },
+    {
+      "domain": "michaels.com"
+    },
+    {
+      "domain": "michelefranzese.com"
+    },
+    {
+      "domain": "michelsen-watch.com"
+    },
+    {
+      "domain": "michiganbulb.com"
+    },
+    {
+      "domain": "microbe formulas.com"
+    },
+    {
+      "domain": "microbit.org"
+    },
+    {
+      "domain": "microcenter.com"
+    },
+    {
+      "domain": "microsoft.com"
+    },
+    {
+      "domain": "midasconsoles.com"
+    },
+    {
+      "domain": "midtown comics.com"
+    },
+    {
+      "domain": "midtowncomics.com"
+    },
+    {
+      "domain": "midwayusa.com"
+    },
+    {
+      "domain": "mighty leaf.com"
+    },
+    {
+      "domain": "mightytea.com"
+    },
+    {
+      "domain": "mikimoto.com"
+    },
+    {
+      "domain": "mikoh.com"
+    },
+    {
+      "domain": "miktek.com"
+    },
+    {
+      "domain": "miku.com"
+    },
+    {
+      "domain": "milk makeup.com"
+    },
+    {
+      "domain": "milkbarn.com"
+    },
+    {
+      "domain": "milkman-sound.com"
+    },
+    {
+      "domain": "milleetrose.com"
+    },
+    {
+      "domain": "milliemoon.com"
+    },
+    {
+      "domain": "milwaukeetool.com"
+    },
+    {
+      "domain": "mimoglider.com"
+    },
+    {
+      "domain": "mindbodygreen.com"
+    },
+    {
+      "domain": "mindnutrition.com"
+    },
+    {
+      "domain": "mindware.com"
+    },
+    {
+      "domain": "miniaturemarket.com"
+    },
+    {
+      "domain": "minimalistbaker.com"
+    },
+    {
+      "domain": "minirodini.com"
+    },
+    {
+      "domain": "minted.com"
+    },
+    {
+      "domain": "mintoys.com"
+    },
+    {
+      "domain": "mishaandpuff.com"
+    },
+    {
+      "domain": "mishimoto.com"
+    },
+    {
+      "domain": "misift.com"
+    },
+    {
+      "domain": "missguided.com"
+    },
+    {
+      "domain": "missha.com"
+    },
+    {
+      "domain": "missionbeachsurf.com"
+    },
+    {
+      "domain": "missionengineering.com"
+    },
+    {
+      "domain": "missoni.com"
+    },
+    {
+      "domain": "missselfridge.com"
+    },
+    {
+      "domain": "mitakon.com"
+    },
+    {
+      "domain": "mitcables.com"
+    },
+    {
+      "domain": "miumiu.com"
+    },
+    {
+      "domain": "mixedchicks.com"
+    },
+    {
+      "domain": "mixxmix.com"
+    },
+    {
+      "domain": "miyabi.com"
+    },
+    {
+      "domain": "mizon.com"
+    },
+    {
+      "domain": "mizzenandmain.com"
+    },
+    {
+      "domain": "mklotools.com"
+    },
+    {
+      "domain": "mnml-la.com"
+    },
+    {
+      "domain": "mobvoi.com"
+    },
+    {
+      "domain": "mochithings.com"
+    },
+    {
+      "domain": "mockingbirdstroller.com"
+    },
+    {
+      "domain": "modaoperandi.com"
+    },
+    {
+      "domain": "model-space.com"
+    },
+    {
+      "domain": "modelroundup.com"
+    },
+    {
+      "domain": "modelsport.com"
+    },
+    {
+      "domain": "modeltoycars.com"
+    },
+    {
+      "domain": "modere.com"
+    },
+    {
+      "domain": "modesta.co"
+    },
+    {
+      "domain": "modshop.com"
+    },
+    {
+      "domain": "modularaddict.com"
+    },
+    {
+      "domain": "mollygodard.com"
+    },
+    {
+      "domain": "momentlens.co"
+    },
+    {
+      "domain": "mommy's bliss.com"
+    },
+    {
+      "domain": "momofuku.com"
+    },
+    {
+      "domain": "moncler.com"
+    },
+    {
+      "domain": "monicaandandy.com"
+    },
+    {
+      "domain": "monicavinader.com"
+    },
+    {
+      "domain": "monki.com"
+    },
+    {
+      "domain": "monopoly.com"
+    },
+    {
+      "domain": "monroe.com"
+    },
+    {
+      "domain": "monsters in motion.com"
+    },
+    {
+      "domain": "montblanc.com"
+    },
+    {
+      "domain": "montikids.com"
+    },
+    {
+      "domain": "montrealassembly.com"
+    },
+    {
+      "domain": "moogmusic.com"
+    },
+    {
+      "domain": "moonlander.com"
+    },
+    {
+      "domain": "moontrail.com"
+    },
+    {
+      "domain": "moore audio.com"
+    },
+    {
+      "domain": "moosejaw.com"
+    },
+    {
+      "domain": "mopar.com"
+    },
+    {
+      "domain": "morganamps.com"
+    },
+    {
+      "domain": "morimotohid.com"
+    },
+    {
+      "domain": "morley pedals.com"
+    },
+    {
+      "domain": "mother of pearl.co.uk"
+    },
+    {
+      "domain": "motorola baby.com"
+    },
+    {
+      "domain": "motu.com"
+    },
+    {
+      "domain": "mountain rose.com"
+    },
+    {
+      "domain": "mountainhardwear.com"
+    },
+    {
+      "domain": "mountainlaureldesigns.com"
+    },
+    {
+      "domain": "mountainroseherbs.com"
+    },
+    {
+      "domain": "movado.com"
+    },
+    {
+      "domain": "movadogroup.com"
+    },
+    {
+      "domain": "movementally.com"
+    },
+    {
+      "domain": "mrporter.com"
+    },
+    {
+      "domain": "mscdirect.com"
+    },
+    {
+      "domain": "msi.com"
+    },
+    {
+      "domain": "msrgear.com"
+    },
+    {
+      "domain": "mtgcards.com"
+    },
+    {
+      "domain": "mu-models.com"
+    },
+    {
+      "domain": "mugenseiki.com"
+    },
+    {
+      "domain": "munchery.com"
+    },
+    {
+      "domain": "munchpak.com"
+    },
+    {
+      "domain": "muscleandstrength.com"
+    },
+    {
+      "domain": "musclenation.com"
+    },
+    {
+      "domain": "musiciansfriend.com"
+    },
+    {
+      "domain": "mutable-instruments.net"
+    },
+    {
+      "domain": "muuto.com"
+    },
+    {
+      "domain": "mvmt.com"
+    },
+    {
+      "domain": "mvmtwatches.com"
+    },
+    {
+      "domain": "mxr.com"
+    },
+    {
+      "domain": "mydoh.co"
+    },
+    {
+      "domain": "mymemory.com"
+    },
+    {
+      "domain": "myprotein.com"
+    },
+    {
+      "domain": "mysa.com"
+    },
+    {
+      "domain": "mysteryranch.com"
+    },
+    {
+      "domain": "mytheresa.com"
+    },
+    {
+      "domain": "mytoy.co.uk"
+    },
+    {
+      "domain": "naimaudio.com"
+    },
+    {
+      "domain": "nakedsoul.com"
+    },
+    {
+      "domain": "nalgene.com"
+    },
+    {
+      "domain": "nanamica.com"
+    },
+    {
+      "domain": "nanlite.com"
+    },
+    {
+      "domain": "nanoleaf.com"
+    },
+    {
+      "domain": "nars.com"
+    },
+    {
+      "domain": "nascoeducation.com"
+    },
+    {
+      "domain": "nashbar.com"
+    },
+    {
+      "domain": "nashguitars.com"
+    },
+    {
+      "domain": "nastygal.com"
+    },
+    {
+      "domain": "nataldrums.com"
+    },
+    {
+      "domain": "nathalie.com"
+    },
+    {
+      "domain": "native-instruments.com"
+    },
+    {
+      "domain": "nativepath.com"
+    },
+    {
+      "domain": "nativesunglasses.com"
+    },
+    {
+      "domain": "natural factors.com"
+    },
+    {
+      "domain": "natural flow.com"
+    },
+    {
+      "domain": "naturalbalanceinc.com"
+    },
+    {
+      "domain": "naturalizer.com"
+    },
+    {
+      "domain": "nature's way.com"
+    },
+    {
+      "domain": "naturebox.com"
+    },
+    {
+      "domain": "naturesgift.com"
+    },
+    {
+      "domain": "natureslogic.com"
+    },
+    {
+      "domain": "neasurf.com"
+    },
+    {
+      "domain": "nebbia.us"
+    },
+    {
+      "domain": "necaonline.com"
+    },
+    {
+      "domain": "necdisplay.com"
+    },
+    {
+      "domain": "nectarsleep.com"
+    },
+    {
+      "domain": "needlelovers.com"
+    },
+    {
+      "domain": "neimanmarcus.com"
+    },
+    {
+      "domain": "neo cell.com"
+    },
+    {
+      "domain": "neolife.com"
+    },
+    {
+      "domain": "nerfpet.com"
+    },
+    {
+      "domain": "nest.com"
+    },
+    {
+      "domain": "net-a-porter.com"
+    },
+    {
+      "domain": "netgear.com"
+    },
+    {
+      "domain": "neumann.com"
+    },
+    {
+      "domain": "neuraldsp.com"
+    },
+    {
+      "domain": "neuriva.com"
+    },
+    {
+      "domain": "neurohacker.com"
+    },
+    {
+      "domain": "neve.com"
+    },
+    {
+      "domain": "new chapter.com"
+    },
+    {
+      "domain": "newbalance.com"
+    },
+    {
+      "domain": "newbottega.com"
+    },
+    {
+      "domain": "newdirections aromatics.com"
+    },
+    {
+      "domain": "newegg.com"
+    },
+    {
+      "domain": "newmind.com"
+    },
+    {
+      "domain": "newportbrass.com"
+    },
+    {
+      "domain": "newyorkpuzzle.com"
+    },
+    {
+      "domain": "nexus.com"
+    },
+    {
+      "domain": "nicelaundry.com"
+    },
+    {
+      "domain": "nike.com"
+    },
+    {
+      "domain": "nikon.com"
+    },
+    {
+      "domain": "ninja.com"
+    },
+    {
+      "domain": "nintendo.com"
+    },
+    {
+      "domain": "nitecore.com"
+    },
+    {
+      "domain": "nivea.com"
+    },
+    {
+      "domain": "nobleandstone.com"
+    },
+    {
+      "domain": "noctigon.com"
+    },
+    {
+      "domain": "noduswatches.com"
+    },
+    {
+      "domain": "noemie.com"
+    },
+    {
+      "domain": "noise.com"
+    },
+    {
+      "domain": "nokia.com"
+    },
+    {
+      "domain": "nomnomnow.com"
+    },
+    {
+      "domain": "nomos-glashuette.com"
+    },
+    {
+      "domain": "nootriment.com"
+    },
+    {
+      "domain": "nootroo.com"
+    },
+    {
+      "domain": "nootropicboost.com"
+    },
+    {
+      "domain": "nootropicgeek.com"
+    },
+    {
+      "domain": "nootropics.co"
+    },
+    {
+      "domain": "nootropics.com"
+    },
+    {
+      "domain": "nootropicsdepot.com"
+    },
+    {
+      "domain": "nootropicsexperience.com"
+    },
+    {
+      "domain": "nootropicsexpert.com"
+    },
+    {
+      "domain": "nootropicsource.com"
+    },
+    {
+      "domain": "nootropicsreview.org"
+    },
+    {
+      "domain": "nootropicsunlimited.com"
+    },
+    {
+      "domain": "nordicnaturals.com"
+    },
+    {
+      "domain": "nordictrack.com"
+    },
+    {
+      "domain": "nordkeyboards.com"
+    },
+    {
+      "domain": "nordost.com"
+    },
+    {
+      "domain": "nordstrom.com"
+    },
+    {
+      "domain": "norma kamali.com"
+    },
+    {
+      "domain": "norman guitars.com"
+    },
+    {
+      "domain": "normann-copenhagen.com"
+    },
+    {
+      "domain": "norrona.com"
+    },
+    {
+      "domain": "northerntool.com"
+    },
+    {
+      "domain": "northridge4x4.com"
+    },
+    {
+      "domain": "nortonabrasives.com"
+    },
+    {
+      "domain": "norwex.com"
+    },
+    {
+      "domain": "nothinbutfoods.com"
+    },
+    {
+      "domain": "nourihealth.com"
+    },
+    {
+      "domain": "novationmusic.com"
+    },
+    {
+      "domain": "nowfoods.com"
+    },
+    {
+      "domain": "nuby.com"
+    },
+    {
+      "domain": "nudiejeans.com"
+    },
+    {
+      "domain": "nukihome.com"
+    },
+    {
+      "domain": "nulo.com"
+    },
+    {
+      "domain": "numi.com"
+    },
+    {
+      "domain": "nunababy.com"
+    },
+    {
+      "domain": "nurasound.com"
+    },
+    {
+      "domain": "nurish.com"
+    },
+    {
+      "domain": "nurturelife.com"
+    },
+    {
+      "domain": "nutramaxlabs.com"
+    },
+    {
+      "domain": "nutri ninja.com"
+    },
+    {
+      "domain": "nutribullet.com"
+    },
+    {
+      "domain": "nutrisourcepetfoods.com"
+    },
+    {
+      "domain": "nutro.com"
+    },
+    {
+      "domain": "nuts.com"
+    },
+    {
+      "domain": "nuuly.com"
+    },
+    {
+      "domain": "nuxefx.com"
+    },
+    {
+      "domain": "nyxcosmetics.com"
+    },
+    {
+      "domain": "oakley.com"
+    },
+    {
+      "domain": "oakywood.com"
+    },
+    {
+      "domain": "oars and alps.com"
+    },
+    {
+      "domain": "oasis-stores.com"
+    },
+    {
+      "domain": "oball.com"
+    },
+    {
+      "domain": "oberheim.com"
+    },
+    {
+      "domain": "obsessive detail.com"
+    },
+    {
+      "domain": "ocean rodeo.com"
+    },
+    {
+      "domain": "octanefitness.com"
+    },
+    {
+      "domain": "off---white.com"
+    },
+    {
+      "domain": "offtheeatenpath.com"
+    },
+    {
+      "domain": "ogxbeauty.com"
+    },
+    {
+      "domain": "ohsheglows.com"
+    },
+    {
+      "domain": "okko-fx.com"
+    },
+    {
+      "domain": "old navy kids.com"
+    },
+    {
+      "domain": "oldbloodnoise.com"
+    },
+    {
+      "domain": "oldmanemu.com"
+    },
+    {
+      "domain": "oldnavy.com"
+    },
+    {
+      "domain": "olfactoryfactory.com"
+    },
+    {
+      "domain": "olie woohoo.com"
+    },
+    {
+      "domain": "olight.com"
+    },
+    {
+      "domain": "oliversapparel.com"
+    },
+    {
+      "domain": "oliviaburton.com"
+    },
+    {
+      "domain": "olixy.com"
+    },
+    {
+      "domain": "ollie.com"
+    },
+    {
+      "domain": "olympus.com"
+    },
+    {
+      "domain": "omega.com"
+    },
+    {
+      "domain": "omnmodels.com"
+    },
+    {
+      "domain": "on-stage.com"
+    },
+    {
+      "domain": "onceuponafarm.com"
+    },
+    {
+      "domain": "onecklace.com"
+    },
+    {
+      "domain": "onecontrol.com"
+    },
+    {
+      "domain": "onedesh.com"
+    },
+    {
+      "domain": "onelife.com"
+    },
+    {
+      "domain": "onelifeoneyou.com"
+    },
+    {
+      "domain": "oneplus.com"
+    },
+    {
+      "domain": "openup.com"
+    },
+    {
+      "domain": "oppo.com"
+    },
+    {
+      "domain": "optibacprobiotics.com"
+    },
+    {
+      "domain": "optimumcarcare.com"
+    },
+    {
+      "domain": "optimumnutrition.com"
+    },
+    {
+      "domain": "orange tree toys.com"
+    },
+    {
+      "domain": "organic burst.com"
+    },
+    {
+      "domain": "organicfacts.com"
+    },
+    {
+      "domain": "orgill.com"
+    },
+    {
+      "domain": "originpc.com"
+    },
+    {
+      "domain": "origins.com"
+    },
+    {
+      "domain": "orijen.com"
+    },
+    {
+      "domain": "oris.com"
+    },
+    {
+      "domain": "oritype.com"
+    },
+    {
+      "domain": "orkeby.se"
+    },
+    {
+      "domain": "orrobikes.com"
+    },
+    {
+      "domain": "orrtofon.com"
+    },
+    {
+      "domain": "ortho molecular.com"
+    },
+    {
+      "domain": "orthomolecularproducts.com"
+    },
+    {
+      "domain": "orvis.com"
+    },
+    {
+      "domain": "oshkosh.com"
+    },
+    {
+      "domain": "osmosauce.com"
+    },
+    {
+      "domain": "osswaldny.com"
+    },
+    {
+      "domain": "oster.com"
+    },
+    {
+      "domain": "otterbox.com"
+    },
+    {
+      "domain": "ouai.com"
+    },
+    {
+      "domain": "our legacy.com"
+    },
+    {
+      "domain": "ouraring.com"
+    },
+    {
+      "domain": "ourother.co"
+    },
+    {
+      "domain": "ourplace.com"
+    },
+    {
+      "domain": "outdoorgearlab.com"
+    },
+    {
+      "domain": "outeraisle.com"
+    },
+    {
+      "domain": "outlier.nyc"
+    },
+    {
+      "domain": "outschool.com"
+    },
+    {
+      "domain": "outwardhound.com"
+    },
+    {
+      "domain": "ovationguitars.com"
+    },
+    {
+      "domain": "oveready.com"
+    },
+    {
+      "domain": "overstock.com"
+    },
+    {
+      "domain": "owala.com"
+    },
+    {
+      "domain": "owc.com"
+    },
+    {
+      "domain": "oxfordgames.com"
+    },
+    {
+      "domain": "oxo.com"
+    },
+    {
+      "domain": "oxyclean.com"
+    },
+    {
+      "domain": "oysho.com"
+    },
+    {
+      "domain": "ozobot.com"
+    },
+    {
+      "domain": "ozonekites.com"
+    },
+    {
+      "domain": "p21sonline.com"
+    },
+    {
+      "domain": "pacsun.com"
+    },
+    {
+      "domain": "padandquill.com"
+    },
+    {
+      "domain": "paige.com"
+    },
+    {
+      "domain": "paimitchell.com"
+    },
+    {
+      "domain": "pair-of-thieves.com"
+    },
+    {
+      "domain": "pair.com"
+    },
+    {
+      "domain": "paiste.com"
+    },
+    {
+      "domain": "palaceskateboards.com"
+    },
+    {
+      "domain": "palmangels.com"
+    },
+    {
+      "domain": "pamperedchef.com"
+    },
+    {
+      "domain": "panache.com"
+    },
+    {
+      "domain": "panasonic.com"
+    },
+    {
+      "domain": "pandac planner.com"
+    },
+    {
+      "domain": "panerai.com"
+    },
+    {
+      "domain": "pantherella.com"
+    },
+    {
+      "domain": "papa and barkley.com"
+    },
+    {
+      "domain": "papier.com"
+    },
+    {
+      "domain": "papousa.com"
+    },
+    {
+      "domain": "paprikaapp.com"
+    },
+    {
+      "domain": "parade.com"
+    },
+    {
+      "domain": "paradigm peptides.com"
+    },
+    {
+      "domain": "parametrek.com"
+    },
+    {
+      "domain": "paravel.com"
+    },
+    {
+      "domain": "parkamps.com"
+    },
+    {
+      "domain": "parkersguitars.com"
+    },
+    {
+      "domain": "parkseed.com"
+    },
+    {
+      "domain": "parktool.com"
+    },
+    {
+      "domain": "parnia.com"
+    },
+    {
+      "domain": "parrot.com"
+    },
+    {
+      "domain": "passengerclothing.com"
+    },
+    {
+      "domain": "pat mcgrath.com"
+    },
+    {
+      "domain": "patek.com"
+    },
+    {
+      "domain": "paulaschoice.com"
+    },
+    {
+      "domain": "paulcomp.com"
+    },
+    {
+      "domain": "pbls.com"
+    },
+    {
+      "domain": "pcpartpicker.com"
+    },
+    {
+      "domain": "pdpdrums.com"
+    },
+    {
+      "domain": "peak performance.com"
+    },
+    {
+      "domain": "peaknootropics.com"
+    },
+    {
+      "domain": "peapod.com"
+    },
+    {
+      "domain": "pearldrum.com"
+    },
+    {
+      "domain": "peavey.com"
+    },
+    {
+      "domain": "peel.com"
+    },
+    {
+      "domain": "pegperego.com"
+    },
+    {
+      "domain": "pelican.com"
+    },
+    {
+      "domain": "pelicanparts.com"
+    },
+    {
+      "domain": "peloton.com"
+    },
+    {
+      "domain": "pendleton-usa.com"
+    },
+    {
+      "domain": "penguincbd.com"
+    },
+    {
+      "domain": "penguinmagic.com"
+    },
+    {
+      "domain": "pentax.com"
+    },
+    {
+      "domain": "peoplesjewelers.com"
+    },
+    {
+      "domain": "pepperplate.com"
+    },
+    {
+      "domain": "peptidesciences.com"
+    },
+    {
+      "domain": "perfect supplements.com"
+    },
+    {
+      "domain": "perfectcircuit.com"
+    },
+    {
+      "domain": "perfectketo.com"
+    },
+    {
+      "domain": "performancebike.com"
+    },
+    {
+      "domain": "performix.com"
+    },
+    {
+      "domain": "perriconemd.com"
+    },
+    {
+      "domain": "persol.com"
+    },
+    {
+      "domain": "persona nutrition.com"
+    },
+    {
+      "domain": "persona.com"
+    },
+    {
+      "domain": "personanutrition.com"
+    },
+    {
+      "domain": "petco.com"
+    },
+    {
+      "domain": "petcube.com"
+    },
+    {
+      "domain": "petersamps.com"
+    },
+    {
+      "domain": "petfusion.com"
+    },
+    {
+      "domain": "petit bateau.com"
+    },
+    {
+      "domain": "petitestudio.com"
+    },
+    {
+      "domain": "petplate.com"
+    },
+    {
+      "domain": "petsmart.com"
+    },
+    {
+      "domain": "petzl.com"
+    },
+    {
+      "domain": "pg tips.com"
+    },
+    {
+      "domain": "phaseone.com"
+    },
+    {
+      "domain": "phd nutrition.com"
+    },
+    {
+      "domain": "philips-avent.com"
+    },
+    {
+      "domain": "philips.com"
+    },
+    {
+      "domain": "philipshue.com"
+    },
+    {
+      "domain": "phytomulti.com"
+    },
+    {
+      "domain": "piaget.com"
+    },
+    {
+      "domain": "piececool.com"
+    },
+    {
+      "domain": "pinarello.com"
+    },
+    {
+      "domain": "pinchofyum.com"
+    },
+    {
+      "domain": "pineapplecollaborative.com"
+    },
+    {
+      "domain": "pinnacle wax.com"
+    },
+    {
+      "domain": "pinnaclewax.com"
+    },
+    {
+      "domain": "piping rock.com"
+    },
+    {
+      "domain": "piratebooty.com"
+    },
+    {
+      "domain": "pitbullgym.com"
+    },
+    {
+      "domain": "pitchjewelry.com"
+    },
+    {
+      "domain": "planetnatural.com"
+    },
+    {
+      "domain": "planetwaves.com"
+    },
+    {
+      "domain": "plantoeat.com"
+    },
+    {
+      "domain": "playmags.com"
+    },
+    {
+      "domain": "playmathtoys.com"
+    },
+    {
+      "domain": "playroom.com"
+    },
+    {
+      "domain": "playstation.com"
+    },
+    {
+      "domain": "plazajapan.com"
+    },
+    {
+      "domain": "plexusworldwide.com"
+    },
+    {
+      "domain": "plum organics.com"
+    },
+    {
+      "domain": "plumbersstock.com"
+    },
+    {
+      "domain": "plumpaper.com"
+    },
+    {
+      "domain": "pluscbd oil.com"
+    },
+    {
+      "domain": "plusplus.com"
+    },
+    {
+      "domain": "pmc-speakers.com"
+    },
+    {
+      "domain": "pny.com"
+    },
+    {
+      "domain": "pokemoncenter.com"
+    },
+    {
+      "domain": "polar.com"
+    },
+    {
+      "domain": "polaroid.com"
+    },
+    {
+      "domain": "pollyanna.com"
+    },
+    {
+      "domain": "polyend.com"
+    },
+    {
+      "domain": "polyperformance.com"
+    },
+    {
+      "domain": "poorboysworld.com"
+    },
+    {
+      "domain": "poosh.com"
+    },
+    {
+      "domain": "popcorners.com"
+    },
+    {
+      "domain": "popcultcha.com"
+    },
+    {
+      "domain": "popinabox.com"
+    },
+    {
+      "domain": "popsocket.com"
+    },
+    {
+      "domain": "porter-games.com"
+    },
+    {
+      "domain": "portercable.com"
+    },
+    {
+      "domain": "posh peanut.com"
+    },
+    {
+      "domain": "poshmark.com"
+    },
+    {
+      "domain": "poshpeanut.com"
+    },
+    {
+      "domain": "potluckpress.com"
+    },
+    {
+      "domain": "potterybarn.com"
+    },
+    {
+      "domain": "potterybarnkids.com"
+    },
+    {
+      "domain": "powercolor.com"
+    },
+    {
+      "domain": "powervision.com"
+    },
+    {
+      "domain": "prada.com"
+    },
+    {
+      "domain": "prana.com"
+    },
+    {
+      "domain": "precor.com"
+    },
+    {
+      "domain": "premier-drums.com"
+    },
+    {
+      "domain": "prettylittlething.com"
+    },
+    {
+      "domain": "prettysmallshoes.com"
+    },
+    {
+      "domain": "prima-donna.com"
+    },
+    {
+      "domain": "primal kitchen.com"
+    },
+    {
+      "domain": "princesspolly.com"
+    },
+    {
+      "domain": "printemps.com"
+    },
+    {
+      "domain": "prismsound.com"
+    },
+    {
+      "domain": "prisonblues.com"
+    },
+    {
+      "domain": "pro-mark.com"
+    },
+    {
+      "domain": "proclub.com"
+    },
+    {
+      "domain": "procompusa.com"
+    },
+    {
+      "domain": "proctor silex.com"
+    },
+    {
+      "domain": "proform.com"
+    },
+    {
+      "domain": "profoto.com"
+    },
+    {
+      "domain": "project-audio.com"
+    },
+    {
+      "domain": "prolineracing.com"
+    },
+    {
+      "domain": "propercloth.com"
+    },
+    {
+      "domain": "propermade.com"
+    },
+    {
+      "domain": "prosource.com"
+    },
+    {
+      "domain": "protechknives.com"
+    },
+    {
+      "domain": "proteinworks.com"
+    },
+    {
+      "domain": "proto.com"
+    },
+    {
+      "domain": "providence-ltd.com"
+    },
+    {
+      "domain": "prsguitars.com"
+    },
+    {
+      "domain": "prusa3d.com"
+    },
+    {
+      "domain": "publix.com"
+    },
+    {
+      "domain": "pugetsystems.com"
+    },
+    {
+      "domain": "pukkaherbs.com"
+    },
+    {
+      "domain": "pullandbear.com"
+    },
+    {
+      "domain": "puma.com"
+    },
+    {
+      "domain": "pupbox.com"
+    },
+    {
+      "domain": "pure encapsulations.com"
+    },
+    {
+      "domain": "pure nootropics.com"
+    },
+    {
+      "domain": "purina.com"
+    },
+    {
+      "domain": "puritan.com"
+    },
+    {
+      "domain": "purito.com"
+    },
+    {
+      "domain": "purple.com"
+    },
+    {
+      "domain": "purplecarrot.com"
+    },
+    {
+      "domain": "puzzle warehouse.com"
+    },
+    {
+      "domain": "puzzlebox.com"
+    },
+    {
+      "domain": "puzzlecube.com"
+    },
+    {
+      "domain": "puzzlefun.com"
+    },
+    {
+      "domain": "puzzlelibrarian.com"
+    },
+    {
+      "domain": "puzzleplanet.com"
+    },
+    {
+      "domain": "puzzlewarehouse.com"
+    },
+    {
+      "domain": "puzzleyou.com"
+    },
+    {
+      "domain": "pyzelsurf.com"
+    },
+    {
+      "domain": "qsc.com"
+    },
+    {
+      "domain": "quadcortex.com"
+    },
+    {
+      "domain": "quadratec.com"
+    },
+    {
+      "domain": "qualia.com"
+    },
+    {
+      "domain": "qualialife.com"
+    },
+    {
+      "domain": "qualitybath.com"
+    },
+    {
+      "domain": "quincymae.com"
+    },
+    {
+      "domain": "rab.equipment.com"
+    },
+    {
+      "domain": "rachaelraypet.com"
+    },
+    {
+      "domain": "rachio.com"
+    },
+    {
+      "domain": "radowatches.com"
+    },
+    {
+      "domain": "rag-bone.com"
+    },
+    {
+      "domain": "ragweed forge.com"
+    },
+    {
+      "domain": "rahuabeauty.com"
+    },
+    {
+      "domain": "rain design.com"
+    },
+    {
+      "domain": "rainbow sandals.com"
+    },
+    {
+      "domain": "rainmachine.com"
+    },
+    {
+      "domain": "rainsong.com"
+    },
+    {
+      "domain": "ralphlauren.com"
+    },
+    {
+      "domain": "rancho.com"
+    },
+    {
+      "domain": "rareseeds.com"
+    },
+    {
+      "domain": "raspberrypi.com"
+    },
+    {
+      "domain": "ravensburger.com"
+    },
+    {
+      "domain": "raw organic wheatgrass.com"
+    },
+    {
+      "domain": "rawmaterial.com"
+    },
+    {
+      "domain": "rawnutrition.com"
+    },
+    {
+      "domain": "ray-ban.com"
+    },
+    {
+      "domain": "razer.com"
+    },
+    {
+      "domain": "rc-race-shop.com"
+    },
+    {
+      "domain": "rcf.it"
+    },
+    {
+      "domain": "rcmart.com"
+    },
+    {
+      "domain": "rcplanet.com"
+    },
+    {
+      "domain": "rcsuperstore.com"
+    },
+    {
+      "domain": "re-done.com"
+    },
+    {
+      "domain": "re-lyte.com"
+    },
+    {
+      "domain": "realforce.com"
+    },
+    {
+      "domain": "reallyrightstuff.com"
+    },
+    {
+      "domain": "recordingking.com"
+    },
+    {
+      "domain": "red panda lab.com"
+    },
+    {
+      "domain": "red.com"
+    },
+    {
+      "domain": "reddressboutique.com"
+    },
+    {
+      "domain": "redkap.com"
+    },
+    {
+      "domain": "redken.com"
+    },
+    {
+      "domain": "redwingshoes.com"
+    },
+    {
+      "domain": "reedyrc.com"
+    },
+    {
+      "domain": "reevesamps.com"
+    },
+    {
+      "domain": "reflex nutrition.com"
+    },
+    {
+      "domain": "reformation.com"
+    },
+    {
+      "domain": "refrigiwear.com"
+    },
+    {
+      "domain": "rega.co.uk"
+    },
+    {
+      "domain": "rei.com"
+    },
+    {
+      "domain": "reiss.com"
+    },
+    {
+      "domain": "rejuvenation.com"
+    },
+    {
+      "domain": "remo.com"
+    },
+    {
+      "domain": "remotelock.com"
+    },
+    {
+      "domain": "renew life.com"
+    },
+    {
+      "domain": "renskincare.com"
+    },
+    {
+      "domain": "rescue remedy.com"
+    },
+    {
+      "domain": "rescuedbox.com"
+    },
+    {
+      "domain": "reserveage.com"
+    },
+    {
+      "domain": "restorationgames.com"
+    },
+    {
+      "domain": "restorationhardware.com"
+    },
+    {
+      "domain": "retrax.com"
+    },
+    {
+      "domain": "retro-toy.com"
+    },
+    {
+      "domain": "reventon-esc.com"
+    },
+    {
+      "domain": "reverb.com"
+    },
+    {
+      "domain": "reverendguitars.com"
+    },
+    {
+      "domain": "revolution cooking.com"
+    },
+    {
+      "domain": "revolve.com"
+    },
+    {
+      "domain": "rh modern.com"
+    },
+    {
+      "domain": "rhinoshield.com"
+    },
+    {
+      "domain": "rhone.com"
+    },
+    {
+      "domain": "rhude.com"
+    },
+    {
+      "domain": "ribblecycles.co.uk"
+    },
+    {
+      "domain": "richardmille.com"
+    },
+    {
+      "domain": "rickenbacker.com"
+    },
+    {
+      "domain": "ricky hinderer knives.com"
+    },
+    {
+      "domain": "ricoh.com"
+    },
+    {
+      "domain": "ride engine.com"
+    },
+    {
+      "domain": "ride1up.com"
+    },
+    {
+      "domain": "ridesnowboards.com"
+    },
+    {
+      "domain": "ridetech.com"
+    },
+    {
+      "domain": "ridgid.com"
+    },
+    {
+      "domain": "rileyandcru.com"
+    },
+    {
+      "domain": "rimmellondon.com"
+    },
+    {
+      "domain": "ring.com"
+    },
+    {
+      "domain": "ringbomber.com"
+    },
+    {
+      "domain": "riograndegames.com"
+    },
+    {
+      "domain": "rippedgear.com"
+    },
+    {
+      "domain": "risk.com"
+    },
+    {
+      "domain": "ritmo.com"
+    },
+    {
+      "domain": "ritualcoffee.com"
+    },
+    {
+      "domain": "rituals.com"
+    },
+    {
+      "domain": "rivera.com"
+    },
+    {
+      "domain": "rme-audio.com"
+    },
+    {
+      "domain": "rmij knives.com"
+    },
+    {
+      "domain": "roadrunnersports.com"
+    },
+    {
+      "domain": "robertirvinefoods.com"
+    },
+    {
+      "domain": "robertocavalli.com"
+    },
+    {
+      "domain": "roboturtle.com"
+    },
+    {
+      "domain": "rockaroo.com"
+    },
+    {
+      "domain": "rockauto.com"
+    },
+    {
+      "domain": "rockkrawler.com"
+    },
+    {
+      "domain": "rockler.com"
+    },
+    {
+      "domain": "rockstargames.com"
+    },
+    {
+      "domain": "rode.com"
+    },
+    {
+      "domain": "rodenbergguitars.com"
+    },
+    {
+      "domain": "rogervivier.com"
+    },
+    {
+      "domain": "roguefitness.com"
+    },
+    {
+      "domain": "rok hardware.com"
+    },
+    {
+      "domain": "roland.com"
+    },
+    {
+      "domain": "rolex.com"
+    },
+    {
+      "domain": "roofrack.com"
+    },
+    {
+      "domain": "roomandboard.com"
+    },
+    {
+      "domain": "rootcandles.com"
+    },
+    {
+      "domain": "ross-simons.com"
+    },
+    {
+      "domain": "rossignol.com"
+    },
+    {
+      "domain": "rosy rings.com"
+    },
+    {
+      "domain": "roughcountry.com"
+    },
+    {
+      "domain": "roundhouse.com"
+    },
+    {
+      "domain": "roveconcepts.com"
+    },
+    {
+      "domain": "rovvyang.com"
+    },
+    {
+      "domain": "roxanne_assoulin.com"
+    },
+    {
+      "domain": "royalcanin.com"
+    },
+    {
+      "domain": "ruelala.com"
+    },
+    {
+      "domain": "ruggable.com"
+    },
+    {
+      "domain": "rulesofplay.com"
+    },
+    {
+      "domain": "runawaythelabel.com"
+    },
+    {
+      "domain": "runningwarehouse.com"
+    },
+    {
+      "domain": "rupertneve.com"
+    },
+    {
+      "domain": "rutlandcycling.com"
+    },
+    {
+      "domain": "rxbar.com"
+    },
+    {
+      "domain": "ryleeandcru.com"
+    },
+    {
+      "domain": "ryseup.com"
+    },
+    {
+      "domain": "saatva.com"
+    },
+    {
+      "domain": "sabaidee.com"
+    },
+    {
+      "domain": "sabian.com"
+    },
+    {
+      "domain": "sacred life.com"
+    },
+    {
+      "domain": "safavieh.com"
+    },
+    {
+      "domain": "sagely naturals.com"
+    },
+    {
+      "domain": "sagely.com"
+    },
+    {
+      "domain": "saie.com"
+    },
+    {
+      "domain": "saintlaurent.com"
+    },
+    {
+      "domain": "sakae-drums.com"
+    },
+    {
+      "domain": "saks potts.com"
+    },
+    {
+      "domain": "saks.com"
+    },
+    {
+      "domain": "salomon.com"
+    },
+    {
+      "domain": "salsuds.com"
+    },
+    {
+      "domain": "salt and stone.com"
+    },
+    {
+      "domain": "salvatoreferragamo.com"
+    },
+    {
+      "domain": "sam edelman.com"
+    },
+    {
+      "domain": "sam'sclub.com"
+    },
+    {
+      "domain": "sama eyewear.com"
+    },
+    {
+      "domain": "samash.com"
+    },
+    {
+      "domain": "samsoe.com"
+    },
+    {
+      "domain": "samsung.com"
+    },
+    {
+      "domain": "samyang.com"
+    },
+    {
+      "domain": "sandisk.com"
+    },
+    {
+      "domain": "sanrenmu.com"
+    },
+    {
+      "domain": "santacruzguitar.com"
+    },
+    {
+      "domain": "sapphiretech.com"
+    },
+    {
+      "domain": "saucony.com"
+    },
+    {
+      "domain": "savagexfenty.com"
+    },
+    {
+      "domain": "savant.com"
+    },
+    {
+      "domain": "savoryonline.com"
+    },
+    {
+      "domain": "saxarts.com"
+    },
+    {
+      "domain": "scalefinishes.com"
+    },
+    {
+      "domain": "scalehobbyist.com"
+    },
+    {
+      "domain": "scalemates.com"
+    },
+    {
+      "domain": "scent split.com"
+    },
+    {
+      "domain": "scentbird.com"
+    },
+    {
+      "domain": "scentbox.com"
+    },
+    {
+      "domain": "schecterguitars.com"
+    },
+    {
+      "domain": "schlage.com"
+    },
+    {
+      "domain": "schleich.com"
+    },
+    {
+      "domain": "schmidtpuzzles.com"
+    },
+    {
+      "domain": "schmidts.com"
+    },
+    {
+      "domain": "schneidersladen.de"
+    },
+    {
+      "domain": "schoolhouse.com"
+    },
+    {
+      "domain": "schoolspecialty.com"
+    },
+    {
+      "domain": "schott-nyc.com"
+    },
+    {
+      "domain": "schwarzkopf.com"
+    },
+    {
+      "domain": "schylling.com"
+    },
+    {
+      "domain": "science diet.com"
+    },
+    {
+      "domain": "science.bio"
+    },
+    {
+      "domain": "sciencebio.com"
+    },
+    {
+      "domain": "scitec nutrition.com"
+    },
+    {
+      "domain": "scrabble.com"
+    },
+    {
+      "domain": "scratch.mit.edu"
+    },
+    {
+      "domain": "scufgaming.com"
+    },
+    {
+      "domain": "se electronics.com"
+    },
+    {
+      "domain": "seagate.com"
+    },
+    {
+      "domain": "seagullguitars.com"
+    },
+    {
+      "domain": "seal-skin.com"
+    },
+    {
+      "domain": "sealy.com"
+    },
+    {
+      "domain": "sebrainterior.com"
+    },
+    {
+      "domain": "secretaardvark.com"
+    },
+    {
+      "domain": "section8.co"
+    },
+    {
+      "domain": "sectionhiker.com"
+    },
+    {
+      "domain": "seed savers exchange.com"
+    },
+    {
+      "domain": "seed.com"
+    },
+    {
+      "domain": "seedy lot.com"
+    },
+    {
+      "domain": "seeedstudio.com"
+    },
+    {
+      "domain": "seekinghealth.com"
+    },
+    {
+      "domain": "sega.com"
+    },
+    {
+      "domain": "selfridges.com"
+    },
+    {
+      "domain": "sennheiser-hearing.com"
+    },
+    {
+      "domain": "sennheiser.com"
+    },
+    {
+      "domain": "sephora.com"
+    },
+    {
+      "domain": "sequential.com"
+    },
+    {
+      "domain": "seriouseats.com"
+    },
+    {
+      "domain": "serpent.com"
+    },
+    {
+      "domain": "seventh generation.com"
+    },
+    {
+      "domain": "seventhgeneration.com"
+    },
+    {
+      "domain": "sezane.com"
+    },
+    {
+      "domain": "shadesoflight.com"
+    },
+    {
+      "domain": "shakeology.com"
+    },
+    {
+      "domain": "sheamoisture.com"
+    },
+    {
+      "domain": "shein.com"
+    },
+    {
+      "domain": "shimano.com"
+    },
+    {
+      "domain": "shimodadesigns.com"
+    },
+    {
+      "domain": "shinesty.com"
+    },
+    {
+      "domain": "shirogorov.com"
+    },
+    {
+      "domain": "shiseido.com"
+    },
+    {
+      "domain": "shop thrive.com"
+    },
+    {
+      "domain": "shop.kenanddana design.com"
+    },
+    {
+      "domain": "shopbop.com"
+    },
+    {
+      "domain": "shopdisney.com"
+    },
+    {
+      "domain": "shortstorybox.com"
+    },
+    {
+      "domain": "shout.com"
+    },
+    {
+      "domain": "shu uemura.com"
+    },
+    {
+      "domain": "shun.com"
+    },
+    {
+      "domain": "shure.com"
+    },
+    {
+      "domain": "shylee rose.com"
+    },
+    {
+      "domain": "sidechef.com"
+    },
+    {
+      "domain": "sideshow.com"
+    },
+    {
+      "domain": "sierra.com"
+    },
+    {
+      "domain": "sierradesigns.com"
+    },
+    {
+      "domain": "sietefoods.com"
+    },
+    {
+      "domain": "sigma customs.com"
+    },
+    {
+      "domain": "sigma.com"
+    },
+    {
+      "domain": "signalsounds.com"
+    },
+    {
+      "domain": "signaturehardware.com"
+    },
+    {
+      "domain": "silkandsnow.com"
+    },
+    {
+      "domain": "simonandpatrick.com"
+    },
+    {
+      "domain": "simoneperele.com"
+    },
+    {
+      "domain": "simonsleather.com"
+    },
+    {
+      "domain": "simplemills.com"
+    },
+    {
+      "domain": "simplified.com"
+    },
+    {
+      "domain": "simplisafe.com"
+    },
+    {
+      "domain": "simplyrecipes.com"
+    },
+    {
+      "domain": "simworks.com"
+    },
+    {
+      "domain": "sinn.de"
+    },
+    {
+      "domain": "sinope.com"
+    },
+    {
+      "domain": "sisstr.com"
+    },
+    {
+      "domain": "sitkagear.com"
+    },
+    {
+      "domain": "skagen.com"
+    },
+    {
+      "domain": "skechers.com"
+    },
+    {
+      "domain": "skervesenguitars.com"
+    },
+    {
+      "domain": "skilhunt.com"
+    },
+    {
+      "domain": "skiltools.com"
+    },
+    {
+      "domain": "skims.com"
+    },
+    {
+      "domain": "skinactives.com"
+    },
+    {
+      "domain": "skincareexpress.com"
+    },
+    {
+      "domain": "skinceuticals.com"
+    },
+    {
+      "domain": "skinmedica.com"
+    },
+    {
+      "domain": "skinstore.com"
+    },
+    {
+      "domain": "skiphop.com"
+    },
+    {
+      "domain": "skydio.com"
+    },
+    {
+      "domain": "skyjacker.com"
+    },
+    {
+      "domain": "sleeperband.com"
+    },
+    {
+      "domain": "sleepfoundation.org"
+    },
+    {
+      "domain": "sleepingbaby.com"
+    },
+    {
+      "domain": "sleepingwithjaguars.com"
+    },
+    {
+      "domain": "sleepjunkie.com"
+    },
+    {
+      "domain": "sleeplikethedead.com"
+    },
+    {
+      "domain": "sleevedominance.com"
+    },
+    {
+      "domain": "slidebelt.com"
+    },
+    {
+      "domain": "slimfast.com"
+    },
+    {
+      "domain": "smallsoundbigsound.com"
+    },
+    {
+      "domain": "smartfood.com"
+    },
+    {
+      "domain": "smartpowders.com"
+    },
+    {
+      "domain": "smartthings.com"
+    },
+    {
+      "domain": "smarty-pants.com"
+    },
+    {
+      "domain": "smashbox.com"
+    },
+    {
+      "domain": "smc-racing.com"
+    },
+    {
+      "domain": "smeg.com"
+    },
+    {
+      "domain": "smitheyns.com"
+    },
+    {
+      "domain": "smittenkitchen.com"
+    },
+    {
+      "domain": "smkw.com"
+    },
+    {
+      "domain": "smoky mountain knife works.com"
+    },
+    {
+      "domain": "smoothprecisionpens.com"
+    },
+    {
+      "domain": "snackcrate.com"
+    },
+    {
+      "domain": "snapcircuits.net"
+    },
+    {
+      "domain": "snapkitchen.com"
+    },
+    {
+      "domain": "snapon.com"
+    },
+    {
+      "domain": "snapsuits.com"
+    },
+    {
+      "domain": "snickersworkwear.com"
+    },
+    {
+      "domain": "snoo.com"
+    },
+    {
+      "domain": "snowboards.com"
+    },
+    {
+      "domain": "snuggle.com"
+    },
+    {
+      "domain": "sofa works.com"
+    },
+    {
+      "domain": "sofirnlight.com"
+    },
+    {
+      "domain": "sogknives.com"
+    },
+    {
+      "domain": "soldano.com"
+    },
+    {
+      "domain": "solgar.com"
+    },
+    {
+      "domain": "solidstatelogic.com"
+    },
+    {
+      "domain": "somaintimates.com"
+    },
+    {
+      "domain": "somerset.com"
+    },
+    {
+      "domain": "sonax.com"
+    },
+    {
+      "domain": "sonordrums.com"
+    },
+    {
+      "domain": "sonos.com"
+    },
+    {
+      "domain": "sonusfaber.com"
+    },
+    {
+      "domain": "sony.com"
+    },
+    {
+      "domain": "sorel.com"
+    },
+    {
+      "domain": "sorinex.com"
+    },
+    {
+      "domain": "soultonecymbals.com"
+    },
+    {
+      "domain": "soundcraft.com"
+    },
+    {
+      "domain": "source naturals.com"
+    },
+    {
+      "domain": "sourceaudiopedals.com"
+    },
+    {
+      "domain": "southernexposure.com"
+    },
+    {
+      "domain": "southwire.com"
+    },
+    {
+      "domain": "soyuzmicrophones.com"
+    },
+    {
+      "domain": "spaceman effects.com"
+    },
+    {
+      "domain": "spacenk.com"
+    },
+    {
+      "domain": "spanx.com"
+    },
+    {
+      "domain": "sparkfun.com"
+    },
+    {
+      "domain": "specialized.com"
+    },
+    {
+      "domain": "spectra-baby.com"
+    },
+    {
+      "domain": "speedballart.com"
+    },
+    {
+      "domain": "speedwaymotors.com"
+    },
+    {
+      "domain": "spierandmackay.com"
+    },
+    {
+      "domain": "splendid-spoon.com"
+    },
+    {
+      "domain": "spohn.net"
+    },
+    {
+      "domain": "spoiledchild.com"
+    },
+    {
+      "domain": "spoonflower.com"
+    },
+    {
+      "domain": "sportsresearch.com"
+    },
+    {
+      "domain": "sprig.com"
+    },
+    {
+      "domain": "sprigandtarkin.com"
+    },
+    {
+      "domain": "springbok-puzzles.com"
+    },
+    {
+      "domain": "spruebrothers.com"
+    },
+    {
+      "domain": "spyoptic.com"
+    },
+    {
+      "domain": "square-enix.com"
+    },
+    {
+      "domain": "sram.com"
+    },
+    {
+      "domain": "ssense.com"
+    },
+    {
+      "domain": "stagescycling.com"
+    },
+    {
+      "domain": "standard process.com"
+    },
+    {
+      "domain": "stanleytools.com"
+    },
+    {
+      "domain": "starcitygames.com"
+    },
+    {
+      "domain": "starlighthjewelry.com"
+    },
+    {
+      "domain": "startech.com"
+    },
+    {
+      "domain": "starvac.com"
+    },
+    {
+      "domain": "starwars.com"
+    },
+    {
+      "domain": "starwest-botanicals.com"
+    },
+    {
+      "domain": "stateofkind.co"
+    },
+    {
+      "domain": "staub.com"
+    },
+    {
+      "domain": "staxjewelry.com"
+    },
+    {
+      "domain": "steampowered.com"
+    },
+    {
+      "domain": "stearnsandfoster.com"
+    },
+    {
+      "domain": "steelcase.com"
+    },
+    {
+      "domain": "steelseries.com"
+    },
+    {
+      "domain": "steepandcheap.com"
+    },
+    {
+      "domain": "steepster.com"
+    },
+    {
+      "domain": "stefanoricci.com"
+    },
+    {
+      "domain": "steiff.com"
+    },
+    {
+      "domain": "steinberg.net"
+    },
+    {
+      "domain": "steinberger.com"
+    },
+    {
+      "domain": "stella mc cartney kids.com"
+    },
+    {
+      "domain": "stelpro.com"
+    },
+    {
+      "domain": "stemcell.com"
+    },
+    {
+      "domain": "stensonshirts.com"
+    },
+    {
+      "domain": "stiletto.com"
+    },
+    {
+      "domain": "stillpointaromatics.com"
+    },
+    {
+      "domain": "stitchfix.com"
+    },
+    {
+      "domain": "stjames1912.com"
+    },
+    {
+      "domain": "stockx.com"
+    },
+    {
+      "domain": "stokke.com"
+    },
+    {
+      "domain": "stonemaiergames.com"
+    },
+    {
+      "domain": "stonemountainfabric.com"
+    },
+    {
+      "domain": "stowa.de"
+    },
+    {
+      "domain": "stradivarius.com"
+    },
+    {
+      "domain": "strandbergguitars.com"
+    },
+    {
+      "domain": "stratego.com"
+    },
+    {
+      "domain": "streamlight.com"
+    },
+    {
+      "domain": "striderknives.com"
+    },
+    {
+      "domain": "strongholdgames.com"
+    },
+    {
+      "domain": "strymon.net"
+    },
+    {
+      "domain": "stuartweitzman.com"
+    },
+    {
+      "domain": "studiadelaide.com"
+    },
+    {
+      "domain": "studioelectronics.com"
+    },
+    {
+      "domain": "studiomcgee.com"
+    },
+    {
+      "domain": "studiosucre.com"
+    },
+    {
+      "domain": "stylenanda.com"
+    },
+    {
+      "domain": "subarupartsdeal.com"
+    },
+    {
+      "domain": "subscription-box.org"
+    },
+    {
+      "domain": "succulent.studio"
+    },
+    {
+      "domain": "sugar and jade.com"
+    },
+    {
+      "domain": "suhr.com"
+    },
+    {
+      "domain": "suitsupply.com"
+    },
+    {
+      "domain": "sulwhasoo.com"
+    },
+    {
+      "domain": "summitracing.com"
+    },
+    {
+      "domain": "sunbasket.com"
+    },
+    {
+      "domain": "sunbeam.com"
+    },
+    {
+      "domain": "sundancenow.com"
+    },
+    {
+      "domain": "sunglasshut.com"
+    },
+    {
+      "domain": "sunsout.com"
+    },
+    {
+      "domain": "superchewer.com"
+    },
+    {
+      "domain": "supergreen tonik.com"
+    },
+    {
+      "domain": "superiorabrasives.com"
+    },
+    {
+      "domain": "superiorengineering.com"
+    },
+    {
+      "domain": "supperbell.com"
+    },
+    {
+      "domain": "supremebath.com"
+    },
+    {
+      "domain": "supremenewyork.com"
+    },
+    {
+      "domain": "sur la table.com"
+    },
+    {
+      "domain": "surefire.com"
+    },
+    {
+      "domain": "surf-forecast.com"
+    },
+    {
+      "domain": "surfline.com"
+    },
+    {
+      "domain": "surfrider.org"
+    },
+    {
+      "domain": "surrendertochance.com"
+    },
+    {
+      "domain": "suunto.com"
+    },
+    {
+      "domain": "swallowtailgardenseeds.com"
+    },
+    {
+      "domain": "swancreek candle.com"
+    },
+    {
+      "domain": "swann.com"
+    },
+    {
+      "domain": "swanson vitamins.com"
+    },
+    {
+      "domain": "swartamps.com"
+    },
+    {
+      "domain": "sweatybetty.com"
+    },
+    {
+      "domain": "sweepracing.com"
+    },
+    {
+      "domain": "sweetwater.com"
+    },
+    {
+      "domain": "swellinfo.com"
+    },
+    {
+      "domain": "swimsuitsforall.com"
+    },
+    {
+      "domain": "swit.com"
+    },
+    {
+      "domain": "switchbacktravel.com"
+    },
+    {
+      "domain": "sworkz.com"
+    },
+    {
+      "domain": "t-nation.com"
+    },
+    {
+      "domain": "tabasco.com"
+    },
+    {
+      "domain": "tabletop gaming store.com"
+    },
+    {
+      "domain": "tackledirect.com"
+    },
+    {
+      "domain": "tacklewarehouse.com"
+    },
+    {
+      "domain": "tacori.com"
+    },
+    {
+      "domain": "tagheuer.com"
+    },
+    {
+      "domain": "takamine.com"
+    },
+    {
+      "domain": "take2games.com"
+    },
+    {
+      "domain": "talaactive.com"
+    },
+    {
+      "domain": "talbots.com"
+    },
+    {
+      "domain": "tama.com"
+    },
+    {
+      "domain": "tamiya.com"
+    },
+    {
+      "domain": "tamron.com"
+    },
+    {
+      "domain": "tannoy.com"
+    },
+    {
+      "domain": "target.com"
+    },
+    {
+      "domain": "targetoptical.com"
+    },
+    {
+      "domain": "tasaki-america.com"
+    },
+    {
+      "domain": "tasaki.com"
+    },
+    {
+      "domain": "tasteofhome.com"
+    },
+    {
+      "domain": "tasteofthewild.com"
+    },
+    {
+      "domain": "tasty.co"
+    },
+    {
+      "domain": "taye.com"
+    },
+    {
+      "domain": "taylorguitars.com"
+    },
+    {
+      "domain": "taylors of harrogate.com"
+    },
+    {
+      "domain": "tazo.com"
+    },
+    {
+      "domain": "tc-electronic.com"
+    },
+    {
+      "domain": "tc-helicon.com"
+    },
+    {
+      "domain": "tcgplayer.com"
+    },
+    {
+      "domain": "tcl.com"
+    },
+    {
+      "domain": "teacollection.com"
+    },
+    {
+      "domain": "teafixation.com"
+    },
+    {
+      "domain": "tealet.com"
+    },
+    {
+      "domain": "tealuxe.com"
+    },
+    {
+      "domain": "teamakersoflondon.com"
+    },
+    {
+      "domain": "teamassociated.com"
+    },
+    {
+      "domain": "teamgroup.com"
+    },
+    {
+      "domain": "teamorion.com"
+    },
+    {
+      "domain": "teavana.com"
+    },
+    {
+      "domain": "technogym.com"
+    },
+    {
+      "domain": "teenage.engineering"
+    },
+    {
+      "domain": "teenageengineering.com"
+    },
+    {
+      "domain": "tekin.com"
+    },
+    {
+      "domain": "tekno-rc.com"
+    },
+    {
+      "domain": "telefunken-elektroakustik.com"
+    },
+    {
+      "domain": "templeaudio.com"
+    },
+    {
+      "domain": "templeofinca.com"
+    },
+    {
+      "domain": "tempurpedic.com"
+    },
+    {
+      "domain": "ten thousand.cc"
+    },
+    {
+      "domain": "tenathousand.cc"
+    },
+    {
+      "domain": "tender leaf toys.com"
+    },
+    {
+      "domain": "terra nova equipment.com"
+    },
+    {
+      "domain": "territoryfoods.com"
+    },
+    {
+      "domain": "tessabit.com"
+    },
+    {
+      "domain": "teurn studios.com"
+    },
+    {
+      "domain": "texas superfood.com"
+    },
+    {
+      "domain": "tggames.com"
+    },
+    {
+      "domain": "the childrens place.com"
+    },
+    {
+      "domain": "the perfumed court.com"
+    },
+    {
+      "domain": "the simple folk.com"
+    },
+    {
+      "domain": "the strategist mattress.com"
+    },
+    {
+      "domain": "the-dicetower.com"
+    },
+    {
+      "domain": "the-home-depot.com"
+    },
+    {
+      "domain": "the-house.com"
+    },
+    {
+      "domain": "the-last-line.com"
+    },
+    {
+      "domain": "thebureaubelfast.com"
+    },
+    {
+      "domain": "theceramicshop.com"
+    },
+    {
+      "domain": "thecompanystore.com"
+    },
+    {
+      "domain": "thefutureperfect.com"
+    },
+    {
+      "domain": "thehut.com"
+    },
+    {
+      "domain": "thekitchn.com"
+    },
+    {
+      "domain": "thelaundreess.com"
+    },
+    {
+      "domain": "thenorthface.com"
+    },
+    {
+      "domain": "theordinary.com"
+    },
+    {
+      "domain": "theory.com"
+    },
+    {
+      "domain": "theory11.com"
+    },
+    {
+      "domain": "theoutnet.com"
+    },
+    {
+      "domain": "thepopcollective.com"
+    },
+    {
+      "domain": "theproteinworks.com"
+    },
+    {
+      "domain": "thepuzzlepeople.com"
+    },
+    {
+      "domain": "therealreal.com"
+    },
+    {
+      "domain": "theretrofitsource.com"
+    },
+    {
+      "domain": "thermarest.com"
+    },
+    {
+      "domain": "thespruce.com"
+    },
+    {
+      "domain": "thespruceeats.com"
+    },
+    {
+      "domain": "thestationerystudio.com"
+    },
+    {
+      "domain": "thethylads.com"
+    },
+    {
+      "domain": "thetrek.com"
+    },
+    {
+      "domain": "thewebster.com"
+    },
+    {
+      "domain": "thingsfromanotherworld.com"
+    },
+    {
+      "domain": "thinkfun.com"
+    },
+    {
+      "domain": "thinkvision.com"
+    },
+    {
+      "domain": "thomas moser.com"
+    },
+    {
+      "domain": "thompsons knife.com"
+    },
+    {
+      "domain": "thorne.com"
+    },
+    {
+      "domain": "thoughtclothing.com"
+    },
+    {
+      "domain": "threadup.com"
+    },
+    {
+      "domain": "thredup.com"
+    },
+    {
+      "domain": "threezerohk.com"
+    },
+    {
+      "domain": "thrillonknives.com"
+    },
+    {
+      "domain": "thrunite.com"
+    },
+    {
+      "domain": "thrustmaster.com"
+    },
+    {
+      "domain": "thule.com"
+    },
+    {
+      "domain": "ti mack.com"
+    },
+    {
+      "domain": "ticwatch.com"
+    },
+    {
+      "domain": "tide.com"
+    },
+    {
+      "domain": "tieks.com"
+    },
+    {
+      "domain": "tiffany.com"
+    },
+    {
+      "domain": "tigerlily perfume.com"
+    },
+    {
+      "domain": "tigi.com"
+    },
+    {
+      "domain": "tillys.com"
+    },
+    {
+      "domain": "timberland.com"
+    },
+    {
+      "domain": "timemicro.com"
+    },
+    {
+      "domain": "tinker.co"
+    },
+    {
+      "domain": "tiny cottons.com"
+    },
+    {
+      "domain": "tiny love.com"
+    },
+    {
+      "domain": "tirtir.com"
+    },
+    {
+      "domain": "tissot.com"
+    },
+    {
+      "domain": "tissotwatches.com"
+    },
+    {
+      "domain": "title nine.com"
+    },
+    {
+      "domain": "tlfapparel.com"
+    },
+    {
+      "domain": "tlr.com"
+    },
+    {
+      "domain": "tobi.com"
+    },
+    {
+      "domain": "todayshop.com"
+    },
+    {
+      "domain": "todd-snyder.com"
+    },
+    {
+      "domain": "tokyomodelshop.com"
+    },
+    {
+      "domain": "tomandersonguitars.com"
+    },
+    {
+      "domain": "tomdixon.net"
+    },
+    {
+      "domain": "tomford.com"
+    },
+    {
+      "domain": "tommeetippee.com"
+    },
+    {
+      "domain": "tommy.com"
+    },
+    {
+      "domain": "tommyhilfiger.com"
+    },
+    {
+      "domain": "tomoberheim.com"
+    },
+    {
+      "domain": "tondal.com"
+    },
+    {
+      "domain": "tonekingamps.com"
+    },
+    {
+      "domain": "tonylama.com"
+    },
+    {
+      "domain": "toofaced.com"
+    },
+    {
+      "domain": "tooltopia.com"
+    },
+    {
+      "domain": "toor knives.com"
+    },
+    {
+      "domain": "topoathletic.com"
+    },
+    {
+      "domain": "topre.com"
+    },
+    {
+      "domain": "topshop.com"
+    },
+    {
+      "domain": "torrid.com"
+    },
+    {
+      "domain": "totallee.com"
+    },
+    {
+      "domain": "totemacoustic.com"
+    },
+    {
+      "domain": "tovala.com"
+    },
+    {
+      "domain": "towerhobbies.com"
+    },
+    {
+      "domain": "toyorigins.com"
+    },
+    {
+      "domain": "toyotapartsdeal.com"
+    },
+    {
+      "domain": "toywiz.com"
+    },
+    {
+      "domain": "toywonders.com"
+    },
+    {
+      "domain": "tp-link.com"
+    },
+    {
+      "domain": "tplink.com"
+    },
+    {
+      "domain": "tracksmith.com"
+    },
+    {
+      "domain": "tractorsupply.com"
+    },
+    {
+      "domain": "tradesy.com"
+    },
+    {
+      "domain": "trappcandles.com"
+    },
+    {
+      "domain": "traxxas.com"
+    },
+    {
+      "domain": "tredz.co.uk"
+    },
+    {
+      "domain": "treflpuzzles.com"
+    },
+    {
+      "domain": "trekbikes.com"
+    },
+    {
+      "domain": "triarco-arts.com"
+    },
+    {
+      "domain": "trickstuff.com"
+    },
+    {
+      "domain": "tridentaudiodevelopments.com"
+    },
+    {
+      "domain": "trifectanutrition.com"
+    },
+    {
+      "domain": "troubadourgoods.com"
+    },
+    {
+      "domain": "trpbrakes.com"
+    },
+    {
+      "domain": "truebrothers.com"
+    },
+    {
+      "domain": "truefitness.com"
+    },
+    {
+      "domain": "truenature.com"
+    },
+    {
+      "domain": "truetone.com"
+    },
+    {
+      "domain": "truevalue.com"
+    },
+    {
+      "domain": "truewerk.com"
+    },
+    {
+      "domain": "truffhotsauce.com"
+    },
+    {
+      "domain": "trulyfreehome.com"
+    },
+    {
+      "domain": "trunkclub.com"
+    },
+    {
+      "domain": "truxedo.com"
+    },
+    {
+      "domain": "tubby todd.com"
+    },
+    {
+      "domain": "tuck.com"
+    },
+    {
+      "domain": "tulasleep.com"
+    },
+    {
+      "domain": "tulipworld.com"
+    },
+    {
+      "domain": "tura sugden.com"
+    },
+    {
+      "domain": "turbosound.com"
+    },
+    {
+      "domain": "turkishcymbals.com"
+    },
+    {
+      "domain": "turnermotorsport.com"
+    },
+    {
+      "domain": "turnstonefurniture.com"
+    },
+    {
+      "domain": "tvlogic.com"
+    },
+    {
+      "domain": "twinings.com"
+    },
+    {
+      "domain": "two sun knives.com"
+    },
+    {
+      "domain": "two-rock.com"
+    },
+    {
+      "domain": "tylerguitars.com"
+    },
+    {
+      "domain": "tynker.com"
+    },
+    {
+      "domain": "ubisoft.com"
+    },
+    {
+      "domain": "udo's choice.com"
+    },
+    {
+      "domain": "ufip.com"
+    },
+    {
+      "domain": "ugg.com"
+    },
+    {
+      "domain": "ugqoutdoor.com"
+    },
+    {
+      "domain": "uline.com"
+    },
+    {
+      "domain": "ultimaker.com"
+    },
+    {
+      "domain": "ultimate hacking keyboard.com"
+    },
+    {
+      "domain": "ultimateears.com"
+    },
+    {
+      "domain": "ulysse-nardin.com"
+    },
+    {
+      "domain": "underarmour.com"
+    },
+    {
+      "domain": "unionmadegoods.com"
+    },
+    {
+      "domain": "uniqlo.com"
+    },
+    {
+      "domain": "uniqueloom.com"
+    },
+    {
+      "domain": "uniquephoto.com"
+    },
+    {
+      "domain": "uniquevintage.com"
+    },
+    {
+      "domain": "universalaudio.com"
+    },
+    {
+      "domain": "universalorlando.com"
+    },
+    {
+      "domain": "universalyums.com"
+    },
+    {
+      "domain": "upliftdesk.com"
+    },
+    {
+      "domain": "uppababy.com"
+    },
+    {
+      "domain": "urban moonshine.com"
+    },
+    {
+      "domain": "urbandecay.com"
+    },
+    {
+      "domain": "urbanoutfitters.com"
+    },
+    {
+      "domain": "ursa major.com"
+    },
+    {
+      "domain": "usa-made-blades.com"
+    },
+    {
+      "domain": "usana.com"
+    },
+    {
+      "domain": "usg-company.com"
+    },
+    {
+      "domain": "usn.com"
+    },
+    {
+      "domain": "utrechtart.com"
+    },
+    {
+      "domain": "uyiage.com"
+    },
+    {
+      "domain": "vacheron-constantin.com"
+    },
+    {
+      "domain": "vahtdamteas.com"
+    },
+    {
+      "domain": "valentina.com"
+    },
+    {
+      "domain": "valentino.com"
+    },
+    {
+      "domain": "valtech.com"
+    },
+    {
+      "domain": "valvesoftware.com"
+    },
+    {
+      "domain": "van cleefandarpels.com"
+    },
+    {
+      "domain": "vanceandhines.com"
+    },
+    {
+      "domain": "vancleefarpels.com"
+    },
+    {
+      "domain": "vandersteen.com"
+    },
+    {
+      "domain": "vanengelen.com"
+    },
+    {
+      "domain": "vanicream.com"
+    },
+    {
+      "domain": "vanishingincmagic.com"
+    },
+    {
+      "domain": "vanmoof.com"
+    },
+    {
+      "domain": "vans.com"
+    },
+    {
+      "domain": "vansonleathers.com"
+    },
+    {
+      "domain": "vari.com"
+    },
+    {
+      "domain": "vaseline.com"
+    },
+    {
+      "domain": "vaughanmfg.com"
+    },
+    {
+      "domain": "veerbaby.com"
+    },
+    {
+      "domain": "velocitymicro.com"
+    },
+    {
+      "domain": "venuslens.com"
+    },
+    {
+      "domain": "venuslens.net"
+    },
+    {
+      "domain": "verbos electronics.com"
+    },
+    {
+      "domain": "verge-girl.com"
+    },
+    {
+      "domain": "veritasfarms.com"
+    },
+    {
+      "domain": "veritastools.com"
+    },
+    {
+      "domain": "versace.com"
+    },
+    {
+      "domain": "vertbaudet.com"
+    },
+    {
+      "domain": "vertexeffects.com"
+    },
+    {
+      "domain": "vestiairecollective.com"
+    },
+    {
+      "domain": "vibrant health.com"
+    },
+    {
+      "domain": "vichy.com"
+    },
+    {
+      "domain": "victorinox.com"
+    },
+    {
+      "domain": "victoryamps.com"
+    },
+    {
+      "domain": "viewsonic.com"
+    },
+    {
+      "domain": "villagetoy.com"
+    },
+    {
+      "domain": "vince.com"
+    },
+    {
+      "domain": "vintagesoundamps.com"
+    },
+    {
+      "domain": "vinted.com"
+    },
+    {
+      "domain": "virginiaguitars.com"
+    },
+    {
+      "domain": "vise-grip.com"
+    },
+    {
+      "domain": "visvim.com"
+    },
+    {
+      "domain": "vitacost.com"
+    },
+    {
+      "domain": "vitaminshoppe.com"
+    },
+    {
+      "domain": "vitamix.com"
+    },
+    {
+      "domain": "vitra.com"
+    },
+    {
+      "domain": "viviennewestwood.com"
+    },
+    {
+      "domain": "vivint.com"
+    },
+    {
+      "domain": "voda swim.com"
+    },
+    {
+      "domain": "voodoolab.com"
+    },
+    {
+      "domain": "voroband.com"
+    },
+    {
+      "domain": "voxamps.com"
+    },
+    {
+      "domain": "voyage et cie.com"
+    },
+    {
+      "domain": "vpiindustries.com"
+    },
+    {
+      "domain": "vrai.com"
+    },
+    {
+      "domain": "vrients.com"
+    },
+    {
+      "domain": "vtech.com"
+    },
+    {
+      "domain": "vulcanstrength.com"
+    },
+    {
+      "domain": "vuori.com"
+    },
+    {
+      "domain": "vuoriclothing.com"
+    },
+    {
+      "domain": "vvd.co"
+    },
+    {
+      "domain": "vwdirectparts.com"
+    },
+    {
+      "domain": "wacoal.com"
+    },
+    {
+      "domain": "wahoo fitness.com"
+    },
+    {
+      "domain": "waldorfmusic.com"
+    },
+    {
+      "domain": "walmart.com"
+    },
+    {
+      "domain": "wamplerpedals.com"
+    },
+    {
+      "domain": "wanderset.com"
+    },
+    {
+      "domain": "wantable.com"
+    },
+    {
+      "domain": "waoo.com"
+    },
+    {
+      "domain": "war bonnet outdoors.com"
+    },
+    {
+      "domain": "warbyparker.com"
+    },
+    {
+      "domain": "warehousefashion.com"
+    },
+    {
+      "domain": "warhousetablegames.com"
+    },
+    {
+      "domain": "warmaudio.com"
+    },
+    {
+      "domain": "warrior guitars.com"
+    },
+    {
+      "domain": "warrior.com"
+    },
+    {
+      "domain": "warwickacoustics.com"
+    },
+    {
+      "domain": "wasdkeyboards.com"
+    },
+    {
+      "domain": "watermark-designs.com"
+    },
+    {
+      "domain": "wayfair.com"
+    },
+    {
+      "domain": "wconcept.com"
+    },
+    {
+      "domain": "weannaki.com"
+    },
+    {
+      "domain": "weardixie.com"
+    },
+    {
+      "domain": "wearenika.com"
+    },
+    {
+      "domain": "wearewear.com"
+    },
+    {
+      "domain": "wearfigs.com"
+    },
+    {
+      "domain": "wearfranc.com"
+    },
+    {
+      "domain": "weathertech.com"
+    },
+    {
+      "domain": "webs-yarn.com"
+    },
+    {
+      "domain": "weekday.com"
+    },
+    {
+      "domain": "weisswatch.com"
+    },
+    {
+      "domain": "weknives.com"
+    },
+    {
+      "domain": "weledababy.com"
+    },
+    {
+      "domain": "wella.com"
+    },
+    {
+      "domain": "wellnesspetfood.com"
+    },
+    {
+      "domain": "wellwoven.com"
+    },
+    {
+      "domain": "wera.de"
+    },
+    {
+      "domain": "westcott.com"
+    },
+    {
+      "domain": "westelm.com"
+    },
+    {
+      "domain": "western digital.com"
+    },
+    {
+      "domain": "westernbikeworks.com"
+    },
+    {
+      "domain": "westmanatelier.com"
+    },
+    {
+      "domain": "wetsuitwarehouse.com"
+    },
+    {
+      "domain": "whbm.com"
+    },
+    {
+      "domain": "wheelandsprocket.com"
+    },
+    {
+      "domain": "wheelspinmodels.co.uk"
+    },
+    {
+      "domain": "white mountaineering.com"
+    },
+    {
+      "domain": "whiteflash.com"
+    },
+    {
+      "domain": "whiteflowerfarm.com"
+    },
+    {
+      "domain": "whitehouseblackmarket.com"
+    },
+    {
+      "domain": "whiteind.com"
+    },
+    {
+      "domain": "whitelinespaper.com"
+    },
+    {
+      "domain": "whitelotusaromatics.com"
+    },
+    {
+      "domain": "wholesome wellness.com"
+    },
+    {
+      "domain": "whoop.com"
+    },
+    {
+      "domain": "wiggle.com"
+    },
+    {
+      "domain": "wiha.com"
+    },
+    {
+      "domain": "wild-one.com"
+    },
+    {
+      "domain": "wildbird.com"
+    },
+    {
+      "domain": "wildebeest.co"
+    },
+    {
+      "domain": "wilier.com"
+    },
+    {
+      "domain": "williamssonoma.com"
+    },
+    {
+      "domain": "willowpump.com"
+    },
+    {
+      "domain": "wilsonandsylvie.com"
+    },
+    {
+      "domain": "wilsonaudio.com"
+    },
+    {
+      "domain": "wink.com"
+    },
+    {
+      "domain": "winkler knives.com"
+    },
+    {
+      "domain": "winstanleysbikes.co.uk"
+    },
+    {
+      "domain": "wirecutter.com"
+    },
+    {
+      "domain": "wish garden.com"
+    },
+    {
+      "domain": "withings.com"
+    },
+    {
+      "domain": "wizkids.com"
+    },
+    {
+      "domain": "wmd-devices.com"
+    },
+    {
+      "domain": "wobbel board.com"
+    },
+    {
+      "domain": "wobbel.eu"
+    },
+    {
+      "domain": "wolfandbadger.com"
+    },
+    {
+      "domain": "wolfgangcarcare.com"
+    },
+    {
+      "domain": "wolverine.com"
+    },
+    {
+      "domain": "womenbest.com"
+    },
+    {
+      "domain": "wonderville.com"
+    },
+    {
+      "domain": "woodenpuzzles.com"
+    },
+    {
+      "domain": "woodpeck.com"
+    },
+    {
+      "domain": "woodpuzzles.com"
+    },
+    {
+      "domain": "woodwick.com"
+    },
+    {
+      "domain": "woolandthegang.com"
+    },
+    {
+      "domain": "woolrich.com"
+    },
+    {
+      "domain": "wooting.io"
+    },
+    {
+      "domain": "wow toys.com"
+    },
+    {
+      "domain": "wrangler.com"
+    },
+    {
+      "domain": "wrighthand.com"
+    },
+    {
+      "domain": "wubbanub.com"
+    },
+    {
+      "domain": "wurkkos.com"
+    },
+    {
+      "domain": "wusastore.com"
+    },
+    {
+      "domain": "wyrmwoodgaming.com"
+    },
+    {
+      "domain": "xaocdevices.com"
+    },
+    {
+      "domain": "xbox.com"
+    },
+    {
+      "domain": "xfx.com"
+    },
+    {
+      "domain": "xiaomi.com"
+    },
+    {
+      "domain": "xotic.us"
+    },
+    {
+      "domain": "xray.com"
+    },
+    {
+      "domain": "xymogen.com"
+    },
+    {
+      "domain": "yakult.com"
+    },
+    {
+      "domain": "yalehome.com"
+    },
+    {
+      "domain": "yamaha.com"
+    },
+    {
+      "domain": "yamahaguitars.com"
+    },
+    {
+      "domain": "yankeecandle.com"
+    },
+    {
+      "domain": "yatesandco.com"
+    },
+    {
+      "domain": "yeezy.com"
+    },
+    {
+      "domain": "yeezysupply.com"
+    },
+    {
+      "domain": "yesplz.coffee"
+    },
+    {
+      "domain": "yesstyle.com"
+    },
+    {
+      "domain": "yeti-cycles.com"
+    },
+    {
+      "domain": "yeti.com"
+    },
+    {
+      "domain": "yitty.com"
+    },
+    {
+      "domain": "ylighting.com"
+    },
+    {
+      "domain": "yogabed.com"
+    },
+    {
+      "domain": "yogaccessories.com"
+    },
+    {
+      "domain": "yogitea.com"
+    },
+    {
+      "domain": "yoox.com"
+    },
+    {
+      "domain": "yorkshiretea.com"
+    },
+    {
+      "domain": "youandmepets.com"
+    },
+    {
+      "domain": "youngla.com"
+    },
+    {
+      "domain": "youngliving.com"
+    },
+    {
+      "domain": "ysl.com"
+    },
+    {
+      "domain": "yslbeauty.com"
+    },
+    {
+      "domain": "yugioh.com"
+    },
+    {
+      "domain": "yumibaby.com"
+    },
+    {
+      "domain": "yummly.com"
+    },
+    {
+      "domain": "yunnjewelry.com"
+    },
+    {
+      "domain": "zaful.com"
+    },
+    {
+      "domain": "zagg.com"
+    },
+    {
+      "domain": "zainostore.com"
+    },
+    {
+      "domain": "zales.com"
+    },
+    {
+      "domain": "zara kids.com"
+    },
+    {
+      "domain": "zara.com"
+    },
+    {
+      "domain": "zarbees.com"
+    },
+    {
+      "domain": "zavvi.com"
+    },
+    {
+      "domain": "zebralight.com"
+    },
+    {
+      "domain": "zeelool.com"
+    },
+    {
+      "domain": "zeiss.com"
+    },
+    {
+      "domain": "zenith-watches.com"
+    },
+    {
+      "domain": "zennioptical.com"
+    },
+    {
+      "domain": "zerotolerance.com"
+    },
+    {
+      "domain": "zimmermann.com"
+    },
+    {
+      "domain": "zipadee-zip.com"
+    },
+    {
+      "domain": "zo skinhealth.com"
+    },
+    {
+      "domain": "zoob.com"
+    },
+    {
+      "domain": "zoozzwave.com"
+    },
+    {
+      "domain": "zoozzwaveus.com"
+    },
+    {
+      "domain": "zoro.com"
+    },
+    {
+      "domain": "zotac.com"
+    },
+    {
+      "domain": "zsa.io"
+    },
+    {
+      "domain": "zuaudio.com"
+    },
+    {
+      "domain": "zwave.com"
+    },
+    {
+      "domain": "zwift.com"
+    },
+    {
+      "domain": "zwilling.com"
+    },
+    {
+      "domain": "zzounds.com"
+    }
+  ],
+  "count": 3262,
+  "updated_at": "2026-05-05T08:17:47.861415+00:00"
+}
