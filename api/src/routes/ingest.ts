@@ -10,6 +10,9 @@ const SOURCE_NORMALIZATION: Record<string, string> = {
   'challenger_sg': 'challenger_sg',
   'amazon_sg_toys': 'amazon_sg',
   'ikea.com.sg': 'ikea_sg',
+  'powerbuy_th': 'powerbuy_th',
+  'powerbuy.co.th': 'powerbuy_th',
+  'powerbuy': 'powerbuy_th',
 };
 
 function normalizeSource(source: string): string {
@@ -213,17 +216,18 @@ router.post(
           p.is_active !== false,
           p.region || null,
           p.country_code || null,
+          source,
         );
 
         placeholders.push(
-          `($${base},$${base + 1},$${base + 2},$${base + 3},$${base + 4},$${base + 5},$${base + 6},$${base + 7},$${base + 8},$${base + 9},$${base + 10},$${base + 11},$${base + 12},$${base + 13},$${base + 14})`
+          `($${base},$${base + 1},$${base + 2},$${base + 3},$${base + 4},$${base + 5},$${base + 6},$${base + 7},$${base + 8},$${base + 9},$${base + 10},$${base + 11},$${base + 12},$${base + 13},$${base + 14},$${base + 15})`
         );
       }
 
       await db.query(
         `INSERT INTO products
            (sku, source, merchant_id, title, description, price, currency, url,
-            image_url, category_path, brand, metadata, is_active, region, country_code)
+            image_url, category_path, brand, metadata, is_active, region, country_code, domain)
          VALUES ${placeholders.join(', ')}
          ON CONFLICT (sku, source)
          DO UPDATE SET
@@ -237,6 +241,7 @@ router.post(
            category_path = EXCLUDED.category_path,
            merchant_id = EXCLUDED.merchant_id,
            metadata = EXCLUDED.metadata,
+           domain = EXCLUDED.domain,
            is_active = true,
            region = COALESCE(EXCLUDED.region, products.region),
            country_code = COALESCE(EXCLUDED.country_code, products.country_code),

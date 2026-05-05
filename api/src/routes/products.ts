@@ -833,8 +833,8 @@ router.post(
       const result = await db.query(
         `INSERT INTO products
            (sku, source, merchant_id, title, description, price, currency, url,
-            image_url, category_path, brand, metadata, is_active, region, country_code, gtin, mpn)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,$13,$14,$15,$16)
+            image_url, category_path, brand, metadata, is_active, region, country_code, gtin, mpn, domain)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,$13,$14,$15,$16,$17)
          ON CONFLICT (sku, source)
          DO UPDATE SET
            title = EXCLUDED.title,
@@ -842,6 +842,7 @@ router.post(
            currency = EXCLUDED.currency,
            image_url = EXCLUDED.image_url,
            metadata = products.metadata || EXCLUDED.metadata,
+           domain = EXCLUDED.domain,
            region = COALESCE(EXCLUDED.region, products.region),
            country_code = COALESCE(EXCLUDED.country_code, products.country_code),
            gtin = COALESCE(EXCLUDED.gtin, products.gtin),
@@ -856,6 +857,7 @@ router.post(
           JSON.stringify({ original_price: r.originalPrice, merchant_name: r.merchantName, availability: r.availability }),
           r.region || null, r.countryCode || null,
           r.gtin || null, r.mpn || null,
+          r.platform,
         ]
       ).catch(() => null);
 

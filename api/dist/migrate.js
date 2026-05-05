@@ -335,6 +335,14 @@ async function runMigrations() {
     catch (err) {
         console.warn(`[migration] source_id DROP NOT NULL failed (non-fatal): ${err.message?.slice(0, 200)}`);
     }
+    // Fix legacy domain NOT NULL constraint that blocks ingest INSERT
+    try {
+        await config_1.db.query(`ALTER TABLE products ALTER COLUMN domain DROP NOT NULL`);
+        console.log('domain DROP NOT NULL completed.');
+    }
+    catch (err) {
+        console.warn(`[migration] domain DROP NOT NULL failed (non-fatal): ${err.message?.slice(0, 200)}`);
+    }
     // Run full migration block as-is (best-effort, may fail on extensions or
     // products columns if those tables/perms don't exist yet).
     try {
