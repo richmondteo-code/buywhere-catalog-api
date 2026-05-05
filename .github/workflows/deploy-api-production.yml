@@ -1,0 +1,124 @@
+name: Deploy API to Cloud Run (production)
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Image tag to deploy (default: git SHA)'
+        required: false
+
+env:
+  GCP_PROJECT_ID: gaia-calendar-488606
+  GCP_REGION: asia-southeast1
+  ARTIFACT_REGISTRY: asia-southeast1-docker.pkg.dev
+  IMAGE_REPO: buywhere
+  SERVICE_NAME: buywhere-api
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY_PROD }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ env.ARTIFACT_REGISTRY }} --quiet
+
+      - name: Set image tag
+        id: tag
+        run: |
+          TAG="${{ github.event.inputs.image_tag || github.sha }}"
+          echo "image_tag=${TAG}" >> "$GITHUB_OUTPUT"
+          FULL_IMAGE="${{ env.ARTIFACT_REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_REPO }}/api:${TAG}"
+          echo "full_image=${FULL_IMAGE}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push API image
+        env:
+          FULL_IMAGE: ${{ steps.tag.outputs.full_image }}
+        run: |
+          docker build -t "$FULL_IMAGE" ./api
+          docker push "$FULL_IMAGE"
+
+      - name: Ensure GCP secrets for Agent Card keys
+        run: |
+          for SECRET_NAME in buywhere-agent-card-private-key buywhere-agent-card-public-key; do
+            if gcloud secrets describe "$SECRET_NAME" --project "${{ env.GCP_PROJECT_ID }}" &>/dev/null; then
+              echo "Secret $SECRET_NAME already exists"
+            else
+              echo "Creating secret $SECRET_NAME..."
+              gcloud secrets create "$SECRET_NAME" \
+                --project "${{ env.GCP_PROJECT_ID }}" \
+                --replication-policy="automatic"
+            fi
+          done
+
+      - name: Set Agent Card private key secret value
+        run: |
+          echo "${{ secrets.AGENT_CARD_PRIVATE_KEY }}" | \
+            gcloud secrets versions add buywhere-agent-card-private-key \
+              --project "${{ env.GCP_PROJECT_ID }}" \
+              --data-file=-
+
+      - name: Set Agent Card public key secret value
+        run: |
+          echo "${{ secrets.AGENT_CARD_PUBLIC_KEY }}" | \
+            gcloud secrets versions add buywhere-agent-card-public-key \
+              --project "${{ env.GCP_PROJECT_ID }}" \
+              --data-file=-
+
+      - name: Deploy API service to Cloud Run
+        env:
+          IMAGE_TAG: ${{ steps.tag.outputs.image_tag }}
+        run: |
+          sed \
+            -e "s|PROJECT_ID|${{ env.GCP_PROJECT_ID }}|g" \
+            -e "s|IMAGE_TAG|${IMAGE_TAG}|g" \
+            deploy/gcp/api-service.yaml | \
+          gcloud run services replace - \
+            --region="${{ env.GCP_REGION }}" \
+            --project="${{ env.GCP_PROJECT_ID }}"
+
+      - name: Allow unauthenticated access
+        run: |
+          gcloud run services add-iam-policy-binding ${{ env.SERVICE_NAME }} \
+            --region="${{ env.GCP_REGION }}" \
+            --project="${{ env.GCP_PROJECT_ID }}" \
+            --member="allUsers" \
+            --role="roles/run.invoker" \
+            2>/dev/null || true
+
+      - name: Wait for service to stabilize
+        run: sleep 30
+
+      - name: Smoke test A2A endpoints
+        run: |
+          BASE="https://api.buywhere.ai"
+          echo "=== A2A discovery ==="
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" "$BASE/a2a")
+          echo "GET /a2a → HTTP ${HTTP}"
+          [[ "$HTTP" == "200" ]] || exit 1
+          echo "=== Agent Card (JWS) ==="
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" "$BASE/.well-known/agent-card")
+          echo "GET /.well-known/agent-card → HTTP ${HTTP}"
+          [[ "$HTTP" == "200" ]] || exit 1
+          echo "=== JWKS ==="
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" "$BASE/.well-known/jwks.json")
+          echo "GET /.well-known/jwks.json → HTTP ${HTTP}"
+          [[ "$HTTP" == "200" ]] || exit 1
+          echo "=== Health ==="
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" "$BASE/health")
+          echo "GET /health → HTTP ${HTTP}"
+          [[ "$HTTP" == "200" ]] || exit 1
+          echo "All smoke tests passed"

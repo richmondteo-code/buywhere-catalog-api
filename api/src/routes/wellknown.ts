@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import crypto from 'crypto';
 import { API_BASE_URL } from '../config';
 
 const router = Router();
@@ -267,6 +268,104 @@ router.get('/mcp/server-card.json', (_req: Request, res: Response) => {
 // Public key (p=): h7SEyb+uUyDnAuhTuNfFKVLgvbKI+4eIJQQCfXiccxs=
 router.get('/mcp-registry-auth', (_req: Request, res: Response) => {
   res.type('text/plain').send('v=MCPv1; k=ed25519; p=h7SEyb+uUyDnAuhTuNfFKVLgvbKI+4eIJQQCfXiccxs=');
+});
+
+// Ed25519 key pair for JWS-signed Agent Card
+// Load from env vars for production, generate at startup for local dev
+function loadAgentCardKeys(): { privateKey: crypto.KeyObject; publicKeyB64: string; publicKeyDer: Buffer } {
+  const privateKeyPem = process.env.AGENT_CARD_PRIVATE_KEY;
+  const publicKeyPem = process.env.AGENT_CARD_PUBLIC_KEY;
+
+  if (privateKeyPem && publicKeyPem) {
+    const privateKey = crypto.createPrivateKey(privateKeyPem.replace(/\\n/g, '\n'));
+    const publicKeyObj = crypto.createPublicKey(publicKeyPem.replace(/\\n/g, '\n'));
+    const publicKeyDer = publicKeyObj.export({ type: 'spki', format: 'der' });
+    const publicKeyB64 = Buffer.from(publicKeyDer).toString('base64');
+    return { privateKey, publicKeyB64, publicKeyDer };
+  }
+
+  const { privateKey, publicKey } = crypto.generateKeyPairSync('ed25519', {
+    publicKeyEncoding: { type: 'spki', format: 'der' },
+    privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
+  });
+  const publicKeyB64 = Buffer.from(publicKey as any).toString('base64');
+  return { privateKey: privateKey as any, publicKeyB64, publicKeyDer: publicKey as any };
+}
+
+const agentCardKeys = loadAgentCardKeys();
+
+function base64url(buf: Buffer): string {
+  return buf.toString('base64url');
+}
+
+function createJws(payload: Record<string, unknown>): string {
+  const header = { alg: 'EdDSA', kid: 'buywhere-agent-card-v1', typ: 'JWT' };
+  const headerB64 = base64url(Buffer.from(JSON.stringify(header)));
+  const payloadB64 = base64url(Buffer.from(JSON.stringify(payload)));
+  const signingInput = `${headerB64}.${payloadB64}`;
+  const signature = crypto.sign(null, Buffer.from(signingInput), agentCardKeys.privateKey);
+  return `${signingInput}.${base64url(signature)}`;
+}
+
+// GET /.well-known/jwks.json — JSON Web Key Set for the agent card signing key
+router.get('/jwks.json', (_req: Request, res: Response) => {
+  res.json({
+    keys: [
+      {
+        kty: 'OKP',
+        crv: 'Ed25519',
+        kid: 'buywhere-agent-card-v1',
+        x: agentCardKeys.publicKeyB64,
+      },
+    ],
+  });
+});
+
+// GET /.well-known/agent-card — JWS-signed Agent Card (Google A2A spec)
+// Returns compact JWS: BASE64URL(header).BASE64URL(payload).BASE64URL(signature)
+router.get('/agent-card', (_req: Request, res: Response) => {
+  const card = {
+    name: 'BuyWhere Product Catalog',
+    description: 'Agent-native product catalog API for AI agent commerce. Search 1.5M+ products across 20+ e-commerce platforms in Singapore, US, and Southeast Asia.',
+    url: `${API_BASE_URL}/a2a`,
+    version: '1.0.0',
+    capabilities: {
+      streaming: true,
+      pushNotifications: false,
+      state: 'stateless',
+    },
+    authentication: {
+      schemes: [
+        {
+          type: 'bearer',
+          description: 'Register for a free API key at /v1/auth/register',
+          registerUrl: `${API_BASE_URL}/v1/auth/register`,
+        },
+      ],
+    },
+    skills: [
+      { id: 'search_products', name: 'Search Products', description: 'Full-text product search with price, category, merchant, region filters' },
+      { id: 'get_product', name: 'Get Product', description: 'Get a specific product by ID with full details' },
+      { id: 'compare_products', name: 'Compare Products', description: 'Compare multiple products side-by-side' },
+      { id: 'get_deals', name: 'Get Deals', description: 'Get discounted products sorted by discount percentage' },
+      { id: 'list_categories', name: 'List Categories', description: 'List top-level product categories' },
+      { id: 'find_best_price', name: 'Find Best Price', description: 'Find the best current price across all merchants' },
+    ],
+    jwks: {
+      keys: [
+        {
+          kty: 'OKP',
+          crv: 'Ed25519',
+          kid: 'buywhere-agent-card-v1',
+          x: agentCardKeys.publicKeyB64,
+        },
+      ],
+    },
+  };
+
+  const jws = createJws(card);
+  res.set('Content-Type', 'application/jose');
+  res.send(jws);
 });
 
 export default router;

@@ -57,8 +57,23 @@ spec:
                 secretKeyRef:
                   name: buywhere-paperclip-api-key
                   key: latest
+            - name: SENTRY_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: buywhere-sentry-dsn
+                  key: latest
             - name: UPTIMEROBOT_ISSUE_ID
               value: "0d3648af-2d05-4494-9ffe-0199de71cd57"
+            - name: AGENT_CARD_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: buywhere-agent-card-private-key
+                  key: latest
+            - name: AGENT_CARD_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: buywhere-agent-card-public-key
+                  key: latest
           resources:
             limits:
               cpu: "1"
