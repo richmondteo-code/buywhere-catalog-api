@@ -175,10 +175,17 @@ jobs:
           PROXY_PID=$!
           sleep 5
 
-          echo "Running alembic upgrade head..."
-          pip install -q alembic asyncpg
-          export DATABASE_URL
-          alembic upgrade head
+          pip install -q asyncpg
+
+          if [ -f alembic.ini ] && [ -d alembic/versions ]; then
+            echo "Running alembic upgrade head..."
+            pip install -q alembic
+            export DATABASE_URL
+            alembic upgrade head
+          else
+            echo "No alembic migration files found — running backfill SQL..."
+            python3 scripts/run_backfill.py
+          fi
 
           echo "Verifying migration..."
           python3 scripts/verify_migration.py
