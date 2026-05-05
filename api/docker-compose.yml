@@ -75,6 +75,8 @@ services:
       # Awin affiliate programme (BUY-6873) — set via secrets manager in prod
       AWIN_PUBLISHER_ID: ${AWIN_PUBLISHER_ID:-}
       AWIN_ADVERTISER_IDS: ${AWIN_ADVERTISER_IDS:-}
+      # UptimeRobot webhook auth (BUY-10100) — shared secret from uptimerobot webhook config
+      UPTIMEROBOT_WEBHOOK_SECRET: ${UPTIMEROBOT_WEBHOOK_SECRET:-uptime-robot-prod-2026}
     ports:
       - "3000:3000"
     healthcheck:

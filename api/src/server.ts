@@ -24,7 +24,7 @@ import catalogRouter from './routes/catalog';
 import keysRouter from './routes/keys';
 import webhooksRouter from './routes/webhooks';
 import a2aRouter from './routes/a2a';
-import { db } from './config';
+import { db, redis } from './config';
 
 export function createApp() {
   const app = express();
@@ -50,6 +50,16 @@ export function createApp() {
       status: 'ok',
       ts: new Date().toISOString(),
     });
+  });
+
+  // Redis health check - required by UptimeRobot monitoring (BUY-10100)
+  app.get('/health/redis', async (_req, res) => {
+    try {
+      await redis.ping();
+      res.json({ redis: 'ok' });
+    } catch {
+      res.status(503).json({ redis: 'error' });
+    }
   });
 
   // MCP / OpenAI plugin discovery
