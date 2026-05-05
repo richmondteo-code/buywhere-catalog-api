@@ -10,6 +10,9 @@ const SOURCE_NORMALIZATION = {
     'challenger_sg': 'challenger_sg',
     'amazon_sg_toys': 'amazon_sg',
     'ikea.com.sg': 'ikea_sg',
+    'powerbuy_th': 'powerbuy_th',
+    'powerbuy.co.th': 'powerbuy_th',
+    'powerbuy': 'powerbuy_th',
 };
 function normalizeSource(source) {
     return SOURCE_NORMALIZATION[source] || source;

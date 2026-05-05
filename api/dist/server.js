@@ -30,6 +30,7 @@ const catalog_1 = __importDefault(require("./routes/catalog"));
 const keys_1 = __importDefault(require("./routes/keys"));
 const webhooks_1 = __importDefault(require("./routes/webhooks"));
 const a2a_1 = __importDefault(require("./routes/a2a"));
+const config_1 = require("./config");
 function createApp() {
     const app = (0, express_1.default)();
     app.use((0, cors_1.default)({
@@ -51,6 +52,16 @@ function createApp() {
             status: 'ok',
             ts: new Date().toISOString(),
         });
+    });
+    // Redis health check - required by UptimeRobot monitoring (BUY-10100)
+    app.get('/health/redis', async (_req, res) => {
+        try {
+            await config_1.redis.ping();
+            res.json({ redis: 'ok' });
+        }
+        catch {
+            res.status(503).json({ redis: 'error' });
+        }
     });
     // MCP / OpenAI plugin discovery
     app.use('/.well-known', wellknown_1.default);
