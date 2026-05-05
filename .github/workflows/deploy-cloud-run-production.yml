@@ -181,18 +181,7 @@ jobs:
           alembic upgrade head
 
           echo "Verifying migration..."
-          python3 -c "
-import asyncio, asyncpg
-url = '$DATABASE_URL'.replace('+asyncpg', '')
-async def verify():
-    conn = await asyncpg.connect(url.replace('postgresql://', 'postgresql://127.0.0.1:65432/'))
-    row = await conn.fetchrow('SELECT version_num FROM alembic_version')
-    print(f'Alembic version: {row[\"version_num\"]}')
-    rows = await conn.fetchrow('SELECT count(*) as total, count(*) FILTER (WHERE search_vector IS NULL) as null_search, count(*) FILTER (WHERE title_search_vector IS NULL) as null_title FROM products')
-    print(f'Products: {rows[\"total\"]}, NULL search: {rows[\"null_search\"]}, NULL title: {rows[\"null_title\"]}')
-    await conn.close()
-asyncio.run(verify())
-"
+          python3 scripts/verify_migration.py
           kill $PROXY_PID 2>/dev/null || true
 
   api-latency-smoke-test:
