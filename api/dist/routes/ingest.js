@@ -172,12 +172,12 @@ router.post('/products', apiKey_1.requireApiKey, async (req, res) => {
                 metadata.is_available = p.is_available;
             if (p.last_checked !== undefined)
                 metadata.last_checked = p.last_checked;
-            values.push(p.sku, source, p.merchant_id, p.title, p.description || null, p.price, p.currency || 'SGD', p.url, p.image_url || null, buildCategoryPathLiteral(p.category_path), p.brand || null, JSON.stringify(metadata), p.is_active !== false, p.region || null, p.country_code || null, p.url || null, source); // url_hash, source_id
-            placeholders.push(`($${base},$${base + 1},$${base + 2},$${base + 3},$${base + 4},$${base + 5},$${base + 6},$${base + 7},$${base + 8},$${base + 9},$${base + 10},$${base + 11},$${base + 12},$${base + 13},$${base + 14},$${base + 15},$${base + 16})`);
+            values.push(p.sku, source, p.merchant_id, p.title, p.description || null, p.price, p.currency || 'SGD', p.url, p.image_url || null, buildCategoryPathLiteral(p.category_path), p.brand || null, JSON.stringify(metadata), p.is_active !== false, p.region || null, p.country_code || null);
+            placeholders.push(`($${base},$${base + 1},$${base + 2},$${base + 3},$${base + 4},$${base + 5},$${base + 6},$${base + 7},$${base + 8},$${base + 9},$${base + 10},$${base + 11},$${base + 12},$${base + 13},$${base + 14})`);
         }
         await config_1.db.query(`INSERT INTO products
            (sku, source, merchant_id, title, description, price, currency, url,
-            image_url, category_path, brand, metadata, is_active, region, country_code, url_hash, source_id)
+            image_url, category_path, brand, metadata, is_active, region, country_code)
          VALUES ${placeholders.join(', ')}
          ON CONFLICT (sku, source)
          DO UPDATE SET
@@ -194,8 +194,6 @@ router.post('/products', apiKey_1.requireApiKey, async (req, res) => {
            is_active = true,
            region = COALESCE(EXCLUDED.region, products.region),
            country_code = COALESCE(EXCLUDED.country_code, products.country_code),
-           url_hash = COALESCE(EXCLUDED.url_hash, products.url_hash),
-           source_id = COALESCE(EXCLUDED.source_id, products.source_id),
            updated_at = NOW()`, values);
         for (const p of validProducts) {
             if (existingSkus.has(p.sku)) {
