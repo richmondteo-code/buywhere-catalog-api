@@ -1,7 +1,12 @@
 import asyncio, asyncpg, os
+from urllib.parse import urlparse, urlunparse
 
 async def run():
-    url = os.environ['DATABASE_URL'].replace('+asyncpg', '').replace('postgresql://', 'postgresql://127.0.0.1:65432/')
+    raw = os.environ['DATABASE_URL']
+    clean = raw.replace('+asyncpg', '')
+    parsed = urlparse(clean)
+    new = urlunparse(parsed._replace(netloc=f'{parsed.username}:{parsed.password}@127.0.0.1:65432'))
+    url = new
     conn = await asyncpg.connect(url)
     try:
         sql = open('scripts/backfill_search_vector.sql').read()
