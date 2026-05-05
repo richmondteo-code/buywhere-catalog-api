@@ -19,10 +19,6 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS gtin           VARCHAR(14);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS mpn            VARCHAR(100);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS category_id    TEXT;
 
--- url_hash column exists in legacy schema but ingest endpoint doesn't populate it.
--- Make nullable so ingest INSERT doesn't fail on missing url_hash.
-ALTER TABLE products ALTER COLUMN url_hash DROP NOT NULL;
-
 -- Unique index for ingest upsert (ON CONFLICT (sku, source)) -- BUY-10814 / BUY-10929 blocker
 -- Dedup runs separately before this migration (see runMigrations dedup step)
 CREATE UNIQUE INDEX IF NOT EXISTS products_sku_source_unique ON products (sku, source);
@@ -322,6 +318,14 @@ export async function runMigrations() {
     console.log('Dedup migration completed.');
   } catch (err: any) {
     console.warn(`[migration] Dedup failed (non-fatal): ${err.message?.slice(0, 200)}`);
+  }
+
+  // Fix legacy url_hash NOT NULL constraint that blocks ingest INSERT (BUY-10929)
+  try {
+    await db.query(`ALTER TABLE products ALTER COLUMN url_hash DROP NOT NULL`);
+    console.log('url_hash DROP NOT NULL completed.');
+  } catch (err: any) {
+    console.warn(`[migration] url_hash DROP NOT NULL failed (non-fatal): ${err.message?.slice(0, 200)}`);
   }
 
   // Run full migration block as-is (best-effort, may fail on extensions or
