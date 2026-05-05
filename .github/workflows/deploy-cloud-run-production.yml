@@ -22,7 +22,7 @@ env:
   GCP_PROJECT_ID: gaia-calendar-488606
   GCP_REGION: asia-southeast1
   CLOUD_RUN_SERVICE: buywhere-api-production
-  CLOUD_SQL_INSTANCE: gaia-calendar-488606:asia-southeast1:buywhere-db
+  CLOUD_SQL_INSTANCE: gaia-calendar-488606:asia-southeast1:buywhere-staging
 
 jobs:
   build:
@@ -138,10 +138,8 @@ jobs:
             --max-instances 20 \
             --concurrency 80 \
             --timeout 60s \
-            --label "deployment-id=${{ needs.build.outputs.deployment_id }}" \
-            --label "version=${{ needs.build.outputs.version }}" \
-            --label "commit-sha=${{ github.sha }}" \
-            --output json | jq -r '.status.url')
+            --labels "deployment-id=${{ needs.build.outputs.deployment_id }},version=${{ needs.build.outputs.version }},commit-sha=${{ github.sha }}" \
+            --format json | jq -r '.status.url')
 
           echo "Service URL: $SERVICE_URL"
           echo "url=$SERVICE_URL" >> $GITHUB_OUTPUT
