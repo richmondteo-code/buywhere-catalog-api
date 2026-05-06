@@ -105,16 +105,19 @@ jobs:
           docker compose stop -t 10 api 2>/dev/null || true
           docker compose rm -f api 2>/dev/null || true
 
-          # Aggressively kill anything left on our ports (2 passes to catch respawns)
-          for pass in 1 2; do
-            for port in 3000 8000; do
-              if ss -tlnp | grep -q ":${port}\b"; then
-                echo "Port ${port} occupied (pass ${pass}) — killing owner"
-                fuser -k -9 ${port}/tcp 2>/dev/null || true
-                sleep 0.5
-              fi
+          # Stop any other containers bound to our ports (e.g. buywhere-api-api-1 from another compose project)
+          for port in 3000 8000; do
+            for cid in $(docker ps -q --filter "publish=${port}" 2>/dev/null); do
+              name=$(docker inspect --format '{{.Name}}' "$cid" 2>/dev/null)
+              echo "Stopping container ${name} (holds port ${port})"
+              docker stop -t 5 "$cid" 2>/dev/null || true
+              docker rm -f "$cid" 2>/dev/null || true
             done
           done
+
+          # Kill any bare processes left on our ports
+          fuser -k -9 3000/tcp 2>/dev/null || true
+          fuser -k -9 8000/tcp 2>/dev/null || true
 
           # Ensure POSTHOG_API_KEY passthrough exists in compose file
           if ! grep -q 'POSTHOG_API_KEY' docker-compose.yml 2>/dev/null; then
