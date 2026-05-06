@@ -1,6 +1,6 @@
 {
   "description": "US Shopify merchant catalog \u2014 BUY-11037",
-  "count": 331,
+  "count": 332,
   "merchants": [
     {
       "domain": "gymshark.com",
@@ -1183,6 +1183,15 @@
       "category": "general",
       "subcategory": "intl_br",
       "source_attribution": "intl_br"
+    },
+    {
+      "domain": "baseblu.com",
+      "source": "shopify_sea",
+      "country": "SEA",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "sea",
+      "source_attribution": "sea_discovery"
     },
     {
       "domain": "albanypark.com",
