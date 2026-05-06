@@ -1,9 +1,11 @@
 import { db, redis } from './config';
 
-const MIGRATION = `
+const EXTENSIONS = `
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE EXTENSION IF NOT EXISTS "btree_gin";
+`;
 
+const MIGRATION = `
 -- Ensure products has all columns before any indexes or triggers reference them
 ALTER TABLE products ADD COLUMN IF NOT EXISTS sku            TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS source         TEXT;
@@ -294,8 +296,15 @@ CREATE INDEX IF NOT EXISTS idx_merchant_events_event_type ON merchant_events(eve
 export async function runMigrations() {
   console.log('Running migrations...');
 
-  // Run full migration block as-is (best-effort, may fail on extensions or
-  // products columns if those tables/perms don't exist yet).
+  // Extensions first, isolated — may fail if DB user lacks CREATE EXTENSION perms.
+  // This is non-fatal: the rest of migration still runs without extensions.
+  try {
+    await db.query(EXTENSIONS);
+  } catch (err: any) {
+    console.warn(`[migration] Extension creation skipped (non-fatal): ${err.message?.slice(0, 200)}`);
+  }
+
+  // Core migration — columns, indexes, tables.
   try {
     await db.query(MIGRATION);
     console.log('Full migration completed.');
