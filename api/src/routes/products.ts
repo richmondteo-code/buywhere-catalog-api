@@ -234,7 +234,7 @@ router.get(
     const responseTimeMs = Date.now() - requestStart;
 
     const products = dataResult.rows.map((row) =>
-      buildProduct(row as Record<string, unknown>, currency, compact, true)
+      buildProduct(row as Record<string, unknown>, currency, compact)
     );
 
     // Apply field selection if `fields` param is specified
@@ -247,6 +247,7 @@ router.get(
         'rating', 'title', 'country_code', 'region',
         'canonical_id', 'normalized_price_usd', 'structured_specs',
         'comparison_attributes', 'metadata', 'original_price', 'discount_pct',
+        'affiliate_url',
       ]);
       const requested = fields.filter(f => VALID_FIELDS.has(f));
       if (requested.length > 0) {

@@ -59,6 +59,9 @@ export function buildProduct(
     base.metadata = row.metadata as Record<string, unknown> | null;
   }
 
+  if (row.affiliate_url != null) {
+    base.affiliate_url = row.affiliate_url as string;
+  }
   if (row.original_price != null) {
     base.original_price = parseFloat(row.original_price as string);
   }

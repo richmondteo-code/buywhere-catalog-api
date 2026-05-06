@@ -26,6 +26,8 @@ export interface CanonicalProduct {
   comparison_attributes?: ComparisonAttribute[];
   // Non-compact-only (legacy extras):
   metadata?: Record<string, unknown> | null;
+  // Affiliate link (when available):
+  affiliate_url?: string | null;
   // Deal-specific:
   original_price?: number | null;
   discount_pct?: number | null;
