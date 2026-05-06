@@ -73,9 +73,10 @@ jobs:
           SSH_USER: ${{ secrets.PRODUCTION_DEPLOY_USER }}
           APP_DIR: ${{ secrets.PRODUCTION_APP_DIR || '/opt/buywhere' }}
           GAR_TOKEN: ${{ steps.gar_token.outputs.token }}
+          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY_PRODUCTION }}
         run: |
           ssh -i ~/.ssh/id_ed25519 "${SSH_USER}@${SSH_HOST}" \
-            env FULL_IMAGE="${FULL_IMAGE}" IMAGE_TAG="${IMAGE_TAG}" APP_DIR="${APP_DIR}" GAR_TOKEN="${GAR_TOKEN}" \
+            env FULL_IMAGE="${FULL_IMAGE}" IMAGE_TAG="${IMAGE_TAG}" APP_DIR="${APP_DIR}" GAR_TOKEN="${GAR_TOKEN}" POSTHOG_API_KEY="${POSTHOG_API_KEY}" \
             bash -s <<'REMOTE'
           set -euo pipefail
           echo "api-deploy: image=${FULL_IMAGE} tag=${IMAGE_TAG}"
@@ -92,7 +93,7 @@ jobs:
           docker tag "${FULL_IMAGE}" buywhere-api:latest
 
           # Restart only the api service (zero-downtime: compose will replace container)
-          docker compose up -d --no-deps --force-recreate api
+          POSTHOG_API_KEY="${POSTHOG_API_KEY:-}" docker compose up -d --no-deps --force-recreate api
 
           echo "API container restarted — waiting for health check..."
 
