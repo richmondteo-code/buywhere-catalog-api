@@ -89,31 +89,40 @@ jobs:
 
           # Update and restart the API container (docker-compose)
           cd "${APP_DIR}"
-          # Tag as latest for docker-compose
           docker tag "${FULL_IMAGE}" buywhere-api:latest
 
-          # Ensure required docker networks exist (some compose configs declare them external)
-          docker network create docker_default 2>/dev/null || true
+          # Ensure required docker networks exist
+          docker network create buywhere_default 2>/dev/null || true
           docker network create buywhere-api_default 2>/dev/null || true
 
-          # Stop and remove any stale api container (leftover from failed deploys)
-          docker compose stop api 2>/dev/null || true
+          # Full diagnostic: understand what owns our ports
+          echo "=== Port diagnostic ==="
+          docker ps --format '{{.Names}} {{.Ports}}' 2>/dev/null | grep -E '3000|8000' || echo "  (no docker containers on 3000/8000)"
+          ss -tlnp | grep -E ':(3000|8000)\b' || echo "  (no processes on 3000/8000)"
+
+          # Gracefully stop the api service via compose (releases port bindings)
+          echo "=== Stopping existing API ==="
+          docker compose stop -t 10 api 2>/dev/null || true
           docker compose rm -f api 2>/dev/null || true
 
-          # Diagnose and free ports required by docker-compose api service
-          for port in 3000 8000; do
-            echo "Checking what holds port ${port}..."
-            ss -tlnp | grep ":${port}" || echo "  (nothing on port ${port})"
-            fuser -k ${port}/tcp 2>/dev/null && echo "  Killed process on port ${port}" || echo "  No process to kill on port ${port}"
+          # Aggressively kill anything left on our ports (2 passes to catch respawns)
+          for pass in 1 2; do
+            for port in 3000 8000; do
+              if ss -tlnp | grep -q ":${port}\b"; then
+                echo "Port ${port} occupied (pass ${pass}) — killing owner"
+                fuser -k -9 ${port}/tcp 2>/dev/null || true
+                sleep 0.5
+              fi
+            done
           done
 
           # Ensure POSTHOG_API_KEY passthrough exists in compose file
           if ! grep -q 'POSTHOG_API_KEY' docker-compose.yml 2>/dev/null; then
-            echo "WARNING: POSTHOG_API_KEY not declared in docker-compose.yml — appending to api service"
+            echo "Injecting POSTHOG_API_KEY into docker-compose.yml api service"
             sed -i '/^  api:/,/^  [a-z]/s|^    environment:|    environment:\n      POSTHOG_API_KEY: ${POSTHOG_API_KEY:-}|' docker-compose.yml
           fi
 
-          # Restart only the api service (zero-downtime: compose will replace container)
+          # Start the api service
           POSTHOG_API_KEY="${POSTHOG_API_KEY:-}" docker compose up -d --no-deps --force-recreate --remove-orphans api
 
           echo "API container restarted — waiting for health check..."
