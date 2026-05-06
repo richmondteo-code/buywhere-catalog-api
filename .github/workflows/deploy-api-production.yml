@@ -100,10 +100,12 @@ jobs:
           docker compose stop api 2>/dev/null || true
           docker compose rm -f api 2>/dev/null || true
 
-          # Diagnose and free port 3000 if it's held by another process
-          echo "Checking what holds port 3000..."
-          ss -tlnp | grep :3000 || echo "  (nothing on port 3000)"
-          fuser -k 3000/tcp 2>/dev/null && echo "  Killed process on port 3000" || echo "  No process to kill on port 3000"
+          # Diagnose and free ports required by docker-compose api service
+          for port in 3000 8000; do
+            echo "Checking what holds port ${port}..."
+            ss -tlnp | grep ":${port}" || echo "  (nothing on port ${port})"
+            fuser -k ${port}/tcp 2>/dev/null && echo "  Killed process on port ${port}" || echo "  No process to kill on port ${port}"
+          done
 
           # Ensure POSTHOG_API_KEY passthrough exists in compose file
           if ! grep -q 'POSTHOG_API_KEY' docker-compose.yml 2>/dev/null; then
