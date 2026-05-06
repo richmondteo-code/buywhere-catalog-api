@@ -50,6 +50,36 @@ function createApp() {
             ts: new Date().toISOString(),
         });
     });
+    // DB health check — verifies PostgreSQL connectivity
+    app.get('/health/db', async (_req, res) => {
+        const start = Date.now();
+        try {
+            const result = await config_1.db.query('SELECT 1 AS ok');
+            const latencyMs = Date.now() - start;
+            res.json({ db: 'ok', latency_ms: latencyMs, ts: new Date().toISOString() });
+        }
+        catch (err) {
+            const latencyMs = Date.now() - start;
+            res.status(503).json({ db: 'error', error: err.message || 'Database unreachable', latency_ms: latencyMs, ts: new Date().toISOString() });
+        }
+    });
+    // Uptime Robot webhook handler — receives DOWN/UP alerts
+    app.post('/webhooks/uptime-robot', async (req, res) => {
+        const { monitorID, monitorFriendlyName, monitorURL, alertType, alertTypeFriendlyName, alertDetails, monitorStatusCode } = req.body || {};
+        if (!monitorID) {
+            return res.status(400).json({ error: { code: 'MISSING_REQUIRED_FIELD', message: 'monitorID is required' } });
+        }
+        const name = monitorFriendlyName || monitorID;
+        console.log("[uptime-robot] " + name + " [" + monitorURL + "] = " + (alertTypeFriendlyName || alertType) + " \u2014 " + (alertDetails || monitorStatusCode));
+        if (alertType === '1' || (alertTypeFriendlyName || '').toLowerCase() === 'down') {
+            console.error("[uptime-robot] MONITOR DOWN: " + name + " (" + monitorURL + ") \u2014 " + (alertDetails || '') + " (HTTP " + (monitorStatusCode || '?') + ")");
+        }
+        res.json({ status: 'ok' });
+    });
+    // Uptime Robot webhook diagnostic
+    app.get('/webhooks/uptime-robot', (_req, res) => {
+        res.json({ status: 'ok', mode: 'diagnostic' });
+    });
     // MCP / OpenAI plugin discovery
     app.use('/.well-known', wellknown_1.default);
     app.get('/openapi.json', (req, res) => (0, wellknown_1.default)(req, res, () => { }));
