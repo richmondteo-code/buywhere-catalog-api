@@ -1,6 +1,6 @@
 {
   "description": "US Shopify merchant catalog \u2014 BUY-11037",
-  "count": 332,
+  "count": 355,
   "merchants": [
     {
       "domain": "gymshark.com",
@@ -1192,6 +1192,213 @@
       "category": "general",
       "subcategory": "sea",
       "source_attribution": "sea_discovery"
+    },
+    {
+      "domain": "colehaan.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "instantpot.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "colourpop.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "jackery.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "toysrus.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "kyliecosmetics.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "aldoshoes.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "champion.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "molekule.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "lacolors.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "cosori.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "jansport.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "baretraps.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "ravpower.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "wyze.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "aukey.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "modells.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "peterthomasroth.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "physiciansformula.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "morphebrushes.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "jeffreestarcosmetics.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "beautyblender.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
+    },
+    {
+      "domain": "bbox.com",
+      "source": "top_shopify_lists",
+      "country": "US",
+      "currency": "USD",
+      "category": "general",
+      "subcategory": "top_lists",
+      "source_attribution": "top_shopify_lists"
     },
     {
       "domain": "albanypark.com",
