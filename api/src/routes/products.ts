@@ -11,9 +11,13 @@ const SEARCH_CACHE_TTL_SECONDS = 60;
 const router = Router();
 
 // GET /v1/products/search
+<<<<<<< HEAD
 // Query params: q, domain, region, country, category, category_id, category_path,
 //               brand, merchant_id, availability, min_price, max_price,
 //               currency, limit, offset, page, fields, sort, sort_by, source_page, compact
+=======
+// Query params: q, domain, region, country, category, min_price, max_price, currency, limit, offset, source_page
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
 router.get(
   '/search',
   agentDetectMiddleware,
@@ -26,6 +30,7 @@ router.get(
     const domain = req.query.domain as string | undefined;
     const region = req.query.region as string | undefined;
     const category = req.query.category as string | undefined;
+<<<<<<< HEAD
     const categoryId = req.query.category_id as string | undefined;
     const categoryPath = (req.query.category_path as string) ? (req.query.category_path as string).split(',').map(p => p.trim()).filter(Boolean) : undefined;
     const brand = req.query.brand as string | undefined;
@@ -34,6 +39,8 @@ router.get(
     const rawFields = (req.query.fields as string) || undefined;
     const fields = rawFields ? rawFields.split(',').map(f => f.trim()).filter(Boolean) : undefined;
     const sort = ((req.query.sort || req.query.sort_by) as string) || undefined;
+=======
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
     // country_code is the canonical param; `country` is kept as a backward-compat alias.
     // Default to SG when neither country nor region is specified (BUY-6598: prevent cross-region accessory pollution).
     const explicitCountry = ((req.query.country_code as string | undefined) || (req.query.country as string | undefined))?.toUpperCase() || undefined;
@@ -44,14 +51,22 @@ router.get(
     // Price filters (min_price/max_price) apply in this inferred currency.
     const currency = (req.query.currency as string) || (countryCode ? (COUNTRY_CURRENCY[countryCode] || 'SGD') : 'SGD');
     const limit = Math.min(parseInt((req.query.limit as string) || '20'), 100);
+<<<<<<< HEAD
     const rawPage = parseInt((req.query.page as string) || '0');
     const rawOffset = parseInt((req.query.offset as string) || '0');
     const offset = rawPage > 0 ? (rawPage - 1) * limit : rawOffset;
+=======
+    const offset = parseInt((req.query.offset as string) || '0');
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
     const sourcePage = req.query.source_page as string | undefined;
     const compact = req.query.compact === 'true';
 
     // Check Redis cache for this exact query (60s TTL)
+<<<<<<< HEAD
     const cacheKey = `fts:${q}:${domain || ''}:${region || ''}:${countryCode || ''}:${category || ''}:${categoryId || ''}:${categoryPath?.join(',') || ''}:${brand || ''}:${merchantId || ''}:${availability || ''}:${currency}:${minPrice ?? ''}:${maxPrice ?? ''}:${limit}:${offset}:${sort || ''}:${fields?.join(',') || ''}:${compact ? 'c' : 'f'}`;
+=======
+    const cacheKey = `fts:${q}:${domain || ''}:${region || ''}:${countryCode || ''}:${category || ''}:${currency}:${minPrice ?? ''}:${maxPrice ?? ''}:${limit}:${offset}:${compact ? 'c' : 'f'}`;
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
     try {
       const cached = await redis.get(cacheKey);
       if (cached) {
@@ -98,6 +113,7 @@ router.get(
       params.push(`%${category}%`);
       idx++;
     }
+<<<<<<< HEAD
     if (brand) {
       conditions.push(`brand ILIKE $${idx}`);
       params.push(`%${brand}%`);
@@ -135,6 +151,8 @@ router.get(
       params.push(merchantId);
       idx++;
     }
+=======
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
     if (minPrice !== undefined) {
       conditions.push(`price >= $${idx}`);
       params.push(minPrice);
@@ -157,6 +175,7 @@ router.get(
     const countResult = await db.query(countQuery, params.slice(0, idx - 1));
     const approxCount = parseInt(countResult.rows[0].count, 10);
 
+<<<<<<< HEAD
     const VALID_SORT = new Set(['relevance', 'price_asc', 'price_desc', 'newest', 'highest_rated', 'most_reviewed']);
     const effectiveSort = sort && VALID_SORT.has(sort) ? sort : undefined;
     const useFtsRanking = (!effectiveSort || effectiveSort === 'relevance') && ftsParamIdx;
@@ -174,11 +193,14 @@ router.get(
       }
     }
 
+=======
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
     // For large result sets (>1000 rows), computing ts_rank over all matches is expensive.
     // Instead, let the GIN index fetch up to CANDIDATE_LIMIT rows, rank those by ts_rank,
     // then return the top N. This gives relevance ordering at a fraction of the cost.
     // For small result sets (<= 1000 rows), ts_rank over all matches is fast.
     const CANDIDATE_LIMIT = Math.max(500, (limit + offset) * 10);
+<<<<<<< HEAD
     const specColumns = `created_at, description, brand, mpn, gtin, category_path, category, category_id, merchant_id, avg_rating, review_count`;
     let dataQuery: string;
     if (useFtsRanking && approxCount <= 1000) {
@@ -189,10 +211,21 @@ router.get(
                region, country_code, ${specColumns}
         FROM products
         LEFT JOIN affiliate_links al ON al.product_id = products.id::text AND al.merchant_id = products.merchant_id
+=======
+    let dataQuery: string;
+    if (ftsParamIdx && approxCount <= 1000) {
+      // Small result set: ts_rank over all matches is fast, gives best relevance
+      dataQuery = `
+        SELECT id, sku AS source_id, source AS domain, url,
+               title, price, currency, image_url, metadata, updated_at,
+               region, country_code
+        FROM products
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
         ${whereClause}
         ORDER BY ts_rank(search_vector, plainto_tsquery('english', $${ftsParamIdx})) DESC, updated_at DESC
         LIMIT $${idx} OFFSET $${idx + 1}
       `;
+<<<<<<< HEAD
     } else if (useFtsRanking) {
       dataQuery = `
         SELECT id, source_id, domain, url,
@@ -207,6 +240,21 @@ router.get(
                  ts_rank(search_vector, plainto_tsquery('english', $${ftsParamIdx})) AS rank
           FROM products
           LEFT JOIN affiliate_links al ON al.product_id = products.id::text AND al.merchant_id = products.merchant_id
+=======
+    } else if (ftsParamIdx) {
+      // Large result set: GIN index fetches CANDIDATE_LIMIT rows using bitmap scan, then ranks.
+      // No ORDER BY in the inner query — this lets PostgreSQL stop the heap scan after
+      // CANDIDATE_LIMIT rows (vs scanning all 25k+ matching rows to sort by rank first).
+      // 12x faster for broad queries (14ms vs 170ms for "headphones" on 2M product corpus).
+      dataQuery = `
+        SELECT id, source_id, domain, url, title, price, currency, image_url, metadata, updated_at, region, country_code
+        FROM (
+          SELECT id, sku AS source_id, source AS domain, url,
+                 title, price, currency, image_url, metadata, updated_at,
+                 region, country_code,
+                 ts_rank(search_vector, plainto_tsquery('english', $${ftsParamIdx})) AS rank
+          FROM products
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
           ${whereClause}
           LIMIT ${CANDIDATE_LIMIT}
         ) _candidates
@@ -214,6 +262,7 @@ router.get(
         LIMIT $${idx} OFFSET $${idx + 1}
       `;
     } else {
+<<<<<<< HEAD
       dataQuery = `
         SELECT id, sku AS source_id, source AS domain, url,
                al.destination_url AS affiliate_url,
@@ -223,6 +272,16 @@ router.get(
         LEFT JOIN affiliate_links al ON al.product_id = products.id::text AND al.merchant_id = products.merchant_id
         ${whereClause}
         ORDER BY ${buildSortOrder()}
+=======
+      // No FTS query (e.g. filter-only) — sort by recency
+      dataQuery = `
+        SELECT id, sku AS source_id, source AS domain, url,
+               title, price, currency, image_url, metadata, updated_at,
+               region, country_code
+        FROM products
+        ${whereClause}
+        ORDER BY updated_at DESC
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
         LIMIT $${idx} OFFSET $${idx + 1}
       `;
     }
@@ -237,6 +296,7 @@ router.get(
       buildProduct(row as Record<string, unknown>, currency, compact)
     );
 
+<<<<<<< HEAD
     // Apply field selection if `fields` param is specified
     let filteredProducts = products;
     if (fields && fields.length > 0) {
@@ -265,6 +325,10 @@ router.get(
 
     const responseBody = buildSearchResponse(
       filteredProducts, total, limit, offset, responseTimeMs, false
+=======
+    const responseBody = buildSearchResponse(
+      products, total, limit, offset, responseTimeMs, false
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
     );
 
     // Cache result in Redis (fire-and-forget)
@@ -355,8 +419,12 @@ router.get(
         `SELECT id, sku AS source_id, source AS domain, url,
                 title, price, (metadata->>'original_price')::numeric AS original_price,
                 currency, image_url, metadata, updated_at,
+<<<<<<< HEAD
                 region, country_code, created_at, description, brand, mpn, gtin,
                 category_path, category, merchant_id, avg_rating, review_count,
+=======
+                region, country_code,
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
                 ROUND(((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100)::numeric, 1) AS discount_pct
          FROM products
          WHERE ${dealWhere}
@@ -659,8 +727,12 @@ router.get(
       result = await db.query(
         `SELECT id, sku AS source_id, source AS domain, url,
                 title, price, currency, image_url, metadata, updated_at,
+<<<<<<< HEAD
                 region, country_code, created_at, description, brand, mpn, gtin,
                 category_path, category, merchant_id, avg_rating, review_count
+=======
+                region, country_code, brand, category_path, avg_rating AS rating, review_count
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
          FROM products WHERE id = $1`,
         [id]
       );
@@ -875,6 +947,7 @@ router.post(
   }
 );
 
+<<<<<<< HEAD
 function extractCategories(products: Array<{ domain?: string; merchant?: { id: string; name: string | null; domain: string }; metadata?: Record<string, unknown> | null }>): string[] {
   const cats = new Set<string>();
   for (const p of products) {
@@ -882,6 +955,15 @@ function extractCategories(products: Array<{ domain?: string; merchant?: { id: s
     if (source) {
       const domainName = source.replace('.sg', '').replace('.com', '');
       cats.add(domainName);
+=======
+function extractCategories(products: Array<{ domain?: string; merchant?: string; metadata?: Record<string, unknown> | null }>): string[] {
+  const cats = new Set<string>();
+  for (const p of products) {
+    const source = p.domain || p.merchant;
+    if (source) {
+      const domain = source.replace('.sg', '').replace('.com', '');
+      cats.add(domain);
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
     }
     if (p.metadata && typeof p.metadata === 'object') {
       const meta = p.metadata as Record<string, unknown>;

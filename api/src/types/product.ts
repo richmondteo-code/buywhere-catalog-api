@@ -26,8 +26,11 @@ export interface CanonicalProduct {
   comparison_attributes?: ComparisonAttribute[];
   // Non-compact-only (legacy extras):
   metadata?: Record<string, unknown> | null;
+<<<<<<< HEAD
   // Affiliate link (when available):
   affiliate_url?: string | null;
+=======
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
   // Deal-specific:
   original_price?: number | null;
   discount_pct?: number | null;

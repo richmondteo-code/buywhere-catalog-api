@@ -19,10 +19,17 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository_owner }}/${{ github.event.repository.name }}
+<<<<<<< HEAD
   GCP_PROJECT_ID: buywhere-production
   GCP_REGION: asia-southeast1
   CLOUD_RUN_SERVICE: buywhere-api-production
   CLOUD_SQL_INSTANCE: buywhere-production:asia-southeast1:buywhere-db
+=======
+  GCP_PROJECT_ID: gaia-calendar-488606
+  GCP_REGION: asia-southeast1
+  CLOUD_RUN_SERVICE: buywhere-api-production
+  CLOUD_SQL_INSTANCE: gaia-calendar-488606:asia-southeast1:buywhere-db
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
 
 jobs:
   build:
@@ -95,7 +102,11 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
+<<<<<<< HEAD
           credentials_json: ${{ secrets.GCP_SA_KEY_PROD || secrets.GCP_SA_KEY }}
+=======
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
@@ -165,6 +176,10 @@ jobs:
         env:
           API_BASE_URL: ${{ needs.deploy-cloud-run.outputs.service_url }}
           DEPLOYMENT_ID: ${{ needs.deploy-cloud-run.outputs.deployment_id }}
+<<<<<<< HEAD
+=======
+          K6_API_KEY: ${{ secrets.K6_API_KEY_PRODUCTION }}
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
         run: |
           chmod +x scripts/cloud-run-latency-smoke-test.sh
 
@@ -244,7 +259,11 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
+<<<<<<< HEAD
           credentials_json: ${{ secrets.GCP_SA_KEY_PROD || secrets.GCP_SA_KEY }}
+=======
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
@@ -310,7 +329,11 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
+<<<<<<< HEAD
           credentials_json: ${{ secrets.GCP_SA_KEY_PROD || secrets.GCP_SA_KEY }}
+=======
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2

@@ -35,12 +35,17 @@ router.get('/mcp.json', (_req: Request, res: Response) => {
     version: '0.1.0',
     mcp_endpoint: 'https://mcp.buywhere.ai/mcp',
     documentation: 'https://api.buywhere.ai/docs/guides/mcp',
+<<<<<<< HEAD
     capabilities: ['search_products', 'get_product', 'compare_products', 'get_deals', 'list_categories', 'find_best_price'],
+=======
+    capabilities: ['search_products', 'get_product', 'compare_products', 'get_deals', 'list_categories'],
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
     coverage: 'Singapore',
     data_freshness: 'real-time',
   });
 });
 
+<<<<<<< HEAD
 // GET /.well-known/glama.json — Glama.ai agent discovery manifest
 router.get('/glama.json', (_req: Request, res: Response) => {
   res.json({
@@ -81,6 +86,8 @@ router.get('/glama.json', (_req: Request, res: Response) => {
   });
 });
 
+=======
+>>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
 // GET /openapi.json — OpenAPI 3.0 spec
 router.get('/openapi.json', (_req: Request, res: Response) => {
   res.json({
