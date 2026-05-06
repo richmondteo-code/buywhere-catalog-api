@@ -92,6 +92,16 @@ jobs:
           # Tag as latest for docker-compose
           docker tag "${FULL_IMAGE}" buywhere-api:latest
 
+          # Ensure required docker networks exist (some compose configs declare them external)
+          docker network create docker_default 2>/dev/null || true
+          docker network create buywhere-api_default 2>/dev/null || true
+
+          # Ensure POSTHOG_API_KEY passthrough exists in compose file
+          if ! grep -q 'POSTHOG_API_KEY' docker-compose.yml 2>/dev/null; then
+            echo "WARNING: POSTHOG_API_KEY not declared in docker-compose.yml — appending to api service"
+            sed -i '/^  api:/,/^  [a-z]/s|^    environment:|    environment:\n      POSTHOG_API_KEY: ${POSTHOG_API_KEY:-}|' docker-compose.yml
+          fi
+
           # Restart only the api service (zero-downtime: compose will replace container)
           POSTHOG_API_KEY="${POSTHOG_API_KEY:-}" docker compose up -d --no-deps --force-recreate api
 
