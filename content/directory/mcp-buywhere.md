@@ -28,12 +28,12 @@ BuyWhere provides a Model Context Protocol (MCP) server that gives AI agents rea
 
 | Tool | Description |
 |------|-------------|
-| `search_products` | Search products by query with country and category filters |
-| `get_product` | Retrieve detailed product information by ID |
-| `compare_prices` | Compare prices across all merchants for a specific product |
-| `find_best_price` | Find the lowest price across all retailers |
-| `get_merchant_info` | Get merchant details including rating, return policy, shipping |
-| `track_price` | Monitor price changes for a product over time |
+| `search_products` | Full-text product search with filters for keyword, merchant, price, category, country, currency |
+| `get_product` | Get full product details by BuyWhere product ID |
+| `compare_products` | Compare 2–10 products side-by-side across merchants |
+| `get_deals` | Find discounted products sorted by discount percentage |
+| `list_categories` | List top-level product categories with product counts |
+| `find_best_price` | Find the cheapest current listing for a product across all merchants |
 
 ### Supported Regions
 
@@ -45,11 +45,11 @@ BuyWhere provides a Model Context Protocol (MCP) server that gives AI agents rea
 ## Installation
 
 ```bash
-# Install via npm
-npm install @buywhere/mcp-server
+# Install via npx
+npx -y @buywhere/mcp-server
 
-# Or install via Smithery
-npx @smithery-ai/cli install @buywhere/mcp-server
+# Or use hosted MCP endpoint
+# https://api.buywhere.ai/mcp
 ```
 
 ## Configuration
@@ -74,20 +74,19 @@ npx @smithery-ai/cli install @buywhere/mcp-server
 // Search for products
 const results = await mcp.buywhere.search_products({
   query: "Sony WH-1000XM5",
-  country: "us",
+  country_code: "US",
   limit: 5
 });
 
 // Compare prices across retailers
-const prices = await mcp.buywhere.compare_prices({
-  product_id: results.items[0].id,
-  country: "us"
+const prices = await mcp.buywhere.compare_products({
+  ids: [results.items[0].id, results.items[1].id]
 });
 
 // Find the best price
 const best = await mcp.buywhere.find_best_price({
-  product_id: results.items[0].id,
-  country: "us"
+  product_name: "Sony WH-1000XM5",
+  country_code: "US"
 });
 ```
 
@@ -128,11 +127,12 @@ Generate affiliate links with live pricing data for monetized shopping content.
 
 ## Pricing
 
-| Plan | Price | API Calls | MCP Tools |
-|------|-------|-----------|-----------|
-| Free | $0 | 1,000/month | search_products, get_product |
-| Developer | $29 | 50,000/month | All tools + price history |
-| Business | $99 | 500,000/month | All tools + priority support |
+| Plan | Price | API Calls | Features |
+|------|-------|-----------|---------|
+| Free | $0 | 1,000/month | Basic search, no credit card required |
+| Starter | $9 | 50,000/month | Full API access |
+| Pro | $49 | 500,000/month | Full API + priority support |
+| Enterprise | Custom | Unlimited | Dedicated infrastructure |
 
 ## Related Documentation
 
