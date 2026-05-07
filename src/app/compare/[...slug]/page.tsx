@@ -48,9 +48,15 @@ function parseContent(relativePath: string) {
   const slug = relativePath.replace(/\.md$/, "").split(path.sep).join("/");
   const fallbackTitle = path.basename(relativePath, ".md");
 
+  let title = frontmatter.title || fallbackTitle;
+  if (!frontmatter.title && content) {
+    const h1Match = content.match(/^#\s+(.+)/m);
+    if (h1Match) title = h1Match[1].trim();
+  }
+
   return {
     slug,
-    title: frontmatter.title || fallbackTitle,
+    title,
     description: frontmatter.description || "",
     category: frontmatter.category || "",
     tags: frontmatter.tags || [],
