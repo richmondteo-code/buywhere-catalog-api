@@ -37,7 +37,6 @@ Authentication: Bearer token (get free key at https://api.buywhere.ai/v1/auth/re
 4. **get_deals** — Find discounted products sorted by discount percentage.
 5. **list_categories** — List top-level product categories with product counts.
 6. **find_best_price** — Find the cheapest current listing for a product across all merchants.
-7. **resolve_product_query** — Primary natural-language shopping interface that classifies intent and routes to the right catalog capability.
 
 ## Authentication
 
