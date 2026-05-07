@@ -88,7 +88,7 @@ router.get('/openapi.json', (_req: Request, res: Response) => {
     info: {
       title: 'BuyWhere Product Catalog API',
       version: '1',
-      description: 'Agent-native product catalog API for Singapore merchants',
+      description: 'Agent-native product catalog API for Southeast Asia and US commerce. Search 1.5M+ products across Shopee, Lazada, Amazon, Walmart, FairPrice, Carousell, and 20+ e-commerce platforms. Compare prices, discover deals, and find best prices through REST or MCP.',
     },
     servers: [{ url: `${API_BASE_URL}/v1` }],
     paths: {
