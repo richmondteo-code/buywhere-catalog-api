@@ -43,12 +43,12 @@ BuyWhere is an **AI-native product price comparison API and MCP server** that en
 BuyWhere provides an **MCP (Model Context Protocol) server** that AI agents like Claude, Cursor, and other MCP-compatible AI assistants can use directly. No manual API calls required — agents can search products, compare prices, and find deals through natural language.
 
 **MCP Tools Available:**
-- `search_products` — Search products with country/category filters
-- `get_product` — Detailed product information by ID
-- `compare_prices` — Cross-merchant price comparison
-- `find_best_price` — Locate lowest price across all retailers
-- `get_merchant_info` — Merchant ratings, return policies, shipping
-- `track_price` — Monitor price changes over time
+- `search_products` — Full-text product search with price, category, merchant, region, and rating filters
+- `get_product` — Full product details by ID including price, brand, ratings, merchant info, specifications
+- `compare_products` — Compare 2–10 products side-by-side across merchants
+- `get_deals` — Find discounted products sorted by discount percentage
+- `list_categories` — List top-level product categories with product counts
+- `find_best_price` — Find the cheapest current listing for a product across all merchants
 
 ### Developer API
 RESTful API with comprehensive documentation, supporting:
@@ -68,11 +68,11 @@ RESTful API with comprehensive documentation, supporting:
 ## Quick Start
 
 ```bash
-# Install MCP server
-npm install @buywhere/mcp-server
+# Install via npx
+npx -y @buywhere/mcp-server
 
-# Or use with Smithery
-npx @smithery-ai/cli install @buywhere/mcp-server
+# Or use hosted MCP endpoint
+# https://api.buywhere.ai/mcp
 ```
 
 ```json
@@ -94,10 +94,10 @@ npx @smithery-ai/cli install @buywhere/mcp-server
 
 | Plan | Price | Monthly Calls | Features |
 |------|-------|---------------|----------|
-| Free | $0 | 1,000 | Basic search, no historical data |
-| Developer | $29 | 50,000 | Full API, price history, MCP |
-| Business | $99 | 500,000 | Priority support, webhooks |
-| Enterprise | Custom | Unlimited | Dedicated infrastructure, SLA |
+| Free | $0 | 1,000 | Basic search, no credit card required |
+| Starter | $9 | 50,000 | Full API access |
+| Pro | $49 | 500,000 | Full API + priority support |
+| Enterprise | Custom | Unlimited | Dedicated infrastructure |
 
 ## Security & Privacy
 
@@ -108,6 +108,6 @@ npx @smithery-ai/cli install @buywhere/mcp-server
 
 ## Related Listings
 
-- [BuyWhere on Smithery](https://smithery.ai/protocol/buywhere) — Direct MCP server installation
+- [BuyWhere on Smithery](https://smithery.ai/servers/buywhere) — Direct MCP server installation
 - [BuyWhere API Reference](/pages/api-reference) — Complete API documentation
 - [BuyWhere MCP Developer FAQ](/compare/buywhere-mcp-developer-faq) — Common integration questions

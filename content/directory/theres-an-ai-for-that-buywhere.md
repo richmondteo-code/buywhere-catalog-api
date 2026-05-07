@@ -53,12 +53,12 @@ BuyWhere is an AI-native product price comparison API and MCP server that helps 
 - `GET /v1/price-history/{id}` — Historical price data for price trend analysis
 
 ### MCP Server Tools
-- `search_products` — Search for products by query with country and category filters
-- `get_product` — Retrieve detailed product information by ID
-- `compare_prices` — Compare prices across all merchants for a specific product
-- `get_merchant_info` — Get merchant details including rating, return policy, and shipping
-- `find_best_price` — Find the lowest price across all retailers for a product
-- `track_price` — Monitor price changes for a product over time
+- `search_products` — Full-text product search with filters for keyword, merchant, price, category, country, currency
+- `get_product` — Get full product details by BuyWhere product ID
+- `compare_products` — Compare 2–10 products side-by-side across merchants
+- `get_deals` — Find discounted products sorted by discount percentage
+- `list_categories` — List top-level product categories with product counts
+- `find_best_price` — Find the cheapest current listing for a product across all merchants
 
 ### Authentication
 - API key authentication via `X-API-Key` header
@@ -66,19 +66,19 @@ BuyWhere is an AI-native product price comparison API and MCP server that helps 
 
 ## Pricing
 
-- **Free tier**: 1,000 API calls/month
-- **Developer tier**: $29/month — 50,000 API calls/month
-- **Business tier**: $99/month — 500,000 API calls/month
-- **Enterprise**: Custom limits and dedicated support
+- **Free tier**: 1,000 API calls/month — no credit card required
+- **Starter tier**: $9/month — 50,000 API calls/month
+- **Pro tier**: $49/month — 500,000 API calls/month
+- **Enterprise**: Custom limits and dedicated infrastructure
 
 ## Quick Start
 
 ```bash
-# Install the MCP server
-npm install @buywhere/mcp-server
+# Install via npx
+npx -y @buywhere/mcp-server
 
-# Or use with Smithery
-npx @smithery-ai/cli install @buywhere/mcp-server
+# Or use hosted MCP endpoint
+# https://api.buywhere.ai/mcp
 ```
 
 ```typescript

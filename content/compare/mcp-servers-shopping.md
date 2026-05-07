@@ -36,16 +36,16 @@ The Model Context Protocol (MCP) is becoming the standard for connecting AI agen
 **Countries:** US (USD), Singapore (SGD)
 
 **Tools:**
-- `search_products` — Search by query with filters
-- `get_product` — Product details by ID
-- `compare_prices` — Cross-merchant price comparison
-- `find_best_price` — Lowest price finder
-- `get_merchant_info` — Merchant ratings and policies
-- `track_price` — Price change monitoring
+- `search_products` — Full-text product search with filters
+- `get_product` — Full product details by ID
+- `compare_products` — Compare 2–10 products side-by-side
+- `get_deals` — Discounted products sorted by discount %
+- `list_categories` — Top-level product categories
+- `find_best_price` — Cheapest listing across all merchants
 
 **Best for:** AI shopping agents, deal finders, price comparison tools
 
-**Pricing:** Free (1K calls/mo), Developer $29/mo (50K calls), Business $99/mo (500K calls)
+**Pricing:** Free (1K calls/mo), Starter $9/mo (50K calls), Pro $49/mo (500K calls)
 
 ### Amazon MCP (via Smithery)
 
