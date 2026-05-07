@@ -26,6 +26,7 @@ BuyWhere exposes its product catalog API as MCP tools. When you configure `@buyw
 | `get_deals` | Find products with active discounts |
 | `list_categories` | Browse available categories |
 | `find_best_price` | Find cheapest price for a product |
+| `resolve_product_query` | Classify natural language shopping intent and route to the right catalog capability |
 
 ---
 
@@ -90,5 +91,5 @@ The server is open source. File issues or PRs at the BuyWhere GitHub repo. Featu
 
 - [BuyWhere API Docs](https://api.buywhere.ai/docs)
 - [BuyWhere NPM Package](https://www.npmjs.com/package/@buywhere/mcp-server)
-- [Smithery Listing](https://smithery.ai/servers/BuyWhere)
+- [Smithery Listing](https://smithery.ai/servers/buywhere)
 - [Glama Listing](https://glama.ai/mcp/servers/BuyWhere/buywhere-mcp)
