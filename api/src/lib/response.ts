@@ -59,12 +59,6 @@ export function buildProduct(
     base.metadata = row.metadata as Record<string, unknown> | null;
   }
 
-<<<<<<< HEAD
-  if (row.affiliate_url != null) {
-    base.affiliate_url = row.affiliate_url as string;
-  }
-=======
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
   if (row.original_price != null) {
     base.original_price = parseFloat(row.original_price as string);
   }
