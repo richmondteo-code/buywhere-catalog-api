@@ -24,10 +24,7 @@ export default function Header() {
           <Link href="/compare" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Compare</Link>
           <Link href="/blog" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Blog</Link>
           <Link href="/quickstart" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Quickstart</Link>
-<<<<<<< HEAD
-=======
           <Link href="/challenge" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Challenge</Link>
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
           <Link href="/merchants" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Merchants</Link>
           <Link href="/partners" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Partners</Link>
           <Link href="/pricing" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Pricing</Link>

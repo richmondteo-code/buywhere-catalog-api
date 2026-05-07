@@ -35,11 +35,19 @@ export interface SitemapUrlEntry {
 }
 
 const CATEGORY_PAGE_SLUGS = [
+  "automotive",
   "beauty-health",
+  "books-stationery",
   "electronics",
   "fashion",
+  "food-beverages",
+  "garden-outdoor",
   "grocery",
+  "health-wellness",
   "home-living",
+  "pet-supplies",
+  "sports-outdoors",
+  "toys-games",
 ] as const;
 
 const STATIC_SITEMAP_ROUTES = [
@@ -70,11 +78,8 @@ const STATIC_SITEMAP_ROUTES = [
   { path: "/laptop-singapore/", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/air-purifier-singapore/", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/best-robot-vacuums-2026/", priority: 0.9, changeFrequency: "weekly" as const },
-<<<<<<< HEAD
-=======
   { path: "/mcp-ecommerce/", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/challenge/", priority: 0.9, changeFrequency: "daily" as const },
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
   { path: "/privacy/", priority: 0.3, changeFrequency: "yearly" as const },
   { path: "/terms/", priority: 0.3, changeFrequency: "yearly" as const },
 ] as const;

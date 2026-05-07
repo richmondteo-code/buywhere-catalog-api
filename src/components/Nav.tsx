@@ -20,10 +20,7 @@ export default function Nav() {
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
           <Link href="/quickstart" className="hover:text-indigo-600 transition-colors">Quickstart</Link>
-<<<<<<< HEAD
-=======
           <Link href="/challenge" className="hover:text-indigo-600 transition-colors">Challenge</Link>
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
           <Link href="/merchants" className="hover:text-indigo-600 transition-colors">Merchants</Link>
           <Link href="/partners" className="hover:text-indigo-600 transition-colors">Partners</Link>
           <Link href="/pricing" className="hover:text-indigo-600 transition-colors">Pricing</Link>
