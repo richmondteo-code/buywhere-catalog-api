@@ -698,8 +698,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "r6", name: "Roborock Q5 Pro+", price: 499, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=Roborock+Q5+Pro%2B&country=us", brand: "Roborock", category: "Robot Vacuums" },
     ],
   },
-<<<<<<< HEAD
-=======
   "airpods-singapore": {
     slug: "airpods-singapore",
     title: "Best AirPods Deals in Singapore 2026 | Compare Prices Across SG Retailers",
@@ -951,5 +949,4 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "m5", name: "Apple MacBook Air 13 M4", price: 1499, currency: "SGD", merchant: "Lazada", imageUrl: null, href: "/search?q=MacBook+Air+13+M4&country=sg", brand: "Apple", category: "Laptops" },
     ],
   },
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
 };
