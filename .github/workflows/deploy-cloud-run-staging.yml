@@ -115,7 +115,7 @@ jobs:
             --add-cloudsql-instances ${{ env.CLOUD_SQL_INSTANCE }} \
             --set-env-vars "ENVIRONMENT=staging" \
             --set-env-vars "PG_POOL_MAX=50" \
-            --set-env-vars "DATABASE_URL=${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}" \
+            --set-secrets "DATABASE_URL=${{ secrets.CLOUD_SQL_STAGING_CONNECTION_STRING }}" \
             --set-env-vars "REDIS_URL=${{ secrets.REDIS_STAGING_URL }}" \
             --set-env-vars "API_KEY_SECRET=${{ secrets.API_KEY_SECRET_STAGING }}" \
             --set-env-vars "SENTRY_DSN=${{ secrets.SENTRY_DSN_STAGING }}" \
@@ -188,6 +188,7 @@ jobs:
         env:
           API_BASE_URL: ${{ needs.deploy-cloud-run.outputs.url }}
           K6_API_KEY: ${{ secrets.K6_API_KEY_STAGING }}
+          K6_COUNTRY_CODE: SG
           K6_TARGET_VUS: 1000
           K6_DURATION: 5m
           K6_THRESHOLD_P95_MS: 200
@@ -196,6 +197,7 @@ jobs:
           k6 run scripts/k6-load-test.js \
             --env K6_API_BASE_URL="$API_BASE_URL" \
             --env K6_API_KEY="$K6_API_KEY" \
+            --env K6_COUNTRY_CODE="$K6_COUNTRY_CODE" \
             --env K6_TARGET_VUS=1000 \
             --env K6_DURATION=5m \
             --env K6_THRESHOLD_P95_MS=200 \
@@ -207,9 +209,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: k6-results-staging
-          path: k6-results.json
-<<<<<<< HEAD
+          path: |
+            k6-results.json
+            k6-summary.json
           retention-days: 7
-=======
-          retention-days: 7
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
