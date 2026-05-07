@@ -39,7 +39,7 @@ REQUEST_TIMEOUT = 45
 MAX_RETRIES = 3
 IMPERSONATE = "safari17_0"
 
-OUTPUT_DIR = Path("/tmp/opencode/gamestop_us")
+OUTPUT_DIR = Path("/home/paperclip/buywhere-api/data/gamestop_us")
 SITEMAP_INDEX_URL = "https://www.gamestop.com/sitemap_index.xml"
 SITEMAP_URLS_FILE = OUTPUT_DIR / "sitemap_urls.json"
 PRODUCT_URLS_FILE = OUTPUT_DIR / "product_urls.json"
