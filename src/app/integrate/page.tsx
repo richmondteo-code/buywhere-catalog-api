@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
@@ -125,8 +126,83 @@ const setupSteps = [
 ];
 
 export default function IntegratePage() {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://buywhere.ai/integrate#faq",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "How do I connect BuyWhere MCP to Claude Desktop?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Add BuyWhere to your claude_desktop_config.json file with the npx command and your API key. The configuration includes the server command (npx), arguments (-y @buywhere/mcp-server), and environment variable (BUYWHERE_API_KEY). Full step-by-step instructions are on the BuyWhere quickstart page."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What MCP tools does BuyWhere expose?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "BuyWhere exposes six MCP tools: search_products (full-text product search across all merchants), get_product (product details by ID), compare_products (side-by-side comparison of 2–10 products), get_deals (discounted products sorted by discount percentage), list_categories (browse available categories), and find_best_price (cheapest current listing across all merchants)."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Do I need an API key to use BuyWhere MCP?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, you need a BuyWhere API key. Get a free key at buywhere.ai/api-keys — no credit card required. The free tier includes 1,000 API calls per month."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Which AI agents support BuyWhere MCP?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "BuyWhere MCP works with any MCP-compatible agent: Claude Desktop, Cursor, Cline, Windsurf, VS Code (with MCP extension), LangChain, CrewAI, AutoGen, and LlamaIndex."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What countries does BuyWhere MCP cover?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "BuyWhere MCP covers Singapore (SG) with the full catalog live, and United States (US) in preview. Additional markets including Malaysia, Thailand, Vietnam, Philippines, and Indonesia are planned."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "How is BuyWhere different from web scraping for AI agents?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "BuyWhere returns structured, normalized product data from official API feeds and merchant partnerships — no HTML parsing, no CAPTCHAs, no IP blocking. One MCP tool call returns clean JSON that LLMs can parse directly, unlike scraped data which breaks whenever a site changes its layout."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Can I use BuyWhere without MCP?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. The same product catalog is available via REST API at api.buywhere.ai/v1. MCP is an optional wrapper that makes the tools available to AI agents with zero custom integration code."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What is the difference between the free tier and paid plans?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "The free tier includes 1,000 API calls per month with basic search and no price history. Paid plans (Developer at $29/month for 50,000 calls, Business at $99/month for 500,000 calls with priority support and webhooks) unlock full API access including price history, priority support, and webhook integrations."
+        }
+      }
+    ]
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-white">
+      <Script id="faq-schema" type="application/ld+json" strategy="afterInteractive">
+        {JSON.stringify(faqSchema)}
+      </Script>
       <Nav />
 
       <section className="border-b border-slate-200 bg-[radial-gradient(circle_at_top_left,_rgba(79,70,229,0.12),_transparent_40%),linear-gradient(135deg,#0f172a_0%,#1e1b4b_100%)] text-white">
