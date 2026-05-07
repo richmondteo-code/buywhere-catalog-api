@@ -1,5 +1,12 @@
 const robots = `User-agent: *
 Allow: /
+Disallow: /home/
+Disallow: /PAP/
+Disallow: /BUY/
+Disallow: /v1/
+Disallow: /v2/
+Disallow: /api/
+Disallow: /api-reference/
 
 User-agent: GPTBot
 Allow: /

@@ -135,40 +135,13 @@ export function createApp() {
     res.send(xml);
   });
 
-  // GEO / AI-crawler discoverability
+  // Block all crawlers from api.buywhere.ai — this is an API server, not a content site
   app.get('/robots.txt', (_req, res) => {
-    res.set('Content-Signal', 'ai-train=no, search=yes, ai-input=yes');
+    res.set('Content-Signal', 'ai-train=no, search=no, ai-input=no');
     res.type('text/plain').send(
       [
         'User-agent: *',
-        'Allow: /',
-        '',
-        '# AI crawlers — explicitly allowed for GEO and LLM training/citations',
-        'User-agent: GPTBot',
-        'Allow: /',
-        '',
-        'User-agent: Claude-Web',
-        'Allow: /',
-        '',
-        'User-agent: PerplexityBot',
-        'Allow: /',
-        '',
-        'User-agent: Bytespider',
-        'Allow: /',
-        '',
-        'User-agent: CCBot',
-        'Allow: /',
-        '',
-        'User-agent: Applebot-Extended',
-        'Allow: /',
-        '',
-        'User-agent: YouBot',
-        'Allow: /',
-        '',
-        'User-agent: cohere-ai',
-        'Allow: /',
-        '',
-        'Sitemap: https://buywhere.ai/sitemap.xml',
+        'Disallow: /',
       ].join('\n')
     );
   });

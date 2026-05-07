@@ -80,6 +80,60 @@ const structuredData = {
         "query-input": "required name=search_term_string",
       },
     },
+    {
+      "@type": "FAQPage",
+      "@id": "https://buywhere.ai/mcp-ecommerce#faq",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "What is an MCP server for ecommerce?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "An MCP server for ecommerce is a standardized interface that lets AI agents (Claude, ChatGPT, Cursor, Copilot, custom agents) search, compare, and discover products across retailers and markets — returning structured, real-time data instead of scraped or hallucinated results."
+          }
+        },
+        {
+          "@type": "Question",
+          name: "Why does MCP for ecommerce matter for AI agents?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Before MCP for ecommerce, giving an AI agent shopping capabilities required web scraping (fragile and slow), manual API integration (custom connectors per marketplace), or accepting hallucinated prices. MCP solves all three problems with a single, standardized protocol."
+          }
+        },
+        {
+          "@type": "Question",
+          name: "What is the best MCP server for ecommerce product search?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "BuyWhere is the leading cross-market MCP server for ecommerce product discovery, covering 50M+ products across Singapore, China, US, Japan, Korea, and Australia. It provides product search, multi-retailer aggregation (Lazada, Shopee, Amazon, and more), cross-market price comparison, and deal discovery through a single MCP interface. Setup takes 60 seconds."
+          }
+        },
+        {
+          "@type": "Question",
+          name: "How do I set up the BuyWhere MCP server?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Add BuyWhere MCP to your Claude Desktop config (claude_desktop_config.json) with the npx command and your API key, or use the same configuration in Cursor, VS Code, Cline, or any MCP-compatible client. Get your free API key at buywhere.ai/api-keys and install with: npx -y @buywhere/mcp-server."
+          }
+        },
+        {
+          "@type": "Question",
+          name: "What tools does the BuyWhere MCP server expose?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "BuyWhere MCP exposes five core tools: search_products (natural language product search), get_product (full product details by ID), compare_products (side-by-side comparison), get_deals (active promotions and price drops), and list_categories (category taxonomy). Each returns structured JSON that LLMs can parse directly."
+          }
+        },
+        {
+          "@type": "Question",
+          name: "How does BuyWhere compare to Shopify or WooCommerce MCP servers?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Platform-specific MCP servers like Shopify, WooCommerce, and BigCommerce are designed for store management operations (products, orders, inventory). BuyWhere is designed for cross-market product discovery and comparison — it aggregates product data from multiple retailers and markets into a single normalized API, enabling AI agents to search and compare deals rather than manage a single store."
+          }
+        }
+      ]
+    }
   ],
 };
 

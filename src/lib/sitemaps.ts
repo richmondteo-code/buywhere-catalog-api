@@ -35,11 +35,19 @@ export interface SitemapUrlEntry {
 }
 
 const CATEGORY_PAGE_SLUGS = [
+  "automotive",
   "beauty-health",
+  "books-stationery",
   "electronics",
   "fashion",
+  "food-beverages",
+  "garden-outdoor",
   "grocery",
+  "health-wellness",
   "home-living",
+  "pet-supplies",
+  "sports-outdoors",
+  "toys-games",
 ] as const;
 
 const STATIC_SITEMAP_ROUTES = [

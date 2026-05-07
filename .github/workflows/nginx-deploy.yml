@@ -1,9 +1,5 @@
 name: Deploy nginx config
 
-<<<<<<< HEAD
-# Triggers: push to deploy/nginx/ on main, or manual dispatch
-=======
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
 on:
   push:
     branches: [main]
@@ -20,11 +16,7 @@ on:
         required: false
         default: 'false'
       restart_only:
-<<<<<<< HEAD
         description: 'If true, skip config file upload/write and just restart nginx (useful to pick up new upstream)'
-=======
-        description: 'If true, skip config file upload/write and just restart nginx'
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
         required: false
         default: 'false'
 
@@ -34,22 +26,15 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v4
-<<<<<<< HEAD
-=======
         with:
           fetch-depth: 2
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
 
       - name: Set deploy variables
         id: vars
         run: |
-<<<<<<< HEAD
-          CONFIG_NAME="${{ github.event.inputs.config_name || 'api.buywhere.ai' }}"
-=======
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             CONFIG_NAME="${{ github.event.inputs.config_name || 'api.buywhere.ai' }}"
           else
-            # On push: detect which config file changed in deploy/nginx/
             CHANGED=$(git diff --name-only HEAD~1 HEAD -- deploy/nginx/*.conf 2>/dev/null | head -1)
             if [[ -n "$CHANGED" ]]; then
               CONFIG_NAME=$(basename "$CHANGED" .conf)
@@ -59,7 +44,6 @@ jobs:
               echo "No config change detected, defaulting to: ${CONFIG_NAME}"
             fi
           fi
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
           DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
           RESTART_ONLY="${{ github.event.inputs.restart_only || 'false' }}"
           echo "config_name=${CONFIG_NAME}" >> "$GITHUB_OUTPUT"
@@ -92,13 +76,9 @@ jobs:
           SSH_USER: ${{ secrets.PRODUCTION_DEPLOY_USER }}
         run: |
           REMOTE_TMP="/tmp/nginx-${CONFIG_NAME}-${DEPLOY_SHA}.conf"
-<<<<<<< HEAD
           scp -i ~/.ssh/id_ed25519 \
             "deploy/nginx/${CONFIG_NAME}.conf" \
             "${SSH_USER}@${SSH_HOST}:${REMOTE_TMP}"
-=======
-          scp -i ~/.ssh/id_ed25519             "deploy/nginx/${CONFIG_NAME}.conf"             "${SSH_USER}@${SSH_HOST}:${REMOTE_TMP}"
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
           echo "Uploaded to ${SSH_HOST}:${REMOTE_TMP}"
 
       - name: Deploy and reload nginx
@@ -110,51 +90,27 @@ jobs:
           SSH_HOST: ${{ secrets.PRODUCTION_DEPLOY_HOST }}
           SSH_USER: ${{ secrets.PRODUCTION_DEPLOY_USER }}
         run: |
-<<<<<<< HEAD
-          # Pass variables as explicit env vars on the remote command line.
-          # Using bash -s with heredoc avoids the positional-argument/unbound-variable
-          # issue that occurs when bash -c '...' _ "$VAR" is used over SSH.
           ssh -i ~/.ssh/id_ed25519 "${SSH_USER}@${SSH_HOST}" \
             env CONFIG_NAME="${CONFIG_NAME}" DEPLOY_SHA="${DEPLOY_SHA}" DRY_RUN="${DRY_RUN}" RESTART_ONLY="${RESTART_ONLY}" \
             bash -s <<'REMOTE'
           set -euo pipefail
 
-          # Sites-enabled on this server uses no .conf suffix (nginx convention: sites-enabled/hostname)
-=======
-          ssh -i ~/.ssh/id_ed25519 "${SSH_USER}@${SSH_HOST}"             env CONFIG_NAME="${CONFIG_NAME}" DEPLOY_SHA="${DEPLOY_SHA}" DRY_RUN="${DRY_RUN}" RESTART_ONLY="${RESTART_ONLY}"             bash -s <<'REMOTE'
-          set -euo pipefail
-
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
           DEST="/etc/nginx/sites-enabled/${CONFIG_NAME}"
           SRC="/tmp/nginx-${CONFIG_NAME}-${DEPLOY_SHA}.conf"
 
           echo "nginx-deploy: config=${CONFIG_NAME} sha=${DEPLOY_SHA} dry_run=${DRY_RUN} restart_only=${RESTART_ONLY}"
 
-<<<<<<< HEAD
-          # Validate nginx config — try sudo first (non-interactive), fall back to plain.
-          # Treat PID-file permission errors as non-fatal (they don't affect config syntax).
           validate_nginx() {
             local out
             out=$(sudo -n nginx -t -c /etc/nginx/nginx.conf 2>&1) \
               || out=$(nginx -t -c /etc/nginx/nginx.conf 2>&1) \
               || true
-=======
-          validate_nginx() {
-            local out
-            out=$(sudo -n nginx -t -c /etc/nginx/nginx.conf 2>&1)               || out=$(nginx -t -c /etc/nginx/nginx.conf 2>&1)               || true
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
             echo "$out"
             if echo "$out" | grep -q "syntax is ok"; then
               return 0
             fi
-<<<<<<< HEAD
-            # If the only failures are pid-file permission errors, treat as OK
             local real_errors
             real_errors=$(echo "$out" | grep -v "nginx.pid" | grep -E "\[emerg\]|\[crit\]|test failed" || true)
-=======
-            local real_errors
-            real_errors=$(echo "$out" | grep -v "nginx.pid" | grep -E "\\[emerg\\]|\\[crit\\]|test failed" || true)
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
             if [[ -n "$real_errors" ]]; then
               echo "FATAL: nginx config has errors (not just pid-file):"
               echo "$real_errors"
@@ -175,12 +131,6 @@ jobs:
             echo "Validating existing nginx config before deploy..."
             validate_nginx
 
-<<<<<<< HEAD
-            # Write the config — try plain cp first, then sudo cp, then sudo tee.
-            # All three must fail for the deploy to abort. If the DEST file exists but
-            # cannot be written, we exit rather than silently reloading stale config.
-=======
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
             if cp "${SRC}" "${DEST}" 2>/dev/null; then
               echo "Config written to ${DEST} (plain cp)"
             elif sudo -n cp "${SRC}" "${DEST}" 2>/dev/null; then
@@ -188,13 +138,9 @@ jobs:
             elif sudo -n tee "${DEST}" < "${SRC}" > /dev/null 2>/dev/null; then
               echo "Config written to ${DEST} (sudo tee)"
             else
-<<<<<<< HEAD
               echo "ERROR: cannot write ${DEST} — cp, sudo cp, and sudo tee all failed."
               echo "       Grant file ownership: sudo chown \$(whoami) ${DEST}"
               echo "       Or add sudoers rule: \$(whoami) ALL=(root) NOPASSWD: /bin/cp /tmp/nginx-*.conf /etc/nginx/sites-enabled/*"
-=======
-              echo "ERROR: cannot write ${DEST} — all write methods failed."
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
               exit 1
             fi
 
@@ -207,35 +153,12 @@ jobs:
             exit 0
           fi
 
-<<<<<<< HEAD
           echo "Restarting nginx via systemctl..."
           systemctl restart nginx 2>/dev/null \
             || sudo -n systemctl restart nginx 2>/dev/null \
             || sudo systemctl restart nginx
           echo "nginx restarted — config drift resolved (sha ${DEPLOY_SHA})"
 
-          # Cleanup tmp configs on server
-=======
-          echo "Restarting nginx..."
-          if systemctl restart nginx 2>/dev/null || sudo -n systemctl restart nginx 2>/dev/null; then
-            echo "nginx restarted via systemctl (sha ${DEPLOY_SHA})"
-          else
-            echo "systemctl restart failed — trying kill old + start new..."
-            # kill existing nginx
-            sudo -n fuser -k 80/tcp 443/tcp 2>/dev/null || true
-            sleep 1
-            # try nginx reload
-            if sudo -n nginx -s reload 2>/dev/null; then
-              echo "nginx reloaded via -s reload after kill"
-            elif sudo nginx 2>/dev/null; then
-              echo "nginx started fresh via sudo nginx"
-            else
-              echo "WARN: could not start nginx — config written, manual reload needed"
-              echo "Try: sudo nginx -s reload"
-            fi
-          fi
-
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
           rm -f /tmp/main-nginx.conf /tmp/buywhere-ai-modified.conf 2>/dev/null || true
           REMOTE
 
@@ -243,15 +166,11 @@ jobs:
         if: steps.vars.outputs.dry_run != 'true'
         run: |
           sleep 2
-<<<<<<< HEAD
           HTTP=$(curl -s -o /dev/null -w "%{http_code}" \
             -X POST https://api.buywhere.ai/mcp \
             -H "Content-Type: application/json" \
             -H "Accept: application/json, text/event-stream" \
             -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"smoke-test","version":"1.0"}},"id":1}')
-=======
-          HTTP=$(curl -s -o /dev/null -w "%{http_code}"             -X POST https://api.buywhere.ai/mcp             -H "Content-Type: application/json"             -H "Accept: application/json, text/event-stream"             -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"smoke-test","version":"1.0"}},"id":1}')
->>>>>>> a8194ee77 (fix(BUY-12731): use Cloud Run hostname + X-Forwarded-Host to fix 404 routing)
           echo "POST https://api.buywhere.ai/mcp (initialize) → HTTP ${HTTP}"
           if [[ "$HTTP" != "200" ]]; then
             echo "ERROR: /mcp returned ${HTTP} after deploy — check nginx on production"

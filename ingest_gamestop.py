@@ -39,7 +39,7 @@ REQUEST_TIMEOUT = 45
 MAX_RETRIES = 3
 IMPERSONATE = "safari17_0"
 
-OUTPUT_DIR = Path("/tmp/opencode/gamestop_us")
+OUTPUT_DIR = Path("/home/paperclip/buywhere-api/data/gamestop_us")
 SITEMAP_INDEX_URL = "https://www.gamestop.com/sitemap_index.xml"
 SITEMAP_URLS_FILE = OUTPUT_DIR / "sitemap_urls.json"
 PRODUCT_URLS_FILE = OUTPUT_DIR / "product_urls.json"
@@ -340,6 +340,7 @@ def main():
     last_request = 0.0
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     output_ndjson = OUTPUT_DIR / f"products_{timestamp}.ndjson"
+    CHECKPOINT_EVERY = 20
 
     with open(output_ndjson, "a") as ndjson_f:
         for idx, url in enumerate(product_urls):
@@ -366,9 +367,12 @@ def main():
             products.append(normalized)
             scraped += 1
             cp["processed_urls"].append(url)
+            if scraped % CHECKPOINT_EVERY == 0:
+                save_checkpoint(cp)
             ndjson_f.write(json.dumps(normalized) + "\n")
             log(f"  OK: {normalized['title'][:80]} | ${normalized['price']} | {normalized.get('brand','')}")
             if len(products) >= BATCH_SIZE:
+                save_checkpoint(cp)
                 if not args.scrape_only:
                     log(f"  Ingesting batch of {len(products)}...")
                     result = ingest_batch(products)
