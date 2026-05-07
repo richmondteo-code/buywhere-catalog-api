@@ -59,11 +59,12 @@ GET /v1/merchants/{merchant_id}
 
 For AI agent integration, BuyWhere provides MCP tools:
 
-- `search_products` — Find products by natural language query
-- `compare_prices` — Cross-merchant price comparison
-- `find_best_price` — Locate lowest price across all retailers
-- `track_price` — Monitor price changes over time
-- `get_merchant_info` — Retrieve merchant ratings, policies, shipping
+- `search_products` — Full-text product search with filters for keyword, merchant, price, category, country, currency
+- `get_product` — Get full product details by BuyWhere product ID
+- `compare_products` — Compare 2–10 products side-by-side across merchants
+- `get_deals` — Find discounted products sorted by discount percentage
+- `list_categories` — List top-level product categories with product counts
+- `find_best_price` — Find the cheapest current listing across all merchants
 
 ## Code Examples
 
