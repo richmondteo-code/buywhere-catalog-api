@@ -369,6 +369,7 @@ def main():
             ndjson_f.write(json.dumps(normalized) + "\n")
             log(f"  OK: {normalized['title'][:80]} | ${normalized['price']} | {normalized.get('brand','')}")
             if len(products) >= BATCH_SIZE:
+                save_checkpoint(cp)
                 if not args.scrape_only:
                     log(f"  Ingesting batch of {len(products)}...")
                     result = ingest_batch(products)
