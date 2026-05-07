@@ -340,6 +340,7 @@ def main():
     last_request = 0.0
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     output_ndjson = OUTPUT_DIR / f"products_{timestamp}.ndjson"
+    CHECKPOINT_EVERY = 20
 
     with open(output_ndjson, "a") as ndjson_f:
         for idx, url in enumerate(product_urls):
@@ -366,6 +367,8 @@ def main():
             products.append(normalized)
             scraped += 1
             cp["processed_urls"].append(url)
+            if scraped % CHECKPOINT_EVERY == 0:
+                save_checkpoint(cp)
             ndjson_f.write(json.dumps(normalized) + "\n")
             log(f"  OK: {normalized['title'][:80]} | ${normalized['price']} | {normalized.get('brand','')}")
             if len(products) >= BATCH_SIZE:
