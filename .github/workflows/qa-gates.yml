@@ -1,0 +1,128 @@
+name: QA Deployment Gates
+
+on:
+  workflow_call:
+    inputs:
+      skip_gates:
+        description: 'Skip all QA gates (emergency deploy)'
+        required: false
+        type: boolean
+        default: false
+    outputs:
+      gates_passed:
+        description: 'Whether all gates passed'
+        value: ${{ jobs.summary.outputs.passed }}
+
+jobs:
+  # G1 — Deploy Gate: TypeScript compile + tests
+  test-gate:
+    name: "G1: Test Gate"
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.skip_gates }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: api/package-lock.json
+
+      - name: Install dependencies
+        working-directory: api
+        run: npm ci
+
+      - name: TypeScript compile check
+        working-directory: api
+        run: npx tsc --noEmit
+
+      - name: Run tests
+        working-directory: api
+        run: npm test -- --passWithNoTests
+        env:
+          NODE_ENV: test
+
+  # G5 — Security Gate: dependency audit + secret detection
+  security-gate:
+    name: "G5: Security Gate"
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.skip_gates }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: api/package-lock.json
+
+      - name: Install dependencies
+        working-directory: api
+        run: npm ci
+
+      - name: Dependency vulnerability audit
+        working-directory: api
+        run: npm audit --audit-level=high --omit=dev || echo "::warning::npm audit found high-severity vulnerabilities"
+
+      - name: Secret detection (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for hardcoded secrets in source
+        run: |
+          # Fail if any obvious secret patterns found in TypeScript source
+          if grep -rn --include="*.ts" --include="*.js" -E '(password|secret|api_key|token)\s*[:=]\s*["\x27][A-Za-z0-9+/=]{20,}' api/src/ 2>/dev/null | grep -v 'process\.env' | grep -v '\.test\.' | grep -v 'example' | head -5; then
+            echo "::error::Potential hardcoded secrets detected in source code"
+            exit 1
+          fi
+          echo "No hardcoded secrets detected"
+
+  # Summary gate — ensures all gates passed
+  summary:
+    name: "QA Gates Summary"
+    runs-on: ubuntu-latest
+    needs: [test-gate, security-gate]
+    if: always()
+    outputs:
+      passed: ${{ steps.check.outputs.passed }}
+    steps:
+      - name: Check gate results
+        id: check
+        run: |
+          if [ "${{ inputs.skip_gates }}" = "true" ]; then
+            echo "⚠️ QA gates SKIPPED (emergency deploy)"
+            echo "passed=skipped" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          FAILED=0
+          if [ "${{ needs.test-gate.result }}" != "success" ]; then
+            echo "❌ G1 Test Gate: FAILED"
+            FAILED=1
+          else
+            echo "✅ G1 Test Gate: PASSED"
+          fi
+
+          if [ "${{ needs.security-gate.result }}" != "success" ]; then
+            echo "❌ G5 Security Gate: FAILED"
+            FAILED=1
+          else
+            echo "✅ G5 Security Gate: PASSED"
+          fi
+
+          echo "---"
+          echo "G2 Schema Gate: PENDING (Phase 2)"
+          echo "G3 Data Quality Gate: PENDING (Phase 2)"
+          echo "G4 Performance Gate: Already exists as post-deploy k6 test"
+
+          if [ $FAILED -eq 1 ]; then
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "::error::One or more QA gates failed"
+            exit 1
+          fi
+
+          echo "passed=true" >> $GITHUB_OUTPUT
+          echo "All QA gates passed ✅"
