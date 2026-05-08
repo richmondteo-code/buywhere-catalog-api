@@ -1,51 +1,47 @@
 ---
-title: "BuyWhere vs Octane AI — Product Search and Quiz-Based Product Discovery"
+title: "BuyWhere vs Octane — Product Discovery API Compared"
 slug: "buywhere-vs-octane"
-description: "Compare BuyWhere and Octane AI for product discovery. BuyWhere is a cross-merchant price comparison API and MCP server for AI agents; Octane AI focuses on Shopify product quizzes and Facebook Messenger bots. Features, pricing, and use cases compared."
+description: "Compare BuyWhere and Octane for product discovery. BuyWhere is a cross-merchant price comparison API and MCP server for AI agents; Octane provides AI-powered product discovery, recommendations, and search APIs for e-commerce platforms. Features, data model, and use cases compared."
 category: Compare
 tags:
-  - "BuyWhere vs Octane AI"
-  - "Octane AI alternative"
-  - "product search API"
-  - "Shopify product quiz"
-  - "AI shopping agent"
+  - "BuyWhere vs Octane"
+  - "Octane alternative"
+  - "product discovery API"
+  - "e-commerce recommendations"
+  - "AI search"
   - "price comparison API"
   - "MCP server"
+  - "AI shopping agent"
 schema_type: Article
 published: true
-updated: 2026-05-07
+updated: 2026-05-08
 ---
 
-# BuyWhere vs Octane AI — Product Search and Quiz-Based Product Discovery
+# BuyWhere vs Octane — Product Discovery API Compared
 
-Comparing BuyWhere and Octane AI for teams evaluating product discovery tools for e-commerce, affiliate marketing, and AI agent integrations.
+Comparing BuyWhere and Octane for developers building product discovery experiences.
 
 ---
 
 ## Overview
 
-BuyWhere and Octane AI take different approaches to product discovery.
+**BuyWhere** is a product catalog API and MCP server that provides structured, real-time product pricing and availability data across 500+ retailers. Built for developers who need verified cross-merchant commerce data for AI agents, price comparison tools, and deal aggregators.
 
-**BuyWhere** is a product catalog API and MCP server that gives AI agents and developers access to live product pricing and availability across 500+ retailers in the US and Southeast Asia. It is designed for cross-merchant price comparison, deal discovery, and AI agent integrations via the Model Context Protocol.
-
-**Octane AI** is a Shopify-focused platform that helps brands create product recommendation quizzes, Facebook Messenger bots, and post-purchase automation. It is designed for Shopify merchants who want to increase average order value through personalised quiz-driven recommendations.
+**Octane** provides AI-powered product discovery, recommendations, and search APIs for e-commerce platforms. It focuses on helping shoppers discover products through visual similarity, personalised recommendations, and AI-driven search — integrated into your own product catalogue.
 
 ---
 
 ## Key Differences
 
-| Capability | BuyWhere | Octane AI |
-|-----------|----------|-----------|
-| **Platform** | API-first, any platform | Shopify-exclusive |
-| **Core feature** | Cross-merchant product search and price comparison | Product recommendation quizzes and Messenger bots |
-| **Data scope** | 500+ retailers, multi-country | Single Shopify store catalog |
-| **Price comparison** | Real-time, cross-merchant | No |
+| Capability | BuyWhere | Octane |
+|-----------|----------|---------|
+| **Core focus** | Cross-merchant price comparison | On-site product discovery |
+| **Data source** | Direct merchant feeds | Your own product catalogue |
+| **Price comparison** | Cross-merchant, real-time | No |
+| **Countries** | US, SG, MY, TH, VN, PH, ID | Global |
 | **MCP server** | Yes — @buywhere/mcp-server | No |
 | **AI agent native** | Yes | No |
-| **Countries** | US, SG, MY, TH, VN, PH, ID | Global (Shopify) |
-| **Use case** | AI agents, price tools, affiliates | Shopify quiz funnels, Messenger marketing |
-| **Free tier** | 1,000 calls/month | 14-day free trial |
-| **Pricing** | Usage-based from $9/month | $49/month+ |
+| **Use case** | Price data, deal discovery | Recommendations, visual search |
 
 ---
 
@@ -53,95 +49,71 @@ BuyWhere and Octane AI take different approaches to product discovery.
 
 Choose BuyWhere when you need:
 
-- **Cross-merchant price comparison** across Amazon, Walmart, Shopee, Lazada, and more
+- **Cross-merchant price comparison** — compare prices across Amazon, Walmart, Shopee, Lazada, and 500+ retailers
 - **AI agent integration** via MCP for Claude Desktop, Cursor, or custom agents
-- **Deal discovery** — find products with active discounts across retailers
-- **Multi-country product search** in SGD, USD, MYR, THB, VND, PHP, IDR
-- **Affiliate product links** with real-time pricing data
-- **A price comparison API** that works independently of any e-commerce platform
-
-BuyWhere is platform-agnostic and designed for developers building commerce applications, AI agents, and price comparison tools.
+- **Verified commerce data** from direct merchant feeds — stable, real-time
+- **Deal discovery** — find products with active discounts across all retailers
+- **Developer-first setup** — API key in minutes, no catalogue integration required
+- **Free tier** — 1,000 calls/month without a credit card
 
 ---
 
-## When to Choose Octane AI
+## When to Choose Octane
 
-Choose Octane AI when you are:
+Choose Octane when you need:
 
-- **A Shopify merchant** looking to increase conversions with product recommendation quizzes
-- **Building Messenger bot flows** for abandoned cart recovery or post-purchase follow-ups
-- **Running Facebook/Instagram marketing campaigns** that need quiz-driven product recommendations
-- **Focused on increasing average order value** through personalised cross-sell recommendations
+- **Visual product discovery** — find similar products based on visual similarity
+- **Personalised recommendations** — AI-driven product suggestions based on shopper behaviour
+- **Search autocomplete** — real-time search suggestions and query completions
+- **Browse personalisation** — rank and filter products based on user context
+- **Conversion optimisation** — tools to improve browse-to-purchase rates
+- **A/B testing** — test discovery strategies and measure revenue impact
 
-Octane AI requires a Shopify store and is optimised for marketing funnel use cases rather than raw product data access.
+Octane integrates with your own product catalogue — it does not provide cross-merchant pricing or data from external retailers.
 
 ---
 
-## Integration Comparison
+## Technical Comparison
 
-### BuyWhere API
+### Data Model
 
-BuyWhere is API-first, accessible from any platform:
+BuyWhere returns verified cross-merchant product data:
 
-```bash
-curl "https://api.buywhere.ai/v1/products/search?q=wireless+headphones&country=SG&limit=5" \
-  -H "Authorization: Bearer $BUYWHERE_API_KEY"
+```json
+{
+  "id": "bw_us_12345",
+  "name": "Nike Air Max 90",
+  "price": 130.00,
+  "currency": "USD",
+  "merchant": "amazon_us",
+  "domain": "amazon.com",
+  "in_stock": true,
+  "rating": 4.7
+}
 ```
 
-BuyWhere also ships as an MCP server:
+Octane indexes your own product catalogue — it does not provide cross-merchant pricing or data from external retailers.
 
-```bash
-npx -y @buywhere/mcp-server
-```
+### Use Case Fit
 
-After configuration, BuyWhere MCP tools work inside Claude Desktop, Cursor, and any MCP-compatible AI agent.
-
-### Octane AI
-
-Octane AI integrates directly with Shopify through its app installation flow. Quizzes and bot flows are configured within the Octane AI dashboard. API access is available for data syncing but the core product is the no-code quiz builder.
-
----
-
-## Pricing
-
-| Plan | BuyWhere | Octane AI |
-|------|----------|-----------|
-| Free | 1,000 calls/month | 14-day trial |
-| Entry | $9/month (50,000 calls) | $49/month (1,000 quizzes) |
-| Growth | $49/month (500,000 calls) | $149/month+ |
-| Enterprise | Custom | Custom |
-
-BuyWhere pricing is transparent and usage-based. Octane AI pricing is tied to quiz volume and channel features.
-
----
-
-## Use Case Comparison
-
-### AI Shopping Agent
-
-BuyWhere is purpose-built for AI agents that need live commerce data:
-
-> "Find the best price for an iPhone 15 Pro across Singapore retailers. Show me where it is cheapest and include the affiliate link."
-
-One `find_best_price` MCP tool call returns the answer from multiple merchants.
-
-### Shopify Quiz Funnel
-
-Octane AI is purpose-built for Shopify quiz flows:
-
-> A customer takes a quiz: "What is your skin type?" → Results show personalised product recommendations from the merchant's catalog.
-
-The quiz is configured in Octane AI's no-code builder and integrated into the Shopify store.
+| Use case | BuyWhere | Octane |
+|----------|----------|---------|
+| Price comparison app | Yes | No |
+| AI shopping agent | Yes | No |
+| Deal finder | Yes | No |
+| Visual product discovery | No | Yes |
+| Personalised recommendations | No | Yes |
+| Browse personalisation | No | Yes |
 
 ---
 
 ## Summary
 
-BuyWhere and Octane AI serve different use cases. BuyWhere is infrastructure for cross-merchant product data access — price comparison, deal discovery, and AI agent integrations. Octane AI is a Shopify marketing tool for personalised product quiz funnels and Messenger bots.
+BuyWhere and Octane serve different product discovery needs. BuyWhere is a **cross-merchant commerce API** — verified real-time pricing across hundreds of retailers for AI agents, price comparison tools, and deal discovery. Octane is an **on-site product discovery platform** — it helps shoppers find and explore products within your own catalogue using visual similarity and AI-driven recommendations.
 
-If you need **cross-retailer product pricing data** for an AI agent, price comparison tool, or affiliate application, **BuyWhere** is the right choice.
+If you are building a **price comparison tool, AI shopping agent, or deal aggregator**, BuyWhere is the right choice.
 
-If you are a **Shopify merchant** who wants to increase conversions through **product recommendation quizzes and Messenger bots**, **Octane AI** is purpose-built for that.
+If you are an **e-commerce brand** looking to improve on-site discovery through visual similarity, personalised recommendations, and AI search, Octane is the right choice — and BuyWhere can complement it with cross-merchant pricing context.
 
 ---
 
