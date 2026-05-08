@@ -1,16 +1,35 @@
 import { PostHog } from 'posthog-node';
 
-const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY || '';
-const POSTHOG_HOST = process.env.POSTHOG_HOST || 'https://app.posthog.com';
+const POSTHOG_PROJECT_TOKEN = process.env.POSTHOG_PROJECT_TOKEN || '';
+const POSTHOG_HOST = process.env.POSTHOG_HOST || 'https://us.i.posthog.com';
 
 let client: PostHog | null = null;
 
 function getClient(): PostHog | null {
-  if (!POSTHOG_API_KEY) return null;
+  if (!POSTHOG_PROJECT_TOKEN) return null;
   if (!client) {
-    client = new PostHog(POSTHOG_API_KEY, { host: POSTHOG_HOST });
+    client = new PostHog(POSTHOG_PROJECT_TOKEN, { host: POSTHOG_HOST });
   }
   return client;
+}
+
+export async function getFeatureFlag(key: string, distinctId: string): Promise<string | boolean | undefined> {
+  const ph = getClient();
+  if (!ph) return undefined;
+  return ph.getFeatureFlag(key, distinctId);
+}
+
+export async function isFeatureEnabled(key: string, distinctId: string): Promise<boolean> {
+  const ph = getClient();
+  if (!ph) return false;
+  const result = await ph.isFeatureEnabled(key, distinctId);
+  return result ?? false;
+}
+
+export function captureException(error: unknown, distinctId?: string, additionalProperties?: Record<string | number, any>): void {
+  const ph = getClient();
+  if (!ph) return;
+  ph.captureException(error, distinctId, additionalProperties);
 }
 
 export interface ApiQueryEvent {
