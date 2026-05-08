@@ -34,6 +34,8 @@ CREATE INDEX IF NOT EXISTS idx_products_search_region  ON products USING gin(sea
 CREATE INDEX IF NOT EXISTS idx_products_search_country ON products USING gin(search_vector, country_code);
 CREATE INDEX IF NOT EXISTS idx_products_currency     ON products(currency);
 CREATE INDEX IF NOT EXISTS idx_products_category_path ON products USING GIN(category_path);
+CREATE INDEX IF NOT EXISTS idx_products_category ON products (lower(category));
+CREATE INDEX IF NOT EXISTS idx_products_category_updated ON products (lower(category), updated_at DESC);
 
 -- api_keys: create if not exists, then add any missing columns
 CREATE TABLE IF NOT EXISTS api_keys (

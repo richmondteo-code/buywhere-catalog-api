@@ -183,9 +183,8 @@ async function handleSearchProducts(args: Record<string, unknown>) {
     conditions.push(`country_code = $${params.length}`);
   }
   if (category) {
-    const normalizedCategory = category.toLowerCase();
-    params.push([normalizedCategory]);
-    conditions.push(`category_path @> $${params.length}::text[]`);
+    params.push(category.toLowerCase());
+    conditions.push(`lower(category) = $${params.length}`);
   }
 
   const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
@@ -230,8 +229,12 @@ async function handleSearchProducts(args: Record<string, unknown>) {
       rows = candidateResult.rows.slice(offset, offset + limit);
     }
   } else {
-    const countResult = await db.query(`SELECT COUNT(*) FROM products ${where}`, params);
-    total = parseInt(countResult.rows[0].count, 10);
+    // For no-query browsing, skip the expensive COUNT (can timeout on large
+    // filtered sets) and use pg_class estimate instead.
+    const estResult = await db.query(
+      `SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'products'`
+    );
+    total = parseInt(estResult.rows[0]?.estimate ?? '0', 10);
     params.push(limit, offset);
     const result = await db.query(
       `SELECT id, sku AS source, source AS domain, url, title,
@@ -440,8 +443,8 @@ async function handleFindBestPrice(args: Record<string, unknown>) {
     conditions.push(`region = $${params.length}`);
   }
   if (category) {
-    params.push(`%${category}%`);
-    conditions.push(`category ILIKE $${params.length}`);
+    params.push(category.toLowerCase());
+    conditions.push(`lower(category) = $${params.length}`);
   }
 
   params.push(limit);
