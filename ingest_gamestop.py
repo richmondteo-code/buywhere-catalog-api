@@ -39,7 +39,7 @@ REQUEST_TIMEOUT = 45
 MAX_RETRIES = 3
 IMPERSONATE = "safari17_0"
 
-OUTPUT_DIR = Path("/home/paperclip/buywhere-api/data/gamestop_us")
+OUTPUT_DIR = Path("/home/paperclip/buywhere-api/gamestop_data")
 SITEMAP_INDEX_URL = "https://www.gamestop.com/sitemap_index.xml"
 SITEMAP_URLS_FILE = OUTPUT_DIR / "sitemap_urls.json"
 PRODUCT_URLS_FILE = OUTPUT_DIR / "product_urls.json"
@@ -80,10 +80,29 @@ def load_checkpoint() -> dict:
             "total_failed": 0, "sitemaps_downloaded": [], "last_url_idx": 0}
 
 
-def save_checkpoint(cp: dict):
+def save_checkpoint(cp: dict, git_commit: bool = False):
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     with open(CHECKPOINT_FILE, "w") as f:
         json.dump(cp, f, indent=2)
+    if git_commit:
+        _git_commit_data()
+
+
+def _git_commit_data():
+    import subprocess
+    try:
+        subprocess.run(["git", "add", "gamestop_data/checkpoint.json", "gamestop_data/products_*.ndjson"],
+                     cwd=Path(__file__).parent, check=False, capture_output=True)
+        result = subprocess.run(["git", "commit", "-m", "feat(gamestop): checkpoint"],
+                     cwd=Path(__file__).parent, check=False, capture_output=True,
+                     env={**subprocess.os.environ, "GIT_AUTHOR_NAME": "Hunt Bot",
+                          "GIT_AUTHOR_EMAIL": "noreply@paperclip.ing",
+                          "GIT_COMMITTER_NAME": "Hunt Bot",
+                          "GIT_COMMITTER_EMAIL": "noreply@paperclip.ing"})
+        if result.returncode == 0:
+            log("Committed checkpoint to git")
+    except Exception:
+        pass
 
 
 def discover_sitemaps() -> list[str]:
@@ -144,6 +163,19 @@ def extract_product_urls_from_sitemaps(sitemap_urls: list[str], cp: dict) -> lis
     with open(PRODUCT_URLS_FILE, "w") as f:
         json.dump(all_urls, f, indent=2)
     log(f"Total unique product URLs: {len(all_urls)}")
+    import subprocess
+    try:
+        subprocess.run(["git", "add", "gamestop_data/sitemap_urls.json", "gamestop_data/product_urls.json"],
+                     cwd=Path(__file__).parent, check=True, capture_output=True)
+        subprocess.run(["git", "commit", "-m", "feat(gamestop): persist sitemap discovery results"],
+                     cwd=Path(__file__).parent, check=True, capture_output=True,
+                     env={**subprocess.os.environ, "GIT_AUTHOR_NAME": "Hunt Bot",
+                          "GIT_AUTHOR_EMAIL": "noreply@paperclip.ing",
+                          "GIT_COMMITTER_NAME": "Hunt Bot",
+                          "GIT_COMMITTER_EMAIL": "noreply@paperclip.ing"})
+        log("Committed sitemap data to git for persistence")
+    except Exception as e:
+        log(f"WARN: Could not commit to git: {e}")
     return all_urls
 
 
@@ -380,7 +412,7 @@ def main():
                     cp["total_ingested"] += result.get("rows_inserted", 0) + result.get("rows_updated", 0)
                     cp["total_failed"] += result.get("rows_failed", 0)
                 products = []
-                save_checkpoint(cp)
+                save_checkpoint(cp, git_commit=True)
         if products:
             if not args.scrape_only:
                 log(f"  Ingesting final batch of {len(products)}...")
@@ -391,7 +423,7 @@ def main():
             products = []
     cp["total_scraped"] += scraped
     cp["last_url_idx"] = cp.get("last_url_idx", 0) + len(product_urls)
-    save_checkpoint(cp)
+    save_checkpoint(cp, git_commit=True)
     log(f"\n=== Run Summary ===")
     log(f"Total scraped: {scraped}")
     log(f"Total failed: {failed}")
