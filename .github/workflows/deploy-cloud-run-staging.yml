@@ -21,8 +21,16 @@ env:
   CLOUD_SQL_INSTANCE: buywhere-staging:asia-southeast1:buywhere-db
 
 jobs:
+  qa-gates:
+    name: QA Gates
+    uses: ./.github/workflows/qa-gates.yml
+    with:
+      skip_gates: ${{ github.event.inputs.skip_tests == 'true' }}
+    secrets: inherit
+
   build:
     name: Build Docker Image
+    needs: qa-gates
     runs-on: ubuntu-latest
     outputs:
       image_tag: ghcr.io/buywhere/buywhere:sha-${{ github.sha }}
