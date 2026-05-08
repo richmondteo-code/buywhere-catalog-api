@@ -11648,4 +11648,4154 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
     ],
   },
 
+  "best-air-fryers-us": {
+    slug: "best-air-fryers-us",
+    title: "Best Air Fryers 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare air fryers from Ninja, Philips, Cosori, and Instant Pot.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Air Fryers in the US",
+    heroBody:
+      "Compare air fryers from Ninja, Philips, Cosori, and Instant Pot.",
+    canonicalPath: "/best-air-fryers-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Air Fryers",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Air Fryers offers across the US",
+    comparisonSectionTitle: "Popular Air Fryers picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Air Fryers",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Air Fryers FAQ",
+    faqs: [
+      {
+        question: "What is the best Air Fryers to buy in 2026?",
+        answer:
+          "The best Air Fryers depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Air Fryers?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Air Fryers?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Air Fryers prices across the US",
+      body: "Find the lowest Air Fryers prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=air+fryers&country=us",
+      label: "Shop Air Fryers",
+    },
+    developerCta: {
+      title: "Build Air Fryers price tracking tools",
+      body: "Use BuyWhere APIs to monitor Air Fryers pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Air Fryers Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=air+fryers+product+a&country=us", brand: "Brand A", category: "Air Fryers" },
+      { id: "f2", name: "Air Fryers Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=air+fryers+product+b&country=us", brand: "Brand B", category: "Air Fryers" },
+      { id: "f3", name: "Air Fryers Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=air+fryers+product+c&country=us", brand: "Brand C", category: "Air Fryers" },
+      { id: "f4", name: "Air Fryers Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=air+fryers+product+d&country=us", brand: "Brand D", category: "Air Fryers" },
+      { id: "f5", name: "Air Fryers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=air+fryers+product+e&country=us", brand: "Brand E", category: "Air Fryers" },
+    ],
+  },
+
+  "best-blenders-us": {
+    slug: "best-blenders-us",
+    title: "Best Blenders 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare blenders from Vitamix, Ninja, Blendtec, and KitchenAid.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Blenders in the US",
+    heroBody:
+      "Compare blenders from Vitamix, Ninja, Blendtec, and KitchenAid.",
+    canonicalPath: "/best-blenders-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Blenders",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Blenders offers across the US",
+    comparisonSectionTitle: "Popular Blenders picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Blenders",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Blenders FAQ",
+    faqs: [
+      {
+        question: "What is the best Blenders to buy in 2026?",
+        answer:
+          "The best Blenders depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Blenders?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Blenders?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Blenders prices across the US",
+      body: "Find the lowest Blenders prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=blenders&country=us",
+      label: "Shop Blenders",
+    },
+    developerCta: {
+      title: "Build Blenders price tracking tools",
+      body: "Use BuyWhere APIs to monitor Blenders pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Blenders Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=blenders+product+a&country=us", brand: "Brand A", category: "Blenders" },
+      { id: "f2", name: "Blenders Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=blenders+product+b&country=us", brand: "Brand B", category: "Blenders" },
+      { id: "f3", name: "Blenders Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=blenders+product+c&country=us", brand: "Brand C", category: "Blenders" },
+      { id: "f4", name: "Blenders Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=blenders+product+d&country=us", brand: "Brand D", category: "Blenders" },
+      { id: "f5", name: "Blenders Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=blenders+product+e&country=us", brand: "Brand E", category: "Blenders" },
+    ],
+  },
+
+  "best-coffee-makers-us": {
+    slug: "best-coffee-makers-us",
+    title: "Best Coffee Makers 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare coffee makers from Keurig, Ninja, Cuisinart, and Breville.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Coffee Makers in the US",
+    heroBody:
+      "Compare coffee makers from Keurig, Ninja, Cuisinart, and Breville.",
+    canonicalPath: "/best-coffee-makers-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Coffee Makers",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Coffee Makers offers across the US",
+    comparisonSectionTitle: "Popular Coffee Makers picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Coffee Makers",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Coffee Makers FAQ",
+    faqs: [
+      {
+        question: "What is the best Coffee Makers to buy in 2026?",
+        answer:
+          "The best Coffee Makers depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Coffee Makers?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Coffee Makers?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Coffee Makers prices across the US",
+      body: "Find the lowest Coffee Makers prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=coffee+makers&country=us",
+      label: "Shop Coffee Makers",
+    },
+    developerCta: {
+      title: "Build Coffee Makers price tracking tools",
+      body: "Use BuyWhere APIs to monitor Coffee Makers pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Coffee Makers Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=coffee+makers+product+a&country=us", brand: "Brand A", category: "Coffee Makers" },
+      { id: "f2", name: "Coffee Makers Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=coffee+makers+product+b&country=us", brand: "Brand B", category: "Coffee Makers" },
+      { id: "f3", name: "Coffee Makers Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=coffee+makers+product+c&country=us", brand: "Brand C", category: "Coffee Makers" },
+      { id: "f4", name: "Coffee Makers Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=coffee+makers+product+d&country=us", brand: "Brand D", category: "Coffee Makers" },
+      { id: "f5", name: "Coffee Makers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=coffee+makers+product+e&country=us", brand: "Brand E", category: "Coffee Makers" },
+    ],
+  },
+
+  "best-espresso-machines-us": {
+    slug: "best-espresso-machines-us",
+    title: "Best Espresso Machines 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare espresso machines from Breville, DeLonghi, Gaggia, and Rancilio.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Espresso Machines in the US",
+    heroBody:
+      "Compare espresso machines from Breville, DeLonghi, Gaggia, and Rancilio.",
+    canonicalPath: "/best-espresso-machines-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Espresso Machines",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Espresso Machines offers across the US",
+    comparisonSectionTitle: "Popular Espresso Machines picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Espresso Machines",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Espresso Machines FAQ",
+    faqs: [
+      {
+        question: "What is the best Espresso Machines to buy in 2026?",
+        answer:
+          "The best Espresso Machines depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Espresso Machines?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Espresso Machines?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Espresso Machines prices across the US",
+      body: "Find the lowest Espresso Machines prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=espresso+machines&country=us",
+      label: "Shop Espresso Machines",
+    },
+    developerCta: {
+      title: "Build Espresso Machines price tracking tools",
+      body: "Use BuyWhere APIs to monitor Espresso Machines pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Espresso Machines Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=espresso+machines+product+a&country=us", brand: "Brand A", category: "Espresso Machines" },
+      { id: "f2", name: "Espresso Machines Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=espresso+machines+product+b&country=us", brand: "Brand B", category: "Espresso Machines" },
+      { id: "f3", name: "Espresso Machines Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=espresso+machines+product+c&country=us", brand: "Brand C", category: "Espresso Machines" },
+      { id: "f4", name: "Espresso Machines Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=espresso+machines+product+d&country=us", brand: "Brand D", category: "Espresso Machines" },
+      { id: "f5", name: "Espresso Machines Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=espresso+machines+product+e&country=us", brand: "Brand E", category: "Espresso Machines" },
+    ],
+  },
+
+  "best-slow-cookers-us": {
+    slug: "best-slow-cookers-us",
+    title: "Best Slow Cookers 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare slow cookers from Crock-Pot, Ninja, Instant Pot, and Hamilton Beach.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Slow Cookers in the US",
+    heroBody:
+      "Compare slow cookers from Crock-Pot, Ninja, Instant Pot, and Hamilton Beach.",
+    canonicalPath: "/best-slow-cookers-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Slow Cookers",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Slow Cookers offers across the US",
+    comparisonSectionTitle: "Popular Slow Cookers picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Slow Cookers",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Slow Cookers FAQ",
+    faqs: [
+      {
+        question: "What is the best Slow Cookers to buy in 2026?",
+        answer:
+          "The best Slow Cookers depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Slow Cookers?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Slow Cookers?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Slow Cookers prices across the US",
+      body: "Find the lowest Slow Cookers prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=slow+cookers&country=us",
+      label: "Shop Slow Cookers",
+    },
+    developerCta: {
+      title: "Build Slow Cookers price tracking tools",
+      body: "Use BuyWhere APIs to monitor Slow Cookers pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Slow Cookers Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=slow+cookers+product+a&country=us", brand: "Brand A", category: "Slow Cookers" },
+      { id: "f2", name: "Slow Cookers Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=slow+cookers+product+b&country=us", brand: "Brand B", category: "Slow Cookers" },
+      { id: "f3", name: "Slow Cookers Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=slow+cookers+product+c&country=us", brand: "Brand C", category: "Slow Cookers" },
+      { id: "f4", name: "Slow Cookers Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=slow+cookers+product+d&country=us", brand: "Brand D", category: "Slow Cookers" },
+      { id: "f5", name: "Slow Cookers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=slow+cookers+product+e&country=us", brand: "Brand E", category: "Slow Cookers" },
+    ],
+  },
+
+  "best-food-processors-us": {
+    slug: "best-food-processors-us",
+    title: "Best Food Processors 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare food processors from Cuisinart, KitchenAid, Breville, and Ninja.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Food Processors in the US",
+    heroBody:
+      "Compare food processors from Cuisinart, KitchenAid, Breville, and Ninja.",
+    canonicalPath: "/best-food-processors-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Food Processors",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Food Processors offers across the US",
+    comparisonSectionTitle: "Popular Food Processors picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Food Processors",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Food Processors FAQ",
+    faqs: [
+      {
+        question: "What is the best Food Processors to buy in 2026?",
+        answer:
+          "The best Food Processors depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Food Processors?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Food Processors?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Food Processors prices across the US",
+      body: "Find the lowest Food Processors prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=food+processors&country=us",
+      label: "Shop Food Processors",
+    },
+    developerCta: {
+      title: "Build Food Processors price tracking tools",
+      body: "Use BuyWhere APIs to monitor Food Processors pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Food Processors Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=food+processors+product+a&country=us", brand: "Brand A", category: "Food Processors" },
+      { id: "f2", name: "Food Processors Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=food+processors+product+b&country=us", brand: "Brand B", category: "Food Processors" },
+      { id: "f3", name: "Food Processors Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=food+processors+product+c&country=us", brand: "Brand C", category: "Food Processors" },
+      { id: "f4", name: "Food Processors Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=food+processors+product+d&country=us", brand: "Brand D", category: "Food Processors" },
+      { id: "f5", name: "Food Processors Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=food+processors+product+e&country=us", brand: "Brand E", category: "Food Processors" },
+    ],
+  },
+
+  "best-stand-mixers-us": {
+    slug: "best-stand-mixers-us",
+    title: "Best Stand Mixers 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare stand mixers from KitchenAid, Cuisinart, Hamilton Beach, and Aucma.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Stand Mixers in the US",
+    heroBody:
+      "Compare stand mixers from KitchenAid, Cuisinart, Hamilton Beach, and Aucma.",
+    canonicalPath: "/best-stand-mixers-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Stand Mixers",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Stand Mixers offers across the US",
+    comparisonSectionTitle: "Popular Stand Mixers picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Stand Mixers",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Stand Mixers FAQ",
+    faqs: [
+      {
+        question: "What is the best Stand Mixers to buy in 2026?",
+        answer:
+          "The best Stand Mixers depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Stand Mixers?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Stand Mixers?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Stand Mixers prices across the US",
+      body: "Find the lowest Stand Mixers prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=stand+mixers&country=us",
+      label: "Shop Stand Mixers",
+    },
+    developerCta: {
+      title: "Build Stand Mixers price tracking tools",
+      body: "Use BuyWhere APIs to monitor Stand Mixers pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Stand Mixers Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=stand+mixers+product+a&country=us", brand: "Brand A", category: "Stand Mixers" },
+      { id: "f2", name: "Stand Mixers Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=stand+mixers+product+b&country=us", brand: "Brand B", category: "Stand Mixers" },
+      { id: "f3", name: "Stand Mixers Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=stand+mixers+product+c&country=us", brand: "Brand C", category: "Stand Mixers" },
+      { id: "f4", name: "Stand Mixers Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=stand+mixers+product+d&country=us", brand: "Brand D", category: "Stand Mixers" },
+      { id: "f5", name: "Stand Mixers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=stand+mixers+product+e&country=us", brand: "Brand E", category: "Stand Mixers" },
+    ],
+  },
+
+  "best-toasters-us": {
+    slug: "best-toasters-us",
+    title: "Best Toasters 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare toasters from Breville, Cuisinart, Dualit, and KitchenAid.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Toasters in the US",
+    heroBody:
+      "Compare toasters from Breville, Cuisinart, Dualit, and KitchenAid.",
+    canonicalPath: "/best-toasters-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Toasters",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Toasters offers across the US",
+    comparisonSectionTitle: "Popular Toasters picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Toasters",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Toasters FAQ",
+    faqs: [
+      {
+        question: "What is the best Toasters to buy in 2026?",
+        answer:
+          "The best Toasters depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Toasters?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Toasters?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Toasters prices across the US",
+      body: "Find the lowest Toasters prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=toasters&country=us",
+      label: "Shop Toasters",
+    },
+    developerCta: {
+      title: "Build Toasters price tracking tools",
+      body: "Use BuyWhere APIs to monitor Toasters pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Toasters Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=toasters+product+a&country=us", brand: "Brand A", category: "Toasters" },
+      { id: "f2", name: "Toasters Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=toasters+product+b&country=us", brand: "Brand B", category: "Toasters" },
+      { id: "f3", name: "Toasters Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=toasters+product+c&country=us", brand: "Brand C", category: "Toasters" },
+      { id: "f4", name: "Toasters Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=toasters+product+d&country=us", brand: "Brand D", category: "Toasters" },
+      { id: "f5", name: "Toasters Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=toasters+product+e&country=us", brand: "Brand E", category: "Toasters" },
+    ],
+  },
+
+  "best-coffee-grinders-us": {
+    slug: "best-coffee-grinders-us",
+    title: "Best Coffee Grinders 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare coffee grinders from Baratza, Cuisinart, OXO, and manual.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Coffee Grinders in the US",
+    heroBody:
+      "Compare coffee grinders from Baratza, Cuisinart, OXO, and manual.",
+    canonicalPath: "/best-coffee-grinders-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Coffee Grinders",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Coffee Grinders offers across the US",
+    comparisonSectionTitle: "Popular Coffee Grinders picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Coffee Grinders",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Coffee Grinders FAQ",
+    faqs: [
+      {
+        question: "What is the best Coffee Grinders to buy in 2026?",
+        answer:
+          "The best Coffee Grinders depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Coffee Grinders?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Coffee Grinders?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Coffee Grinders prices across the US",
+      body: "Find the lowest Coffee Grinders prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=coffee+grinders&country=us",
+      label: "Shop Coffee Grinders",
+    },
+    developerCta: {
+      title: "Build Coffee Grinders price tracking tools",
+      body: "Use BuyWhere APIs to monitor Coffee Grinders pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Coffee Grinders Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=coffee+grinders+product+a&country=us", brand: "Brand A", category: "Coffee Grinders" },
+      { id: "f2", name: "Coffee Grinders Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=coffee+grinders+product+b&country=us", brand: "Brand B", category: "Coffee Grinders" },
+      { id: "f3", name: "Coffee Grinders Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=coffee+grinders+product+c&country=us", brand: "Brand C", category: "Coffee Grinders" },
+      { id: "f4", name: "Coffee Grinders Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=coffee+grinders+product+d&country=us", brand: "Brand D", category: "Coffee Grinders" },
+      { id: "f5", name: "Coffee Grinders Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=coffee+grinders+product+e&country=us", brand: "Brand E", category: "Coffee Grinders" },
+    ],
+  },
+
+  "best-electric-kettles-us": {
+    slug: "best-electric-kettles-us",
+    title: "Best Electric Kettles 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare electric kettles from Cuisinart, Hamilton Beach, OXO, and KitchenAid.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Electric Kettles in the US",
+    heroBody:
+      "Compare electric kettles from Cuisinart, Hamilton Beach, OXO, and KitchenAid.",
+    canonicalPath: "/best-electric-kettles-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Electric Kettles",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Electric Kettles offers across the US",
+    comparisonSectionTitle: "Popular Electric Kettles picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Electric Kettles",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Electric Kettles FAQ",
+    faqs: [
+      {
+        question: "What is the best Electric Kettles to buy in 2026?",
+        answer:
+          "The best Electric Kettles depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Electric Kettles?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Electric Kettles?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Electric Kettles prices across the US",
+      body: "Find the lowest Electric Kettles prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=electric+kettles&country=us",
+      label: "Shop Electric Kettles",
+    },
+    developerCta: {
+      title: "Build Electric Kettles price tracking tools",
+      body: "Use BuyWhere APIs to monitor Electric Kettles pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Electric Kettles Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=electric+kettles+product+a&country=us", brand: "Brand A", category: "Electric Kettles" },
+      { id: "f2", name: "Electric Kettles Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=electric+kettles+product+b&country=us", brand: "Brand B", category: "Electric Kettles" },
+      { id: "f3", name: "Electric Kettles Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=electric+kettles+product+c&country=us", brand: "Brand C", category: "Electric Kettles" },
+      { id: "f4", name: "Electric Kettles Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=electric+kettles+product+d&country=us", brand: "Brand D", category: "Electric Kettles" },
+      { id: "f5", name: "Electric Kettles Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=electric+kettles+product+e&country=us", brand: "Brand E", category: "Electric Kettles" },
+    ],
+  },
+
+  "best-knife-sets-us": {
+    slug: "best-knife-sets-us",
+    title: "Best Knife Sets 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare knife sets from Wusthof, Zwilling, Victorinox, and Chicago Cutlery.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Knife Sets in the US",
+    heroBody:
+      "Compare knife sets from Wusthof, Zwilling, Victorinox, and Chicago Cutlery.",
+    canonicalPath: "/best-knife-sets-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Knife Sets",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Knife Sets offers across the US",
+    comparisonSectionTitle: "Popular Knife Sets picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Knife Sets",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Knife Sets FAQ",
+    faqs: [
+      {
+        question: "What is the best Knife Sets to buy in 2026?",
+        answer:
+          "The best Knife Sets depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Knife Sets?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Knife Sets?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Knife Sets prices across the US",
+      body: "Find the lowest Knife Sets prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=knife+sets&country=us",
+      label: "Shop Knife Sets",
+    },
+    developerCta: {
+      title: "Build Knife Sets price tracking tools",
+      body: "Use BuyWhere APIs to monitor Knife Sets pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Knife Sets Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=knife+sets+product+a&country=us", brand: "Brand A", category: "Knife Sets" },
+      { id: "f2", name: "Knife Sets Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=knife+sets+product+b&country=us", brand: "Brand B", category: "Knife Sets" },
+      { id: "f3", name: "Knife Sets Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=knife+sets+product+c&country=us", brand: "Brand C", category: "Knife Sets" },
+      { id: "f4", name: "Knife Sets Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=knife+sets+product+d&country=us", brand: "Brand D", category: "Knife Sets" },
+      { id: "f5", name: "Knife Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=knife+sets+product+e&country=us", brand: "Brand E", category: "Knife Sets" },
+    ],
+  },
+
+  "best-cutting-boards-us": {
+    slug: "best-cutting-boards-us",
+    title: "Best Cutting Boards 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare cutting boards from Joseph Joseph, OXO, Happy Trails, and John Boos.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Cutting Boards in the US",
+    heroBody:
+      "Compare cutting boards from Joseph Joseph, OXO, Happy Trails, and John Boos.",
+    canonicalPath: "/best-cutting-boards-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Cutting Boards",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Cutting Boards offers across the US",
+    comparisonSectionTitle: "Popular Cutting Boards picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Cutting Boards",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Cutting Boards FAQ",
+    faqs: [
+      {
+        question: "What is the best Cutting Boards to buy in 2026?",
+        answer:
+          "The best Cutting Boards depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Cutting Boards?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Cutting Boards?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Cutting Boards prices across the US",
+      body: "Find the lowest Cutting Boards prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=cutting+boards&country=us",
+      label: "Shop Cutting Boards",
+    },
+    developerCta: {
+      title: "Build Cutting Boards price tracking tools",
+      body: "Use BuyWhere APIs to monitor Cutting Boards pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Cutting Boards Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cutting+boards+product+a&country=us", brand: "Brand A", category: "Cutting Boards" },
+      { id: "f2", name: "Cutting Boards Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=cutting+boards+product+b&country=us", brand: "Brand B", category: "Cutting Boards" },
+      { id: "f3", name: "Cutting Boards Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=cutting+boards+product+c&country=us", brand: "Brand C", category: "Cutting Boards" },
+      { id: "f4", name: "Cutting Boards Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=cutting+boards+product+d&country=us", brand: "Brand D", category: "Cutting Boards" },
+      { id: "f5", name: "Cutting Boards Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cutting+boards+product+e&country=us", brand: "Brand E", category: "Cutting Boards" },
+    ],
+  },
+
+  "best-measuring-cups-us": {
+    slug: "best-measuring-cups-us",
+    title: "Best Measuring Cups 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare measuring cups from OXO, KitchenAid, and Progressive.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Measuring Cups in the US",
+    heroBody:
+      "Compare measuring cups from OXO, KitchenAid, and Progressive.",
+    canonicalPath: "/best-measuring-cups-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Measuring Cups",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Measuring Cups offers across the US",
+    comparisonSectionTitle: "Popular Measuring Cups picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Measuring Cups",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Measuring Cups FAQ",
+    faqs: [
+      {
+        question: "What is the best Measuring Cups to buy in 2026?",
+        answer:
+          "The best Measuring Cups depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Measuring Cups?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Measuring Cups?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Measuring Cups prices across the US",
+      body: "Find the lowest Measuring Cups prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=measuring+cups&country=us",
+      label: "Shop Measuring Cups",
+    },
+    developerCta: {
+      title: "Build Measuring Cups price tracking tools",
+      body: "Use BuyWhere APIs to monitor Measuring Cups pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Measuring Cups Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=measuring+cups+product+a&country=us", brand: "Brand A", category: "Measuring Cups" },
+      { id: "f2", name: "Measuring Cups Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=measuring+cups+product+b&country=us", brand: "Brand B", category: "Measuring Cups" },
+      { id: "f3", name: "Measuring Cups Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=measuring+cups+product+c&country=us", brand: "Brand C", category: "Measuring Cups" },
+      { id: "f4", name: "Measuring Cups Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=measuring+cups+product+d&country=us", brand: "Brand D", category: "Measuring Cups" },
+      { id: "f5", name: "Measuring Cups Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=measuring+cups+product+e&country=us", brand: "Brand E", category: "Measuring Cups" },
+    ],
+  },
+
+  "best-bakeware-sets-us": {
+    slug: "best-bakeware-sets-us",
+    title: "Best Bakeware Sets 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare bakeware sets from USA Pan, Calphalon, Rachael Ray, and Farberware.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Bakeware Sets in the US",
+    heroBody:
+      "Compare bakeware sets from USA Pan, Calphalon, Rachael Ray, and Farberware.",
+    canonicalPath: "/best-bakeware-sets-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Bakeware Sets",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Bakeware Sets offers across the US",
+    comparisonSectionTitle: "Popular Bakeware Sets picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Bakeware Sets",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Bakeware Sets FAQ",
+    faqs: [
+      {
+        question: "What is the best Bakeware Sets to buy in 2026?",
+        answer:
+          "The best Bakeware Sets depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Bakeware Sets?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Bakeware Sets?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Bakeware Sets prices across the US",
+      body: "Find the lowest Bakeware Sets prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=bakeware+sets&country=us",
+      label: "Shop Bakeware Sets",
+    },
+    developerCta: {
+      title: "Build Bakeware Sets price tracking tools",
+      body: "Use BuyWhere APIs to monitor Bakeware Sets pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Bakeware Sets Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=bakeware+sets+product+a&country=us", brand: "Brand A", category: "Bakeware Sets" },
+      { id: "f2", name: "Bakeware Sets Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=bakeware+sets+product+b&country=us", brand: "Brand B", category: "Bakeware Sets" },
+      { id: "f3", name: "Bakeware Sets Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=bakeware+sets+product+c&country=us", brand: "Brand C", category: "Bakeware Sets" },
+      { id: "f4", name: "Bakeware Sets Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=bakeware+sets+product+d&country=us", brand: "Brand D", category: "Bakeware Sets" },
+      { id: "f5", name: "Bakeware Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=bakeware+sets+product+e&country=us", brand: "Brand E", category: "Bakeware Sets" },
+    ],
+  },
+
+  "best-food-storage-containers-us": {
+    slug: "best-food-storage-containers-us",
+    title: "Best Food Storage Containers 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare food storage containers from OXO, Glasslock, Pyrex, and Rubbermaid.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Food Storage Containers in the US",
+    heroBody:
+      "Compare food storage containers from OXO, Glasslock, Pyrex, and Rubbermaid.",
+    canonicalPath: "/best-food-storage-containers-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Food Storage Containers",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Food Storage Containers offers across the US",
+    comparisonSectionTitle: "Popular Food Storage Containers picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Food Storage Containers",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Food Storage Containers FAQ",
+    faqs: [
+      {
+        question: "What is the best Food Storage Containers to buy in 2026?",
+        answer:
+          "The best Food Storage Containers depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Food Storage Containers?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Food Storage Containers?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Food Storage Containers prices across the US",
+      body: "Find the lowest Food Storage Containers prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=food+storage+containers&country=us",
+      label: "Shop Food Storage Containers",
+    },
+    developerCta: {
+      title: "Build Food Storage Containers price tracking tools",
+      body: "Use BuyWhere APIs to monitor Food Storage Containers pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Food Storage Containers Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=food+storage+containers+product+a&country=us", brand: "Brand A", category: "Food Storage Containers" },
+      { id: "f2", name: "Food Storage Containers Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=food+storage+containers+product+b&country=us", brand: "Brand B", category: "Food Storage Containers" },
+      { id: "f3", name: "Food Storage Containers Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=food+storage+containers+product+c&country=us", brand: "Brand C", category: "Food Storage Containers" },
+      { id: "f4", name: "Food Storage Containers Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=food+storage+containers+product+d&country=us", brand: "Brand D", category: "Food Storage Containers" },
+      { id: "f5", name: "Food Storage Containers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=food+storage+containers+product+e&country=us", brand: "Brand E", category: "Food Storage Containers" },
+    ],
+  },
+
+  "best-dinnerware-sets-us": {
+    slug: "best-dinnerware-sets-us",
+    title: "Best Dinnerware Sets 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare dinnerware sets from Corelle, Gibson, Noritake, and Vancasso.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Dinnerware Sets in the US",
+    heroBody:
+      "Compare dinnerware sets from Corelle, Gibson, Noritake, and Vancasso.",
+    canonicalPath: "/best-dinnerware-sets-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Dinnerware Sets",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Dinnerware Sets offers across the US",
+    comparisonSectionTitle: "Popular Dinnerware Sets picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Dinnerware Sets",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Dinnerware Sets FAQ",
+    faqs: [
+      {
+        question: "What is the best Dinnerware Sets to buy in 2026?",
+        answer:
+          "The best Dinnerware Sets depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Dinnerware Sets?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Dinnerware Sets?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Dinnerware Sets prices across the US",
+      body: "Find the lowest Dinnerware Sets prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=dinnerware+sets&country=us",
+      label: "Shop Dinnerware Sets",
+    },
+    developerCta: {
+      title: "Build Dinnerware Sets price tracking tools",
+      body: "Use BuyWhere APIs to monitor Dinnerware Sets pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dinnerware Sets Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dinnerware+sets+product+a&country=us", brand: "Brand A", category: "Dinnerware Sets" },
+      { id: "f2", name: "Dinnerware Sets Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dinnerware+sets+product+b&country=us", brand: "Brand B", category: "Dinnerware Sets" },
+      { id: "f3", name: "Dinnerware Sets Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dinnerware+sets+product+c&country=us", brand: "Brand C", category: "Dinnerware Sets" },
+      { id: "f4", name: "Dinnerware Sets Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dinnerware+sets+product+d&country=us", brand: "Brand D", category: "Dinnerware Sets" },
+      { id: "f5", name: "Dinnerware Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dinnerware+sets+product+e&country=us", brand: "Brand E", category: "Dinnerware Sets" },
+    ],
+  },
+
+  "best-flatware-sets-us": {
+    slug: "best-flatware-sets-us",
+    title: "Best Flatware Sets 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare flatware sets from Oneida, Liberty Tabletop, Stelton, and Gibson.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Flatware Sets in the US",
+    heroBody:
+      "Compare flatware sets from Oneida, Liberty Tabletop, Stelton, and Gibson.",
+    canonicalPath: "/best-flatware-sets-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Flatware Sets",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Flatware Sets offers across the US",
+    comparisonSectionTitle: "Popular Flatware Sets picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Flatware Sets",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Flatware Sets FAQ",
+    faqs: [
+      {
+        question: "What is the best Flatware Sets to buy in 2026?",
+        answer:
+          "The best Flatware Sets depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Flatware Sets?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Flatware Sets?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Flatware Sets prices across the US",
+      body: "Find the lowest Flatware Sets prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=flatware+sets&country=us",
+      label: "Shop Flatware Sets",
+    },
+    developerCta: {
+      title: "Build Flatware Sets price tracking tools",
+      body: "Use BuyWhere APIs to monitor Flatware Sets pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Flatware Sets Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=flatware+sets+product+a&country=us", brand: "Brand A", category: "Flatware Sets" },
+      { id: "f2", name: "Flatware Sets Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=flatware+sets+product+b&country=us", brand: "Brand B", category: "Flatware Sets" },
+      { id: "f3", name: "Flatware Sets Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=flatware+sets+product+c&country=us", brand: "Brand C", category: "Flatware Sets" },
+      { id: "f4", name: "Flatware Sets Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=flatware+sets+product+d&country=us", brand: "Brand D", category: "Flatware Sets" },
+      { id: "f5", name: "Flatware Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=flatware+sets+product+e&country=us", brand: "Brand E", category: "Flatware Sets" },
+    ],
+  },
+
+  "best-glassware-sets-us": {
+    slug: "best-glassware-sets-us",
+    title: "Best Glassware Sets 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare glassware sets from Libbey, Waterford, Spiegelau, and Bormioli.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Glassware Sets in the US",
+    heroBody:
+      "Compare glassware sets from Libbey, Waterford, Spiegelau, and Bormioli.",
+    canonicalPath: "/best-glassware-sets-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Glassware Sets",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Glassware Sets offers across the US",
+    comparisonSectionTitle: "Popular Glassware Sets picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Glassware Sets",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Glassware Sets FAQ",
+    faqs: [
+      {
+        question: "What is the best Glassware Sets to buy in 2026?",
+        answer:
+          "The best Glassware Sets depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Glassware Sets?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Glassware Sets?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Glassware Sets prices across the US",
+      body: "Find the lowest Glassware Sets prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=glassware+sets&country=us",
+      label: "Shop Glassware Sets",
+    },
+    developerCta: {
+      title: "Build Glassware Sets price tracking tools",
+      body: "Use BuyWhere APIs to monitor Glassware Sets pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Glassware Sets Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=glassware+sets+product+a&country=us", brand: "Brand A", category: "Glassware Sets" },
+      { id: "f2", name: "Glassware Sets Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=glassware+sets+product+b&country=us", brand: "Brand B", category: "Glassware Sets" },
+      { id: "f3", name: "Glassware Sets Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=glassware+sets+product+c&country=us", brand: "Brand C", category: "Glassware Sets" },
+      { id: "f4", name: "Glassware Sets Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=glassware+sets+product+d&country=us", brand: "Brand D", category: "Glassware Sets" },
+      { id: "f5", name: "Glassware Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=glassware+sets+product+e&country=us", brand: "Brand E", category: "Glassware Sets" },
+    ],
+  },
+
+  "best-table-linens-us": {
+    slug: "best-table-linens-us",
+    title: "Best Table Linens 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare table linens from Damask Rose, LinenTablecloth, and Gorham.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Table Linens in the US",
+    heroBody:
+      "Compare table linens from Damask Rose, LinenTablecloth, and Gorham.",
+    canonicalPath: "/best-table-linens-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Table Linens",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Table Linens offers across the US",
+    comparisonSectionTitle: "Popular Table Linens picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Table Linens",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Table Linens FAQ",
+    faqs: [
+      {
+        question: "What is the best Table Linens to buy in 2026?",
+        answer:
+          "The best Table Linens depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Table Linens?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Table Linens?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Table Linens prices across the US",
+      body: "Find the lowest Table Linens prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=table+linens&country=us",
+      label: "Shop Table Linens",
+    },
+    developerCta: {
+      title: "Build Table Linens price tracking tools",
+      body: "Use BuyWhere APIs to monitor Table Linens pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Table Linens Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=table+linens+product+a&country=us", brand: "Brand A", category: "Table Linens" },
+      { id: "f2", name: "Table Linens Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=table+linens+product+b&country=us", brand: "Brand B", category: "Table Linens" },
+      { id: "f3", name: "Table Linens Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=table+linens+product+c&country=us", brand: "Brand C", category: "Table Linens" },
+      { id: "f4", name: "Table Linens Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=table+linens+product+d&country=us", brand: "Brand D", category: "Table Linens" },
+      { id: "f5", name: "Table Linens Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=table+linens+product+e&country=us", brand: "Brand E", category: "Table Linens" },
+    ],
+  },
+
+  "best-bar-tools-sets-us": {
+    slug: "best-bar-tools-sets-us",
+    title: "Best Bar Tools Sets 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare bar tools sets from OXO, Cocktail Kingdom, and Barfly.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Bar Tools Sets in the US",
+    heroBody:
+      "Compare bar tools sets from OXO, Cocktail Kingdom, and Barfly.",
+    canonicalPath: "/best-bar-tools-sets-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Bar Tools Sets",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Bar Tools Sets offers across the US",
+    comparisonSectionTitle: "Popular Bar Tools Sets picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Bar Tools Sets",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Bar Tools Sets FAQ",
+    faqs: [
+      {
+        question: "What is the best Bar Tools Sets to buy in 2026?",
+        answer:
+          "The best Bar Tools Sets depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Bar Tools Sets?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Bar Tools Sets?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Bar Tools Sets prices across the US",
+      body: "Find the lowest Bar Tools Sets prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=bar+tools+sets&country=us",
+      label: "Shop Bar Tools Sets",
+    },
+    developerCta: {
+      title: "Build Bar Tools Sets price tracking tools",
+      body: "Use BuyWhere APIs to monitor Bar Tools Sets pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Bar Tools Sets Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=bar+tools+sets+product+a&country=us", brand: "Brand A", category: "Bar Tools Sets" },
+      { id: "f2", name: "Bar Tools Sets Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=bar+tools+sets+product+b&country=us", brand: "Brand B", category: "Bar Tools Sets" },
+      { id: "f3", name: "Bar Tools Sets Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=bar+tools+sets+product+c&country=us", brand: "Brand C", category: "Bar Tools Sets" },
+      { id: "f4", name: "Bar Tools Sets Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=bar+tools+sets+product+d&country=us", brand: "Brand D", category: "Bar Tools Sets" },
+      { id: "f5", name: "Bar Tools Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=bar+tools+sets+product+e&country=us", brand: "Brand E", category: "Bar Tools Sets" },
+    ],
+  },
+
+  "best-wine-openers-us": {
+    slug: "best-wine-openers-us",
+    title: "Best Wine Openers 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare wine openers from OXO, Pulltap's, Rabbit, and Le Creuset.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Wine Openers in the US",
+    heroBody:
+      "Compare wine openers from OXO, Pulltap's, Rabbit, and Le Creuset.",
+    canonicalPath: "/best-wine-openers-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Wine Openers",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Wine Openers offers across the US",
+    comparisonSectionTitle: "Popular Wine Openers picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Wine Openers",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Wine Openers FAQ",
+    faqs: [
+      {
+        question: "What is the best Wine Openers to buy in 2026?",
+        answer:
+          "The best Wine Openers depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Wine Openers?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Wine Openers?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Wine Openers prices across the US",
+      body: "Find the lowest Wine Openers prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=wine+openers&country=us",
+      label: "Shop Wine Openers",
+    },
+    developerCta: {
+      title: "Build Wine Openers price tracking tools",
+      body: "Use BuyWhere APIs to monitor Wine Openers pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Wine Openers Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=wine+openers+product+a&country=us", brand: "Brand A", category: "Wine Openers" },
+      { id: "f2", name: "Wine Openers Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=wine+openers+product+b&country=us", brand: "Brand B", category: "Wine Openers" },
+      { id: "f3", name: "Wine Openers Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=wine+openers+product+c&country=us", brand: "Brand C", category: "Wine Openers" },
+      { id: "f4", name: "Wine Openers Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=wine+openers+product+d&country=us", brand: "Brand D", category: "Wine Openers" },
+      { id: "f5", name: "Wine Openers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=wine+openers+product+e&country=us", brand: "Brand E", category: "Wine Openers" },
+    ],
+  },
+
+  "best-water-filters-us": {
+    slug: "best-water-filters-us",
+    title: "Best Water Filters 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare water filters from Brita, PUR, ZeroWater, and Waterdrop.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Water Filters in the US",
+    heroBody:
+      "Compare water filters from Brita, PUR, ZeroWater, and Waterdrop.",
+    canonicalPath: "/best-water-filters-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Water Filters",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Water Filters offers across the US",
+    comparisonSectionTitle: "Popular Water Filters picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Water Filters",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Water Filters FAQ",
+    faqs: [
+      {
+        question: "What is the best Water Filters to buy in 2026?",
+        answer:
+          "The best Water Filters depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Water Filters?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Water Filters?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Water Filters prices across the US",
+      body: "Find the lowest Water Filters prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=water+filters&country=us",
+      label: "Shop Water Filters",
+    },
+    developerCta: {
+      title: "Build Water Filters price tracking tools",
+      body: "Use BuyWhere APIs to monitor Water Filters pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Water Filters Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=water+filters+product+a&country=us", brand: "Brand A", category: "Water Filters" },
+      { id: "f2", name: "Water Filters Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=water+filters+product+b&country=us", brand: "Brand B", category: "Water Filters" },
+      { id: "f3", name: "Water Filters Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=water+filters+product+c&country=us", brand: "Brand C", category: "Water Filters" },
+      { id: "f4", name: "Water Filters Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=water+filters+product+d&country=us", brand: "Brand D", category: "Water Filters" },
+      { id: "f5", name: "Water Filters Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=water+filters+product+e&country=us", brand: "Brand E", category: "Water Filters" },
+    ],
+  },
+
+  "best-trash-cans-us": {
+    slug: "best-trash-cans-us",
+    title: "Best Trash Cans 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare trash cans from Simplehuman, Joseph Joseph, iTouchless, and Glad.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Trash Cans in the US",
+    heroBody:
+      "Compare trash cans from Simplehuman, Joseph Joseph, iTouchless, and Glad.",
+    canonicalPath: "/best-trash-cans-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Trash Cans",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Trash Cans offers across the US",
+    comparisonSectionTitle: "Popular Trash Cans picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Trash Cans",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Trash Cans FAQ",
+    faqs: [
+      {
+        question: "What is the best Trash Cans to buy in 2026?",
+        answer:
+          "The best Trash Cans depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Trash Cans?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Trash Cans?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Trash Cans prices across the US",
+      body: "Find the lowest Trash Cans prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=trash+cans&country=us",
+      label: "Shop Trash Cans",
+    },
+    developerCta: {
+      title: "Build Trash Cans price tracking tools",
+      body: "Use BuyWhere APIs to monitor Trash Cans pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Trash Cans Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=trash+cans+product+a&country=us", brand: "Brand A", category: "Trash Cans" },
+      { id: "f2", name: "Trash Cans Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=trash+cans+product+b&country=us", brand: "Brand B", category: "Trash Cans" },
+      { id: "f3", name: "Trash Cans Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=trash+cans+product+c&country=us", brand: "Brand C", category: "Trash Cans" },
+      { id: "f4", name: "Trash Cans Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=trash+cans+product+d&country=us", brand: "Brand D", category: "Trash Cans" },
+      { id: "f5", name: "Trash Cans Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=trash+cans+product+e&country=us", brand: "Brand E", category: "Trash Cans" },
+    ],
+  },
+
+  "best-refrigerator-bins-us": {
+    slug: "best-refrigerator-bins-us",
+    title: "Best Refrigerator Bins 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare refrigerator bins from mDesign, YouCopia, Stacking, and Deco Bros.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Refrigerator Bins in the US",
+    heroBody:
+      "Compare refrigerator bins from mDesign, YouCopia, Stacking, and Deco Bros.",
+    canonicalPath: "/best-refrigerator-bins-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Refrigerator Bins",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Refrigerator Bins offers across the US",
+    comparisonSectionTitle: "Popular Refrigerator Bins picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Refrigerator Bins",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Refrigerator Bins FAQ",
+    faqs: [
+      {
+        question: "What is the best Refrigerator Bins to buy in 2026?",
+        answer:
+          "The best Refrigerator Bins depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Refrigerator Bins?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Refrigerator Bins?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Refrigerator Bins prices across the US",
+      body: "Find the lowest Refrigerator Bins prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=refrigerator+bins&country=us",
+      label: "Shop Refrigerator Bins",
+    },
+    developerCta: {
+      title: "Build Refrigerator Bins price tracking tools",
+      body: "Use BuyWhere APIs to monitor Refrigerator Bins pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Refrigerator Bins Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=refrigerator+bins+product+a&country=us", brand: "Brand A", category: "Refrigerator Bins" },
+      { id: "f2", name: "Refrigerator Bins Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=refrigerator+bins+product+b&country=us", brand: "Brand B", category: "Refrigerator Bins" },
+      { id: "f3", name: "Refrigerator Bins Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=refrigerator+bins+product+c&country=us", brand: "Brand C", category: "Refrigerator Bins" },
+      { id: "f4", name: "Refrigerator Bins Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=refrigerator+bins+product+d&country=us", brand: "Brand D", category: "Refrigerator Bins" },
+      { id: "f5", name: "Refrigerator Bins Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=refrigerator+bins+product+e&country=us", brand: "Brand E", category: "Refrigerator Bins" },
+    ],
+  },
+
+  "best-oven-mitts-us": {
+    slug: "best-oven-mitts-us",
+    title: "Best Oven Mitts 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare oven mitts from HYDDDX, Merrier, and OXO.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Oven Mitts in the US",
+    heroBody:
+      "Compare oven mitts from HYDDDX, Merrier, and OXO.",
+    canonicalPath: "/best-oven-mitts-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Oven Mitts",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Oven Mitts offers across the US",
+    comparisonSectionTitle: "Popular Oven Mitts picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Oven Mitts",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Oven Mitts FAQ",
+    faqs: [
+      {
+        question: "What is the best Oven Mitts to buy in 2026?",
+        answer:
+          "The best Oven Mitts depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Oven Mitts?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Oven Mitts?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Oven Mitts prices across the US",
+      body: "Find the lowest Oven Mitts prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=oven+mitts&country=us",
+      label: "Shop Oven Mitts",
+    },
+    developerCta: {
+      title: "Build Oven Mitts price tracking tools",
+      body: "Use BuyWhere APIs to monitor Oven Mitts pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Oven Mitts Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=oven+mitts+product+a&country=us", brand: "Brand A", category: "Oven Mitts" },
+      { id: "f2", name: "Oven Mitts Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=oven+mitts+product+b&country=us", brand: "Brand B", category: "Oven Mitts" },
+      { id: "f3", name: "Oven Mitts Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=oven+mitts+product+c&country=us", brand: "Brand C", category: "Oven Mitts" },
+      { id: "f4", name: "Oven Mitts Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=oven+mitts+product+d&country=us", brand: "Brand D", category: "Oven Mitts" },
+      { id: "f5", name: "Oven Mitts Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=oven+mitts+product+e&country=us", brand: "Brand E", category: "Oven Mitts" },
+    ],
+  },
+
+  "best-dog-food-us": {
+    slug: "best-dog-food-us",
+    title: "Best Dog Food 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare dog food brands from Blue Buffalo, Orijen, Royal Canin, and Hill's.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Dog Food in the US",
+    heroBody:
+      "Compare dog food brands from Blue Buffalo, Orijen, Royal Canin, and Hill's.",
+    canonicalPath: "/best-dog-food-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Dog Food",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Dog Food offers across the US",
+    comparisonSectionTitle: "Popular Dog Food picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Dog Food",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Dog Food FAQ",
+    faqs: [
+      {
+        question: "What is the best Dog Food to buy in 2026?",
+        answer:
+          "The best Dog Food depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Dog Food?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Dog Food?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Dog Food prices across the US",
+      body: "Find the lowest Dog Food prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=dog+food&country=us",
+      label: "Shop Dog Food",
+    },
+    developerCta: {
+      title: "Build Dog Food price tracking tools",
+      body: "Use BuyWhere APIs to monitor Dog Food pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dog Food Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+food+product+a&country=us", brand: "Brand A", category: "Dog Food" },
+      { id: "f2", name: "Dog Food Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dog+food+product+b&country=us", brand: "Brand B", category: "Dog Food" },
+      { id: "f3", name: "Dog Food Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dog+food+product+c&country=us", brand: "Brand C", category: "Dog Food" },
+      { id: "f4", name: "Dog Food Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dog+food+product+d&country=us", brand: "Brand D", category: "Dog Food" },
+      { id: "f5", name: "Dog Food Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+food+product+e&country=us", brand: "Brand E", category: "Dog Food" },
+    ],
+  },
+
+  "best-cat-food-us": {
+    slug: "best-cat-food-us",
+    title: "Best Cat Food 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare cat food brands from Blue Buffalo, Hill's, Royal Canin, and Purina.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Cat Food in the US",
+    heroBody:
+      "Compare cat food brands from Blue Buffalo, Hill's, Royal Canin, and Purina.",
+    canonicalPath: "/best-cat-food-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Cat Food",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Cat Food offers across the US",
+    comparisonSectionTitle: "Popular Cat Food picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Cat Food",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Cat Food FAQ",
+    faqs: [
+      {
+        question: "What is the best Cat Food to buy in 2026?",
+        answer:
+          "The best Cat Food depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Cat Food?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Cat Food?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Cat Food prices across the US",
+      body: "Find the lowest Cat Food prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=cat+food&country=us",
+      label: "Shop Cat Food",
+    },
+    developerCta: {
+      title: "Build Cat Food price tracking tools",
+      body: "Use BuyWhere APIs to monitor Cat Food pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Cat Food Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+food+product+a&country=us", brand: "Brand A", category: "Cat Food" },
+      { id: "f2", name: "Cat Food Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=cat+food+product+b&country=us", brand: "Brand B", category: "Cat Food" },
+      { id: "f3", name: "Cat Food Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=cat+food+product+c&country=us", brand: "Brand C", category: "Cat Food" },
+      { id: "f4", name: "Cat Food Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=cat+food+product+d&country=us", brand: "Brand D", category: "Cat Food" },
+      { id: "f5", name: "Cat Food Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+food+product+e&country=us", brand: "Brand E", category: "Cat Food" },
+    ],
+  },
+
+  "best-dog-toys-us": {
+    slug: "best-dog-toys-us",
+    title: "Best Dog Toys 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare dog toys from Kong, Chuckit!, Outward Hound, and Tuffy.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Dog Toys in the US",
+    heroBody:
+      "Compare dog toys from Kong, Chuckit!, Outward Hound, and Tuffy.",
+    canonicalPath: "/best-dog-toys-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Dog Toys",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Dog Toys offers across the US",
+    comparisonSectionTitle: "Popular Dog Toys picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Dog Toys",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Dog Toys FAQ",
+    faqs: [
+      {
+        question: "What is the best Dog Toys to buy in 2026?",
+        answer:
+          "The best Dog Toys depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Dog Toys?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Dog Toys?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Dog Toys prices across the US",
+      body: "Find the lowest Dog Toys prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=dog+toys&country=us",
+      label: "Shop Dog Toys",
+    },
+    developerCta: {
+      title: "Build Dog Toys price tracking tools",
+      body: "Use BuyWhere APIs to monitor Dog Toys pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dog Toys Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+toys+product+a&country=us", brand: "Brand A", category: "Dog Toys" },
+      { id: "f2", name: "Dog Toys Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dog+toys+product+b&country=us", brand: "Brand B", category: "Dog Toys" },
+      { id: "f3", name: "Dog Toys Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dog+toys+product+c&country=us", brand: "Brand C", category: "Dog Toys" },
+      { id: "f4", name: "Dog Toys Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dog+toys+product+d&country=us", brand: "Brand D", category: "Dog Toys" },
+      { id: "f5", name: "Dog Toys Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+toys+product+e&country=us", brand: "Brand E", category: "Dog Toys" },
+    ],
+  },
+
+  "best-cat-toys-us": {
+    slug: "best-cat-toys-us",
+    title: "Best Cat Toys 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare cat toys from Catit, Da Bird, Bergan, and SmartyKat.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Cat Toys in the US",
+    heroBody:
+      "Compare cat toys from Catit, Da Bird, Bergan, and SmartyKat.",
+    canonicalPath: "/best-cat-toys-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Cat Toys",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Cat Toys offers across the US",
+    comparisonSectionTitle: "Popular Cat Toys picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Cat Toys",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Cat Toys FAQ",
+    faqs: [
+      {
+        question: "What is the best Cat Toys to buy in 2026?",
+        answer:
+          "The best Cat Toys depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Cat Toys?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Cat Toys?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Cat Toys prices across the US",
+      body: "Find the lowest Cat Toys prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=cat+toys&country=us",
+      label: "Shop Cat Toys",
+    },
+    developerCta: {
+      title: "Build Cat Toys price tracking tools",
+      body: "Use BuyWhere APIs to monitor Cat Toys pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Cat Toys Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+toys+product+a&country=us", brand: "Brand A", category: "Cat Toys" },
+      { id: "f2", name: "Cat Toys Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=cat+toys+product+b&country=us", brand: "Brand B", category: "Cat Toys" },
+      { id: "f3", name: "Cat Toys Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=cat+toys+product+c&country=us", brand: "Brand C", category: "Cat Toys" },
+      { id: "f4", name: "Cat Toys Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=cat+toys+product+d&country=us", brand: "Brand D", category: "Cat Toys" },
+      { id: "f5", name: "Cat Toys Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+toys+product+e&country=us", brand: "Brand E", category: "Cat Toys" },
+    ],
+  },
+
+  "best-dog-beds-us": {
+    slug: "best-dog-beds-us",
+    title: "Best Dog Beds 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare dog beds from Casper, Furhaven, Petmate, and Best Friends by Sin.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Dog Beds in the US",
+    heroBody:
+      "Compare dog beds from Casper, Furhaven, Petmate, and Best Friends by Sin.",
+    canonicalPath: "/best-dog-beds-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Dog Beds",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Dog Beds offers across the US",
+    comparisonSectionTitle: "Popular Dog Beds picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Dog Beds",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Dog Beds FAQ",
+    faqs: [
+      {
+        question: "What is the best Dog Beds to buy in 2026?",
+        answer:
+          "The best Dog Beds depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Dog Beds?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Dog Beds?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Dog Beds prices across the US",
+      body: "Find the lowest Dog Beds prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=dog+beds&country=us",
+      label: "Shop Dog Beds",
+    },
+    developerCta: {
+      title: "Build Dog Beds price tracking tools",
+      body: "Use BuyWhere APIs to monitor Dog Beds pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dog Beds Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+beds+product+a&country=us", brand: "Brand A", category: "Dog Beds" },
+      { id: "f2", name: "Dog Beds Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dog+beds+product+b&country=us", brand: "Brand B", category: "Dog Beds" },
+      { id: "f3", name: "Dog Beds Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dog+beds+product+c&country=us", brand: "Brand C", category: "Dog Beds" },
+      { id: "f4", name: "Dog Beds Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dog+beds+product+d&country=us", brand: "Brand D", category: "Dog Beds" },
+      { id: "f5", name: "Dog Beds Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+beds+product+e&country=us", brand: "Brand E", category: "Dog Beds" },
+    ],
+  },
+
+  "best-cat-litter-us": {
+    slug: "best-cat-litter-us",
+    title: "Best Cat Litter 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare cat litter from Arm & Hammer, clumping, and alternatives.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Cat Litter in the US",
+    heroBody:
+      "Compare cat litter from Arm & Hammer, clumping, and alternatives.",
+    canonicalPath: "/best-cat-litter-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Cat Litter",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Cat Litter offers across the US",
+    comparisonSectionTitle: "Popular Cat Litter picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Cat Litter",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Cat Litter FAQ",
+    faqs: [
+      {
+        question: "What is the best Cat Litter to buy in 2026?",
+        answer:
+          "The best Cat Litter depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Cat Litter?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Cat Litter?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Cat Litter prices across the US",
+      body: "Find the lowest Cat Litter prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=cat+litter&country=us",
+      label: "Shop Cat Litter",
+    },
+    developerCta: {
+      title: "Build Cat Litter price tracking tools",
+      body: "Use BuyWhere APIs to monitor Cat Litter pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Cat Litter Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+litter+product+a&country=us", brand: "Brand A", category: "Cat Litter" },
+      { id: "f2", name: "Cat Litter Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=cat+litter+product+b&country=us", brand: "Brand B", category: "Cat Litter" },
+      { id: "f3", name: "Cat Litter Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=cat+litter+product+c&country=us", brand: "Brand C", category: "Cat Litter" },
+      { id: "f4", name: "Cat Litter Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=cat+litter+product+d&country=us", brand: "Brand D", category: "Cat Litter" },
+      { id: "f5", name: "Cat Litter Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+litter+product+e&country=us", brand: "Brand E", category: "Cat Litter" },
+    ],
+  },
+
+  "best-automatic-pet-feeders-us": {
+    slug: "best-automatic-pet-feeders-us",
+    title: "Best Automatic Pet Feeders 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare automatic pet feeders from PetSafe, WOPET, and Honeywell.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Automatic Pet Feeders in the US",
+    heroBody:
+      "Compare automatic pet feeders from PetSafe, WOPET, and Honeywell.",
+    canonicalPath: "/best-automatic-pet-feeders-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Automatic Pet Feeders",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Automatic Pet Feeders offers across the US",
+    comparisonSectionTitle: "Popular Automatic Pet Feeders picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Automatic Pet Feeders",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Automatic Pet Feeders FAQ",
+    faqs: [
+      {
+        question: "What is the best Automatic Pet Feeders to buy in 2026?",
+        answer:
+          "The best Automatic Pet Feeders depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Automatic Pet Feeders?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Automatic Pet Feeders?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Automatic Pet Feeders prices across the US",
+      body: "Find the lowest Automatic Pet Feeders prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=automatic+pet+feeders&country=us",
+      label: "Shop Automatic Pet Feeders",
+    },
+    developerCta: {
+      title: "Build Automatic Pet Feeders price tracking tools",
+      body: "Use BuyWhere APIs to monitor Automatic Pet Feeders pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Automatic Pet Feeders Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=automatic+pet+feeders+product+a&country=us", brand: "Brand A", category: "Automatic Pet Feeders" },
+      { id: "f2", name: "Automatic Pet Feeders Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=automatic+pet+feeders+product+b&country=us", brand: "Brand B", category: "Automatic Pet Feeders" },
+      { id: "f3", name: "Automatic Pet Feeders Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=automatic+pet+feeders+product+c&country=us", brand: "Brand C", category: "Automatic Pet Feeders" },
+      { id: "f4", name: "Automatic Pet Feeders Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=automatic+pet+feeders+product+d&country=us", brand: "Brand D", category: "Automatic Pet Feeders" },
+      { id: "f5", name: "Automatic Pet Feeders Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=automatic+pet+feeders+product+e&country=us", brand: "Brand E", category: "Automatic Pet Feeders" },
+    ],
+  },
+
+  "best-pet-water-fountains-us": {
+    slug: "best-pet-water-fountains-us",
+    title: "Best Pet Water Fountains 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare pet water fountains from PetSafe, Drinkwell, and Pioneer.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Pet Water Fountains in the US",
+    heroBody:
+      "Compare pet water fountains from PetSafe, Drinkwell, and Pioneer.",
+    canonicalPath: "/best-pet-water-fountains-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Pet Water Fountains",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Pet Water Fountains offers across the US",
+    comparisonSectionTitle: "Popular Pet Water Fountains picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Pet Water Fountains",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Pet Water Fountains FAQ",
+    faqs: [
+      {
+        question: "What is the best Pet Water Fountains to buy in 2026?",
+        answer:
+          "The best Pet Water Fountains depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Pet Water Fountains?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Pet Water Fountains?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Pet Water Fountains prices across the US",
+      body: "Find the lowest Pet Water Fountains prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=pet+water+fountains&country=us",
+      label: "Shop Pet Water Fountains",
+    },
+    developerCta: {
+      title: "Build Pet Water Fountains price tracking tools",
+      body: "Use BuyWhere APIs to monitor Pet Water Fountains pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Pet Water Fountains Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+water+fountains+product+a&country=us", brand: "Brand A", category: "Pet Water Fountains" },
+      { id: "f2", name: "Pet Water Fountains Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=pet+water+fountains+product+b&country=us", brand: "Brand B", category: "Pet Water Fountains" },
+      { id: "f3", name: "Pet Water Fountains Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=pet+water+fountains+product+c&country=us", brand: "Brand C", category: "Pet Water Fountains" },
+      { id: "f4", name: "Pet Water Fountains Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=pet+water+fountains+product+d&country=us", brand: "Brand D", category: "Pet Water Fountains" },
+      { id: "f5", name: "Pet Water Fountains Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+water+fountains+product+e&country=us", brand: "Brand E", category: "Pet Water Fountains" },
+    ],
+  },
+
+  "best-dog-crates-us": {
+    slug: "best-dog-crates-us",
+    title: "Best Dog Crates 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare dog crates from Midwest, Petmate, ProSelect, and Nozaya.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Dog Crates in the US",
+    heroBody:
+      "Compare dog crates from Midwest, Petmate, ProSelect, and Nozaya.",
+    canonicalPath: "/best-dog-crates-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Dog Crates",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Dog Crates offers across the US",
+    comparisonSectionTitle: "Popular Dog Crates picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Dog Crates",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Dog Crates FAQ",
+    faqs: [
+      {
+        question: "What is the best Dog Crates to buy in 2026?",
+        answer:
+          "The best Dog Crates depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Dog Crates?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Dog Crates?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Dog Crates prices across the US",
+      body: "Find the lowest Dog Crates prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=dog+crates&country=us",
+      label: "Shop Dog Crates",
+    },
+    developerCta: {
+      title: "Build Dog Crates price tracking tools",
+      body: "Use BuyWhere APIs to monitor Dog Crates pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dog Crates Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+crates+product+a&country=us", brand: "Brand A", category: "Dog Crates" },
+      { id: "f2", name: "Dog Crates Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dog+crates+product+b&country=us", brand: "Brand B", category: "Dog Crates" },
+      { id: "f3", name: "Dog Crates Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dog+crates+product+c&country=us", brand: "Brand C", category: "Dog Crates" },
+      { id: "f4", name: "Dog Crates Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dog+crates+product+d&country=us", brand: "Brand D", category: "Dog Crates" },
+      { id: "f5", name: "Dog Crates Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+crates+product+e&country=us", brand: "Brand E", category: "Dog Crates" },
+    ],
+  },
+
+  "best-cat-trees-us": {
+    slug: "best-cat-trees-us",
+    title: "Best Cat Trees 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare cat trees from Furhaven, Go Pet Club, and SmartCat.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Cat Trees in the US",
+    heroBody:
+      "Compare cat trees from Furhaven, Go Pet Club, and SmartCat.",
+    canonicalPath: "/best-cat-trees-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Cat Trees",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Cat Trees offers across the US",
+    comparisonSectionTitle: "Popular Cat Trees picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Cat Trees",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Cat Trees FAQ",
+    faqs: [
+      {
+        question: "What is the best Cat Trees to buy in 2026?",
+        answer:
+          "The best Cat Trees depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Cat Trees?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Cat Trees?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Cat Trees prices across the US",
+      body: "Find the lowest Cat Trees prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=cat+trees&country=us",
+      label: "Shop Cat Trees",
+    },
+    developerCta: {
+      title: "Build Cat Trees price tracking tools",
+      body: "Use BuyWhere APIs to monitor Cat Trees pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Cat Trees Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+trees+product+a&country=us", brand: "Brand A", category: "Cat Trees" },
+      { id: "f2", name: "Cat Trees Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=cat+trees+product+b&country=us", brand: "Brand B", category: "Cat Trees" },
+      { id: "f3", name: "Cat Trees Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=cat+trees+product+c&country=us", brand: "Brand C", category: "Cat Trees" },
+      { id: "f4", name: "Cat Trees Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=cat+trees+product+d&country=us", brand: "Brand D", category: "Cat Trees" },
+      { id: "f5", name: "Cat Trees Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+trees+product+e&country=us", brand: "Brand E", category: "Cat Trees" },
+    ],
+  },
+
+  "best-pet-carriers-us": {
+    slug: "best-pet-carriers-us",
+    title: "Best Pet Carriers 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare pet carriers from Sherpa, Sleepypod, and Amazon Basics.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Pet Carriers in the US",
+    heroBody:
+      "Compare pet carriers from Sherpa, Sleepypod, and Amazon Basics.",
+    canonicalPath: "/best-pet-carriers-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Pet Carriers",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Pet Carriers offers across the US",
+    comparisonSectionTitle: "Popular Pet Carriers picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Pet Carriers",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Pet Carriers FAQ",
+    faqs: [
+      {
+        question: "What is the best Pet Carriers to buy in 2026?",
+        answer:
+          "The best Pet Carriers depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Pet Carriers?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Pet Carriers?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Pet Carriers prices across the US",
+      body: "Find the lowest Pet Carriers prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=pet+carriers&country=us",
+      label: "Shop Pet Carriers",
+    },
+    developerCta: {
+      title: "Build Pet Carriers price tracking tools",
+      body: "Use BuyWhere APIs to monitor Pet Carriers pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Pet Carriers Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+carriers+product+a&country=us", brand: "Brand A", category: "Pet Carriers" },
+      { id: "f2", name: "Pet Carriers Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=pet+carriers+product+b&country=us", brand: "Brand B", category: "Pet Carriers" },
+      { id: "f3", name: "Pet Carriers Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=pet+carriers+product+c&country=us", brand: "Brand C", category: "Pet Carriers" },
+      { id: "f4", name: "Pet Carriers Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=pet+carriers+product+d&country=us", brand: "Brand D", category: "Pet Carriers" },
+      { id: "f5", name: "Pet Carriers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+carriers+product+e&country=us", brand: "Brand E", category: "Pet Carriers" },
+    ],
+  },
+
+  "best-dog-collars-us": {
+    slug: "best-dog-collars-us",
+    title: "Best Dog Collars 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare dog collars from Blueberry, Julius K-9, and PetSafe.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Dog Collars in the US",
+    heroBody:
+      "Compare dog collars from Blueberry, Julius K-9, and PetSafe.",
+    canonicalPath: "/best-dog-collars-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Dog Collars",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Dog Collars offers across the US",
+    comparisonSectionTitle: "Popular Dog Collars picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Dog Collars",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Dog Collars FAQ",
+    faqs: [
+      {
+        question: "What is the best Dog Collars to buy in 2026?",
+        answer:
+          "The best Dog Collars depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Dog Collars?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Dog Collars?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Dog Collars prices across the US",
+      body: "Find the lowest Dog Collars prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=dog+collars&country=us",
+      label: "Shop Dog Collars",
+    },
+    developerCta: {
+      title: "Build Dog Collars price tracking tools",
+      body: "Use BuyWhere APIs to monitor Dog Collars pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dog Collars Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+collars+product+a&country=us", brand: "Brand A", category: "Dog Collars" },
+      { id: "f2", name: "Dog Collars Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dog+collars+product+b&country=us", brand: "Brand B", category: "Dog Collars" },
+      { id: "f3", name: "Dog Collars Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dog+collars+product+c&country=us", brand: "Brand C", category: "Dog Collars" },
+      { id: "f4", name: "Dog Collars Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dog+collars+product+d&country=us", brand: "Brand D", category: "Dog Collars" },
+      { id: "f5", name: "Dog Collars Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+collars+product+e&country=us", brand: "Brand E", category: "Dog Collars" },
+    ],
+  },
+
+  "best-cat-collars-us": {
+    slug: "best-cat-collars-us",
+    title: "Best Cat Collars 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare cat collars from Catit, Go Cat, and Alaskan.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Cat Collars in the US",
+    heroBody:
+      "Compare cat collars from Catit, Go Cat, and Alaskan.",
+    canonicalPath: "/best-cat-collars-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Cat Collars",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Cat Collars offers across the US",
+    comparisonSectionTitle: "Popular Cat Collars picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Cat Collars",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Cat Collars FAQ",
+    faqs: [
+      {
+        question: "What is the best Cat Collars to buy in 2026?",
+        answer:
+          "The best Cat Collars depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Cat Collars?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Cat Collars?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Cat Collars prices across the US",
+      body: "Find the lowest Cat Collars prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=cat+collars&country=us",
+      label: "Shop Cat Collars",
+    },
+    developerCta: {
+      title: "Build Cat Collars price tracking tools",
+      body: "Use BuyWhere APIs to monitor Cat Collars pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Cat Collars Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+collars+product+a&country=us", brand: "Brand A", category: "Cat Collars" },
+      { id: "f2", name: "Cat Collars Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=cat+collars+product+b&country=us", brand: "Brand B", category: "Cat Collars" },
+      { id: "f3", name: "Cat Collars Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=cat+collars+product+c&country=us", brand: "Brand C", category: "Cat Collars" },
+      { id: "f4", name: "Cat Collars Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=cat+collars+product+d&country=us", brand: "Brand D", category: "Cat Collars" },
+      { id: "f5", name: "Cat Collars Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+collars+product+e&country=us", brand: "Brand E", category: "Cat Collars" },
+    ],
+  },
+
+  "best-dog-leashes-us": {
+    slug: "best-dog-leashes-us",
+    title: "Best Dog Leashes 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare dog leashes from Thunder, Tug-A-Length, and Retriever.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Dog Leashes in the US",
+    heroBody:
+      "Compare dog leashes from Thunder, Tug-A-Length, and Retriever.",
+    canonicalPath: "/best-dog-leashes-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Dog Leashes",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Dog Leashes offers across the US",
+    comparisonSectionTitle: "Popular Dog Leashes picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Dog Leashes",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Dog Leashes FAQ",
+    faqs: [
+      {
+        question: "What is the best Dog Leashes to buy in 2026?",
+        answer:
+          "The best Dog Leashes depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Dog Leashes?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Dog Leashes?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Dog Leashes prices across the US",
+      body: "Find the lowest Dog Leashes prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=dog+leashes&country=us",
+      label: "Shop Dog Leashes",
+    },
+    developerCta: {
+      title: "Build Dog Leashes price tracking tools",
+      body: "Use BuyWhere APIs to monitor Dog Leashes pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dog Leashes Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+leashes+product+a&country=us", brand: "Brand A", category: "Dog Leashes" },
+      { id: "f2", name: "Dog Leashes Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dog+leashes+product+b&country=us", brand: "Brand B", category: "Dog Leashes" },
+      { id: "f3", name: "Dog Leashes Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dog+leashes+product+c&country=us", brand: "Brand C", category: "Dog Leashes" },
+      { id: "f4", name: "Dog Leashes Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dog+leashes+product+d&country=us", brand: "Brand D", category: "Dog Leashes" },
+      { id: "f5", name: "Dog Leashes Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+leashes+product+e&country=us", brand: "Brand E", category: "Dog Leashes" },
+    ],
+  },
+
+  "best-pet-grooming-supplies-us": {
+    slug: "best-pet-grooming-supplies-us",
+    title: "Best Pet Grooming Supplies 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare pet grooming supplies from Safari, Hertzko, and Bovu.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Pet Grooming Supplies in the US",
+    heroBody:
+      "Compare pet grooming supplies from Safari, Hertzko, and Bovu.",
+    canonicalPath: "/best-pet-grooming-supplies-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Pet Grooming Supplies",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Pet Grooming Supplies offers across the US",
+    comparisonSectionTitle: "Popular Pet Grooming Supplies picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Pet Grooming Supplies",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Pet Grooming Supplies FAQ",
+    faqs: [
+      {
+        question: "What is the best Pet Grooming Supplies to buy in 2026?",
+        answer:
+          "The best Pet Grooming Supplies depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Pet Grooming Supplies?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Pet Grooming Supplies?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Pet Grooming Supplies prices across the US",
+      body: "Find the lowest Pet Grooming Supplies prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=pet+grooming+supplies&country=us",
+      label: "Shop Pet Grooming Supplies",
+    },
+    developerCta: {
+      title: "Build Pet Grooming Supplies price tracking tools",
+      body: "Use BuyWhere APIs to monitor Pet Grooming Supplies pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Pet Grooming Supplies Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+grooming+supplies+product+a&country=us", brand: "Brand A", category: "Pet Grooming Supplies" },
+      { id: "f2", name: "Pet Grooming Supplies Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=pet+grooming+supplies+product+b&country=us", brand: "Brand B", category: "Pet Grooming Supplies" },
+      { id: "f3", name: "Pet Grooming Supplies Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=pet+grooming+supplies+product+c&country=us", brand: "Brand C", category: "Pet Grooming Supplies" },
+      { id: "f4", name: "Pet Grooming Supplies Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=pet+grooming+supplies+product+d&country=us", brand: "Brand D", category: "Pet Grooming Supplies" },
+      { id: "f5", name: "Pet Grooming Supplies Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+grooming+supplies+product+e&country=us", brand: "Brand E", category: "Pet Grooming Supplies" },
+    ],
+  },
+
+  "best-dog-shampoo-us": {
+    slug: "best-dog-shampoo-us",
+    title: "Best Dog Shampoo 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare dog shampoo from Isle of Dogs, Earthbath, and FURminator.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Dog Shampoo in the US",
+    heroBody:
+      "Compare dog shampoo from Isle of Dogs, Earthbath, and FURminator.",
+    canonicalPath: "/best-dog-shampoo-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Dog Shampoo",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Dog Shampoo offers across the US",
+    comparisonSectionTitle: "Popular Dog Shampoo picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Dog Shampoo",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Dog Shampoo FAQ",
+    faqs: [
+      {
+        question: "What is the best Dog Shampoo to buy in 2026?",
+        answer:
+          "The best Dog Shampoo depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Dog Shampoo?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Dog Shampoo?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Dog Shampoo prices across the US",
+      body: "Find the lowest Dog Shampoo prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=dog+shampoo&country=us",
+      label: "Shop Dog Shampoo",
+    },
+    developerCta: {
+      title: "Build Dog Shampoo price tracking tools",
+      body: "Use BuyWhere APIs to monitor Dog Shampoo pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dog Shampoo Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+shampoo+product+a&country=us", brand: "Brand A", category: "Dog Shampoo" },
+      { id: "f2", name: "Dog Shampoo Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dog+shampoo+product+b&country=us", brand: "Brand B", category: "Dog Shampoo" },
+      { id: "f3", name: "Dog Shampoo Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dog+shampoo+product+c&country=us", brand: "Brand C", category: "Dog Shampoo" },
+      { id: "f4", name: "Dog Shampoo Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dog+shampoo+product+d&country=us", brand: "Brand D", category: "Dog Shampoo" },
+      { id: "f5", name: "Dog Shampoo Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+shampoo+product+e&country=us", brand: "Brand E", category: "Dog Shampoo" },
+    ],
+  },
+
+  "best-cat-shampoo-us": {
+    slug: "best-cat-shampoo-us",
+    title: "Best Cat Shampoo 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare cat shampoo from Earthbath, Bodhi's, and Richard's.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Cat Shampoo in the US",
+    heroBody:
+      "Compare cat shampoo from Earthbath, Bodhi's, and Richard's.",
+    canonicalPath: "/best-cat-shampoo-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Cat Shampoo",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Cat Shampoo offers across the US",
+    comparisonSectionTitle: "Popular Cat Shampoo picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Cat Shampoo",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Cat Shampoo FAQ",
+    faqs: [
+      {
+        question: "What is the best Cat Shampoo to buy in 2026?",
+        answer:
+          "The best Cat Shampoo depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Cat Shampoo?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Cat Shampoo?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Cat Shampoo prices across the US",
+      body: "Find the lowest Cat Shampoo prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=cat+shampoo&country=us",
+      label: "Shop Cat Shampoo",
+    },
+    developerCta: {
+      title: "Build Cat Shampoo price tracking tools",
+      body: "Use BuyWhere APIs to monitor Cat Shampoo pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Cat Shampoo Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+shampoo+product+a&country=us", brand: "Brand A", category: "Cat Shampoo" },
+      { id: "f2", name: "Cat Shampoo Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=cat+shampoo+product+b&country=us", brand: "Brand B", category: "Cat Shampoo" },
+      { id: "f3", name: "Cat Shampoo Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=cat+shampoo+product+c&country=us", brand: "Brand C", category: "Cat Shampoo" },
+      { id: "f4", name: "Cat Shampoo Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=cat+shampoo+product+d&country=us", brand: "Brand D", category: "Cat Shampoo" },
+      { id: "f5", name: "Cat Shampoo Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+shampoo+product+e&country=us", brand: "Brand E", category: "Cat Shampoo" },
+    ],
+  },
+
+  "best-pet-brushes-us": {
+    slug: "best-pet-brushes-us",
+    title: "Best Pet Brushes 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare pet brushes from Hertzko, FURminator, and Safari.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Pet Brushes in the US",
+    heroBody:
+      "Compare pet brushes from Hertzko, FURminator, and Safari.",
+    canonicalPath: "/best-pet-brushes-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Pet Brushes",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Pet Brushes offers across the US",
+    comparisonSectionTitle: "Popular Pet Brushes picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Pet Brushes",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Pet Brushes FAQ",
+    faqs: [
+      {
+        question: "What is the best Pet Brushes to buy in 2026?",
+        answer:
+          "The best Pet Brushes depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Pet Brushes?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Pet Brushes?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Pet Brushes prices across the US",
+      body: "Find the lowest Pet Brushes prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=pet+brushes&country=us",
+      label: "Shop Pet Brushes",
+    },
+    developerCta: {
+      title: "Build Pet Brushes price tracking tools",
+      body: "Use BuyWhere APIs to monitor Pet Brushes pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Pet Brushes Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+brushes+product+a&country=us", brand: "Brand A", category: "Pet Brushes" },
+      { id: "f2", name: "Pet Brushes Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=pet+brushes+product+b&country=us", brand: "Brand B", category: "Pet Brushes" },
+      { id: "f3", name: "Pet Brushes Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=pet+brushes+product+c&country=us", brand: "Brand C", category: "Pet Brushes" },
+      { id: "f4", name: "Pet Brushes Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=pet+brushes+product+d&country=us", brand: "Brand D", category: "Pet Brushes" },
+      { id: "f5", name: "Pet Brushes Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+brushes+product+e&country=us", brand: "Brand E", category: "Pet Brushes" },
+    ],
+  },
+
+  "best-pet-nail-grinders-us": {
+    slug: "best-pet-nail-grinders-us",
+    title: "Best Pet Nail Grinders 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare pet nail grinders from Casfow, Prosense, and Recharged.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Pet Nail Grinders in the US",
+    heroBody:
+      "Compare pet nail grinders from Casfow, Prosense, and Recharged.",
+    canonicalPath: "/best-pet-nail-grinders-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Pet Nail Grinders",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Pet Nail Grinders offers across the US",
+    comparisonSectionTitle: "Popular Pet Nail Grinders picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Pet Nail Grinders",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Pet Nail Grinders FAQ",
+    faqs: [
+      {
+        question: "What is the best Pet Nail Grinders to buy in 2026?",
+        answer:
+          "The best Pet Nail Grinders depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Pet Nail Grinders?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Pet Nail Grinders?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Pet Nail Grinders prices across the US",
+      body: "Find the lowest Pet Nail Grinders prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=pet+nail+grinders&country=us",
+      label: "Shop Pet Nail Grinders",
+    },
+    developerCta: {
+      title: "Build Pet Nail Grinders price tracking tools",
+      body: "Use BuyWhere APIs to monitor Pet Nail Grinders pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Pet Nail Grinders Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+nail+grinders+product+a&country=us", brand: "Brand A", category: "Pet Nail Grinders" },
+      { id: "f2", name: "Pet Nail Grinders Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=pet+nail+grinders+product+b&country=us", brand: "Brand B", category: "Pet Nail Grinders" },
+      { id: "f3", name: "Pet Nail Grinders Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=pet+nail+grinders+product+c&country=us", brand: "Brand C", category: "Pet Nail Grinders" },
+      { id: "f4", name: "Pet Nail Grinders Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=pet+nail+grinders+product+d&country=us", brand: "Brand D", category: "Pet Nail Grinders" },
+      { id: "f5", name: "Pet Nail Grinders Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+nail+grinders+product+e&country=us", brand: "Brand E", category: "Pet Nail Grinders" },
+    ],
+  },
+
+  "best-dog-treats-us": {
+    slug: "best-dog-treats-us",
+    title: "Best Dog Treats 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare dog treats from Milk-Bone, Zuke's, Blue Buffalo, and Orijen.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Dog Treats in the US",
+    heroBody:
+      "Compare dog treats from Milk-Bone, Zuke's, Blue Buffalo, and Orijen.",
+    canonicalPath: "/best-dog-treats-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Dog Treats",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Dog Treats offers across the US",
+    comparisonSectionTitle: "Popular Dog Treats picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Dog Treats",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Dog Treats FAQ",
+    faqs: [
+      {
+        question: "What is the best Dog Treats to buy in 2026?",
+        answer:
+          "The best Dog Treats depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Dog Treats?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Dog Treats?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Dog Treats prices across the US",
+      body: "Find the lowest Dog Treats prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=dog+treats&country=us",
+      label: "Shop Dog Treats",
+    },
+    developerCta: {
+      title: "Build Dog Treats price tracking tools",
+      body: "Use BuyWhere APIs to monitor Dog Treats pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dog Treats Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+treats+product+a&country=us", brand: "Brand A", category: "Dog Treats" },
+      { id: "f2", name: "Dog Treats Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dog+treats+product+b&country=us", brand: "Brand B", category: "Dog Treats" },
+      { id: "f3", name: "Dog Treats Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dog+treats+product+c&country=us", brand: "Brand C", category: "Dog Treats" },
+      { id: "f4", name: "Dog Treats Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dog+treats+product+d&country=us", brand: "Brand D", category: "Dog Treats" },
+      { id: "f5", name: "Dog Treats Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+treats+product+e&country=us", brand: "Brand E", category: "Dog Treats" },
+    ],
+  },
+
+  "best-cat-treats-us": {
+    slug: "best-cat-treats-us",
+    title: "Best Cat Treats 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare cat treats from Temptations, Greenies, Churu, and Inaba.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Cat Treats in the US",
+    heroBody:
+      "Compare cat treats from Temptations, Greenies, Churu, and Inaba.",
+    canonicalPath: "/best-cat-treats-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Cat Treats",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Cat Treats offers across the US",
+    comparisonSectionTitle: "Popular Cat Treats picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Cat Treats",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Cat Treats FAQ",
+    faqs: [
+      {
+        question: "What is the best Cat Treats to buy in 2026?",
+        answer:
+          "The best Cat Treats depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Cat Treats?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Cat Treats?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Cat Treats prices across the US",
+      body: "Find the lowest Cat Treats prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=cat+treats&country=us",
+      label: "Shop Cat Treats",
+    },
+    developerCta: {
+      title: "Build Cat Treats price tracking tools",
+      body: "Use BuyWhere APIs to monitor Cat Treats pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Cat Treats Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+treats+product+a&country=us", brand: "Brand A", category: "Cat Treats" },
+      { id: "f2", name: "Cat Treats Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=cat+treats+product+b&country=us", brand: "Brand B", category: "Cat Treats" },
+      { id: "f3", name: "Cat Treats Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=cat+treats+product+c&country=us", brand: "Brand C", category: "Cat Treats" },
+      { id: "f4", name: "Cat Treats Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=cat+treats+product+d&country=us", brand: "Brand D", category: "Cat Treats" },
+      { id: "f5", name: "Cat Treats Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+treats+product+e&country=us", brand: "Brand E", category: "Cat Treats" },
+    ],
+  },
+
+  "best-pet-supplements-us": {
+    slug: "best-pet-supplements-us",
+    title: "Best Pet Supplements 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare pet supplements from Nutramax, VetIQ, and Zesty Paws.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Pet Supplements in the US",
+    heroBody:
+      "Compare pet supplements from Nutramax, VetIQ, and Zesty Paws.",
+    canonicalPath: "/best-pet-supplements-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Pet Supplements",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Pet Supplements offers across the US",
+    comparisonSectionTitle: "Popular Pet Supplements picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Pet Supplements",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Pet Supplements FAQ",
+    faqs: [
+      {
+        question: "What is the best Pet Supplements to buy in 2026?",
+        answer:
+          "The best Pet Supplements depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Pet Supplements?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Pet Supplements?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Pet Supplements prices across the US",
+      body: "Find the lowest Pet Supplements prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=pet+supplements&country=us",
+      label: "Shop Pet Supplements",
+    },
+    developerCta: {
+      title: "Build Pet Supplements price tracking tools",
+      body: "Use BuyWhere APIs to monitor Pet Supplements pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Pet Supplements Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+supplements+product+a&country=us", brand: "Brand A", category: "Pet Supplements" },
+      { id: "f2", name: "Pet Supplements Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=pet+supplements+product+b&country=us", brand: "Brand B", category: "Pet Supplements" },
+      { id: "f3", name: "Pet Supplements Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=pet+supplements+product+c&country=us", brand: "Brand C", category: "Pet Supplements" },
+      { id: "f4", name: "Pet Supplements Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=pet+supplements+product+d&country=us", brand: "Brand D", category: "Pet Supplements" },
+      { id: "f5", name: "Pet Supplements Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+supplements+product+e&country=us", brand: "Brand E", category: "Pet Supplements" },
+    ],
+  },
+
+  "best-fish-tanks-us": {
+    slug: "best-fish-tanks-us",
+    title: "Best Fish Tanks 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare fish tanks from Fluval, Aqueon, Marineland, and Tetra.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Fish Tanks in the US",
+    heroBody:
+      "Compare fish tanks from Fluval, Aqueon, Marineland, and Tetra.",
+    canonicalPath: "/best-fish-tanks-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Fish Tanks",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Fish Tanks offers across the US",
+    comparisonSectionTitle: "Popular Fish Tanks picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Fish Tanks",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Fish Tanks FAQ",
+    faqs: [
+      {
+        question: "What is the best Fish Tanks to buy in 2026?",
+        answer:
+          "The best Fish Tanks depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Fish Tanks?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Fish Tanks?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Fish Tanks prices across the US",
+      body: "Find the lowest Fish Tanks prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=fish+tanks&country=us",
+      label: "Shop Fish Tanks",
+    },
+    developerCta: {
+      title: "Build Fish Tanks price tracking tools",
+      body: "Use BuyWhere APIs to monitor Fish Tanks pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Fish Tanks Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=fish+tanks+product+a&country=us", brand: "Brand A", category: "Fish Tanks" },
+      { id: "f2", name: "Fish Tanks Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=fish+tanks+product+b&country=us", brand: "Brand B", category: "Fish Tanks" },
+      { id: "f3", name: "Fish Tanks Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=fish+tanks+product+c&country=us", brand: "Brand C", category: "Fish Tanks" },
+      { id: "f4", name: "Fish Tanks Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=fish+tanks+product+d&country=us", brand: "Brand D", category: "Fish Tanks" },
+      { id: "f5", name: "Fish Tanks Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=fish+tanks+product+e&country=us", brand: "Brand E", category: "Fish Tanks" },
+    ],
+  },
+
+  "best-bird-cages-us": {
+    slug: "best-bird-cages-us",
+    title: "Best Bird Cages 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare bird cages from Prevue, Yaheeda, and Pawhut.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Bird Cages in the US",
+    heroBody:
+      "Compare bird cages from Prevue, Yaheeda, and Pawhut.",
+    canonicalPath: "/best-bird-cages-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Bird Cages",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Bird Cages offers across the US",
+    comparisonSectionTitle: "Popular Bird Cages picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Bird Cages",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Bird Cages FAQ",
+    faqs: [
+      {
+        question: "What is the best Bird Cages to buy in 2026?",
+        answer:
+          "The best Bird Cages depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Bird Cages?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Bird Cages?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Bird Cages prices across the US",
+      body: "Find the lowest Bird Cages prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=bird+cages&country=us",
+      label: "Shop Bird Cages",
+    },
+    developerCta: {
+      title: "Build Bird Cages price tracking tools",
+      body: "Use BuyWhere APIs to monitor Bird Cages pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Bird Cages Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=bird+cages+product+a&country=us", brand: "Brand A", category: "Bird Cages" },
+      { id: "f2", name: "Bird Cages Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=bird+cages+product+b&country=us", brand: "Brand B", category: "Bird Cages" },
+      { id: "f3", name: "Bird Cages Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=bird+cages+product+c&country=us", brand: "Brand C", category: "Bird Cages" },
+      { id: "f4", name: "Bird Cages Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=bird+cages+product+d&country=us", brand: "Brand D", category: "Bird Cages" },
+      { id: "f5", name: "Bird Cages Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=bird+cages+product+e&country=us", brand: "Brand E", category: "Bird Cages" },
+    ],
+  },
+
+  "best-small-pet-cages-us": {
+    slug: "best-small-pet-cages-us",
+    title: "Best Small Pet Cages 2026 | Compare Prices Across US Retailers",
+    description:
+      "Compare small pet cages from Midwest, Kaytee, and Prevue.",
+    heroEyebrow: "US Shopping Guide",
+    heroTitle: "Best Small Pet Cages in the US",
+    heroBody:
+      "Compare small pet cages from Midwest, Kaytee, and Prevue.",
+    canonicalPath: "/best-small-pet-cages-us",
+    country: "US",
+    currency: "USD",
+    locale: "en_US",
+    searchQuery: "Small Pet Cages",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Live Small Pet Cages offers across the US",
+    comparisonSectionTitle: "Popular Small Pet Cages picks at a glance",
+    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
+    comparisonRows: [
+      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
+      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
+      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
+    ],
+    highlightSectionTitle: "What US buyers check before buying",
+    highlights: [
+      {
+        title: "Price across major retailers",
+        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
+      },
+      {
+        title: "Seasonal sales windows",
+        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
+      },
+      {
+        title: "Authenticity and warranty",
+        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
+      },
+    ],
+    adviceSectionTitle: "How to choose the right Small Pet Cages",
+    advicePoints: [
+      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
+      "Check return policies before buying. Major retailers offer free returns within 30 days.",
+      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
+    ],
+    faqSectionTitle: "Small Pet Cages FAQ",
+    faqs: [
+      {
+        question: "What is the best Small Pet Cages to buy in 2026?",
+        answer:
+          "The best Small Pet Cages depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
+      },
+      {
+        question: "Where is the best place to buy Small Pet Cages?",
+        answer:
+          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
+      },
+      {
+        question: "When is the best time to buy Small Pet Cages?",
+        answer:
+          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
+      },
+    ],
+    shopperCta: {
+      title: "Compare Small Pet Cages prices across the US",
+      body: "Find the lowest Small Pet Cages prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
+      href: "/search?q=small+pet+cages&country=us",
+      label: "Shop Small Pet Cages",
+    },
+    developerCta: {
+      title: "Build Small Pet Cages price tracking tools",
+      body: "Use BuyWhere APIs to monitor Small Pet Cages pricing, merchant availability, and price changes across US retailers in real time.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Small Pet Cages Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=small+pet+cages+product+a&country=us", brand: "Brand A", category: "Small Pet Cages" },
+      { id: "f2", name: "Small Pet Cages Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=small+pet+cages+product+b&country=us", brand: "Brand B", category: "Small Pet Cages" },
+      { id: "f3", name: "Small Pet Cages Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=small+pet+cages+product+c&country=us", brand: "Brand C", category: "Small Pet Cages" },
+      { id: "f4", name: "Small Pet Cages Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=small+pet+cages+product+d&country=us", brand: "Brand D", category: "Small Pet Cages" },
+      { id: "f5", name: "Small Pet Cages Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=small+pet+cages+product+e&country=us", brand: "Brand E", category: "Small Pet Cages" },
+    ],
+  },
+
 };
