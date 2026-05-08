@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { Sentry, sentryRequestHandler } from './sentry';
+import { captureException as posthogCaptureException } from './analytics/posthog';
 import authRouter from './routes/auth';
 import productsRouter from './routes/products';
 import categoriesRouter from './routes/categories';
@@ -188,6 +189,7 @@ export function createApp() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err: Error, _req: express.Request, res: express.Response, next: express.NextFunction) => {
     Sentry.captureException(err);
+    posthogCaptureException(err);
     next(err);
   });
 

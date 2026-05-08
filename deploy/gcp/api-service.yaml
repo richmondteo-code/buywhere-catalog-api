@@ -48,11 +48,13 @@ spec:
                 secretKeyRef:
                   name: buywhere-admin-api-key
                   key: latest
-            - name: POSTHOG_API_KEY
+            - name: POSTHOG_PROJECT_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: buywhere-posthog-api-key
+                  name: buywhere-posthog-project-token
                   key: latest
+            - name: POSTHOG_HOST
+              value: "https://us.i.posthog.com"
           resources:
             limits:
               cpu: "1"
