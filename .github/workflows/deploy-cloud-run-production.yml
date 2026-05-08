@@ -22,7 +22,11 @@ env:
   GCP_PROJECT_ID: gaia-calendar-488606
   GCP_REGION: asia-southeast1
   CLOUD_RUN_SERVICE: buywhere-api-production
-  CLOUD_SQL_INSTANCE: gaia-calendar-488606:asia-southeast1:buywhere-db
+  # Canonical production DB: gaia-calendar-488606:asia-southeast1:buywhere-staging
+  # DO NOT CHANGE — see STRATEGIC_DECISIONS.md Infrastructure Reference Policy
+  # "buywhere-staging" is the production DB instance name (despite confusing naming)
+  # "buywhere-db" and "buywhere-production" are deprecated and do not exist
+  CLOUD_SQL_INSTANCE: gaia-calendar-488606:asia-southeast1:buywhere-staging
 
 jobs:
   build:
@@ -35,6 +39,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Validate workflows have no deprecated production project refs
+        run: |
+          DEPRECATED_REF="buywhere""-production"
+          if rg -n --hidden --glob '*.yml' --glob '*.yaml' "$DEPRECATED_REF" .github/workflows; then
+            echo "Deprecated reference found in workflow files"
+            exit 1
+          fi
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
