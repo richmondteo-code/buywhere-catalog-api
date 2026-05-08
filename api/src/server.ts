@@ -22,7 +22,7 @@ import merchantsRouter from './routes/merchants';
 import ingestRouter from './routes/ingest';
 import catalogRouter from './routes/catalog';
 import keysRouter from './routes/keys';
-import { db } from './config';
+import { db, redis } from './config';
 
 export function createApp() {
   const app = express();
@@ -48,6 +48,23 @@ export function createApp() {
       status: 'ok',
       ts: new Date().toISOString(),
     });
+  });
+
+  // Redis health check — used by UptimeRobot monitor #802985725
+  app.get('/health/redis', async (_req, res) => {
+    try {
+      await redis.ping();
+      res.json({
+        status: 'ok',
+        ts: new Date().toISOString(),
+      });
+    } catch {
+      res.status(503).json({
+        status: 'error',
+        error: 'Redis unavailable',
+        ts: new Date().toISOString(),
+      });
+    }
   });
 
   // MCP / OpenAI plugin discovery
