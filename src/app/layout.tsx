@@ -64,6 +64,9 @@ export const metadata: Metadata = {
   },
 };
 
+// Avoid long-lived stale HTML referencing removed hashed static assets after deploy.
+export const revalidate = 300;
+
 export default function RootLayout({
   children,
 }: Readonly<{
