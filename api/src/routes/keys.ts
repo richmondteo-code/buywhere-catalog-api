@@ -23,7 +23,7 @@ router.post('/', async (req: Request, res: Response) => {
     return;
   }
 
-  const { name, email, tier, rpm_limit, daily_limit } = req.body;
+  const { name, email, tier, rpm_limit, daily_limit, is_test } = req.body;
 
   if (!name || typeof name !== 'string') {
     sendError(res, ErrorCode.INVALID_PARAMETER, 'name is required');
@@ -36,13 +36,14 @@ router.post('/', async (req: Request, res: Response) => {
   const resolvedTier = typeof tier === 'string' ? tier : 'free';
   const resolvedRpm = typeof rpm_limit === 'number' ? rpm_limit : 60;
   const resolvedDaily = typeof daily_limit === 'number' ? daily_limit : 1000;
+  const resolvedIsTest = is_test === true;
 
   try {
     await db.query(
       `INSERT INTO api_keys
-         (id, key_hash, name, email, tier, is_active, rpm_limit, daily_limit, signup_channel)
-       VALUES (gen_random_uuid(), $1, $2, $3, $4, true, $5, $6, 'api_key_endpoint')`,
-      [keyHash, name.trim().slice(0, 200), email ? String(email).slice(0, 500) : null, resolvedTier, resolvedRpm, resolvedDaily]
+         (id, key_hash, name, email, tier, is_active, rpm_limit, daily_limit, signup_channel, is_test)
+       VALUES (gen_random_uuid(), $1, $2, $3, $4, true, $5, $6, 'api_key_endpoint', $7)`,
+      [keyHash, name.trim().slice(0, 200), email ? String(email).slice(0, 500) : null, resolvedTier, resolvedRpm, resolvedDaily, resolvedIsTest]
     );
 
     res.status(201).json({

@@ -274,7 +274,7 @@ router.get(
     const categories = extractCategories(products);
 
     // PostHog event (fire-and-forget)
-    if (req.apiKeyRecord) {
+    if (req.apiKeyRecord && !req.apiKeyRecord.isTest) {
       trackApiQuery({
         apiKey: hashKey(req.apiKeyRecord.key),
         agentFramework: req.agentInfo?.framework || 'unknown',
@@ -692,7 +692,7 @@ router.get(
     const row = result.rows[0];
     const product = buildProduct(row as Record<string, unknown>, 'SGD', false);
 
-    if (req.apiKeyRecord) {
+    if (req.apiKeyRecord && !req.apiKeyRecord.isTest) {
       trackApiQuery({
         apiKey: hashKey(req.apiKeyRecord.key),
         agentFramework: req.agentInfo?.framework || 'unknown',

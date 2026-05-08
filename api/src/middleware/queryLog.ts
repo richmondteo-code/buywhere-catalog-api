@@ -96,8 +96,10 @@ export function queryLogMiddleware(endpoint: string) {
     // Hook into response finish to capture status code, timing, and result count
     res.on('finish', () => {
       const apiKeyRecord = req.apiKeyRecord;
-      // Log all requests — unauthenticated ones recorded with null api_key_id
-      // so we capture total demand even before API key adoption ramps up.
+
+      if (apiKeyRecord?.isTest) {
+        return;
+      }
 
       const responseTimeMs = Date.now() - start;
       const isAgent = classifyIsAgent(req);
