@@ -43,10 +43,10 @@ def _headers(token: str) -> dict[str, str]:
 
 
 def list_zones(token: str) -> tuple[int, Optional[list[dict]]]:
-    """List existing zones. Returns (status_code, zones_list_or_None)."""
+    """List active zones. Returns (status_code, zones_list_or_None)."""
     try:
         resp = httpx.get(
-            f"{BRIGHTDATA_API_BASE}/zone",
+            f"{BRIGHTDATA_API_BASE}/zone/get_active_zones",
             headers=_headers(token),
             timeout=30,
         )
@@ -128,8 +128,9 @@ def delete_zone(token: str, name: str, dry_run: bool = False) -> int:
 
     try:
         resp = httpx.delete(
-            f"{BRIGHTDATA_API_BASE}/zone/{name}",
+            f"{BRIGHTDATA_API_BASE}/zone",
             headers=_headers(token),
+            json={"zone": name},
             timeout=30,
         )
         if resp.status_code in (200, 204):
