@@ -122,6 +122,7 @@ jobs:
             --set-env-vars "SENTRY_DSN=${{ secrets.SENTRY_DSN_PRODUCTION }}" \
             --set-env-vars "ADMIN_API_KEY=${{ secrets.ADMIN_API_KEY_PRODUCTION }}" \
             --set-env-vars "POSTHOG_API_KEY=${{ secrets.POSTHOG_API_KEY_PRODUCTION }}" \
+            --set-env-vars "PAPERCLIP_API_URL=${{ secrets.PAPERCLIP_API_URL }}" \
             --memory 1Gi \
             --cpu 2 \
             --min-instances 2 \

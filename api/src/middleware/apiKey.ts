@@ -8,6 +8,7 @@ const PAPERCLIP_API_URL = process.env.PAPERCLIP_API_URL || 'https://api.papercli
 const TIER_LIMITS: Record<string, { rpm: number; daily: number }> = {
   unverified: { rpm: 5, daily: 50 },
   free: FREE_TIER,
+  internal: { rpm: 999999, daily: 999999 },
   pro: { rpm: 300, daily: 10000 },
   enterprise: { rpm: 1000, daily: 100000 },
 };
@@ -89,7 +90,7 @@ async function upsertPaperclipAgentKey(
   const keyHash = hashKey(agentId);
   const result = await db.query(
     `INSERT INTO api_keys (key_hash, name, tier, signup_channel, developer_id, rpm_limit, daily_limit)
-     VALUES ($1, $2, 'enterprise', 'paperclip_agent', $3, 1000, 100000)
+     VALUES ($1, $2, 'internal', 'paperclip_agent', $3, 999999, 999999)
      ON CONFLICT (key_hash) DO UPDATE SET last_used_at = NOW()
      RETURNING id, key_hash, name, tier, signup_channel, attribution_source`,
     [keyHash, agentName, companyId || null]
@@ -136,8 +137,8 @@ export async function requireApiKey(req: Request, res: Response, next: NextFunct
         key,
         agentName: row.name,
         tier: row.tier,
-        rpmLimit: TIER_LIMITS.enterprise.rpm,
-        dailyLimit: TIER_LIMITS.enterprise.daily,
+        rpmLimit: (TIER_LIMITS[row.tier] || TIER_LIMITS.enterprise).rpm,
+        dailyLimit: (TIER_LIMITS[row.tier] || TIER_LIMITS.enterprise).daily,
         signupChannel: row.signup_channel,
         attributionSource: row.attribution_source,
       };
