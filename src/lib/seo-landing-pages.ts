@@ -5158,7 +5158,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "French Door Refrigerators Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+french+door+refrigerators&country=us", brand: "Brand E", category: "French Door Refrigerators" },
     ],
   },
-
   "best-side-by-side-refrigerators-us": {
     slug: "best-side-by-side-refrigerators-us",
     title: "Best Side-by-Side Refrigerators in the US 2026",
@@ -5218,7 +5217,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Side By Side Refrigerators Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+side+by+side+refrigerators&country=us", brand: "Brand E", category: "Side By Side Refrigerators" },
     ],
   },
-
   "best-top-freezer-refrigerators-us": {
     slug: "best-top-freezer-refrigerators-us",
     title: "Best Top Freezer Refrigerators in the US 2026",
@@ -5278,7 +5276,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Top Freezer Refrigerators Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+top+freezer+refrigerators&country=us", brand: "Brand E", category: "Top Freezer Refrigerators" },
     ],
   },
-
   "best-washing-machines-us": {
     slug: "best-washing-machines-us",
     title: "Best Washing Machines in the US 2026",
@@ -5338,7 +5335,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Washing Machines Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+washing+machines&country=us", brand: "Brand E", category: "Washing Machines" },
     ],
   },
-
   "best-high-efficiency-washing-machines-us": {
     slug: "best-high-efficiency-washing-machines-us",
     title: "Best High Efficiency Washing Machines in the US 2026",
@@ -5398,7 +5394,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "High Efficiency Washing Machines Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+high+efficiency+washing+machines&country=us", brand: "Brand E", category: "High Efficiency Washing Machines" },
     ],
   },
-
   "best-compact-washing-machines-us": {
     slug: "best-compact-washing-machines-us",
     title: "Best Compact Washing Machines in the US 2026",
@@ -5458,7 +5453,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Compact Washing Machines Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+compact+washing+machines&country=us", brand: "Brand E", category: "Compact Washing Machines" },
     ],
   },
-
   "best-clothes-dryers-us": {
     slug: "best-clothes-dryers-us",
     title: "Best Clothes Dryers in the US 2026",
@@ -5518,7 +5512,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Clothes Dryers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+clothes+dryers&country=us", brand: "Brand E", category: "Clothes Dryers" },
     ],
   },
-
   "best-stackable-washer-dryer-sets-us": {
     slug: "best-stackable-washer-dryer-sets-us",
     title: "Best Stackable Washer Dryer Sets in the US 2026",
@@ -5578,7 +5571,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Stackable Washer Dryer Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+stackable+washer+dryer+sets&country=us", brand: "Brand E", category: "Stackable Washer Dryer Sets" },
     ],
   },
-
   "best-dishwashers-us": {
     slug: "best-dishwashers-us",
     title: "Best Dishwashers in the US 2026",
@@ -5638,7 +5630,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Dishwashers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+dishwashers&country=us", brand: "Brand E", category: "Dishwashers" },
     ],
   },
-
   "best-compact-dishwashers-us": {
     slug: "best-compact-dishwashers-us",
     title: "Best Compact Dishwashers in the US 2026",
@@ -5698,7 +5689,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Compact Dishwashers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+compact+dishwashers&country=us", brand: "Brand E", category: "Compact Dishwashers" },
     ],
   },
-
   "best-convection-microwaves-us": {
     slug: "best-convection-microwaves-us",
     title: "Best Convection Microwaves in the US 2026",
@@ -5758,7 +5748,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Convection Microwaves Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+convection+microwaves&country=us", brand: "Brand E", category: "Convection Microwaves" },
     ],
   },
-
   "best-microwave-ovens-us": {
     slug: "best-microwave-ovens-us",
     title: "Best Microwave Ovens in the US 2026",
@@ -5818,7 +5807,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Microwave Ovens Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+microwave+ovens&country=us", brand: "Brand E", category: "Microwave Ovens" },
     ],
   },
-
   "best-large-capacity-air-fryers-us": {
     slug: "best-large-capacity-air-fryers-us",
     title: "Best Large Capacity Air Fryers in the US 2026",
@@ -5878,7 +5866,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Large Capacity Air Fryers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+large+capacity+air+fryers&country=us", brand: "Brand E", category: "Large Capacity Air Fryers" },
     ],
   },
-
   "best-single-serve-coffee-makers-us": {
     slug: "best-single-serve-coffee-makers-us",
     title: "Best Single Serve Coffee Makers in the US 2026",
@@ -5938,7 +5925,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Single Serve Coffee Makers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+single+serve+coffee+makers&country=us", brand: "Brand E", category: "Single Serve Coffee Makers" },
     ],
   },
-
   "best-portable-espresso-machines-us": {
     slug: "best-portable-espresso-machines-us",
     title: "Best Portable Espresso Machines in the US 2026",
@@ -5998,7 +5984,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Portable Espresso Machines Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+portable+espresso+machines&country=us", brand: "Brand E", category: "Portable Espresso Machines" },
     ],
   },
-
   "best-personal-blenders-us": {
     slug: "best-personal-blenders-us",
     title: "Best Personal Blenders in the US 2026",
@@ -6058,7 +6043,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Personal Blenders Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+personal+blenders&country=us", brand: "Brand E", category: "Personal Blenders" },
     ],
   },
-
   "best-convection-toaster-ovens-us": {
     slug: "best-convection-toaster-ovens-us",
     title: "Best Convection Toaster Ovens in the US 2026",
@@ -6118,7 +6102,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Convection Toaster Ovens Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+convection+toaster+ovens&country=us", brand: "Brand E", category: "Convection Toaster Ovens" },
     ],
   },
-
   "best-stand-mixers-us": {
     slug: "best-stand-mixers-us",
     title: "Best Stand Mixers in the US 2026",
@@ -6178,7 +6161,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Stand Mixers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+stand+mixers&country=us", brand: "Brand E", category: "Stand Mixers" },
     ],
   },
-
   "best-hand-mixers-us": {
     slug: "best-hand-mixers-us",
     title: "Best Hand Mixers in the US 2026",
@@ -6238,7 +6220,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Hand Mixers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+hand+mixers&country=us", brand: "Brand E", category: "Hand Mixers" },
     ],
   },
-
   "best-pressure-cookers-us": {
     slug: "best-pressure-cookers-us",
     title: "Best Pressure Cookers in the US 2026",
@@ -6298,7 +6279,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Pressure Cookers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+pressure+cookers&country=us", brand: "Brand E", category: "Pressure Cookers" },
     ],
   },
-
   "best-electric-kettles-us": {
     slug: "best-electric-kettles-us",
     title: "Best Electric Kettles in the US 2026",
@@ -6358,7 +6338,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Electric Kettles Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+electric+kettles&country=us", brand: "Brand E", category: "Electric Kettles" },
     ],
   },
-
   "best-food-processors-us": {
     slug: "best-food-processors-us",
     title: "Best Food Processors in the US 2026",
@@ -6418,7 +6397,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Food Processors Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+food+processors&country=us", brand: "Brand E", category: "Food Processors" },
     ],
   },
-
   "best-immersion-blenders-us": {
     slug: "best-immersion-blenders-us",
     title: "Best Immersion Blenders in the US 2026",
@@ -6478,7 +6456,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Immersion Blenders Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+immersion+blenders&country=us", brand: "Brand E", category: "Immersion Blenders" },
     ],
   },
-
   "best-smart-air-purifiers-us": {
     slug: "best-smart-air-purifiers-us",
     title: "Best Smart Air Purifiers in the US 2026",
@@ -6538,7 +6515,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Smart Air Purifiers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+smart+air+purifiers&country=us", brand: "Brand E", category: "Smart Air Purifiers" },
     ],
   },
-
   "best-robot-vacuums-us": {
     slug: "best-robot-vacuums-us",
     title: "Best Robot Vacuums in the US 2026",
@@ -6598,7 +6574,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Robot Vacuums Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+robot+vacuums&country=us", brand: "Brand E", category: "Robot Vacuums" },
     ],
   },
-
   "best-car-vacuum-cleaners-us": {
     slug: "best-car-vacuum-cleaners-us",
     title: "Best Car Vacuum Cleaners in the US 2026",
@@ -6658,7 +6633,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Car Vacuum Cleaners Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+car+vacuum+cleaners&country=us", brand: "Brand E", category: "Car Vacuum Cleaners" },
     ],
   },
-
   "best-steam-generators-us": {
     slug: "best-steam-generators-us",
     title: "Best Steam Generator Irons in the US 2026",
@@ -6718,7 +6692,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Steam Generators Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+steam+generators&country=us", brand: "Brand E", category: "Steam Generators" },
     ],
   },
-
   "best-electric-fireplaces-us": {
     slug: "best-electric-fireplaces-us",
     title: "Best Electric Fireplaces in the US 2026",
@@ -6778,7 +6751,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Electric Fireplaces Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+electric+fireplaces&country=us", brand: "Brand E", category: "Electric Fireplaces" },
     ],
   },
-
   "best-water-purifiers-us": {
     slug: "best-water-purifiers-us",
     title: "Best Water Purifiers in the US 2026",
@@ -6838,7 +6810,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Water Purifiers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+water+purifiers&country=us", brand: "Brand E", category: "Water Purifiers" },
     ],
   },
-
   "best-water-softeners-us": {
     slug: "best-water-softeners-us",
     title: "Best Water Softeners in the US 2026",
@@ -6898,7 +6869,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Water Softeners Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+water+softeners&country=us", brand: "Brand E", category: "Water Softeners" },
     ],
   },
-
   "best-wine-coolers-us": {
     slug: "best-wine-coolers-us",
     title: "Best Wine Coolers in the US 2026",
@@ -6958,7 +6928,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Wine Coolers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+wine+coolers&country=us", brand: "Brand E", category: "Wine Coolers" },
     ],
   },
-
   "best-slice-toasters-us": {
     slug: "best-slice-toasters-us",
     title: "Best Slice Toasters in the US 2026",
@@ -7018,7 +6987,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Slice Toasters Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+slice+toasters&country=us", brand: "Brand E", category: "Slice Toasters" },
     ],
   },
-
   "best-pressure-washing-machines-us": {
     slug: "best-pressure-washing-machines-us",
     title: "Best Pressure Washers in the US 2026",
@@ -7078,7 +7046,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Pressure Washing Machines Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+pressure+washing+machines&country=us", brand: "Brand E", category: "Pressure Washing Machines" },
     ],
   },
-
   "best-window-ac-us": {
     slug: "best-window-ac-us",
     title: "Best Window Air Conditioners in the US 2026",
@@ -7138,7 +7105,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Window Ac Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+window+ac&country=us", brand: "Brand E", category: "Window Ac" },
     ],
   },
-
   "best-portable-ac-us": {
     slug: "best-portable-ac-us",
     title: "Best Portable Air Conditioners in the US 2026",
@@ -7198,7 +7164,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Portable Ac Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+portable+ac&country=us", brand: "Brand E", category: "Portable Ac" },
     ],
   },
-
   "best-dehumidifiers-for-basements-us": {
     slug: "best-dehumidifiers-for-basements-us",
     title: "Best Dehumidifiers for Basements in the US 2026",
@@ -7258,7 +7223,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Dehumidifiers For Basements Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+dehumidifiers+for+basements&country=us", brand: "Brand E", category: "Dehumidifiers For Basements" },
     ],
   },
-
   "best-whole-house-humidifiers-us": {
     slug: "best-whole-house-humidifiers-us",
     title: "Best Whole House Humidifiers in the US 2026",
@@ -7318,7 +7282,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Whole House Humidifiers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+whole+house+humidifiers&country=us", brand: "Brand E", category: "Whole House Humidifiers" },
     ],
   },
-
   "best-air-purifiers-for-allergies-us": {
     slug: "best-air-purifiers-for-allergies-us",
     title: "Best Air Purifiers for Allergies in the US 2026",
@@ -7378,7 +7341,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Air Purifiers For Allergies Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+air+purifiers+for+allergies&country=us", brand: "Brand E", category: "Air Purifiers For Allergies" },
     ],
   },
-
   "best-refrigerators-with-ice-makers-us": {
     slug: "best-refrigerators-with-ice-makers-us",
     title: "Best Refrigerators with Ice Makers in the US 2026",
@@ -7438,7 +7400,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Refrigerators With Ice Makers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+refrigerators+with+ice+makers&country=us", brand: "Brand E", category: "Refrigerators With Ice Makers" },
     ],
   },
-
   "best-commercial-stand-mixers-us": {
     slug: "best-commercial-stand-mixers-us",
     title: "Best Commercial Stand Mixers in the US 2026",
@@ -7498,7 +7459,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Commercial Stand Mixers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+commercial+stand+mixers&country=us", brand: "Brand E", category: "Commercial Stand Mixers" },
     ],
   },
-
   "best-cold-press-juicers-us": {
     slug: "best-cold-press-juicers-us",
     title: "Best Cold Press Juicers in the US 2026",
@@ -7558,7 +7518,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Cold Press Juicers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+cold+press+juicers&country=us", brand: "Brand E", category: "Cold Press Juicers" },
     ],
   },
-
   "best-multi-cookers-us": {
     slug: "best-multi-cookers-us",
     title: "Best Multi-Cookers in the US 2026",
@@ -7618,7 +7577,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Multi Cookers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+multi+cookers&country=us", brand: "Brand E", category: "Multi Cookers" },
     ],
   },
-
   "best-bread-makers-us": {
     slug: "best-bread-makers-us",
     title: "Best Bread Makers in the US 2026",
@@ -7678,7 +7636,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Bread Makers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+bread+makers&country=us", brand: "Brand E", category: "Bread Makers" },
     ],
   },
-
   "best-yogurt-makers-us": {
     slug: "best-yogurt-makers-us",
     title: "Best Yogurt Makers in the US 2026",
@@ -7738,7 +7695,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Yogurt Makers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+yogurt+makers&country=us", brand: "Brand E", category: "Yogurt Makers" },
     ],
   },
-
   "best-sous-vide-us": {
     slug: "best-sous-vide-us",
     title: "Best Sous Vide Immersion Circulators in the US 2026",
@@ -7798,7 +7754,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Sous Vide Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+sous+vide&country=us", brand: "Brand E", category: "Sous Vide" },
     ],
   },
-
   "best-food-dehydrators-us": {
     slug: "best-food-dehydrators-us",
     title: "Best Food Dehydrators in the US 2026",
@@ -7858,7 +7813,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Food Dehydrators Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+food+dehydrators&country=us", brand: "Brand E", category: "Food Dehydrators" },
     ],
   },
-
   "best-popcorn-makers-us": {
     slug: "best-popcorn-makers-us",
     title: "Best Popcorn Makers in the US 2026",
@@ -7918,7 +7872,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Popcorn Makers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+popcorn+makers&country=us", brand: "Brand E", category: "Popcorn Makers" },
     ],
   },
-
   "best-electric-griddles-us": {
     slug: "best-electric-griddles-us",
     title: "Best Electric Griddles in the US 2026",
@@ -7978,7 +7931,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Electric Griddles Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+electric+griddles&country=us", brand: "Brand E", category: "Electric Griddles" },
     ],
   },
-
   "best-waffle-makers-us": {
     slug: "best-waffle-makers-us",
     title: "Best Waffle Makers in the US 2026",
@@ -8038,7 +7990,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Waffle Makers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+waffle+makers&country=us", brand: "Brand E", category: "Waffle Makers" },
     ],
   },
-
   "best-contact-grills-us": {
     slug: "best-contact-grills-us",
     title: "Best Contact Grills in the US 2026",
@@ -8157,7 +8108,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Business Laptops Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+business+laptops&country=us", brand: "Brand E", category: "Business Laptops" },
     ],
   },
-
   "best-budget-laptops-us": {
     slug: "best-budget-laptops-us",
     title: "Best Budget Laptops in the US 2026",
@@ -8217,7 +8167,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Budget Laptops Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+budget+laptops&country=us", brand: "Brand E", category: "Budget Laptops" },
     ],
   },
-
   "best-ultrabooks-us": {
     slug: "best-ultrabooks-us",
     title: "Best Ultrabooks in the US 2026",
@@ -8277,7 +8226,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Ultrabooks Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+ultrabooks&country=us", brand: "Brand E", category: "Ultrabooks" },
     ],
   },
-
   "best-macbooks-us": {
     slug: "best-macbooks-us",
     title: "Best MacBooks in the US 2026",
@@ -8337,7 +8285,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "MacBooks Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+macbooks&country=us", brand: "Brand E", category: "MacBooks" },
     ],
   },
-
   "best-iphones-us": {
     slug: "best-iphones-us",
     title: "Best iPhones in the US 2026",
@@ -8397,7 +8344,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "iPhones Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+iphones&country=us", brand: "Brand E", category: "iPhones" },
     ],
   },
-
   "best-samsung-phones-us": {
     slug: "best-samsung-phones-us",
     title: "Best Samsung Phones in the US 2026",
@@ -8457,7 +8403,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Samsung Phones Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+samsung+phones&country=us", brand: "Brand E", category: "Samsung Phones" },
     ],
   },
-
   "best-google-phones-us": {
     slug: "best-google-phones-us",
     title: "Best Google Pixel Phones in the US 2026",
@@ -8517,7 +8462,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Google Phones Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+google+phones&country=us", brand: "Brand E", category: "Google Phones" },
     ],
   },
-
   "best-budget-phones-us": {
     slug: "best-budget-phones-us",
     title: "Best Budget Phones in the US 2026",
@@ -8577,7 +8521,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Budget Phones Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+budget+phones&country=us", brand: "Brand E", category: "Budget Phones" },
     ],
   },
-
   "best-ipads-us": {
     slug: "best-ipads-us",
     title: "Best iPads in the US 2026",
@@ -8637,7 +8580,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "iPads Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+ipads&country=us", brand: "Brand E", category: "iPads" },
     ],
   },
-
   "best-android-tablets-us": {
     slug: "best-android-tablets-us",
     title: "Best Android Tablets in the US 2026",
@@ -8697,7 +8639,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Android Tablets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+android+tablets&country=us", brand: "Brand E", category: "Android Tablets" },
     ],
   },
-
   "best-drawing-tablets-us": {
     slug: "best-drawing-tablets-us",
     title: "Best Drawing Tablets in the US 2026",
@@ -8757,7 +8698,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Drawing Tablets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+drawing+tablets&country=us", brand: "Brand E", category: "Drawing Tablets" },
     ],
   },
-
   "best-oled-tvs-us": {
     slug: "best-oled-tvs-us",
     title: "Best OLED TVs in the US 2026",
@@ -8817,7 +8757,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "OLED TVs Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+oled+tvs&country=us", brand: "Brand E", category: "OLED TVs" },
     ],
   },
-
   "best-qled-tvs-us": {
     slug: "best-qled-tvs-us",
     title: "Best QLED TVs in the US 2026",
@@ -8877,7 +8816,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "QLED TVs Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+qled+tvs&country=us", brand: "Brand E", category: "QLED TVs" },
     ],
   },
-
   "best-budget-tvs-us": {
     slug: "best-budget-tvs-us",
     title: "Best Budget TVs in the US 2026",
@@ -8937,7 +8875,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Budget TVs Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+budget+tvs&country=us", brand: "Brand E", category: "Budget TVs" },
     ],
   },
-
   "best-gaming-monitors-us": {
     slug: "best-gaming-monitors-us",
     title: "Best Gaming Monitors in the US 2026",
@@ -8997,7 +8934,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Gaming Monitors Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+gaming+monitors&country=us", brand: "Brand E", category: "Gaming Monitors" },
     ],
   },
-
   "best-4k-monitors-us": {
     slug: "best-4k-monitors-us",
     title: "Best 4K Monitors in the US 2026",
@@ -9057,7 +8993,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "4K Monitors Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+4k+monitors&country=us", brand: "Brand E", category: "4K Monitors" },
     ],
   },
-
   "best-ultrawide-monitors-us": {
     slug: "best-ultrawide-monitors-us",
     title: "Best Ultrawide Monitors in the US 2026",
@@ -9117,7 +9052,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Ultrawide Monitors Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+ultrawide+monitors&country=us", brand: "Brand E", category: "Ultrawide Monitors" },
     ],
   },
-
   "best-noise-canceling-headphones-us": {
     slug: "best-noise-canceling-headphones-us",
     title: "Best Noise-Canceling Headphones in the US 2026",
@@ -9177,7 +9111,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Noise-Canceling Headphones Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+noise+canceling+headphones&country=us", brand: "Brand E", category: "Noise-Canceling Headphones" },
     ],
   },
-
   "best-wireless-earbuds-us": {
     slug: "best-wireless-earbuds-us",
     title: "Best Wireless Earbuds in the US 2026",
@@ -9237,7 +9170,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Wireless Earbuds Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+wireless+earbuds&country=us", brand: "Brand E", category: "Wireless Earbuds" },
     ],
   },
-
   "best-budget-earbuds-us": {
     slug: "best-budget-earbuds-us",
     title: "Best Budget Earbuds in the US 2026",
@@ -9297,7 +9229,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Budget Earbuds Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+budget+earbuds&country=us", brand: "Brand E", category: "Budget Earbuds" },
     ],
   },
-
   "best-fitness-trackers-us": {
     slug: "best-fitness-trackers-us",
     title: "Best Fitness Trackers in the US 2026",
@@ -9357,7 +9288,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Fitness Trackers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+fitness+trackers&country=us", brand: "Brand E", category: "Fitness Trackers" },
     ],
   },
-
   "best-dslr-cameras-us": {
     slug: "best-dslr-cameras-us",
     title: "Best DSLR Cameras in the US 2026",
@@ -9417,7 +9347,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "DSLR Cameras Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+dslr+cameras&country=us", brand: "Brand E", category: "DSLR Cameras" },
     ],
   },
-
   "best-mirrorless-cameras-us": {
     slug: "best-mirrorless-cameras-us",
     title: "Best Mirrorless Cameras in the US 2026",
@@ -9477,7 +9406,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Mirrorless Cameras Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+mirrorless+cameras&country=us", brand: "Brand E", category: "Mirrorless Cameras" },
     ],
   },
-
   "best-point-and-shoot-cameras-us": {
     slug: "best-point-and-shoot-cameras-us",
     title: "Best Point-and-Shoot Cameras in the US 2026",
@@ -9537,7 +9465,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Point-and-Shoot Cameras Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+point+and+shoot+cameras&country=us", brand: "Brand E", category: "Point-and-Shoot Cameras" },
     ],
   },
-
   "best-vr-headsets-us": {
     slug: "best-vr-headsets-us",
     title: "Best VR Headsets in the US 2026",
@@ -9597,7 +9524,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "VR Headsets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+vr+headsets&country=us", brand: "Brand E", category: "VR Headsets" },
     ],
   },
-
   "best-drones-us": {
     slug: "best-drones-us",
     title: "Best Drones in the US 2026",
@@ -9657,7 +9583,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Drones Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+drones&country=us", brand: "Brand E", category: "Drones" },
     ],
   },
-
   "best-bluetooth-speakers-us": {
     slug: "best-bluetooth-speakers-us",
     title: "Best Bluetooth Speakers in the US 2026",
@@ -9717,7 +9642,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Bluetooth Speakers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+bluetooth+speakers&country=us", brand: "Brand E", category: "Bluetooth Speakers" },
     ],
   },
-
   "best-smart-speakers-us": {
     slug: "best-smart-speakers-us",
     title: "Best Smart Speakers in the US 2026",
@@ -9777,7 +9701,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Smart Speakers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+smart+speakers&country=us", brand: "Brand E", category: "Smart Speakers" },
     ],
   },
-
   "best-soundbars-us": {
     slug: "best-soundbars-us",
     title: "Best Soundbars in the US 2026",
@@ -9837,7 +9760,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Soundbars Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+soundbars&country=us", brand: "Brand E", category: "Soundbars" },
     ],
   },
-
   "best-mechanical-keyboards-us": {
     slug: "best-mechanical-keyboards-us",
     title: "Best Mechanical Keyboards in the US 2026",
@@ -9897,7 +9819,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Mechanical Keyboards Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+mechanical+keyboards&country=us", brand: "Brand E", category: "Mechanical Keyboards" },
     ],
   },
-
   "best-wireless-keyboards-us": {
     slug: "best-wireless-keyboards-us",
     title: "Best Wireless Keyboards in the US 2026",
@@ -9957,7 +9878,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Wireless Keyboards Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+wireless+keyboards&country=us", brand: "Brand E", category: "Wireless Keyboards" },
     ],
   },
-
   "best-gaming-mice-us": {
     slug: "best-gaming-mice-us",
     title: "Best Gaming Mice in the US 2026",
@@ -10017,7 +9937,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Gaming Mice Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+gaming+mice&country=us", brand: "Brand E", category: "Gaming Mice" },
     ],
   },
-
   "best-ergonomic-mice-us": {
     slug: "best-ergonomic-mice-us",
     title: "Best Ergonomic Mice in the US 2026",
@@ -10077,7 +9996,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Ergonomic Mice Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+ergonomic+mice&country=us", brand: "Brand E", category: "Ergonomic Mice" },
     ],
   },
-
   "best-webcams-us": {
     slug: "best-webcams-us",
     title: "Best Webcams in the US 2026",
@@ -10137,7 +10055,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Webcams Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+webcams&country=us", brand: "Brand E", category: "Webcams" },
     ],
   },
-
   "best-microphones-us": {
     slug: "best-microphones-us",
     title: "Best Microphones in the US 2026",
@@ -10197,7 +10114,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Microphones Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+microphones&country=us", brand: "Brand E", category: "Microphones" },
     ],
   },
-
   "best-printers-us": {
     slug: "best-printers-us",
     title: "Best Printers in the US 2026",
@@ -10257,7 +10173,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Printers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+printers&country=us", brand: "Brand E", category: "Printers" },
     ],
   },
-
   "best-wifi-routers-us": {
     slug: "best-wifi-routers-us",
     title: "Best WiFi Routers in the US 2026",
@@ -10317,7 +10232,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "WiFi Routers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+wifi+routers&country=us", brand: "Brand E", category: "WiFi Routers" },
     ],
   },
-
   "best-mesh-routers-us": {
     slug: "best-mesh-routers-us",
     title: "Best Mesh WiFi Systems in the US 2026",
@@ -10377,7 +10291,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Mesh WiFi Systems Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+mesh+routers&country=us", brand: "Brand E", category: "Mesh WiFi Systems" },
     ],
   },
-
   "best-nas-us": {
     slug: "best-nas-us",
     title: "Best NAS Storage in the US 2026",
@@ -10437,7 +10350,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "NAS Storage Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+nas&country=us", brand: "Brand E", category: "NAS Storage" },
     ],
   },
-
   "best-power-banks-us": {
     slug: "best-power-banks-us",
     title: "Best Power Banks in the US 2026",
@@ -10497,7 +10409,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Power Banks Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+power+banks&country=us", brand: "Brand E", category: "Power Banks" },
     ],
   },
-
   "best-usb-c-hubs-us": {
     slug: "best-usb-c-hubs-us",
     title: "Best USB-C Hubs in the US 2026",
@@ -10557,7 +10468,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "USB-C Hubs Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=bestb+c+hubs&country=us", brand: "Brand E", category: "USB-C Hubs" },
     ],
   },
-
   "best-streaming-devices-us": {
     slug: "best-streaming-devices-us",
     title: "Best Streaming Devices in the US 2026",
@@ -10617,7 +10527,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Streaming Devices Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+streaming+devices&country=us", brand: "Brand E", category: "Streaming Devices" },
     ],
   },
-
   "best-e-readers-us": {
     slug: "best-e-readers-us",
     title: "Best E-Readers in the US 2026",
@@ -10677,7 +10586,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "E-Readers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+e+readers&country=us", brand: "Brand E", category: "E-Readers" },
     ],
   },
-
   "best-portable-projectors-us": {
     slug: "best-portable-projectors-us",
     title: "Best Portable Projectors in the US 2026",
@@ -10737,7 +10645,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Portable Projectors Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=best+portable+projectors&country=us", brand: "Brand E", category: "Portable Projectors" },
     ],
   },
-
   "cheapest-iphone-us": {
     slug: "cheapest-iphone-us",
     title: "Cheapest iPhone in the US 2026",
@@ -10798,7 +10705,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "iPhone Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cheapest+iphone&country=us", brand: "Brand E", category: "iPhone" },
     ],
   },
-
   "cheapest-laptop-us": {
     slug: "cheapest-laptop-us",
     title: "Cheapest Laptops in the US 2026",
@@ -10859,7 +10765,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Laptops Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cheapest+laptop&country=us", brand: "Brand E", category: "Laptops" },
     ],
   },
-
   "cheapest-tv-us": {
     slug: "cheapest-tv-us",
     title: "Cheapest TVs in the US 2026",
@@ -10920,7 +10825,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "TVs Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cheapest+tv&country=us", brand: "Brand E", category: "TVs" },
     ],
   },
-
   "cheapest-ps5-us": {
     slug: "cheapest-ps5-us",
     title: "Cheapest PS5 in the US 2026",
@@ -10981,7 +10885,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "PS5 Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cheapest+ps5&country=us", brand: "Brand E", category: "PS5" },
     ],
   },
-
   "cheapest-airpods-us": {
     slug: "cheapest-airpods-us",
     title: "Cheapest AirPods in the US 2026",
@@ -11042,7 +10945,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "AirPods Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cheapest+airpods&country=us", brand: "Brand E", category: "AirPods" },
     ],
   },
-
   "cheapest-macbook-us": {
     slug: "cheapest-macbook-us",
     title: "Cheapest MacBook in the US 2026",
@@ -11103,7 +11005,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "MacBook Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cheapest+macbook&country=us", brand: "Brand E", category: "MacBook" },
     ],
   },
-
   "cheapest-samsung-tv-us": {
     slug: "cheapest-samsung-tv-us",
     title: "Cheapest Samsung TV in the US 2026",
@@ -11164,7 +11065,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Samsung TV Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cheapest+samsung+tv&country=us", brand: "Brand E", category: "Samsung TV" },
     ],
   },
-
   "cheapest-ipad-us": {
     slug: "cheapest-ipad-us",
     title: "Cheapest iPad in the US 2026",
@@ -11225,7 +11125,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "iPad Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cheapest+ipad&country=us", brand: "Brand E", category: "iPad" },
     ],
   },
-
   "cheapest-dyson-us": {
     slug: "cheapest-dyson-us",
     title: "Cheapest Dyson in the US 2026",
@@ -11286,7 +11185,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Dyson Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cheapest+dyson&country=us", brand: "Brand E", category: "Dyson" },
     ],
   },
-
   "cheapest-switch-us": {
     slug: "cheapest-switch-us",
     title: "Cheapest Nintendo Switch in the US 2026",
@@ -11347,7 +11245,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Nintendo Switch Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cheapest+switch&country=us", brand: "Brand E", category: "Nintendo Switch" },
     ],
   },
-
   "laptop-us": {
     slug: "laptop-us",
     title: "Best Laptops in the US 2026",
@@ -11407,7 +11304,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Laptop Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=laptop&country=us", brand: "Brand E", category: "Laptop" },
     ],
   },
-
   "air-purifier-us": {
     slug: "air-purifier-us",
     title: "Best Air Purifiers in the US 2026",
@@ -11467,7 +11363,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Air Purifier Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=air+purifier&country=us", brand: "Brand E", category: "Air Purifier" },
     ],
   },
-
   "iphone-us": {
     slug: "iphone-us",
     title: "Best iPhone in the US 2026",
@@ -11527,7 +11422,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "iPhone Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=iphone&country=us", brand: "Brand E", category: "iPhone" },
     ],
   },
-
   "gaming-us": {
     slug: "gaming-us",
     title: "Best Gaming Consoles in the US 2026",
@@ -11587,7 +11481,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Gaming Console Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=gaming&country=us", brand: "Brand E", category: "Gaming Console" },
     ],
   },
-
   "smartphone-us": {
     slug: "smartphone-us",
     title: "Best Smartphones in the US 2026",
@@ -11647,671 +11540,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Smartphone Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=smartphone&country=us", brand: "Brand E", category: "Smartphone" },
     ],
   },
-
-  "best-air-fryers-us": {
-    slug: "best-air-fryers-us",
-    title: "Best Air Fryers 2026 | Compare Prices Across US Retailers",
-    description:
-      "Compare air fryers from Ninja, Philips, Cosori, and Instant Pot.",
-    heroEyebrow: "US Shopping Guide",
-    heroTitle: "Best Air Fryers in the US",
-    heroBody:
-      "Compare air fryers from Ninja, Philips, Cosori, and Instant Pot.",
-    canonicalPath: "/best-air-fryers-us",
-    country: "US",
-    currency: "USD",
-    locale: "en_US",
-    searchQuery: "Air Fryers",
-    refreshedLabel: "Updated May 8, 2026",
-    productSectionTitle: "Live Air Fryers offers across the US",
-    comparisonSectionTitle: "Popular Air Fryers picks at a glance",
-    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
-    comparisonRows: [
-      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
-      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
-      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
-    ],
-    highlightSectionTitle: "What US buyers check before buying",
-    highlights: [
-      {
-        title: "Price across major retailers",
-        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
-      },
-      {
-        title: "Seasonal sales windows",
-        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
-      },
-      {
-        title: "Authenticity and warranty",
-        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
-      },
-    ],
-    adviceSectionTitle: "How to choose the right Air Fryers",
-    advicePoints: [
-      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
-      "Check return policies before buying. Major retailers offer free returns within 30 days.",
-      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
-    ],
-    faqSectionTitle: "Air Fryers FAQ",
-    faqs: [
-      {
-        question: "What is the best Air Fryers to buy in 2026?",
-        answer:
-          "The best Air Fryers depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
-      },
-      {
-        question: "Where is the best place to buy Air Fryers?",
-        answer:
-          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
-      },
-      {
-        question: "When is the best time to buy Air Fryers?",
-        answer:
-          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
-      },
-    ],
-    shopperCta: {
-      title: "Compare Air Fryers prices across the US",
-      body: "Find the lowest Air Fryers prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
-      href: "/search?q=air+fryers&country=us",
-      label: "Shop Air Fryers",
-    },
-    developerCta: {
-      title: "Build Air Fryers price tracking tools",
-      body: "Use BuyWhere APIs to monitor Air Fryers pricing, merchant availability, and price changes across US retailers in real time.",
-      href: "/developers",
-      label: "Explore the API",
-    },
-    fallbackProducts: [
-      { id: "f1", name: "Air Fryers Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=air+fryers+product+a&country=us", brand: "Brand A", category: "Air Fryers" },
-      { id: "f2", name: "Air Fryers Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=air+fryers+product+b&country=us", brand: "Brand B", category: "Air Fryers" },
-      { id: "f3", name: "Air Fryers Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=air+fryers+product+c&country=us", brand: "Brand C", category: "Air Fryers" },
-      { id: "f4", name: "Air Fryers Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=air+fryers+product+d&country=us", brand: "Brand D", category: "Air Fryers" },
-      { id: "f5", name: "Air Fryers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=air+fryers+product+e&country=us", brand: "Brand E", category: "Air Fryers" },
-    ],
-  },
-
-  "best-blenders-us": {
-    slug: "best-blenders-us",
-    title: "Best Blenders 2026 | Compare Prices Across US Retailers",
-    description:
-      "Compare blenders from Vitamix, Ninja, Blendtec, and KitchenAid.",
-    heroEyebrow: "US Shopping Guide",
-    heroTitle: "Best Blenders in the US",
-    heroBody:
-      "Compare blenders from Vitamix, Ninja, Blendtec, and KitchenAid.",
-    canonicalPath: "/best-blenders-us",
-    country: "US",
-    currency: "USD",
-    locale: "en_US",
-    searchQuery: "Blenders",
-    refreshedLabel: "Updated May 8, 2026",
-    productSectionTitle: "Live Blenders offers across the US",
-    comparisonSectionTitle: "Popular Blenders picks at a glance",
-    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
-    comparisonRows: [
-      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
-      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
-      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
-    ],
-    highlightSectionTitle: "What US buyers check before buying",
-    highlights: [
-      {
-        title: "Price across major retailers",
-        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
-      },
-      {
-        title: "Seasonal sales windows",
-        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
-      },
-      {
-        title: "Authenticity and warranty",
-        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
-      },
-    ],
-    adviceSectionTitle: "How to choose the right Blenders",
-    advicePoints: [
-      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
-      "Check return policies before buying. Major retailers offer free returns within 30 days.",
-      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
-    ],
-    faqSectionTitle: "Blenders FAQ",
-    faqs: [
-      {
-        question: "What is the best Blenders to buy in 2026?",
-        answer:
-          "The best Blenders depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
-      },
-      {
-        question: "Where is the best place to buy Blenders?",
-        answer:
-          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
-      },
-      {
-        question: "When is the best time to buy Blenders?",
-        answer:
-          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
-      },
-    ],
-    shopperCta: {
-      title: "Compare Blenders prices across the US",
-      body: "Find the lowest Blenders prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
-      href: "/search?q=blenders&country=us",
-      label: "Shop Blenders",
-    },
-    developerCta: {
-      title: "Build Blenders price tracking tools",
-      body: "Use BuyWhere APIs to monitor Blenders pricing, merchant availability, and price changes across US retailers in real time.",
-      href: "/developers",
-      label: "Explore the API",
-    },
-    fallbackProducts: [
-      { id: "f1", name: "Blenders Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=blenders+product+a&country=us", brand: "Brand A", category: "Blenders" },
-      { id: "f2", name: "Blenders Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=blenders+product+b&country=us", brand: "Brand B", category: "Blenders" },
-      { id: "f3", name: "Blenders Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=blenders+product+c&country=us", brand: "Brand C", category: "Blenders" },
-      { id: "f4", name: "Blenders Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=blenders+product+d&country=us", brand: "Brand D", category: "Blenders" },
-      { id: "f5", name: "Blenders Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=blenders+product+e&country=us", brand: "Brand E", category: "Blenders" },
-    ],
-  },
-
-  "best-coffee-makers-us": {
-    slug: "best-coffee-makers-us",
-    title: "Best Coffee Makers 2026 | Compare Prices Across US Retailers",
-    description:
-      "Compare coffee makers from Keurig, Ninja, Cuisinart, and Breville.",
-    heroEyebrow: "US Shopping Guide",
-    heroTitle: "Best Coffee Makers in the US",
-    heroBody:
-      "Compare coffee makers from Keurig, Ninja, Cuisinart, and Breville.",
-    canonicalPath: "/best-coffee-makers-us",
-    country: "US",
-    currency: "USD",
-    locale: "en_US",
-    searchQuery: "Coffee Makers",
-    refreshedLabel: "Updated May 8, 2026",
-    productSectionTitle: "Live Coffee Makers offers across the US",
-    comparisonSectionTitle: "Popular Coffee Makers picks at a glance",
-    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
-    comparisonRows: [
-      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
-      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
-      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
-    ],
-    highlightSectionTitle: "What US buyers check before buying",
-    highlights: [
-      {
-        title: "Price across major retailers",
-        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
-      },
-      {
-        title: "Seasonal sales windows",
-        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
-      },
-      {
-        title: "Authenticity and warranty",
-        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
-      },
-    ],
-    adviceSectionTitle: "How to choose the right Coffee Makers",
-    advicePoints: [
-      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
-      "Check return policies before buying. Major retailers offer free returns within 30 days.",
-      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
-    ],
-    faqSectionTitle: "Coffee Makers FAQ",
-    faqs: [
-      {
-        question: "What is the best Coffee Makers to buy in 2026?",
-        answer:
-          "The best Coffee Makers depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
-      },
-      {
-        question: "Where is the best place to buy Coffee Makers?",
-        answer:
-          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
-      },
-      {
-        question: "When is the best time to buy Coffee Makers?",
-        answer:
-          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
-      },
-    ],
-    shopperCta: {
-      title: "Compare Coffee Makers prices across the US",
-      body: "Find the lowest Coffee Makers prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
-      href: "/search?q=coffee+makers&country=us",
-      label: "Shop Coffee Makers",
-    },
-    developerCta: {
-      title: "Build Coffee Makers price tracking tools",
-      body: "Use BuyWhere APIs to monitor Coffee Makers pricing, merchant availability, and price changes across US retailers in real time.",
-      href: "/developers",
-      label: "Explore the API",
-    },
-    fallbackProducts: [
-      { id: "f1", name: "Coffee Makers Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=coffee+makers+product+a&country=us", brand: "Brand A", category: "Coffee Makers" },
-      { id: "f2", name: "Coffee Makers Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=coffee+makers+product+b&country=us", brand: "Brand B", category: "Coffee Makers" },
-      { id: "f3", name: "Coffee Makers Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=coffee+makers+product+c&country=us", brand: "Brand C", category: "Coffee Makers" },
-      { id: "f4", name: "Coffee Makers Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=coffee+makers+product+d&country=us", brand: "Brand D", category: "Coffee Makers" },
-      { id: "f5", name: "Coffee Makers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=coffee+makers+product+e&country=us", brand: "Brand E", category: "Coffee Makers" },
-    ],
-  },
-
-  "best-espresso-machines-us": {
-    slug: "best-espresso-machines-us",
-    title: "Best Espresso Machines 2026 | Compare Prices Across US Retailers",
-    description:
-      "Compare espresso machines from Breville, DeLonghi, Gaggia, and Rancilio.",
-    heroEyebrow: "US Shopping Guide",
-    heroTitle: "Best Espresso Machines in the US",
-    heroBody:
-      "Compare espresso machines from Breville, DeLonghi, Gaggia, and Rancilio.",
-    canonicalPath: "/best-espresso-machines-us",
-    country: "US",
-    currency: "USD",
-    locale: "en_US",
-    searchQuery: "Espresso Machines",
-    refreshedLabel: "Updated May 8, 2026",
-    productSectionTitle: "Live Espresso Machines offers across the US",
-    comparisonSectionTitle: "Popular Espresso Machines picks at a glance",
-    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
-    comparisonRows: [
-      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
-      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
-      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
-    ],
-    highlightSectionTitle: "What US buyers check before buying",
-    highlights: [
-      {
-        title: "Price across major retailers",
-        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
-      },
-      {
-        title: "Seasonal sales windows",
-        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
-      },
-      {
-        title: "Authenticity and warranty",
-        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
-      },
-    ],
-    adviceSectionTitle: "How to choose the right Espresso Machines",
-    advicePoints: [
-      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
-      "Check return policies before buying. Major retailers offer free returns within 30 days.",
-      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
-    ],
-    faqSectionTitle: "Espresso Machines FAQ",
-    faqs: [
-      {
-        question: "What is the best Espresso Machines to buy in 2026?",
-        answer:
-          "The best Espresso Machines depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
-      },
-      {
-        question: "Where is the best place to buy Espresso Machines?",
-        answer:
-          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
-      },
-      {
-        question: "When is the best time to buy Espresso Machines?",
-        answer:
-          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
-      },
-    ],
-    shopperCta: {
-      title: "Compare Espresso Machines prices across the US",
-      body: "Find the lowest Espresso Machines prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
-      href: "/search?q=espresso+machines&country=us",
-      label: "Shop Espresso Machines",
-    },
-    developerCta: {
-      title: "Build Espresso Machines price tracking tools",
-      body: "Use BuyWhere APIs to monitor Espresso Machines pricing, merchant availability, and price changes across US retailers in real time.",
-      href: "/developers",
-      label: "Explore the API",
-    },
-    fallbackProducts: [
-      { id: "f1", name: "Espresso Machines Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=espresso+machines+product+a&country=us", brand: "Brand A", category: "Espresso Machines" },
-      { id: "f2", name: "Espresso Machines Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=espresso+machines+product+b&country=us", brand: "Brand B", category: "Espresso Machines" },
-      { id: "f3", name: "Espresso Machines Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=espresso+machines+product+c&country=us", brand: "Brand C", category: "Espresso Machines" },
-      { id: "f4", name: "Espresso Machines Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=espresso+machines+product+d&country=us", brand: "Brand D", category: "Espresso Machines" },
-      { id: "f5", name: "Espresso Machines Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=espresso+machines+product+e&country=us", brand: "Brand E", category: "Espresso Machines" },
-    ],
-  },
-
-  "best-slow-cookers-us": {
-    slug: "best-slow-cookers-us",
-    title: "Best Slow Cookers 2026 | Compare Prices Across US Retailers",
-    description:
-      "Compare slow cookers from Crock-Pot, Ninja, Instant Pot, and Hamilton Beach.",
-    heroEyebrow: "US Shopping Guide",
-    heroTitle: "Best Slow Cookers in the US",
-    heroBody:
-      "Compare slow cookers from Crock-Pot, Ninja, Instant Pot, and Hamilton Beach.",
-    canonicalPath: "/best-slow-cookers-us",
-    country: "US",
-    currency: "USD",
-    locale: "en_US",
-    searchQuery: "Slow Cookers",
-    refreshedLabel: "Updated May 8, 2026",
-    productSectionTitle: "Live Slow Cookers offers across the US",
-    comparisonSectionTitle: "Popular Slow Cookers picks at a glance",
-    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
-    comparisonRows: [
-      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
-      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
-      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
-    ],
-    highlightSectionTitle: "What US buyers check before buying",
-    highlights: [
-      {
-        title: "Price across major retailers",
-        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
-      },
-      {
-        title: "Seasonal sales windows",
-        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
-      },
-      {
-        title: "Authenticity and warranty",
-        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
-      },
-    ],
-    adviceSectionTitle: "How to choose the right Slow Cookers",
-    advicePoints: [
-      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
-      "Check return policies before buying. Major retailers offer free returns within 30 days.",
-      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
-    ],
-    faqSectionTitle: "Slow Cookers FAQ",
-    faqs: [
-      {
-        question: "What is the best Slow Cookers to buy in 2026?",
-        answer:
-          "The best Slow Cookers depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
-      },
-      {
-        question: "Where is the best place to buy Slow Cookers?",
-        answer:
-          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
-      },
-      {
-        question: "When is the best time to buy Slow Cookers?",
-        answer:
-          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
-      },
-    ],
-    shopperCta: {
-      title: "Compare Slow Cookers prices across the US",
-      body: "Find the lowest Slow Cookers prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
-      href: "/search?q=slow+cookers&country=us",
-      label: "Shop Slow Cookers",
-    },
-    developerCta: {
-      title: "Build Slow Cookers price tracking tools",
-      body: "Use BuyWhere APIs to monitor Slow Cookers pricing, merchant availability, and price changes across US retailers in real time.",
-      href: "/developers",
-      label: "Explore the API",
-    },
-    fallbackProducts: [
-      { id: "f1", name: "Slow Cookers Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=slow+cookers+product+a&country=us", brand: "Brand A", category: "Slow Cookers" },
-      { id: "f2", name: "Slow Cookers Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=slow+cookers+product+b&country=us", brand: "Brand B", category: "Slow Cookers" },
-      { id: "f3", name: "Slow Cookers Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=slow+cookers+product+c&country=us", brand: "Brand C", category: "Slow Cookers" },
-      { id: "f4", name: "Slow Cookers Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=slow+cookers+product+d&country=us", brand: "Brand D", category: "Slow Cookers" },
-      { id: "f5", name: "Slow Cookers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=slow+cookers+product+e&country=us", brand: "Brand E", category: "Slow Cookers" },
-    ],
-  },
-
-  "best-food-processors-us": {
-    slug: "best-food-processors-us",
-    title: "Best Food Processors 2026 | Compare Prices Across US Retailers",
-    description:
-      "Compare food processors from Cuisinart, KitchenAid, Breville, and Ninja.",
-    heroEyebrow: "US Shopping Guide",
-    heroTitle: "Best Food Processors in the US",
-    heroBody:
-      "Compare food processors from Cuisinart, KitchenAid, Breville, and Ninja.",
-    canonicalPath: "/best-food-processors-us",
-    country: "US",
-    currency: "USD",
-    locale: "en_US",
-    searchQuery: "Food Processors",
-    refreshedLabel: "Updated May 8, 2026",
-    productSectionTitle: "Live Food Processors offers across the US",
-    comparisonSectionTitle: "Popular Food Processors picks at a glance",
-    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
-    comparisonRows: [
-      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
-      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
-      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
-    ],
-    highlightSectionTitle: "What US buyers check before buying",
-    highlights: [
-      {
-        title: "Price across major retailers",
-        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
-      },
-      {
-        title: "Seasonal sales windows",
-        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
-      },
-      {
-        title: "Authenticity and warranty",
-        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
-      },
-    ],
-    adviceSectionTitle: "How to choose the right Food Processors",
-    advicePoints: [
-      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
-      "Check return policies before buying. Major retailers offer free returns within 30 days.",
-      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
-    ],
-    faqSectionTitle: "Food Processors FAQ",
-    faqs: [
-      {
-        question: "What is the best Food Processors to buy in 2026?",
-        answer:
-          "The best Food Processors depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
-      },
-      {
-        question: "Where is the best place to buy Food Processors?",
-        answer:
-          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
-      },
-      {
-        question: "When is the best time to buy Food Processors?",
-        answer:
-          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
-      },
-    ],
-    shopperCta: {
-      title: "Compare Food Processors prices across the US",
-      body: "Find the lowest Food Processors prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
-      href: "/search?q=food+processors&country=us",
-      label: "Shop Food Processors",
-    },
-    developerCta: {
-      title: "Build Food Processors price tracking tools",
-      body: "Use BuyWhere APIs to monitor Food Processors pricing, merchant availability, and price changes across US retailers in real time.",
-      href: "/developers",
-      label: "Explore the API",
-    },
-    fallbackProducts: [
-      { id: "f1", name: "Food Processors Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=food+processors+product+a&country=us", brand: "Brand A", category: "Food Processors" },
-      { id: "f2", name: "Food Processors Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=food+processors+product+b&country=us", brand: "Brand B", category: "Food Processors" },
-      { id: "f3", name: "Food Processors Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=food+processors+product+c&country=us", brand: "Brand C", category: "Food Processors" },
-      { id: "f4", name: "Food Processors Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=food+processors+product+d&country=us", brand: "Brand D", category: "Food Processors" },
-      { id: "f5", name: "Food Processors Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=food+processors+product+e&country=us", brand: "Brand E", category: "Food Processors" },
-    ],
-  },
-
-  "best-stand-mixers-us": {
-    slug: "best-stand-mixers-us",
-    title: "Best Stand Mixers 2026 | Compare Prices Across US Retailers",
-    description:
-      "Compare stand mixers from KitchenAid, Cuisinart, Hamilton Beach, and Aucma.",
-    heroEyebrow: "US Shopping Guide",
-    heroTitle: "Best Stand Mixers in the US",
-    heroBody:
-      "Compare stand mixers from KitchenAid, Cuisinart, Hamilton Beach, and Aucma.",
-    canonicalPath: "/best-stand-mixers-us",
-    country: "US",
-    currency: "USD",
-    locale: "en_US",
-    searchQuery: "Stand Mixers",
-    refreshedLabel: "Updated May 8, 2026",
-    productSectionTitle: "Live Stand Mixers offers across the US",
-    comparisonSectionTitle: "Popular Stand Mixers picks at a glance",
-    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
-    comparisonRows: [
-      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
-      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
-      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
-    ],
-    highlightSectionTitle: "What US buyers check before buying",
-    highlights: [
-      {
-        title: "Price across major retailers",
-        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
-      },
-      {
-        title: "Seasonal sales windows",
-        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
-      },
-      {
-        title: "Authenticity and warranty",
-        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
-      },
-    ],
-    adviceSectionTitle: "How to choose the right Stand Mixers",
-    advicePoints: [
-      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
-      "Check return policies before buying. Major retailers offer free returns within 30 days.",
-      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
-    ],
-    faqSectionTitle: "Stand Mixers FAQ",
-    faqs: [
-      {
-        question: "What is the best Stand Mixers to buy in 2026?",
-        answer:
-          "The best Stand Mixers depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
-      },
-      {
-        question: "Where is the best place to buy Stand Mixers?",
-        answer:
-          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
-      },
-      {
-        question: "When is the best time to buy Stand Mixers?",
-        answer:
-          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
-      },
-    ],
-    shopperCta: {
-      title: "Compare Stand Mixers prices across the US",
-      body: "Find the lowest Stand Mixers prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
-      href: "/search?q=stand+mixers&country=us",
-      label: "Shop Stand Mixers",
-    },
-    developerCta: {
-      title: "Build Stand Mixers price tracking tools",
-      body: "Use BuyWhere APIs to monitor Stand Mixers pricing, merchant availability, and price changes across US retailers in real time.",
-      href: "/developers",
-      label: "Explore the API",
-    },
-    fallbackProducts: [
-      { id: "f1", name: "Stand Mixers Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=stand+mixers+product+a&country=us", brand: "Brand A", category: "Stand Mixers" },
-      { id: "f2", name: "Stand Mixers Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=stand+mixers+product+b&country=us", brand: "Brand B", category: "Stand Mixers" },
-      { id: "f3", name: "Stand Mixers Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=stand+mixers+product+c&country=us", brand: "Brand C", category: "Stand Mixers" },
-      { id: "f4", name: "Stand Mixers Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=stand+mixers+product+d&country=us", brand: "Brand D", category: "Stand Mixers" },
-      { id: "f5", name: "Stand Mixers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=stand+mixers+product+e&country=us", brand: "Brand E", category: "Stand Mixers" },
-    ],
-  },
-
-  "best-toasters-us": {
-    slug: "best-toasters-us",
-    title: "Best Toasters 2026 | Compare Prices Across US Retailers",
-    description:
-      "Compare toasters from Breville, Cuisinart, Dualit, and KitchenAid.",
-    heroEyebrow: "US Shopping Guide",
-    heroTitle: "Best Toasters in the US",
-    heroBody:
-      "Compare toasters from Breville, Cuisinart, Dualit, and KitchenAid.",
-    canonicalPath: "/best-toasters-us",
-    country: "US",
-    currency: "USD",
-    locale: "en_US",
-    searchQuery: "Toasters",
-    refreshedLabel: "Updated May 8, 2026",
-    productSectionTitle: "Live Toasters offers across the US",
-    comparisonSectionTitle: "Popular Toasters picks at a glance",
-    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
-    comparisonRows: [
-      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
-      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
-      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
-    ],
-    highlightSectionTitle: "What US buyers check before buying",
-    highlights: [
-      {
-        title: "Price across major retailers",
-        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
-      },
-      {
-        title: "Seasonal sales windows",
-        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
-      },
-      {
-        title: "Authenticity and warranty",
-        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
-      },
-    ],
-    adviceSectionTitle: "How to choose the right Toasters",
-    advicePoints: [
-      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
-      "Check return policies before buying. Major retailers offer free returns within 30 days.",
-      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
-    ],
-    faqSectionTitle: "Toasters FAQ",
-    faqs: [
-      {
-        question: "What is the best Toasters to buy in 2026?",
-        answer:
-          "The best Toasters depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
-      },
-      {
-        question: "Where is the best place to buy Toasters?",
-        answer:
-          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
-      },
-      {
-        question: "When is the best time to buy Toasters?",
-        answer:
-          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
-      },
-    ],
-    shopperCta: {
-      title: "Compare Toasters prices across the US",
-      body: "Find the lowest Toasters prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
-      href: "/search?q=toasters&country=us",
-      label: "Shop Toasters",
-    },
-    developerCta: {
-      title: "Build Toasters price tracking tools",
-      body: "Use BuyWhere APIs to monitor Toasters pricing, merchant availability, and price changes across US retailers in real time.",
-      href: "/developers",
-      label: "Explore the API",
-    },
-    fallbackProducts: [
-      { id: "f1", name: "Toasters Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=toasters+product+a&country=us", brand: "Brand A", category: "Toasters" },
-      { id: "f2", name: "Toasters Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=toasters+product+b&country=us", brand: "Brand B", category: "Toasters" },
-      { id: "f3", name: "Toasters Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=toasters+product+c&country=us", brand: "Brand C", category: "Toasters" },
-      { id: "f4", name: "Toasters Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=toasters+product+d&country=us", brand: "Brand D", category: "Toasters" },
-      { id: "f5", name: "Toasters Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=toasters+product+e&country=us", brand: "Brand E", category: "Toasters" },
-    ],
-  },
-
   "best-coffee-grinders-us": {
     slug: "best-coffee-grinders-us",
     title: "Best Coffee Grinders 2026 | Compare Prices Across US Retailers",
@@ -12394,173 +11622,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Coffee Grinders Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=coffee+grinders+product+e&country=us", brand: "Brand E", category: "Coffee Grinders" },
     ],
   },
-
-  "best-electric-kettles-us": {
-    slug: "best-electric-kettles-us",
-    title: "Best Electric Kettles 2026 | Compare Prices Across US Retailers",
-    description:
-      "Compare electric kettles from Cuisinart, Hamilton Beach, OXO, and KitchenAid.",
-    heroEyebrow: "US Shopping Guide",
-    heroTitle: "Best Electric Kettles in the US",
-    heroBody:
-      "Compare electric kettles from Cuisinart, Hamilton Beach, OXO, and KitchenAid.",
-    canonicalPath: "/best-electric-kettles-us",
-    country: "US",
-    currency: "USD",
-    locale: "en_US",
-    searchQuery: "Electric Kettles",
-    refreshedLabel: "Updated May 8, 2026",
-    productSectionTitle: "Live Electric Kettles offers across the US",
-    comparisonSectionTitle: "Popular Electric Kettles picks at a glance",
-    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
-    comparisonRows: [
-      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
-      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
-      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
-    ],
-    highlightSectionTitle: "What US buyers check before buying",
-    highlights: [
-      {
-        title: "Price across major retailers",
-        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
-      },
-      {
-        title: "Seasonal sales windows",
-        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
-      },
-      {
-        title: "Authenticity and warranty",
-        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
-      },
-    ],
-    adviceSectionTitle: "How to choose the right Electric Kettles",
-    advicePoints: [
-      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
-      "Check return policies before buying. Major retailers offer free returns within 30 days.",
-      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
-    ],
-    faqSectionTitle: "Electric Kettles FAQ",
-    faqs: [
-      {
-        question: "What is the best Electric Kettles to buy in 2026?",
-        answer:
-          "The best Electric Kettles depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
-      },
-      {
-        question: "Where is the best place to buy Electric Kettles?",
-        answer:
-          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
-      },
-      {
-        question: "When is the best time to buy Electric Kettles?",
-        answer:
-          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
-      },
-    ],
-    shopperCta: {
-      title: "Compare Electric Kettles prices across the US",
-      body: "Find the lowest Electric Kettles prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
-      href: "/search?q=electric+kettles&country=us",
-      label: "Shop Electric Kettles",
-    },
-    developerCta: {
-      title: "Build Electric Kettles price tracking tools",
-      body: "Use BuyWhere APIs to monitor Electric Kettles pricing, merchant availability, and price changes across US retailers in real time.",
-      href: "/developers",
-      label: "Explore the API",
-    },
-    fallbackProducts: [
-      { id: "f1", name: "Electric Kettles Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=electric+kettles+product+a&country=us", brand: "Brand A", category: "Electric Kettles" },
-      { id: "f2", name: "Electric Kettles Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=electric+kettles+product+b&country=us", brand: "Brand B", category: "Electric Kettles" },
-      { id: "f3", name: "Electric Kettles Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=electric+kettles+product+c&country=us", brand: "Brand C", category: "Electric Kettles" },
-      { id: "f4", name: "Electric Kettles Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=electric+kettles+product+d&country=us", brand: "Brand D", category: "Electric Kettles" },
-      { id: "f5", name: "Electric Kettles Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=electric+kettles+product+e&country=us", brand: "Brand E", category: "Electric Kettles" },
-    ],
-  },
-
-  "best-knife-sets-us": {
-    slug: "best-knife-sets-us",
-    title: "Best Knife Sets 2026 | Compare Prices Across US Retailers",
-    description:
-      "Compare knife sets from Wusthof, Zwilling, Victorinox, and Chicago Cutlery.",
-    heroEyebrow: "US Shopping Guide",
-    heroTitle: "Best Knife Sets in the US",
-    heroBody:
-      "Compare knife sets from Wusthof, Zwilling, Victorinox, and Chicago Cutlery.",
-    canonicalPath: "/best-knife-sets-us",
-    country: "US",
-    currency: "USD",
-    locale: "en_US",
-    searchQuery: "Knife Sets",
-    refreshedLabel: "Updated May 8, 2026",
-    productSectionTitle: "Live Knife Sets offers across the US",
-    comparisonSectionTitle: "Popular Knife Sets picks at a glance",
-    comparisonColumns: ["Product", "Price", "Merchant", "Rating"],
-    comparisonRows: [
-      { Product: "Top Pick A", Price: "$199", Merchant: "Amazon", Rating: "4.6/5" },
-      { Product: "Runner-up B", Price: "$249", Merchant: "Best Buy", Rating: "4.5/5" },
-      { Product: "Value Pick C", Price: "$149", Merchant: "Walmart", Rating: "4.3/5" },
-    ],
-    highlightSectionTitle: "What US buyers check before buying",
-    highlights: [
-      {
-        title: "Price across major retailers",
-        body: "Prices vary between Amazon, Best Buy, Walmart, Target, and manufacturer stores. BuyWhere shows you every option in one search.",
-      },
-      {
-        title: "Seasonal sales windows",
-        body: "Prime Day, Black Friday, Cyber Monday, Presidents Day, and Memorial Day are the strongest US discount windows for most categories.",
-      },
-      {
-        title: "Authenticity and warranty",
-        body: "Buy from authorized sellers to maintain manufacturer warranty. Amazon Marketplace and third-party sellers may not qualify.",
-      },
-    ],
-    adviceSectionTitle: "How to choose the right Knife Sets",
-    advicePoints: [
-      "Start with your budget. In most categories, spending $100-300 gets you a quality product that will last 3-5 years.",
-      "Check return policies before buying. Major retailers offer free returns within 30 days.",
-      "Read verified buyer reviews focusing on 6-month+ ownership reviews to gauge long-term reliability.",
-    ],
-    faqSectionTitle: "Knife Sets FAQ",
-    faqs: [
-      {
-        question: "What is the best Knife Sets to buy in 2026?",
-        answer:
-          "The best Knife Sets depends on your budget and use case. Check the comparison table above for current prices across Amazon, Best Buy, and Walmart.",
-      },
-      {
-        question: "Where is the best place to buy Knife Sets?",
-        answer:
-          "Amazon has the widest selection and fastest shipping. Best Buy is best for electronics with in-store pickup. Walmart is best for budget appliances.",
-      },
-      {
-        question: "When is the best time to buy Knife Sets?",
-        answer:
-          "Black Friday and Prime Day offer the deepest discounts (20-40%% off). Presidents Day and Memorial Day also have strong sales.",
-      },
-    ],
-    shopperCta: {
-      title: "Compare Knife Sets prices across the US",
-      body: "Find the lowest Knife Sets prices across Amazon, Best Buy, Walmart, and Target with live BuyWhere search.",
-      href: "/search?q=knife+sets&country=us",
-      label: "Shop Knife Sets",
-    },
-    developerCta: {
-      title: "Build Knife Sets price tracking tools",
-      body: "Use BuyWhere APIs to monitor Knife Sets pricing, merchant availability, and price changes across US retailers in real time.",
-      href: "/developers",
-      label: "Explore the API",
-    },
-    fallbackProducts: [
-      { id: "f1", name: "Knife Sets Product A", price: 199, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=knife+sets+product+a&country=us", brand: "Brand A", category: "Knife Sets" },
-      { id: "f2", name: "Knife Sets Product B", price: 249, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=knife+sets+product+b&country=us", brand: "Brand B", category: "Knife Sets" },
-      { id: "f3", name: "Knife Sets Product C", price: 149, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=knife+sets+product+c&country=us", brand: "Brand C", category: "Knife Sets" },
-      { id: "f4", name: "Knife Sets Product D", price: 299, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=knife+sets+product+d&country=us", brand: "Brand D", category: "Knife Sets" },
-      { id: "f5", name: "Knife Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=knife+sets+product+e&country=us", brand: "Brand E", category: "Knife Sets" },
-    ],
-  },
-
   "best-cutting-boards-us": {
     slug: "best-cutting-boards-us",
     title: "Best Cutting Boards 2026 | Compare Prices Across US Retailers",
@@ -12643,7 +11704,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Cutting Boards Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cutting+boards+product+e&country=us", brand: "Brand E", category: "Cutting Boards" },
     ],
   },
-
   "best-measuring-cups-us": {
     slug: "best-measuring-cups-us",
     title: "Best Measuring Cups 2026 | Compare Prices Across US Retailers",
@@ -12726,7 +11786,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Measuring Cups Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=measuring+cups+product+e&country=us", brand: "Brand E", category: "Measuring Cups" },
     ],
   },
-
   "best-bakeware-sets-us": {
     slug: "best-bakeware-sets-us",
     title: "Best Bakeware Sets 2026 | Compare Prices Across US Retailers",
@@ -12809,7 +11868,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Bakeware Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=bakeware+sets+product+e&country=us", brand: "Brand E", category: "Bakeware Sets" },
     ],
   },
-
   "best-food-storage-containers-us": {
     slug: "best-food-storage-containers-us",
     title: "Best Food Storage Containers 2026 | Compare Prices Across US Retailers",
@@ -12892,7 +11950,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Food Storage Containers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=food+storage+containers+product+e&country=us", brand: "Brand E", category: "Food Storage Containers" },
     ],
   },
-
   "best-dinnerware-sets-us": {
     slug: "best-dinnerware-sets-us",
     title: "Best Dinnerware Sets 2026 | Compare Prices Across US Retailers",
@@ -12975,7 +12032,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Dinnerware Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dinnerware+sets+product+e&country=us", brand: "Brand E", category: "Dinnerware Sets" },
     ],
   },
-
   "best-flatware-sets-us": {
     slug: "best-flatware-sets-us",
     title: "Best Flatware Sets 2026 | Compare Prices Across US Retailers",
@@ -13058,7 +12114,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Flatware Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=flatware+sets+product+e&country=us", brand: "Brand E", category: "Flatware Sets" },
     ],
   },
-
   "best-glassware-sets-us": {
     slug: "best-glassware-sets-us",
     title: "Best Glassware Sets 2026 | Compare Prices Across US Retailers",
@@ -13141,7 +12196,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Glassware Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=glassware+sets+product+e&country=us", brand: "Brand E", category: "Glassware Sets" },
     ],
   },
-
   "best-table-linens-us": {
     slug: "best-table-linens-us",
     title: "Best Table Linens 2026 | Compare Prices Across US Retailers",
@@ -13224,7 +12278,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Table Linens Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=table+linens+product+e&country=us", brand: "Brand E", category: "Table Linens" },
     ],
   },
-
   "best-bar-tools-sets-us": {
     slug: "best-bar-tools-sets-us",
     title: "Best Bar Tools Sets 2026 | Compare Prices Across US Retailers",
@@ -13307,7 +12360,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Bar Tools Sets Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=bar+tools+sets+product+e&country=us", brand: "Brand E", category: "Bar Tools Sets" },
     ],
   },
-
   "best-wine-openers-us": {
     slug: "best-wine-openers-us",
     title: "Best Wine Openers 2026 | Compare Prices Across US Retailers",
@@ -13390,7 +12442,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Wine Openers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=wine+openers+product+e&country=us", brand: "Brand E", category: "Wine Openers" },
     ],
   },
-
   "best-water-filters-us": {
     slug: "best-water-filters-us",
     title: "Best Water Filters 2026 | Compare Prices Across US Retailers",
@@ -13473,7 +12524,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Water Filters Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=water+filters+product+e&country=us", brand: "Brand E", category: "Water Filters" },
     ],
   },
-
   "best-trash-cans-us": {
     slug: "best-trash-cans-us",
     title: "Best Trash Cans 2026 | Compare Prices Across US Retailers",
@@ -13556,7 +12606,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Trash Cans Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=trash+cans+product+e&country=us", brand: "Brand E", category: "Trash Cans" },
     ],
   },
-
   "best-refrigerator-bins-us": {
     slug: "best-refrigerator-bins-us",
     title: "Best Refrigerator Bins 2026 | Compare Prices Across US Retailers",
@@ -13639,7 +12688,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Refrigerator Bins Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=refrigerator+bins+product+e&country=us", brand: "Brand E", category: "Refrigerator Bins" },
     ],
   },
-
   "best-oven-mitts-us": {
     slug: "best-oven-mitts-us",
     title: "Best Oven Mitts 2026 | Compare Prices Across US Retailers",
@@ -13722,7 +12770,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Oven Mitts Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=oven+mitts+product+e&country=us", brand: "Brand E", category: "Oven Mitts" },
     ],
   },
-
   "best-dog-food-us": {
     slug: "best-dog-food-us",
     title: "Best Dog Food 2026 | Compare Prices Across US Retailers",
@@ -13805,7 +12852,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Dog Food Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+food+product+e&country=us", brand: "Brand E", category: "Dog Food" },
     ],
   },
-
   "best-cat-food-us": {
     slug: "best-cat-food-us",
     title: "Best Cat Food 2026 | Compare Prices Across US Retailers",
@@ -13888,7 +12934,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Cat Food Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+food+product+e&country=us", brand: "Brand E", category: "Cat Food" },
     ],
   },
-
   "best-dog-toys-us": {
     slug: "best-dog-toys-us",
     title: "Best Dog Toys 2026 | Compare Prices Across US Retailers",
@@ -13971,7 +13016,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Dog Toys Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+toys+product+e&country=us", brand: "Brand E", category: "Dog Toys" },
     ],
   },
-
   "best-cat-toys-us": {
     slug: "best-cat-toys-us",
     title: "Best Cat Toys 2026 | Compare Prices Across US Retailers",
@@ -14054,7 +13098,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Cat Toys Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+toys+product+e&country=us", brand: "Brand E", category: "Cat Toys" },
     ],
   },
-
   "best-dog-beds-us": {
     slug: "best-dog-beds-us",
     title: "Best Dog Beds 2026 | Compare Prices Across US Retailers",
@@ -14137,7 +13180,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Dog Beds Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+beds+product+e&country=us", brand: "Brand E", category: "Dog Beds" },
     ],
   },
-
   "best-cat-litter-us": {
     slug: "best-cat-litter-us",
     title: "Best Cat Litter 2026 | Compare Prices Across US Retailers",
@@ -14220,7 +13262,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Cat Litter Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+litter+product+e&country=us", brand: "Brand E", category: "Cat Litter" },
     ],
   },
-
   "best-automatic-pet-feeders-us": {
     slug: "best-automatic-pet-feeders-us",
     title: "Best Automatic Pet Feeders 2026 | Compare Prices Across US Retailers",
@@ -14303,7 +13344,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Automatic Pet Feeders Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=automatic+pet+feeders+product+e&country=us", brand: "Brand E", category: "Automatic Pet Feeders" },
     ],
   },
-
   "best-pet-water-fountains-us": {
     slug: "best-pet-water-fountains-us",
     title: "Best Pet Water Fountains 2026 | Compare Prices Across US Retailers",
@@ -14386,7 +13426,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Pet Water Fountains Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+water+fountains+product+e&country=us", brand: "Brand E", category: "Pet Water Fountains" },
     ],
   },
-
   "best-dog-crates-us": {
     slug: "best-dog-crates-us",
     title: "Best Dog Crates 2026 | Compare Prices Across US Retailers",
@@ -14469,7 +13508,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Dog Crates Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+crates+product+e&country=us", brand: "Brand E", category: "Dog Crates" },
     ],
   },
-
   "best-cat-trees-us": {
     slug: "best-cat-trees-us",
     title: "Best Cat Trees 2026 | Compare Prices Across US Retailers",
@@ -14552,7 +13590,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Cat Trees Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+trees+product+e&country=us", brand: "Brand E", category: "Cat Trees" },
     ],
   },
-
   "best-pet-carriers-us": {
     slug: "best-pet-carriers-us",
     title: "Best Pet Carriers 2026 | Compare Prices Across US Retailers",
@@ -14635,7 +13672,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Pet Carriers Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+carriers+product+e&country=us", brand: "Brand E", category: "Pet Carriers" },
     ],
   },
-
   "best-dog-collars-us": {
     slug: "best-dog-collars-us",
     title: "Best Dog Collars 2026 | Compare Prices Across US Retailers",
@@ -14718,7 +13754,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Dog Collars Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+collars+product+e&country=us", brand: "Brand E", category: "Dog Collars" },
     ],
   },
-
   "best-cat-collars-us": {
     slug: "best-cat-collars-us",
     title: "Best Cat Collars 2026 | Compare Prices Across US Retailers",
@@ -14801,7 +13836,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Cat Collars Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+collars+product+e&country=us", brand: "Brand E", category: "Cat Collars" },
     ],
   },
-
   "best-dog-leashes-us": {
     slug: "best-dog-leashes-us",
     title: "Best Dog Leashes 2026 | Compare Prices Across US Retailers",
@@ -14884,7 +13918,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Dog Leashes Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+leashes+product+e&country=us", brand: "Brand E", category: "Dog Leashes" },
     ],
   },
-
   "best-pet-grooming-supplies-us": {
     slug: "best-pet-grooming-supplies-us",
     title: "Best Pet Grooming Supplies 2026 | Compare Prices Across US Retailers",
@@ -14967,7 +14000,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Pet Grooming Supplies Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+grooming+supplies+product+e&country=us", brand: "Brand E", category: "Pet Grooming Supplies" },
     ],
   },
-
   "best-dog-shampoo-us": {
     slug: "best-dog-shampoo-us",
     title: "Best Dog Shampoo 2026 | Compare Prices Across US Retailers",
@@ -15050,7 +14082,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Dog Shampoo Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+shampoo+product+e&country=us", brand: "Brand E", category: "Dog Shampoo" },
     ],
   },
-
   "best-cat-shampoo-us": {
     slug: "best-cat-shampoo-us",
     title: "Best Cat Shampoo 2026 | Compare Prices Across US Retailers",
@@ -15133,7 +14164,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Cat Shampoo Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+shampoo+product+e&country=us", brand: "Brand E", category: "Cat Shampoo" },
     ],
   },
-
   "best-pet-brushes-us": {
     slug: "best-pet-brushes-us",
     title: "Best Pet Brushes 2026 | Compare Prices Across US Retailers",
@@ -15216,7 +14246,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Pet Brushes Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+brushes+product+e&country=us", brand: "Brand E", category: "Pet Brushes" },
     ],
   },
-
   "best-pet-nail-grinders-us": {
     slug: "best-pet-nail-grinders-us",
     title: "Best Pet Nail Grinders 2026 | Compare Prices Across US Retailers",
@@ -15299,7 +14328,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Pet Nail Grinders Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+nail+grinders+product+e&country=us", brand: "Brand E", category: "Pet Nail Grinders" },
     ],
   },
-
   "best-dog-treats-us": {
     slug: "best-dog-treats-us",
     title: "Best Dog Treats 2026 | Compare Prices Across US Retailers",
@@ -15382,7 +14410,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Dog Treats Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog+treats+product+e&country=us", brand: "Brand E", category: "Dog Treats" },
     ],
   },
-
   "best-cat-treats-us": {
     slug: "best-cat-treats-us",
     title: "Best Cat Treats 2026 | Compare Prices Across US Retailers",
@@ -15465,7 +14492,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Cat Treats Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat+treats+product+e&country=us", brand: "Brand E", category: "Cat Treats" },
     ],
   },
-
   "best-pet-supplements-us": {
     slug: "best-pet-supplements-us",
     title: "Best Pet Supplements 2026 | Compare Prices Across US Retailers",
@@ -15548,7 +14574,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Pet Supplements Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pet+supplements+product+e&country=us", brand: "Brand E", category: "Pet Supplements" },
     ],
   },
-
   "best-fish-tanks-us": {
     slug: "best-fish-tanks-us",
     title: "Best Fish Tanks 2026 | Compare Prices Across US Retailers",
@@ -15631,7 +14656,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Fish Tanks Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=fish+tanks+product+e&country=us", brand: "Brand E", category: "Fish Tanks" },
     ],
   },
-
   "best-bird-cages-us": {
     slug: "best-bird-cages-us",
     title: "Best Bird Cages 2026 | Compare Prices Across US Retailers",
@@ -15714,7 +14738,6 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Bird Cages Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=bird+cages+product+e&country=us", brand: "Brand E", category: "Bird Cages" },
     ],
   },
-
   "best-small-pet-cages-us": {
     slug: "best-small-pet-cages-us",
     title: "Best Small Pet Cages 2026 | Compare Prices Across US Retailers",
@@ -15797,5 +14820,4004 @@ export const seoLandingPages: Record<string, SeoLandingPageConfig> = {
       { id: "f5", name: "Small Pet Cages Product E", price: 179, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=small+pet+cages+product+e&country=us", brand: "Brand E", category: "Small Pet Cages" },
     ],
   },
-
+"cheapest-place-to-buy-laptops-us": {
+    slug: "cheapest-place-to-buy-laptops-us",
+    title: "Cheapest Place to Buy Laptops in 2026 | Compare Laptops Prices",
+    description: "Find the cheapest place to buy laptops online in the US. Compare prices from Apple, ASUS, Lenovo, HP, Dell, Acer across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Laptops",
+    heroBody: "Stop overpaying for laptops. We compare real-time prices across major US retailers so you can find the lowest price on laptops from Apple, ASUS, Lenovo, HP, Dell, Acer. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-laptops-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "laptop",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest laptops prices right now",
+    comparisonSectionTitle: "Where to buy laptops — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest laptops",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same laptops can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for laptops",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on laptops.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on laptops.",
+    ],
+    faqSectionTitle: "Cheapest laptops FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy laptops in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy laptops?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing laptops prices?",
+        answer: "Price differences of 10–30% between retailers are common for laptops. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest laptops now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=laptop&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Laptops Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=laptop&country=us", brand: "Brand A", category: "Laptops" },
+      { id: "f2", name: "Laptops Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=laptop&country=us", brand: "Brand B", category: "Laptops" },
+      { id: "f3", name: "Laptops Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=laptop&country=us", brand: "Brand C", category: "Laptops" },
+      { id: "f4", name: "Laptops Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=laptop&country=us", brand: "Brand D", category: "Laptops" },
+      { id: "f5", name: "Laptops Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=laptop&country=us", brand: "Brand E", category: "Laptops" },
+    ],
+  },
+  "cheapest-place-to-buy-gaming-laptops-us": {
+    slug: "cheapest-place-to-buy-gaming-laptops-us",
+    title: "Cheapest Place to Buy Gaming Laptops in 2026 | Compare Gaming Laptops Prices",
+    description: "Find the cheapest place to buy gaming laptops online in the US. Compare prices from ASUS ROG, MSI, Razer, Alienware, Lenovo Legion across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Gaming Laptops",
+    heroBody: "Stop overpaying for gaming laptops. We compare real-time prices across major US retailers so you can find the lowest price on gaming laptops from ASUS ROG, MSI, Razer, Alienware, Lenovo Legion. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-gaming-laptops-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "gaming laptop",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest gaming laptops prices right now",
+    comparisonSectionTitle: "Where to buy gaming laptops — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest gaming laptops",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same gaming laptops can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for gaming laptops",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on gaming laptops.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on gaming laptops.",
+    ],
+    faqSectionTitle: "Cheapest gaming laptops FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy gaming laptops in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy gaming laptops?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing gaming laptops prices?",
+        answer: "Price differences of 10–30% between retailers are common for gaming laptops. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest gaming laptops now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=gaming%20laptop&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Gaming Laptops Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=gaming%20laptop&country=us", brand: "Brand A", category: "Gaming Laptops" },
+      { id: "f2", name: "Gaming Laptops Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=gaming%20laptop&country=us", brand: "Brand B", category: "Gaming Laptops" },
+      { id: "f3", name: "Gaming Laptops Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=gaming%20laptop&country=us", brand: "Brand C", category: "Gaming Laptops" },
+      { id: "f4", name: "Gaming Laptops Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=gaming%20laptop&country=us", brand: "Brand D", category: "Gaming Laptops" },
+      { id: "f5", name: "Gaming Laptops Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=gaming%20laptop&country=us", brand: "Brand E", category: "Gaming Laptops" },
+    ],
+  },
+  "cheapest-place-to-buy-iphones-us": {
+    slug: "cheapest-place-to-buy-iphones-us",
+    title: "Cheapest Place to Buy iPhones in 2026 | Compare iPhones Prices",
+    description: "Find the cheapest place to buy iphones online in the US. Compare prices from Apple across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy iPhones",
+    heroBody: "Stop overpaying for iphones. We compare real-time prices across major US retailers so you can find the lowest price on iphones from Apple. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-iphones-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "iPhone",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest iphones prices right now",
+    comparisonSectionTitle: "Where to buy iphones — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest iphones",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same iphones can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for iphones",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on iphones.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on iphones.",
+    ],
+    faqSectionTitle: "Cheapest iphones FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy iphones in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy iphones?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing iphones prices?",
+        answer: "Price differences of 10–30% between retailers are common for iphones. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest iphones now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=iPhone&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "iPhones Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=iPhone&country=us", brand: "Brand A", category: "iPhones" },
+      { id: "f2", name: "iPhones Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=iPhone&country=us", brand: "Brand B", category: "iPhones" },
+      { id: "f3", name: "iPhones Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=iPhone&country=us", brand: "Brand C", category: "iPhones" },
+      { id: "f4", name: "iPhones Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=iPhone&country=us", brand: "Brand D", category: "iPhones" },
+      { id: "f5", name: "iPhones Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=iPhone&country=us", brand: "Brand E", category: "iPhones" },
+    ],
+  },
+  "cheapest-place-to-buy-samsung-phones-us": {
+    slug: "cheapest-place-to-buy-samsung-phones-us",
+    title: "Cheapest Place to Buy Samsung Phones in 2026 | Compare Samsung Phones Prices",
+    description: "Find the cheapest place to buy samsung phones online in the US. Compare prices from Samsung across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Samsung Phones",
+    heroBody: "Stop overpaying for samsung phones. We compare real-time prices across major US retailers so you can find the lowest price on samsung phones from Samsung. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-samsung-phones-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "Samsung Galaxy phone",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest samsung phones prices right now",
+    comparisonSectionTitle: "Where to buy samsung phones — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest samsung phones",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same samsung phones can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for samsung phones",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on samsung phones.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on samsung phones.",
+    ],
+    faqSectionTitle: "Cheapest samsung phones FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy samsung phones in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy samsung phones?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing samsung phones prices?",
+        answer: "Price differences of 10–30% between retailers are common for samsung phones. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest samsung phones now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=Samsung%20Galaxy%20phone&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Samsung Phones Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=Samsung%20Galaxy%20phone&country=us", brand: "Brand A", category: "Samsung Phones" },
+      { id: "f2", name: "Samsung Phones Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=Samsung%20Galaxy%20phone&country=us", brand: "Brand B", category: "Samsung Phones" },
+      { id: "f3", name: "Samsung Phones Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=Samsung%20Galaxy%20phone&country=us", brand: "Brand C", category: "Samsung Phones" },
+      { id: "f4", name: "Samsung Phones Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=Samsung%20Galaxy%20phone&country=us", brand: "Brand D", category: "Samsung Phones" },
+      { id: "f5", name: "Samsung Phones Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=Samsung%20Galaxy%20phone&country=us", brand: "Brand E", category: "Samsung Phones" },
+    ],
+  },
+  "cheapest-place-to-buy-tablets-us": {
+    slug: "cheapest-place-to-buy-tablets-us",
+    title: "Cheapest Place to Buy Tablets in 2026 | Compare Tablets Prices",
+    description: "Find the cheapest place to buy tablets online in the US. Compare prices from Apple, Samsung, Lenovo, Amazon across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Tablets",
+    heroBody: "Stop overpaying for tablets. We compare real-time prices across major US retailers so you can find the lowest price on tablets from Apple, Samsung, Lenovo, Amazon. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-tablets-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "tablet",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest tablets prices right now",
+    comparisonSectionTitle: "Where to buy tablets — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest tablets",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same tablets can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for tablets",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on tablets.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on tablets.",
+    ],
+    faqSectionTitle: "Cheapest tablets FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy tablets in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy tablets?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing tablets prices?",
+        answer: "Price differences of 10–30% between retailers are common for tablets. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest tablets now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=tablet&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Tablets Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=tablet&country=us", brand: "Brand A", category: "Tablets" },
+      { id: "f2", name: "Tablets Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=tablet&country=us", brand: "Brand B", category: "Tablets" },
+      { id: "f3", name: "Tablets Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=tablet&country=us", brand: "Brand C", category: "Tablets" },
+      { id: "f4", name: "Tablets Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=tablet&country=us", brand: "Brand D", category: "Tablets" },
+      { id: "f5", name: "Tablets Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=tablet&country=us", brand: "Brand E", category: "Tablets" },
+    ],
+  },
+  "cheapest-place-to-buy-tvs-us": {
+    slug: "cheapest-place-to-buy-tvs-us",
+    title: "Cheapest Place to Buy TVs in 2026 | Compare TVs Prices",
+    description: "Find the cheapest place to buy tvs online in the US. Compare prices from Samsung, LG, Sony, TCL, Hisense across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy TVs",
+    heroBody: "Stop overpaying for tvs. We compare real-time prices across major US retailers so you can find the lowest price on tvs from Samsung, LG, Sony, TCL, Hisense. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-tvs-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "television",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest tvs prices right now",
+    comparisonSectionTitle: "Where to buy tvs — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest tvs",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same tvs can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for tvs",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on tvs.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on tvs.",
+    ],
+    faqSectionTitle: "Cheapest tvs FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy tvs in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy tvs?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing tvs prices?",
+        answer: "Price differences of 10–30% between retailers are common for tvs. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest tvs now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=television&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "TVs Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=television&country=us", brand: "Brand A", category: "TVs" },
+      { id: "f2", name: "TVs Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=television&country=us", brand: "Brand B", category: "TVs" },
+      { id: "f3", name: "TVs Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=television&country=us", brand: "Brand C", category: "TVs" },
+      { id: "f4", name: "TVs Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=television&country=us", brand: "Brand D", category: "TVs" },
+      { id: "f5", name: "TVs Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=television&country=us", brand: "Brand E", category: "TVs" },
+    ],
+  },
+  "cheapest-place-to-buy-headphones-us": {
+    slug: "cheapest-place-to-buy-headphones-us",
+    title: "Cheapest Place to Buy Headphones in 2026 | Compare Headphones Prices",
+    description: "Find the cheapest place to buy headphones online in the US. Compare prices from Sony, Bose, Apple, Sennheiser, JBL across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Headphones",
+    heroBody: "Stop overpaying for headphones. We compare real-time prices across major US retailers so you can find the lowest price on headphones from Sony, Bose, Apple, Sennheiser, JBL. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-headphones-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "headphones",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest headphones prices right now",
+    comparisonSectionTitle: "Where to buy headphones — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest headphones",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same headphones can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for headphones",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on headphones.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on headphones.",
+    ],
+    faqSectionTitle: "Cheapest headphones FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy headphones in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy headphones?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing headphones prices?",
+        answer: "Price differences of 10–30% between retailers are common for headphones. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest headphones now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=headphones&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Headphones Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=headphones&country=us", brand: "Brand A", category: "Headphones" },
+      { id: "f2", name: "Headphones Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=headphones&country=us", brand: "Brand B", category: "Headphones" },
+      { id: "f3", name: "Headphones Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=headphones&country=us", brand: "Brand C", category: "Headphones" },
+      { id: "f4", name: "Headphones Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=headphones&country=us", brand: "Brand D", category: "Headphones" },
+      { id: "f5", name: "Headphones Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=headphones&country=us", brand: "Brand E", category: "Headphones" },
+    ],
+  },
+  "cheapest-place-to-buy-earbuds-us": {
+    slug: "cheapest-place-to-buy-earbuds-us",
+    title: "Cheapest Place to Buy Wireless Earbuds in 2026 | Compare Wireless Earbuds Prices",
+    description: "Find the cheapest place to buy wireless earbuds online in the US. Compare prices from Apple, Samsung, Sony, Jabra, Bose across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Wireless Earbuds",
+    heroBody: "Stop overpaying for wireless earbuds. We compare real-time prices across major US retailers so you can find the lowest price on wireless earbuds from Apple, Samsung, Sony, Jabra, Bose. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-earbuds-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "wireless earbuds",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest wireless earbuds prices right now",
+    comparisonSectionTitle: "Where to buy wireless earbuds — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest wireless earbuds",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same wireless earbuds can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for wireless earbuds",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on wireless earbuds.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on wireless earbuds.",
+    ],
+    faqSectionTitle: "Cheapest wireless earbuds FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy wireless earbuds in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy wireless earbuds?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing wireless earbuds prices?",
+        answer: "Price differences of 10–30% between retailers are common for wireless earbuds. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest wireless earbuds now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=wireless%20earbuds&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Wireless Earbuds Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=wireless%20earbuds&country=us", brand: "Brand A", category: "Wireless Earbuds" },
+      { id: "f2", name: "Wireless Earbuds Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=wireless%20earbuds&country=us", brand: "Brand B", category: "Wireless Earbuds" },
+      { id: "f3", name: "Wireless Earbuds Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=wireless%20earbuds&country=us", brand: "Brand C", category: "Wireless Earbuds" },
+      { id: "f4", name: "Wireless Earbuds Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=wireless%20earbuds&country=us", brand: "Brand D", category: "Wireless Earbuds" },
+      { id: "f5", name: "Wireless Earbuds Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=wireless%20earbuds&country=us", brand: "Brand E", category: "Wireless Earbuds" },
+    ],
+  },
+  "cheapest-place-to-buy-smartwatches-us": {
+    slug: "cheapest-place-to-buy-smartwatches-us",
+    title: "Cheapest Place to Buy Smartwatches in 2026 | Compare Smartwatches Prices",
+    description: "Find the cheapest place to buy smartwatches online in the US. Compare prices from Apple, Samsung, Garmin, Fitbit across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Smartwatches",
+    heroBody: "Stop overpaying for smartwatches. We compare real-time prices across major US retailers so you can find the lowest price on smartwatches from Apple, Samsung, Garmin, Fitbit. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-smartwatches-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "smartwatch",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest smartwatches prices right now",
+    comparisonSectionTitle: "Where to buy smartwatches — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest smartwatches",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same smartwatches can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for smartwatches",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on smartwatches.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on smartwatches.",
+    ],
+    faqSectionTitle: "Cheapest smartwatches FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy smartwatches in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy smartwatches?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing smartwatches prices?",
+        answer: "Price differences of 10–30% between retailers are common for smartwatches. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest smartwatches now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=smartwatch&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Smartwatches Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=smartwatch&country=us", brand: "Brand A", category: "Smartwatches" },
+      { id: "f2", name: "Smartwatches Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=smartwatch&country=us", brand: "Brand B", category: "Smartwatches" },
+      { id: "f3", name: "Smartwatches Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=smartwatch&country=us", brand: "Brand C", category: "Smartwatches" },
+      { id: "f4", name: "Smartwatches Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=smartwatch&country=us", brand: "Brand D", category: "Smartwatches" },
+      { id: "f5", name: "Smartwatches Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=smartwatch&country=us", brand: "Brand E", category: "Smartwatches" },
+    ],
+  },
+  "cheapest-place-to-buy-monitors-us": {
+    slug: "cheapest-place-to-buy-monitors-us",
+    title: "Cheapest Place to Buy Monitors in 2026 | Compare Monitors Prices",
+    description: "Find the cheapest place to buy monitors online in the US. Compare prices from Dell, LG, Samsung, ASUS, BenQ across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Monitors",
+    heroBody: "Stop overpaying for monitors. We compare real-time prices across major US retailers so you can find the lowest price on monitors from Dell, LG, Samsung, ASUS, BenQ. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-monitors-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "monitor",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest monitors prices right now",
+    comparisonSectionTitle: "Where to buy monitors — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest monitors",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same monitors can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for monitors",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on monitors.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on monitors.",
+    ],
+    faqSectionTitle: "Cheapest monitors FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy monitors in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy monitors?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing monitors prices?",
+        answer: "Price differences of 10–30% between retailers are common for monitors. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest monitors now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=monitor&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Monitors Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=monitor&country=us", brand: "Brand A", category: "Monitors" },
+      { id: "f2", name: "Monitors Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=monitor&country=us", brand: "Brand B", category: "Monitors" },
+      { id: "f3", name: "Monitors Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=monitor&country=us", brand: "Brand C", category: "Monitors" },
+      { id: "f4", name: "Monitors Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=monitor&country=us", brand: "Brand D", category: "Monitors" },
+      { id: "f5", name: "Monitors Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=monitor&country=us", brand: "Brand E", category: "Monitors" },
+    ],
+  },
+  "cheapest-place-to-buy-gaming-consoles-us": {
+    slug: "cheapest-place-to-buy-gaming-consoles-us",
+    title: "Cheapest Place to Buy Gaming Consoles in 2026 | Compare Gaming Consoles Prices",
+    description: "Find the cheapest place to buy gaming consoles online in the US. Compare prices from Sony PS5, Microsoft Xbox, Nintendo Switch across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Gaming Consoles",
+    heroBody: "Stop overpaying for gaming consoles. We compare real-time prices across major US retailers so you can find the lowest price on gaming consoles from Sony PS5, Microsoft Xbox, Nintendo Switch. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-gaming-consoles-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "gaming console",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest gaming consoles prices right now",
+    comparisonSectionTitle: "Where to buy gaming consoles — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest gaming consoles",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same gaming consoles can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for gaming consoles",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on gaming consoles.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on gaming consoles.",
+    ],
+    faqSectionTitle: "Cheapest gaming consoles FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy gaming consoles in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy gaming consoles?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing gaming consoles prices?",
+        answer: "Price differences of 10–30% between retailers are common for gaming consoles. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest gaming consoles now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=gaming%20console&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Gaming Consoles Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=gaming%20console&country=us", brand: "Brand A", category: "Gaming Consoles" },
+      { id: "f2", name: "Gaming Consoles Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=gaming%20console&country=us", brand: "Brand B", category: "Gaming Consoles" },
+      { id: "f3", name: "Gaming Consoles Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=gaming%20console&country=us", brand: "Brand C", category: "Gaming Consoles" },
+      { id: "f4", name: "Gaming Consoles Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=gaming%20console&country=us", brand: "Brand D", category: "Gaming Consoles" },
+      { id: "f5", name: "Gaming Consoles Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=gaming%20console&country=us", brand: "Brand E", category: "Gaming Consoles" },
+    ],
+  },
+  "cheapest-place-to-buy-cameras-us": {
+    slug: "cheapest-place-to-buy-cameras-us",
+    title: "Cheapest Place to Buy Cameras in 2026 | Compare Cameras Prices",
+    description: "Find the cheapest place to buy cameras online in the US. Compare prices from Canon, Sony, Nikon, Fujifilm across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Cameras",
+    heroBody: "Stop overpaying for cameras. We compare real-time prices across major US retailers so you can find the lowest price on cameras from Canon, Sony, Nikon, Fujifilm. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-cameras-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "camera",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest cameras prices right now",
+    comparisonSectionTitle: "Where to buy cameras — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest cameras",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same cameras can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for cameras",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on cameras.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on cameras.",
+    ],
+    faqSectionTitle: "Cheapest cameras FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy cameras in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy cameras?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing cameras prices?",
+        answer: "Price differences of 10–30% between retailers are common for cameras. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest cameras now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=camera&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Cameras Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=camera&country=us", brand: "Brand A", category: "Cameras" },
+      { id: "f2", name: "Cameras Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=camera&country=us", brand: "Brand B", category: "Cameras" },
+      { id: "f3", name: "Cameras Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=camera&country=us", brand: "Brand C", category: "Cameras" },
+      { id: "f4", name: "Cameras Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=camera&country=us", brand: "Brand D", category: "Cameras" },
+      { id: "f5", name: "Cameras Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=camera&country=us", brand: "Brand E", category: "Cameras" },
+    ],
+  },
+  "cheapest-place-to-buy-speakers-us": {
+    slug: "cheapest-place-to-buy-speakers-us",
+    title: "Cheapest Place to Buy Bluetooth Speakers in 2026 | Compare Bluetooth Speakers Prices",
+    description: "Find the cheapest place to buy bluetooth speakers online in the US. Compare prices from JBL, Bose, Sony, Ultimate Ears, Marshall across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Bluetooth Speakers",
+    heroBody: "Stop overpaying for bluetooth speakers. We compare real-time prices across major US retailers so you can find the lowest price on bluetooth speakers from JBL, Bose, Sony, Ultimate Ears, Marshall. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-speakers-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "bluetooth speaker",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest bluetooth speakers prices right now",
+    comparisonSectionTitle: "Where to buy bluetooth speakers — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest bluetooth speakers",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same bluetooth speakers can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for bluetooth speakers",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on bluetooth speakers.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on bluetooth speakers.",
+    ],
+    faqSectionTitle: "Cheapest bluetooth speakers FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy bluetooth speakers in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy bluetooth speakers?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing bluetooth speakers prices?",
+        answer: "Price differences of 10–30% between retailers are common for bluetooth speakers. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest bluetooth speakers now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=bluetooth%20speaker&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Bluetooth Speakers Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=bluetooth%20speaker&country=us", brand: "Brand A", category: "Bluetooth Speakers" },
+      { id: "f2", name: "Bluetooth Speakers Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=bluetooth%20speaker&country=us", brand: "Brand B", category: "Bluetooth Speakers" },
+      { id: "f3", name: "Bluetooth Speakers Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=bluetooth%20speaker&country=us", brand: "Brand C", category: "Bluetooth Speakers" },
+      { id: "f4", name: "Bluetooth Speakers Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=bluetooth%20speaker&country=us", brand: "Brand D", category: "Bluetooth Speakers" },
+      { id: "f5", name: "Bluetooth Speakers Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=bluetooth%20speaker&country=us", brand: "Brand E", category: "Bluetooth Speakers" },
+    ],
+  },
+  "cheapest-place-to-buy-robot-vacuums-us": {
+    slug: "cheapest-place-to-buy-robot-vacuums-us",
+    title: "Cheapest Place to Buy Robot Vacuums in 2026 | Compare Robot Vacuums Prices",
+    description: "Find the cheapest place to buy robot vacuums online in the US. Compare prices from iRobot Roomba, Roborock, Ecovacs, Shark across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Robot Vacuums",
+    heroBody: "Stop overpaying for robot vacuums. We compare real-time prices across major US retailers so you can find the lowest price on robot vacuums from iRobot Roomba, Roborock, Ecovacs, Shark. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-robot-vacuums-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "robot vacuum",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest robot vacuums prices right now",
+    comparisonSectionTitle: "Where to buy robot vacuums — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest robot vacuums",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same robot vacuums can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for robot vacuums",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on robot vacuums.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on robot vacuums.",
+    ],
+    faqSectionTitle: "Cheapest robot vacuums FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy robot vacuums in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy robot vacuums?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing robot vacuums prices?",
+        answer: "Price differences of 10–30% between retailers are common for robot vacuums. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest robot vacuums now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=robot%20vacuum&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Robot Vacuums Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=robot%20vacuum&country=us", brand: "Brand A", category: "Robot Vacuums" },
+      { id: "f2", name: "Robot Vacuums Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=robot%20vacuum&country=us", brand: "Brand B", category: "Robot Vacuums" },
+      { id: "f3", name: "Robot Vacuums Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=robot%20vacuum&country=us", brand: "Brand C", category: "Robot Vacuums" },
+      { id: "f4", name: "Robot Vacuums Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=robot%20vacuum&country=us", brand: "Brand D", category: "Robot Vacuums" },
+      { id: "f5", name: "Robot Vacuums Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=robot%20vacuum&country=us", brand: "Brand E", category: "Robot Vacuums" },
+    ],
+  },
+  "cheapest-place-to-buy-air-fryers-us": {
+    slug: "cheapest-place-to-buy-air-fryers-us",
+    title: "Cheapest Place to Buy Air Fryers in 2026 | Compare Air Fryers Prices",
+    description: "Find the cheapest place to buy air fryers online in the US. Compare prices from Ninja, Philips, Cosori, Instant Pot across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Air Fryers",
+    heroBody: "Stop overpaying for air fryers. We compare real-time prices across major US retailers so you can find the lowest price on air fryers from Ninja, Philips, Cosori, Instant Pot. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-air-fryers-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "air fryer",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest air fryers prices right now",
+    comparisonSectionTitle: "Where to buy air fryers — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest air fryers",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same air fryers can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for air fryers",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on air fryers.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on air fryers.",
+    ],
+    faqSectionTitle: "Cheapest air fryers FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy air fryers in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy air fryers?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing air fryers prices?",
+        answer: "Price differences of 10–30% between retailers are common for air fryers. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest air fryers now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=air%20fryer&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Air Fryers Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=air%20fryer&country=us", brand: "Brand A", category: "Air Fryers" },
+      { id: "f2", name: "Air Fryers Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=air%20fryer&country=us", brand: "Brand B", category: "Air Fryers" },
+      { id: "f3", name: "Air Fryers Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=air%20fryer&country=us", brand: "Brand C", category: "Air Fryers" },
+      { id: "f4", name: "Air Fryers Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=air%20fryer&country=us", brand: "Brand D", category: "Air Fryers" },
+      { id: "f5", name: "Air Fryers Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=air%20fryer&country=us", brand: "Brand E", category: "Air Fryers" },
+    ],
+  },
+  "cheapest-place-to-buy-mattresses-us": {
+    slug: "cheapest-place-to-buy-mattresses-us",
+    title: "Cheapest Place to Buy Mattresses in 2026 | Compare Mattresses Prices",
+    description: "Find the cheapest place to buy mattresses online in the US. Compare prices from Casper, Purple, Tempur-Pedic, Nectar, Saatva across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Mattresses",
+    heroBody: "Stop overpaying for mattresses. We compare real-time prices across major US retailers so you can find the lowest price on mattresses from Casper, Purple, Tempur-Pedic, Nectar, Saatva. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-mattresses-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "mattress",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest mattresses prices right now",
+    comparisonSectionTitle: "Where to buy mattresses — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest mattresses",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same mattresses can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for mattresses",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on mattresses.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on mattresses.",
+    ],
+    faqSectionTitle: "Cheapest mattresses FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy mattresses in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy mattresses?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing mattresses prices?",
+        answer: "Price differences of 10–30% between retailers are common for mattresses. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest mattresses now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=mattress&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Mattresses Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=mattress&country=us", brand: "Brand A", category: "Mattresses" },
+      { id: "f2", name: "Mattresses Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=mattress&country=us", brand: "Brand B", category: "Mattresses" },
+      { id: "f3", name: "Mattresses Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=mattress&country=us", brand: "Brand C", category: "Mattresses" },
+      { id: "f4", name: "Mattresses Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=mattress&country=us", brand: "Brand D", category: "Mattresses" },
+      { id: "f5", name: "Mattresses Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=mattress&country=us", brand: "Brand E", category: "Mattresses" },
+    ],
+  },
+  "cheapest-place-to-buy-office-chairs-us": {
+    slug: "cheapest-place-to-buy-office-chairs-us",
+    title: "Cheapest Place to Buy Office Chairs in 2026 | Compare Office Chairs Prices",
+    description: "Find the cheapest place to buy office chairs online in the US. Compare prices from Herman Miller, Steelcase, Secretlab, Autonomous across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Office Chairs",
+    heroBody: "Stop overpaying for office chairs. We compare real-time prices across major US retailers so you can find the lowest price on office chairs from Herman Miller, Steelcase, Secretlab, Autonomous. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-office-chairs-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "office chair",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest office chairs prices right now",
+    comparisonSectionTitle: "Where to buy office chairs — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest office chairs",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same office chairs can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for office chairs",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on office chairs.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on office chairs.",
+    ],
+    faqSectionTitle: "Cheapest office chairs FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy office chairs in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy office chairs?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing office chairs prices?",
+        answer: "Price differences of 10–30% between retailers are common for office chairs. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest office chairs now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=office%20chair&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Office Chairs Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=office%20chair&country=us", brand: "Brand A", category: "Office Chairs" },
+      { id: "f2", name: "Office Chairs Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=office%20chair&country=us", brand: "Brand B", category: "Office Chairs" },
+      { id: "f3", name: "Office Chairs Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=office%20chair&country=us", brand: "Brand C", category: "Office Chairs" },
+      { id: "f4", name: "Office Chairs Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=office%20chair&country=us", brand: "Brand D", category: "Office Chairs" },
+      { id: "f5", name: "Office Chairs Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=office%20chair&country=us", brand: "Brand E", category: "Office Chairs" },
+    ],
+  },
+  "cheapest-place-to-buy-standing-desks-us": {
+    slug: "cheapest-place-to-buy-standing-desks-us",
+    title: "Cheapest Place to Buy Standing Desks in 2026 | Compare Standing Desks Prices",
+    description: "Find the cheapest place to buy standing desks online in the US. Compare prices from Uplift, FlexiSpot, Autonomous, Jarvis across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Standing Desks",
+    heroBody: "Stop overpaying for standing desks. We compare real-time prices across major US retailers so you can find the lowest price on standing desks from Uplift, FlexiSpot, Autonomous, Jarvis. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-standing-desks-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "standing desk",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest standing desks prices right now",
+    comparisonSectionTitle: "Where to buy standing desks — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest standing desks",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same standing desks can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for standing desks",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on standing desks.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on standing desks.",
+    ],
+    faqSectionTitle: "Cheapest standing desks FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy standing desks in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy standing desks?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing standing desks prices?",
+        answer: "Price differences of 10–30% between retailers are common for standing desks. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest standing desks now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=standing%20desk&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Standing Desks Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=standing%20desk&country=us", brand: "Brand A", category: "Standing Desks" },
+      { id: "f2", name: "Standing Desks Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=standing%20desk&country=us", brand: "Brand B", category: "Standing Desks" },
+      { id: "f3", name: "Standing Desks Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=standing%20desk&country=us", brand: "Brand C", category: "Standing Desks" },
+      { id: "f4", name: "Standing Desks Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=standing%20desk&country=us", brand: "Brand D", category: "Standing Desks" },
+      { id: "f5", name: "Standing Desks Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=standing%20desk&country=us", brand: "Brand E", category: "Standing Desks" },
+    ],
+  },
+  "cheapest-place-to-buy-coffee-makers-us": {
+    slug: "cheapest-place-to-buy-coffee-makers-us",
+    title: "Cheapest Place to Buy Coffee Makers in 2026 | Compare Coffee Makers Prices",
+    description: "Find the cheapest place to buy coffee makers online in the US. Compare prices from Breville, Keurig, De'Longhi, Cuisinart, Mr. Coffee across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Coffee Makers",
+    heroBody: "Stop overpaying for coffee makers. We compare real-time prices across major US retailers so you can find the lowest price on coffee makers from Breville, Keurig, De'Longhi, Cuisinart, Mr. Coffee. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-coffee-makers-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "coffee maker",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest coffee makers prices right now",
+    comparisonSectionTitle: "Where to buy coffee makers — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest coffee makers",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same coffee makers can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for coffee makers",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on coffee makers.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on coffee makers.",
+    ],
+    faqSectionTitle: "Cheapest coffee makers FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy coffee makers in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy coffee makers?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing coffee makers prices?",
+        answer: "Price differences of 10–30% between retailers are common for coffee makers. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest coffee makers now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=coffee%20maker&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Coffee Makers Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=coffee%20maker&country=us", brand: "Brand A", category: "Coffee Makers" },
+      { id: "f2", name: "Coffee Makers Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=coffee%20maker&country=us", brand: "Brand B", category: "Coffee Makers" },
+      { id: "f3", name: "Coffee Makers Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=coffee%20maker&country=us", brand: "Brand C", category: "Coffee Makers" },
+      { id: "f4", name: "Coffee Makers Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=coffee%20maker&country=us", brand: "Brand D", category: "Coffee Makers" },
+      { id: "f5", name: "Coffee Makers Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=coffee%20maker&country=us", brand: "Brand E", category: "Coffee Makers" },
+    ],
+  },
+  "cheapest-place-to-buy-espresso-machines-us": {
+    slug: "cheapest-place-to-buy-espresso-machines-us",
+    title: "Cheapest Place to Buy Espresso Machines in 2026 | Compare Espresso Machines Prices",
+    description: "Find the cheapest place to buy espresso machines online in the US. Compare prices from Breville, De'Longhi, Gaggia, Nespresso across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Espresso Machines",
+    heroBody: "Stop overpaying for espresso machines. We compare real-time prices across major US retailers so you can find the lowest price on espresso machines from Breville, De'Longhi, Gaggia, Nespresso. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-espresso-machines-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "espresso machine",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest espresso machines prices right now",
+    comparisonSectionTitle: "Where to buy espresso machines — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest espresso machines",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same espresso machines can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for espresso machines",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on espresso machines.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on espresso machines.",
+    ],
+    faqSectionTitle: "Cheapest espresso machines FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy espresso machines in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy espresso machines?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing espresso machines prices?",
+        answer: "Price differences of 10–30% between retailers are common for espresso machines. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest espresso machines now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=espresso%20machine&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Espresso Machines Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=espresso%20machine&country=us", brand: "Brand A", category: "Espresso Machines" },
+      { id: "f2", name: "Espresso Machines Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=espresso%20machine&country=us", brand: "Brand B", category: "Espresso Machines" },
+      { id: "f3", name: "Espresso Machines Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=espresso%20machine&country=us", brand: "Brand C", category: "Espresso Machines" },
+      { id: "f4", name: "Espresso Machines Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=espresso%20machine&country=us", brand: "Brand D", category: "Espresso Machines" },
+      { id: "f5", name: "Espresso Machines Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=espresso%20machine&country=us", brand: "Brand E", category: "Espresso Machines" },
+    ],
+  },
+  "cheapest-place-to-buy-air-purifiers-us": {
+    slug: "cheapest-place-to-buy-air-purifiers-us",
+    title: "Cheapest Place to Buy Air Purifiers in 2026 | Compare Air Purifiers Prices",
+    description: "Find the cheapest place to buy air purifiers online in the US. Compare prices from Dyson, Philips, Coway, Levoit, Winix across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Air Purifiers",
+    heroBody: "Stop overpaying for air purifiers. We compare real-time prices across major US retailers so you can find the lowest price on air purifiers from Dyson, Philips, Coway, Levoit, Winix. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-air-purifiers-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "air purifier",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest air purifiers prices right now",
+    comparisonSectionTitle: "Where to buy air purifiers — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest air purifiers",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same air purifiers can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for air purifiers",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on air purifiers.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on air purifiers.",
+    ],
+    faqSectionTitle: "Cheapest air purifiers FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy air purifiers in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy air purifiers?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing air purifiers prices?",
+        answer: "Price differences of 10–30% between retailers are common for air purifiers. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest air purifiers now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=air%20purifier&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Air Purifiers Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=air%20purifier&country=us", brand: "Brand A", category: "Air Purifiers" },
+      { id: "f2", name: "Air Purifiers Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=air%20purifier&country=us", brand: "Brand B", category: "Air Purifiers" },
+      { id: "f3", name: "Air Purifiers Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=air%20purifier&country=us", brand: "Brand C", category: "Air Purifiers" },
+      { id: "f4", name: "Air Purifiers Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=air%20purifier&country=us", brand: "Brand D", category: "Air Purifiers" },
+      { id: "f5", name: "Air Purifiers Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=air%20purifier&country=us", brand: "Brand E", category: "Air Purifiers" },
+    ],
+  },
+  "cheapest-place-to-buy-treadmills-us": {
+    slug: "cheapest-place-to-buy-treadmills-us",
+    title: "Cheapest Place to Buy Treadmills in 2026 | Compare Treadmills Prices",
+    description: "Find the cheapest place to buy treadmills online in the US. Compare prices from NordicTrack, Peloton, Sole, ProForm, Bowflex across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Treadmills",
+    heroBody: "Stop overpaying for treadmills. We compare real-time prices across major US retailers so you can find the lowest price on treadmills from NordicTrack, Peloton, Sole, ProForm, Bowflex. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-treadmills-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "treadmill",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest treadmills prices right now",
+    comparisonSectionTitle: "Where to buy treadmills — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest treadmills",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same treadmills can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for treadmills",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on treadmills.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on treadmills.",
+    ],
+    faqSectionTitle: "Cheapest treadmills FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy treadmills in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy treadmills?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing treadmills prices?",
+        answer: "Price differences of 10–30% between retailers are common for treadmills. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest treadmills now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=treadmill&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Treadmills Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=treadmill&country=us", brand: "Brand A", category: "Treadmills" },
+      { id: "f2", name: "Treadmills Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=treadmill&country=us", brand: "Brand B", category: "Treadmills" },
+      { id: "f3", name: "Treadmills Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=treadmill&country=us", brand: "Brand C", category: "Treadmills" },
+      { id: "f4", name: "Treadmills Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=treadmill&country=us", brand: "Brand D", category: "Treadmills" },
+      { id: "f5", name: "Treadmills Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=treadmill&country=us", brand: "Brand E", category: "Treadmills" },
+    ],
+  },
+  "cheapest-place-to-buy-washing-machines-us": {
+    slug: "cheapest-place-to-buy-washing-machines-us",
+    title: "Cheapest Place to Buy Washing Machines in 2026 | Compare Washing Machines Prices",
+    description: "Find the cheapest place to buy washing machines online in the US. Compare prices from LG, Samsung, Whirlpool, Maytag, GE across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Washing Machines",
+    heroBody: "Stop overpaying for washing machines. We compare real-time prices across major US retailers so you can find the lowest price on washing machines from LG, Samsung, Whirlpool, Maytag, GE. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-washing-machines-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "washing machine",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest washing machines prices right now",
+    comparisonSectionTitle: "Where to buy washing machines — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest washing machines",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same washing machines can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for washing machines",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on washing machines.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on washing machines.",
+    ],
+    faqSectionTitle: "Cheapest washing machines FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy washing machines in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy washing machines?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing washing machines prices?",
+        answer: "Price differences of 10–30% between retailers are common for washing machines. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest washing machines now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=washing%20machine&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Washing Machines Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=washing%20machine&country=us", brand: "Brand A", category: "Washing Machines" },
+      { id: "f2", name: "Washing Machines Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=washing%20machine&country=us", brand: "Brand B", category: "Washing Machines" },
+      { id: "f3", name: "Washing Machines Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=washing%20machine&country=us", brand: "Brand C", category: "Washing Machines" },
+      { id: "f4", name: "Washing Machines Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=washing%20machine&country=us", brand: "Brand D", category: "Washing Machines" },
+      { id: "f5", name: "Washing Machines Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=washing%20machine&country=us", brand: "Brand E", category: "Washing Machines" },
+    ],
+  },
+  "cheapest-place-to-buy-dishwashers-us": {
+    slug: "cheapest-place-to-buy-dishwashers-us",
+    title: "Cheapest Place to Buy Dishwashers in 2026 | Compare Dishwashers Prices",
+    description: "Find the cheapest place to buy dishwashers online in the US. Compare prices from Bosch, KitchenAid, LG, Samsung, Whirlpool across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Dishwashers",
+    heroBody: "Stop overpaying for dishwashers. We compare real-time prices across major US retailers so you can find the lowest price on dishwashers from Bosch, KitchenAid, LG, Samsung, Whirlpool. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-dishwashers-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "dishwasher",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest dishwashers prices right now",
+    comparisonSectionTitle: "Where to buy dishwashers — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest dishwashers",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same dishwashers can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for dishwashers",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on dishwashers.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on dishwashers.",
+    ],
+    faqSectionTitle: "Cheapest dishwashers FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy dishwashers in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy dishwashers?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing dishwashers prices?",
+        answer: "Price differences of 10–30% between retailers are common for dishwashers. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest dishwashers now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=dishwasher&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dishwashers Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dishwasher&country=us", brand: "Brand A", category: "Dishwashers" },
+      { id: "f2", name: "Dishwashers Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dishwasher&country=us", brand: "Brand B", category: "Dishwashers" },
+      { id: "f3", name: "Dishwashers Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dishwasher&country=us", brand: "Brand C", category: "Dishwashers" },
+      { id: "f4", name: "Dishwashers Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dishwasher&country=us", brand: "Brand D", category: "Dishwashers" },
+      { id: "f5", name: "Dishwashers Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=dishwasher&country=us", brand: "Brand E", category: "Dishwashers" },
+    ],
+  },
+  "cheapest-place-to-buy-refrigerators-us": {
+    slug: "cheapest-place-to-buy-refrigerators-us",
+    title: "Cheapest Place to Buy Refrigerators in 2026 | Compare Refrigerators Prices",
+    description: "Find the cheapest place to buy refrigerators online in the US. Compare prices from Samsung, LG, Whirlpool, GE, Frigidaire across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Refrigerators",
+    heroBody: "Stop overpaying for refrigerators. We compare real-time prices across major US retailers so you can find the lowest price on refrigerators from Samsung, LG, Whirlpool, GE, Frigidaire. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-refrigerators-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "refrigerator",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest refrigerators prices right now",
+    comparisonSectionTitle: "Where to buy refrigerators — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest refrigerators",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same refrigerators can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for refrigerators",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on refrigerators.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on refrigerators.",
+    ],
+    faqSectionTitle: "Cheapest refrigerators FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy refrigerators in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy refrigerators?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing refrigerators prices?",
+        answer: "Price differences of 10–30% between retailers are common for refrigerators. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest refrigerators now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=refrigerator&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Refrigerators Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=refrigerator&country=us", brand: "Brand A", category: "Refrigerators" },
+      { id: "f2", name: "Refrigerators Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=refrigerator&country=us", brand: "Brand B", category: "Refrigerators" },
+      { id: "f3", name: "Refrigerators Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=refrigerator&country=us", brand: "Brand C", category: "Refrigerators" },
+      { id: "f4", name: "Refrigerators Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=refrigerator&country=us", brand: "Brand D", category: "Refrigerators" },
+      { id: "f5", name: "Refrigerators Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=refrigerator&country=us", brand: "Brand E", category: "Refrigerators" },
+    ],
+  },
+  "cheapest-place-to-buy-blenders-us": {
+    slug: "cheapest-place-to-buy-blenders-us",
+    title: "Cheapest Place to Buy Blenders in 2026 | Compare Blenders Prices",
+    description: "Find the cheapest place to buy blenders online in the US. Compare prices from Vitamix, Ninja, Blendtec, KitchenAid, NutriBullet across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Blenders",
+    heroBody: "Stop overpaying for blenders. We compare real-time prices across major US retailers so you can find the lowest price on blenders from Vitamix, Ninja, Blendtec, KitchenAid, NutriBullet. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-blenders-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "blender",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest blenders prices right now",
+    comparisonSectionTitle: "Where to buy blenders — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest blenders",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same blenders can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for blenders",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on blenders.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on blenders.",
+    ],
+    faqSectionTitle: "Cheapest blenders FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy blenders in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy blenders?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing blenders prices?",
+        answer: "Price differences of 10–30% between retailers are common for blenders. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest blenders now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=blender&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Blenders Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=blender&country=us", brand: "Brand A", category: "Blenders" },
+      { id: "f2", name: "Blenders Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=blender&country=us", brand: "Brand B", category: "Blenders" },
+      { id: "f3", name: "Blenders Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=blender&country=us", brand: "Brand C", category: "Blenders" },
+      { id: "f4", name: "Blenders Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=blender&country=us", brand: "Brand D", category: "Blenders" },
+      { id: "f5", name: "Blenders Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=blender&country=us", brand: "Brand E", category: "Blenders" },
+    ],
+  },
+  "cheapest-place-to-buy-sofas-us": {
+    slug: "cheapest-place-to-buy-sofas-us",
+    title: "Cheapest Place to Buy Sofas in 2026 | Compare Sofas Prices",
+    description: "Find the cheapest place to buy sofas online in the US. Compare prices from IKEA, Ashley, West Elm, Pottery Barn, Wayfair across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Sofas",
+    heroBody: "Stop overpaying for sofas. We compare real-time prices across major US retailers so you can find the lowest price on sofas from IKEA, Ashley, West Elm, Pottery Barn, Wayfair. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-sofas-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "sofa",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest sofas prices right now",
+    comparisonSectionTitle: "Where to buy sofas — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest sofas",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same sofas can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for sofas",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on sofas.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on sofas.",
+    ],
+    faqSectionTitle: "Cheapest sofas FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy sofas in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy sofas?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing sofas prices?",
+        answer: "Price differences of 10–30% between retailers are common for sofas. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest sofas now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=sofa&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Sofas Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=sofa&country=us", brand: "Brand A", category: "Sofas" },
+      { id: "f2", name: "Sofas Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=sofa&country=us", brand: "Brand B", category: "Sofas" },
+      { id: "f3", name: "Sofas Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=sofa&country=us", brand: "Brand C", category: "Sofas" },
+      { id: "f4", name: "Sofas Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=sofa&country=us", brand: "Brand D", category: "Sofas" },
+      { id: "f5", name: "Sofas Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=sofa&country=us", brand: "Brand E", category: "Sofas" },
+    ],
+  },
+  "cheapest-place-to-buy-dining-tables-us": {
+    slug: "cheapest-place-to-buy-dining-tables-us",
+    title: "Cheapest Place to Buy Dining Tables in 2026 | Compare Dining Tables Prices",
+    description: "Find the cheapest place to buy dining tables online in the US. Compare prices from IKEA, Ashley, West Elm, Crate & Barrel across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Dining Tables",
+    heroBody: "Stop overpaying for dining tables. We compare real-time prices across major US retailers so you can find the lowest price on dining tables from IKEA, Ashley, West Elm, Crate & Barrel. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-dining-tables-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "dining table",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest dining tables prices right now",
+    comparisonSectionTitle: "Where to buy dining tables — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest dining tables",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same dining tables can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for dining tables",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on dining tables.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on dining tables.",
+    ],
+    faqSectionTitle: "Cheapest dining tables FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy dining tables in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy dining tables?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing dining tables prices?",
+        answer: "Price differences of 10–30% between retailers are common for dining tables. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest dining tables now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=dining%20table&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dining Tables Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dining%20table&country=us", brand: "Brand A", category: "Dining Tables" },
+      { id: "f2", name: "Dining Tables Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dining%20table&country=us", brand: "Brand B", category: "Dining Tables" },
+      { id: "f3", name: "Dining Tables Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dining%20table&country=us", brand: "Brand C", category: "Dining Tables" },
+      { id: "f4", name: "Dining Tables Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dining%20table&country=us", brand: "Brand D", category: "Dining Tables" },
+      { id: "f5", name: "Dining Tables Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=dining%20table&country=us", brand: "Brand E", category: "Dining Tables" },
+    ],
+  },
+  "cheapest-place-to-buy-dog-food-us": {
+    slug: "cheapest-place-to-buy-dog-food-us",
+    title: "Cheapest Place to Buy Dog Food in 2026 | Compare Dog Food Prices",
+    description: "Find the cheapest place to buy dog food online in the US. Compare prices from Blue Buffalo, Purina, Royal Canin, Hill's, Taste of the Wild across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Dog Food",
+    heroBody: "Stop overpaying for dog food. We compare real-time prices across major US retailers so you can find the lowest price on dog food from Blue Buffalo, Purina, Royal Canin, Hill's, Taste of the Wild. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-dog-food-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "dog food",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest dog food prices right now",
+    comparisonSectionTitle: "Where to buy dog food — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest dog food",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same dog food can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for dog food",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on dog food.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on dog food.",
+    ],
+    faqSectionTitle: "Cheapest dog food FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy dog food in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy dog food?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing dog food prices?",
+        answer: "Price differences of 10–30% between retailers are common for dog food. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest dog food now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=dog%20food&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dog Food Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dog%20food&country=us", brand: "Brand A", category: "Dog Food" },
+      { id: "f2", name: "Dog Food Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dog%20food&country=us", brand: "Brand B", category: "Dog Food" },
+      { id: "f3", name: "Dog Food Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dog%20food&country=us", brand: "Brand C", category: "Dog Food" },
+      { id: "f4", name: "Dog Food Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dog%20food&country=us", brand: "Brand D", category: "Dog Food" },
+      { id: "f5", name: "Dog Food Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=dog%20food&country=us", brand: "Brand E", category: "Dog Food" },
+    ],
+  },
+  "cheapest-place-to-buy-cat-food-us": {
+    slug: "cheapest-place-to-buy-cat-food-us",
+    title: "Cheapest Place to Buy Cat Food in 2026 | Compare Cat Food Prices",
+    description: "Find the cheapest place to buy cat food online in the US. Compare prices from Royal Canin, Purina, Hill's, Blue Buffalo, Fancy Feast across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Cat Food",
+    heroBody: "Stop overpaying for cat food. We compare real-time prices across major US retailers so you can find the lowest price on cat food from Royal Canin, Purina, Hill's, Blue Buffalo, Fancy Feast. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-cat-food-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "cat food",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest cat food prices right now",
+    comparisonSectionTitle: "Where to buy cat food — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest cat food",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same cat food can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for cat food",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on cat food.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on cat food.",
+    ],
+    faqSectionTitle: "Cheapest cat food FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy cat food in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy cat food?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing cat food prices?",
+        answer: "Price differences of 10–30% between retailers are common for cat food. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest cat food now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=cat%20food&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Cat Food Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=cat%20food&country=us", brand: "Brand A", category: "Cat Food" },
+      { id: "f2", name: "Cat Food Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=cat%20food&country=us", brand: "Brand B", category: "Cat Food" },
+      { id: "f3", name: "Cat Food Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=cat%20food&country=us", brand: "Brand C", category: "Cat Food" },
+      { id: "f4", name: "Cat Food Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=cat%20food&country=us", brand: "Brand D", category: "Cat Food" },
+      { id: "f5", name: "Cat Food Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=cat%20food&country=us", brand: "Brand E", category: "Cat Food" },
+    ],
+  },
+  "cheapest-place-to-buy-strollers-us": {
+    slug: "cheapest-place-to-buy-strollers-us",
+    title: "Cheapest Place to Buy Baby Strollers in 2026 | Compare Baby Strollers Prices",
+    description: "Find the cheapest place to buy baby strollers online in the US. Compare prices from UPPAbaby, Chicco, Graco, Baby Jogger, Bugaboo across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Baby Strollers",
+    heroBody: "Stop overpaying for baby strollers. We compare real-time prices across major US retailers so you can find the lowest price on baby strollers from UPPAbaby, Chicco, Graco, Baby Jogger, Bugaboo. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-strollers-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "baby stroller",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest baby strollers prices right now",
+    comparisonSectionTitle: "Where to buy baby strollers — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest baby strollers",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same baby strollers can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for baby strollers",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on baby strollers.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on baby strollers.",
+    ],
+    faqSectionTitle: "Cheapest baby strollers FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy baby strollers in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy baby strollers?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing baby strollers prices?",
+        answer: "Price differences of 10–30% between retailers are common for baby strollers. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest baby strollers now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=baby%20stroller&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Baby Strollers Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=baby%20stroller&country=us", brand: "Brand A", category: "Baby Strollers" },
+      { id: "f2", name: "Baby Strollers Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=baby%20stroller&country=us", brand: "Brand B", category: "Baby Strollers" },
+      { id: "f3", name: "Baby Strollers Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=baby%20stroller&country=us", brand: "Brand C", category: "Baby Strollers" },
+      { id: "f4", name: "Baby Strollers Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=baby%20stroller&country=us", brand: "Brand D", category: "Baby Strollers" },
+      { id: "f5", name: "Baby Strollers Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=baby%20stroller&country=us", brand: "Brand E", category: "Baby Strollers" },
+    ],
+  },
+  "cheapest-place-to-buy-car-seats-us": {
+    slug: "cheapest-place-to-buy-car-seats-us",
+    title: "Cheapest Place to Buy Car Seats in 2026 | Compare Car Seats Prices",
+    description: "Find the cheapest place to buy car seats online in the US. Compare prices from Graco, Chicco, Nuna, Britax, Clek across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Car Seats",
+    heroBody: "Stop overpaying for car seats. We compare real-time prices across major US retailers so you can find the lowest price on car seats from Graco, Chicco, Nuna, Britax, Clek. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-car-seats-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "car seat",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest car seats prices right now",
+    comparisonSectionTitle: "Where to buy car seats — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest car seats",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same car seats can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for car seats",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on car seats.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on car seats.",
+    ],
+    faqSectionTitle: "Cheapest car seats FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy car seats in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy car seats?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing car seats prices?",
+        answer: "Price differences of 10–30% between retailers are common for car seats. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest car seats now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=car%20seat&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Car Seats Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=car%20seat&country=us", brand: "Brand A", category: "Car Seats" },
+      { id: "f2", name: "Car Seats Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=car%20seat&country=us", brand: "Brand B", category: "Car Seats" },
+      { id: "f3", name: "Car Seats Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=car%20seat&country=us", brand: "Brand C", category: "Car Seats" },
+      { id: "f4", name: "Car Seats Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=car%20seat&country=us", brand: "Brand D", category: "Car Seats" },
+      { id: "f5", name: "Car Seats Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=car%20seat&country=us", brand: "Brand E", category: "Car Seats" },
+    ],
+  },
+  "cheapest-place-to-buy-electric-toothbrushes-us": {
+    slug: "cheapest-place-to-buy-electric-toothbrushes-us",
+    title: "Cheapest Place to Buy Electric Toothbrushes in 2026 | Compare Electric Toothbrushes Prices",
+    description: "Find the cheapest place to buy electric toothbrushes online in the US. Compare prices from Oral-B, Philips Sonicare, Waterpik, Quip across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Electric Toothbrushes",
+    heroBody: "Stop overpaying for electric toothbrushes. We compare real-time prices across major US retailers so you can find the lowest price on electric toothbrushes from Oral-B, Philips Sonicare, Waterpik, Quip. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-electric-toothbrushes-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "electric toothbrush",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest electric toothbrushes prices right now",
+    comparisonSectionTitle: "Where to buy electric toothbrushes — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest electric toothbrushes",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same electric toothbrushes can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for electric toothbrushes",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on electric toothbrushes.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on electric toothbrushes.",
+    ],
+    faqSectionTitle: "Cheapest electric toothbrushes FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy electric toothbrushes in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy electric toothbrushes?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing electric toothbrushes prices?",
+        answer: "Price differences of 10–30% between retailers are common for electric toothbrushes. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest electric toothbrushes now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=electric%20toothbrush&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Electric Toothbrushes Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=electric%20toothbrush&country=us", brand: "Brand A", category: "Electric Toothbrushes" },
+      { id: "f2", name: "Electric Toothbrushes Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=electric%20toothbrush&country=us", brand: "Brand B", category: "Electric Toothbrushes" },
+      { id: "f3", name: "Electric Toothbrushes Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=electric%20toothbrush&country=us", brand: "Brand C", category: "Electric Toothbrushes" },
+      { id: "f4", name: "Electric Toothbrushes Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=electric%20toothbrush&country=us", brand: "Brand D", category: "Electric Toothbrushes" },
+      { id: "f5", name: "Electric Toothbrushes Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=electric%20toothbrush&country=us", brand: "Brand E", category: "Electric Toothbrushes" },
+    ],
+  },
+  "cheapest-place-to-buy-hair-dryers-us": {
+    slug: "cheapest-place-to-buy-hair-dryers-us",
+    title: "Cheapest Place to Buy Hair Dryers in 2026 | Compare Hair Dryers Prices",
+    description: "Find the cheapest place to buy hair dryers online in the US. Compare prices from Dyson, T3, Conair, Revlon, ghd across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Hair Dryers",
+    heroBody: "Stop overpaying for hair dryers. We compare real-time prices across major US retailers so you can find the lowest price on hair dryers from Dyson, T3, Conair, Revlon, ghd. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-hair-dryers-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "hair dryer",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest hair dryers prices right now",
+    comparisonSectionTitle: "Where to buy hair dryers — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest hair dryers",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same hair dryers can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for hair dryers",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on hair dryers.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on hair dryers.",
+    ],
+    faqSectionTitle: "Cheapest hair dryers FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy hair dryers in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy hair dryers?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing hair dryers prices?",
+        answer: "Price differences of 10–30% between retailers are common for hair dryers. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest hair dryers now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=hair%20dryer&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Hair Dryers Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=hair%20dryer&country=us", brand: "Brand A", category: "Hair Dryers" },
+      { id: "f2", name: "Hair Dryers Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=hair%20dryer&country=us", brand: "Brand B", category: "Hair Dryers" },
+      { id: "f3", name: "Hair Dryers Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=hair%20dryer&country=us", brand: "Brand C", category: "Hair Dryers" },
+      { id: "f4", name: "Hair Dryers Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=hair%20dryer&country=us", brand: "Brand D", category: "Hair Dryers" },
+      { id: "f5", name: "Hair Dryers Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=hair%20dryer&country=us", brand: "Brand E", category: "Hair Dryers" },
+    ],
+  },
+  "cheapest-place-to-buy-fitness-trackers-us": {
+    slug: "cheapest-place-to-buy-fitness-trackers-us",
+    title: "Cheapest Place to Buy Fitness Trackers in 2026 | Compare Fitness Trackers Prices",
+    description: "Find the cheapest place to buy fitness trackers online in the US. Compare prices from Fitbit, Garmin, Samsung, Xiaomi, Apple Watch across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Fitness Trackers",
+    heroBody: "Stop overpaying for fitness trackers. We compare real-time prices across major US retailers so you can find the lowest price on fitness trackers from Fitbit, Garmin, Samsung, Xiaomi, Apple Watch. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-fitness-trackers-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "fitness tracker",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest fitness trackers prices right now",
+    comparisonSectionTitle: "Where to buy fitness trackers — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest fitness trackers",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same fitness trackers can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for fitness trackers",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on fitness trackers.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on fitness trackers.",
+    ],
+    faqSectionTitle: "Cheapest fitness trackers FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy fitness trackers in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy fitness trackers?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing fitness trackers prices?",
+        answer: "Price differences of 10–30% between retailers are common for fitness trackers. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest fitness trackers now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=fitness%20tracker&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Fitness Trackers Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=fitness%20tracker&country=us", brand: "Brand A", category: "Fitness Trackers" },
+      { id: "f2", name: "Fitness Trackers Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=fitness%20tracker&country=us", brand: "Brand B", category: "Fitness Trackers" },
+      { id: "f3", name: "Fitness Trackers Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=fitness%20tracker&country=us", brand: "Brand C", category: "Fitness Trackers" },
+      { id: "f4", name: "Fitness Trackers Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=fitness%20tracker&country=us", brand: "Brand D", category: "Fitness Trackers" },
+      { id: "f5", name: "Fitness Trackers Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=fitness%20tracker&country=us", brand: "Brand E", category: "Fitness Trackers" },
+    ],
+  },
+  "cheapest-place-to-buy-drones-us": {
+    slug: "cheapest-place-to-buy-drones-us",
+    title: "Cheapest Place to Buy Drones in 2026 | Compare Drones Prices",
+    description: "Find the cheapest place to buy drones online in the US. Compare prices from DJI, Autel, Skydio, Ryze Tello across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Drones",
+    heroBody: "Stop overpaying for drones. We compare real-time prices across major US retailers so you can find the lowest price on drones from DJI, Autel, Skydio, Ryze Tello. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-drones-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "drone",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest drones prices right now",
+    comparisonSectionTitle: "Where to buy drones — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest drones",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same drones can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for drones",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on drones.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on drones.",
+    ],
+    faqSectionTitle: "Cheapest drones FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy drones in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy drones?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing drones prices?",
+        answer: "Price differences of 10–30% between retailers are common for drones. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest drones now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=drone&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Drones Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=drone&country=us", brand: "Brand A", category: "Drones" },
+      { id: "f2", name: "Drones Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=drone&country=us", brand: "Brand B", category: "Drones" },
+      { id: "f3", name: "Drones Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=drone&country=us", brand: "Brand C", category: "Drones" },
+      { id: "f4", name: "Drones Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=drone&country=us", brand: "Brand D", category: "Drones" },
+      { id: "f5", name: "Drones Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=drone&country=us", brand: "Brand E", category: "Drones" },
+    ],
+  },
+  "cheapest-place-to-buy-mechanical-keyboards-us": {
+    slug: "cheapest-place-to-buy-mechanical-keyboards-us",
+    title: "Cheapest Place to Buy Mechanical Keyboards in 2026 | Compare Mechanical Keyboards Prices",
+    description: "Find the cheapest place to buy mechanical keyboards online in the US. Compare prices from Corsair, Logitech, Razer, Keychron, SteelSeries across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Mechanical Keyboards",
+    heroBody: "Stop overpaying for mechanical keyboards. We compare real-time prices across major US retailers so you can find the lowest price on mechanical keyboards from Corsair, Logitech, Razer, Keychron, SteelSeries. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-mechanical-keyboards-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "mechanical keyboard",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest mechanical keyboards prices right now",
+    comparisonSectionTitle: "Where to buy mechanical keyboards — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest mechanical keyboards",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same mechanical keyboards can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for mechanical keyboards",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on mechanical keyboards.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on mechanical keyboards.",
+    ],
+    faqSectionTitle: "Cheapest mechanical keyboards FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy mechanical keyboards in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy mechanical keyboards?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing mechanical keyboards prices?",
+        answer: "Price differences of 10–30% between retailers are common for mechanical keyboards. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest mechanical keyboards now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=mechanical%20keyboard&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Mechanical Keyboards Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=mechanical%20keyboard&country=us", brand: "Brand A", category: "Mechanical Keyboards" },
+      { id: "f2", name: "Mechanical Keyboards Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=mechanical%20keyboard&country=us", brand: "Brand B", category: "Mechanical Keyboards" },
+      { id: "f3", name: "Mechanical Keyboards Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=mechanical%20keyboard&country=us", brand: "Brand C", category: "Mechanical Keyboards" },
+      { id: "f4", name: "Mechanical Keyboards Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=mechanical%20keyboard&country=us", brand: "Brand D", category: "Mechanical Keyboards" },
+      { id: "f5", name: "Mechanical Keyboards Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=mechanical%20keyboard&country=us", brand: "Brand E", category: "Mechanical Keyboards" },
+    ],
+  },
+  "cheapest-place-to-buy-gaming-mice-us": {
+    slug: "cheapest-place-to-buy-gaming-mice-us",
+    title: "Cheapest Place to Buy Gaming Mice in 2026 | Compare Gaming Mice Prices",
+    description: "Find the cheapest place to buy gaming mice online in the US. Compare prices from Logitech, Razer, SteelSeries, Corsair, Zowie across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Gaming Mice",
+    heroBody: "Stop overpaying for gaming mice. We compare real-time prices across major US retailers so you can find the lowest price on gaming mice from Logitech, Razer, SteelSeries, Corsair, Zowie. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-gaming-mice-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "gaming mouse",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest gaming mice prices right now",
+    comparisonSectionTitle: "Where to buy gaming mice — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest gaming mice",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same gaming mice can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for gaming mice",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on gaming mice.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on gaming mice.",
+    ],
+    faqSectionTitle: "Cheapest gaming mice FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy gaming mice in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy gaming mice?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing gaming mice prices?",
+        answer: "Price differences of 10–30% between retailers are common for gaming mice. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest gaming mice now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=gaming%20mouse&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Gaming Mice Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=gaming%20mouse&country=us", brand: "Brand A", category: "Gaming Mice" },
+      { id: "f2", name: "Gaming Mice Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=gaming%20mouse&country=us", brand: "Brand B", category: "Gaming Mice" },
+      { id: "f3", name: "Gaming Mice Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=gaming%20mouse&country=us", brand: "Brand C", category: "Gaming Mice" },
+      { id: "f4", name: "Gaming Mice Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=gaming%20mouse&country=us", brand: "Brand D", category: "Gaming Mice" },
+      { id: "f5", name: "Gaming Mice Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=gaming%20mouse&country=us", brand: "Brand E", category: "Gaming Mice" },
+    ],
+  },
+  "cheapest-place-to-buy-webcams-us": {
+    slug: "cheapest-place-to-buy-webcams-us",
+    title: "Cheapest Place to Buy Webcams in 2026 | Compare Webcams Prices",
+    description: "Find the cheapest place to buy webcams online in the US. Compare prices from Logitech, Elgato, Razer, Anker, AVerMedia across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Webcams",
+    heroBody: "Stop overpaying for webcams. We compare real-time prices across major US retailers so you can find the lowest price on webcams from Logitech, Elgato, Razer, Anker, AVerMedia. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-webcams-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "webcam",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest webcams prices right now",
+    comparisonSectionTitle: "Where to buy webcams — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest webcams",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same webcams can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for webcams",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on webcams.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on webcams.",
+    ],
+    faqSectionTitle: "Cheapest webcams FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy webcams in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy webcams?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing webcams prices?",
+        answer: "Price differences of 10–30% between retailers are common for webcams. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest webcams now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=webcam&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Webcams Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=webcam&country=us", brand: "Brand A", category: "Webcams" },
+      { id: "f2", name: "Webcams Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=webcam&country=us", brand: "Brand B", category: "Webcams" },
+      { id: "f3", name: "Webcams Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=webcam&country=us", brand: "Brand C", category: "Webcams" },
+      { id: "f4", name: "Webcams Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=webcam&country=us", brand: "Brand D", category: "Webcams" },
+      { id: "f5", name: "Webcams Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=webcam&country=us", brand: "Brand E", category: "Webcams" },
+    ],
+  },
+  "cheapest-place-to-buy-power-banks-us": {
+    slug: "cheapest-place-to-buy-power-banks-us",
+    title: "Cheapest Place to Buy Power Banks in 2026 | Compare Power Banks Prices",
+    description: "Find the cheapest place to buy power banks online in the US. Compare prices from Anker, Samsung, RAVPower, Mophie, Baseus across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Power Banks",
+    heroBody: "Stop overpaying for power banks. We compare real-time prices across major US retailers so you can find the lowest price on power banks from Anker, Samsung, RAVPower, Mophie, Baseus. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-power-banks-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "power bank",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest power banks prices right now",
+    comparisonSectionTitle: "Where to buy power banks — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest power banks",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same power banks can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for power banks",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on power banks.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on power banks.",
+    ],
+    faqSectionTitle: "Cheapest power banks FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy power banks in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy power banks?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing power banks prices?",
+        answer: "Price differences of 10–30% between retailers are common for power banks. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest power banks now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=power%20bank&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Power Banks Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=power%20bank&country=us", brand: "Brand A", category: "Power Banks" },
+      { id: "f2", name: "Power Banks Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=power%20bank&country=us", brand: "Brand B", category: "Power Banks" },
+      { id: "f3", name: "Power Banks Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=power%20bank&country=us", brand: "Brand C", category: "Power Banks" },
+      { id: "f4", name: "Power Banks Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=power%20bank&country=us", brand: "Brand D", category: "Power Banks" },
+      { id: "f5", name: "Power Banks Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=power%20bank&country=us", brand: "Brand E", category: "Power Banks" },
+    ],
+  },
+  "cheapest-place-to-buy-e-readers-us": {
+    slug: "cheapest-place-to-buy-e-readers-us",
+    title: "Cheapest Place to Buy E-Readers in 2026 | Compare E-Readers Prices",
+    description: "Find the cheapest place to buy e-readers online in the US. Compare prices from Amazon Kindle, Kobo, Onyx Boox across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy E-Readers",
+    heroBody: "Stop overpaying for e-readers. We compare real-time prices across major US retailers so you can find the lowest price on e-readers from Amazon Kindle, Kobo, Onyx Boox. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-e-readers-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "e-reader",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest e-readers prices right now",
+    comparisonSectionTitle: "Where to buy e-readers — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest e-readers",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same e-readers can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for e-readers",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on e-readers.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on e-readers.",
+    ],
+    faqSectionTitle: "Cheapest e-readers FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy e-readers in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy e-readers?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing e-readers prices?",
+        answer: "Price differences of 10–30% between retailers are common for e-readers. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest e-readers now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=e-reader&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "E-Readers Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=e-reader&country=us", brand: "Brand A", category: "E-Readers" },
+      { id: "f2", name: "E-Readers Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=e-reader&country=us", brand: "Brand B", category: "E-Readers" },
+      { id: "f3", name: "E-Readers Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=e-reader&country=us", brand: "Brand C", category: "E-Readers" },
+      { id: "f4", name: "E-Readers Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=e-reader&country=us", brand: "Brand D", category: "E-Readers" },
+      { id: "f5", name: "E-Readers Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=e-reader&country=us", brand: "Brand E", category: "E-Readers" },
+    ],
+  },
+  "cheapest-place-to-buy-dash-cams-us": {
+    slug: "cheapest-place-to-buy-dash-cams-us",
+    title: "Cheapest Place to Buy Dash Cams in 2026 | Compare Dash Cams Prices",
+    description: "Find the cheapest place to buy dash cams online in the US. Compare prices from Garmin, Nextbase, Viofo, Vantrue, Thinkware across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Dash Cams",
+    heroBody: "Stop overpaying for dash cams. We compare real-time prices across major US retailers so you can find the lowest price on dash cams from Garmin, Nextbase, Viofo, Vantrue, Thinkware. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-dash-cams-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "dash cam",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest dash cams prices right now",
+    comparisonSectionTitle: "Where to buy dash cams — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest dash cams",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same dash cams can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for dash cams",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on dash cams.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on dash cams.",
+    ],
+    faqSectionTitle: "Cheapest dash cams FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy dash cams in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy dash cams?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing dash cams prices?",
+        answer: "Price differences of 10–30% between retailers are common for dash cams. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest dash cams now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=dash%20cam&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dash Cams Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dash%20cam&country=us", brand: "Brand A", category: "Dash Cams" },
+      { id: "f2", name: "Dash Cams Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dash%20cam&country=us", brand: "Brand B", category: "Dash Cams" },
+      { id: "f3", name: "Dash Cams Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dash%20cam&country=us", brand: "Brand C", category: "Dash Cams" },
+      { id: "f4", name: "Dash Cams Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dash%20cam&country=us", brand: "Brand D", category: "Dash Cams" },
+      { id: "f5", name: "Dash Cams Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=dash%20cam&country=us", brand: "Brand E", category: "Dash Cams" },
+    ],
+  },
+  "cheapest-place-to-buy-slow-cookers-us": {
+    slug: "cheapest-place-to-buy-slow-cookers-us",
+    title: "Cheapest Place to Buy Slow Cookers in 2026 | Compare Slow Cookers Prices",
+    description: "Find the cheapest place to buy slow cookers online in the US. Compare prices from Crock-Pot, Instant Pot, Hamilton Beach, Ninja across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Slow Cookers",
+    heroBody: "Stop overpaying for slow cookers. We compare real-time prices across major US retailers so you can find the lowest price on slow cookers from Crock-Pot, Instant Pot, Hamilton Beach, Ninja. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-slow-cookers-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "slow cooker",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest slow cookers prices right now",
+    comparisonSectionTitle: "Where to buy slow cookers — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest slow cookers",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same slow cookers can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for slow cookers",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on slow cookers.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on slow cookers.",
+    ],
+    faqSectionTitle: "Cheapest slow cookers FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy slow cookers in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy slow cookers?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing slow cookers prices?",
+        answer: "Price differences of 10–30% between retailers are common for slow cookers. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest slow cookers now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=slow%20cooker&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Slow Cookers Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=slow%20cooker&country=us", brand: "Brand A", category: "Slow Cookers" },
+      { id: "f2", name: "Slow Cookers Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=slow%20cooker&country=us", brand: "Brand B", category: "Slow Cookers" },
+      { id: "f3", name: "Slow Cookers Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=slow%20cooker&country=us", brand: "Brand C", category: "Slow Cookers" },
+      { id: "f4", name: "Slow Cookers Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=slow%20cooker&country=us", brand: "Brand D", category: "Slow Cookers" },
+      { id: "f5", name: "Slow Cookers Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=slow%20cooker&country=us", brand: "Brand E", category: "Slow Cookers" },
+    ],
+  },
+  "cheapest-place-to-buy-pressure-cookers-us": {
+    slug: "cheapest-place-to-buy-pressure-cookers-us",
+    title: "Cheapest Place to Buy Pressure Cookers in 2026 | Compare Pressure Cookers Prices",
+    description: "Find the cheapest place to buy pressure cookers online in the US. Compare prices from Instant Pot, Ninja, Breville, Crock-Pot across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Pressure Cookers",
+    heroBody: "Stop overpaying for pressure cookers. We compare real-time prices across major US retailers so you can find the lowest price on pressure cookers from Instant Pot, Ninja, Breville, Crock-Pot. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-pressure-cookers-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "pressure cooker",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest pressure cookers prices right now",
+    comparisonSectionTitle: "Where to buy pressure cookers — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest pressure cookers",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same pressure cookers can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for pressure cookers",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on pressure cookers.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on pressure cookers.",
+    ],
+    faqSectionTitle: "Cheapest pressure cookers FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy pressure cookers in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy pressure cookers?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing pressure cookers prices?",
+        answer: "Price differences of 10–30% between retailers are common for pressure cookers. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest pressure cookers now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=pressure%20cooker&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Pressure Cookers Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=pressure%20cooker&country=us", brand: "Brand A", category: "Pressure Cookers" },
+      { id: "f2", name: "Pressure Cookers Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=pressure%20cooker&country=us", brand: "Brand B", category: "Pressure Cookers" },
+      { id: "f3", name: "Pressure Cookers Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=pressure%20cooker&country=us", brand: "Brand C", category: "Pressure Cookers" },
+      { id: "f4", name: "Pressure Cookers Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=pressure%20cooker&country=us", brand: "Brand D", category: "Pressure Cookers" },
+      { id: "f5", name: "Pressure Cookers Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=pressure%20cooker&country=us", brand: "Brand E", category: "Pressure Cookers" },
+    ],
+  },
+  "cheapest-place-to-buy-food-processors-us": {
+    slug: "cheapest-place-to-buy-food-processors-us",
+    title: "Cheapest Place to Buy Food Processors in 2026 | Compare Food Processors Prices",
+    description: "Find the cheapest place to buy food processors online in the US. Compare prices from Cuisinart, KitchenAid, Breville, Hamilton Beach across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Food Processors",
+    heroBody: "Stop overpaying for food processors. We compare real-time prices across major US retailers so you can find the lowest price on food processors from Cuisinart, KitchenAid, Breville, Hamilton Beach. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-food-processors-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "food processor",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest food processors prices right now",
+    comparisonSectionTitle: "Where to buy food processors — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest food processors",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same food processors can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for food processors",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on food processors.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on food processors.",
+    ],
+    faqSectionTitle: "Cheapest food processors FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy food processors in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy food processors?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing food processors prices?",
+        answer: "Price differences of 10–30% between retailers are common for food processors. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest food processors now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=food%20processor&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Food Processors Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=food%20processor&country=us", brand: "Brand A", category: "Food Processors" },
+      { id: "f2", name: "Food Processors Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=food%20processor&country=us", brand: "Brand B", category: "Food Processors" },
+      { id: "f3", name: "Food Processors Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=food%20processor&country=us", brand: "Brand C", category: "Food Processors" },
+      { id: "f4", name: "Food Processors Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=food%20processor&country=us", brand: "Brand D", category: "Food Processors" },
+      { id: "f5", name: "Food Processors Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=food%20processor&country=us", brand: "Brand E", category: "Food Processors" },
+    ],
+  },
+  "cheapest-place-to-buy-toasters-us": {
+    slug: "cheapest-place-to-buy-toasters-us",
+    title: "Cheapest Place to Buy Toasters in 2026 | Compare Toasters Prices",
+    description: "Find the cheapest place to buy toasters online in the US. Compare prices from Breville, Cuisinart, KitchenAid, Smeg, Dualit across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Toasters",
+    heroBody: "Stop overpaying for toasters. We compare real-time prices across major US retailers so you can find the lowest price on toasters from Breville, Cuisinart, KitchenAid, Smeg, Dualit. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-toasters-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "toaster",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest toasters prices right now",
+    comparisonSectionTitle: "Where to buy toasters — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest toasters",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same toasters can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for toasters",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on toasters.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on toasters.",
+    ],
+    faqSectionTitle: "Cheapest toasters FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy toasters in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy toasters?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing toasters prices?",
+        answer: "Price differences of 10–30% between retailers are common for toasters. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest toasters now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=toaster&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Toasters Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=toaster&country=us", brand: "Brand A", category: "Toasters" },
+      { id: "f2", name: "Toasters Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=toaster&country=us", brand: "Brand B", category: "Toasters" },
+      { id: "f3", name: "Toasters Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=toaster&country=us", brand: "Brand C", category: "Toasters" },
+      { id: "f4", name: "Toasters Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=toaster&country=us", brand: "Brand D", category: "Toasters" },
+      { id: "f5", name: "Toasters Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=toaster&country=us", brand: "Brand E", category: "Toasters" },
+    ],
+  },
+  "cheapest-place-to-buy-electric-kettles-us": {
+    slug: "cheapest-place-to-buy-electric-kettles-us",
+    title: "Cheapest Place to Buy Electric Kettles in 2026 | Compare Electric Kettles Prices",
+    description: "Find the cheapest place to buy electric kettles online in the US. Compare prices from Fellow, Cuisinart, Breville, OXO, Hamilton Beach across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Electric Kettles",
+    heroBody: "Stop overpaying for electric kettles. We compare real-time prices across major US retailers so you can find the lowest price on electric kettles from Fellow, Cuisinart, Breville, OXO, Hamilton Beach. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-electric-kettles-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "electric kettle",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest electric kettles prices right now",
+    comparisonSectionTitle: "Where to buy electric kettles — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest electric kettles",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same electric kettles can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for electric kettles",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on electric kettles.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on electric kettles.",
+    ],
+    faqSectionTitle: "Cheapest electric kettles FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy electric kettles in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy electric kettles?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing electric kettles prices?",
+        answer: "Price differences of 10–30% between retailers are common for electric kettles. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest electric kettles now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=electric%20kettle&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Electric Kettles Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=electric%20kettle&country=us", brand: "Brand A", category: "Electric Kettles" },
+      { id: "f2", name: "Electric Kettles Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=electric%20kettle&country=us", brand: "Brand B", category: "Electric Kettles" },
+      { id: "f3", name: "Electric Kettles Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=electric%20kettle&country=us", brand: "Brand C", category: "Electric Kettles" },
+      { id: "f4", name: "Electric Kettles Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=electric%20kettle&country=us", brand: "Brand D", category: "Electric Kettles" },
+      { id: "f5", name: "Electric Kettles Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=electric%20kettle&country=us", brand: "Brand E", category: "Electric Kettles" },
+    ],
+  },
+  "cheapest-place-to-buy-dehumidifiers-us": {
+    slug: "cheapest-place-to-buy-dehumidifiers-us",
+    title: "Cheapest Place to Buy Dehumidifiers in 2026 | Compare Dehumidifiers Prices",
+    description: "Find the cheapest place to buy dehumidifiers online in the US. Compare prices from Frigidaire, hOmeLabs, GE, LG, Honeywell across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Dehumidifiers",
+    heroBody: "Stop overpaying for dehumidifiers. We compare real-time prices across major US retailers so you can find the lowest price on dehumidifiers from Frigidaire, hOmeLabs, GE, LG, Honeywell. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-dehumidifiers-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "dehumidifier",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest dehumidifiers prices right now",
+    comparisonSectionTitle: "Where to buy dehumidifiers — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest dehumidifiers",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same dehumidifiers can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for dehumidifiers",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on dehumidifiers.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on dehumidifiers.",
+    ],
+    faqSectionTitle: "Cheapest dehumidifiers FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy dehumidifiers in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy dehumidifiers?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing dehumidifiers prices?",
+        answer: "Price differences of 10–30% between retailers are common for dehumidifiers. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest dehumidifiers now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=dehumidifier&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Dehumidifiers Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=dehumidifier&country=us", brand: "Brand A", category: "Dehumidifiers" },
+      { id: "f2", name: "Dehumidifiers Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=dehumidifier&country=us", brand: "Brand B", category: "Dehumidifiers" },
+      { id: "f3", name: "Dehumidifiers Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=dehumidifier&country=us", brand: "Brand C", category: "Dehumidifiers" },
+      { id: "f4", name: "Dehumidifiers Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=dehumidifier&country=us", brand: "Brand D", category: "Dehumidifiers" },
+      { id: "f5", name: "Dehumidifiers Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=dehumidifier&country=us", brand: "Brand E", category: "Dehumidifiers" },
+    ],
+  },
+  "cheapest-place-to-buy-portable-ac-us": {
+    slug: "cheapest-place-to-buy-portable-ac-us",
+    title: "Cheapest Place to Buy Portable Air Conditioners in 2026 | Compare Portable Air Conditioners Prices",
+    description: "Find the cheapest place to buy portable air conditioners online in the US. Compare prices from LG, Black+Decker, Whynter, Honeywell, Frigidaire across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Portable Air Conditioners",
+    heroBody: "Stop overpaying for portable air conditioners. We compare real-time prices across major US retailers so you can find the lowest price on portable air conditioners from LG, Black+Decker, Whynter, Honeywell, Frigidaire. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-portable-ac-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "portable air conditioner",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest portable air conditioners prices right now",
+    comparisonSectionTitle: "Where to buy portable air conditioners — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest portable air conditioners",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same portable air conditioners can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for portable air conditioners",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on portable air conditioners.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on portable air conditioners.",
+    ],
+    faqSectionTitle: "Cheapest portable air conditioners FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy portable air conditioners in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy portable air conditioners?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing portable air conditioners prices?",
+        answer: "Price differences of 10–30% between retailers are common for portable air conditioners. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest portable air conditioners now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=portable%20air%20conditioner&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Portable Air Conditioners Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=portable%20air%20conditioner&country=us", brand: "Brand A", category: "Portable Air Conditioners" },
+      { id: "f2", name: "Portable Air Conditioners Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=portable%20air%20conditioner&country=us", brand: "Brand B", category: "Portable Air Conditioners" },
+      { id: "f3", name: "Portable Air Conditioners Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=portable%20air%20conditioner&country=us", brand: "Brand C", category: "Portable Air Conditioners" },
+      { id: "f4", name: "Portable Air Conditioners Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=portable%20air%20conditioner&country=us", brand: "Brand D", category: "Portable Air Conditioners" },
+      { id: "f5", name: "Portable Air Conditioners Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=portable%20air%20conditioner&country=us", brand: "Brand E", category: "Portable Air Conditioners" },
+    ],
+  },
+  "cheapest-place-to-buy-security-cameras-us": {
+    slug: "cheapest-place-to-buy-security-cameras-us",
+    title: "Cheapest Place to Buy Security Cameras in 2026 | Compare Security Cameras Prices",
+    description: "Find the cheapest place to buy security cameras online in the US. Compare prices from Ring, Arlo, Wyze, Google Nest, Blink across retailers like Amazon, Walmart, Best Buy, and more with BuyWhere.",
+    heroEyebrow: "US Price Comparison",
+    heroTitle: "Cheapest Place to Buy Security Cameras",
+    heroBody: "Stop overpaying for security cameras. We compare real-time prices across major US retailers so you can find the lowest price on security cameras from Ring, Arlo, Wyze, Google Nest, Blink. Updated daily with live BuyWhere data.",
+    canonicalPath: "/cheapest-place-to-buy-security-cameras-us",
+    country: "US" as const,
+    currency: "USD" as const,
+    locale: "en_US" as const,
+    searchQuery: "security camera",
+    refreshedLabel: "Updated May 8, 2026",
+    productSectionTitle: "Lowest security cameras prices right now",
+    comparisonSectionTitle: "Where to buy security cameras — retailer price comparison",
+    comparisonColumns: ["Retailer", "Price Range", "Shipping", "Returns", "Best For"],
+    comparisonRows: [
+      { Retailer: "Amazon", "Price Range": "$$–$$$", Shipping: "Free (Prime)", Returns: "30 days", "Best For": "Fast delivery + wide selection" },
+      { Retailer: "Walmart", "Price Range": "$–$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "Budget-friendly options" },
+      { Retailer: "Best Buy", "Price Range": "$$–$$$", Shipping: "Free over $35", Returns: "15 days", "Best For": "Electronics expertise" },
+      { Retailer: "Target", "Price Range": "$$", Shipping: "Free over $35", Returns: "90 days", "Best For": "RedCard 5% discount" },
+      { Retailer: "Costco", "Price Range": "$$", Shipping: "Free", Returns: "90 days", "Best For": "Extended warranties" },
+    ],
+    highlightSectionTitle: "How to find the cheapest security cameras",
+    highlights: [
+      {
+        title: "Compare across 5+ retailers",
+        body: "Prices for the same security cameras can vary 15–30% across retailers. BuyWhere checks them all in one search.",
+      },
+      {
+        title: "Watch for price drops",
+        body: "Retailers rotate sales and promotions weekly. The cheapest option today may not be the cheapest tomorrow.",
+      },
+      {
+        title: "Factor in total cost",
+        body: "Shipping fees, tax, and return policies affect the real price. Free shipping thresholds and membership discounts add up.",
+      },
+    ],
+    adviceSectionTitle: "Smart shopping tips for security cameras",
+    advicePoints: [
+      "Use BuyWhere to compare prices across Amazon, Walmart, Best Buy, and other US retailers before buying.",
+      "Check if the retailer offers price matching — many will match a competitor's lower price.",
+      "Consider refurbished or open-box options for significant savings on security cameras.",
+      "Sign up for retailer loyalty programs and credit cards for additional discounts on security cameras.",
+    ],
+    faqSectionTitle: "Cheapest security cameras FAQ",
+    faqs: [
+      {
+        question: "Where is the cheapest place to buy security cameras in 2026?",
+        answer: "The cheapest retailer varies by specific model and timing. Generally, Amazon and Walmart offer competitive everyday prices, while Best Buy and Target run frequent promotions. Use BuyWhere to compare all retailers at once.",
+      },
+      {
+        question: "When is the best time to buy security cameras?",
+        answer: "The biggest discounts typically happen during Black Friday, Prime Day (July), and holiday sales. However, retailers rotate promotions year-round, so checking BuyWhere regularly can surface deals at any time.",
+      },
+      {
+        question: "How much can I save by comparing security cameras prices?",
+        answer: "Price differences of 10–30% between retailers are common for security cameras. On higher-ticket items, that can mean savings of $50–$200+ just by buying from the right store.",
+      },
+    ],
+    shopperCta: {
+      title: "Find the cheapest security cameras now",
+      body: "Compare real-time prices across every major US retailer in one search.",
+      href: "/search?q=security%20camera&country=us",
+      label: "Compare prices",
+    },
+    developerCta: {
+      title: "Build price comparison tools with BuyWhere API",
+      body: "Access real-time pricing data across US retailers programmatically.",
+      href: "/developers",
+      label: "Explore the API",
+    },
+    fallbackProducts: [
+      { id: "f1", name: "Security Cameras Product A", price: 299, currency: "USD", merchant: "Amazon", imageUrl: null, href: "/search?q=security%20camera&country=us", brand: "Brand A", category: "Security Cameras" },
+      { id: "f2", name: "Security Cameras Product B", price: 249, currency: "USD", merchant: "Walmart", imageUrl: null, href: "/search?q=security%20camera&country=us", brand: "Brand B", category: "Security Cameras" },
+      { id: "f3", name: "Security Cameras Product C", price: 349, currency: "USD", merchant: "Best Buy", imageUrl: null, href: "/search?q=security%20camera&country=us", brand: "Brand C", category: "Security Cameras" },
+      { id: "f4", name: "Security Cameras Product D", price: 199, currency: "USD", merchant: "Target", imageUrl: null, href: "/search?q=security%20camera&country=us", brand: "Brand D", category: "Security Cameras" },
+      { id: "f5", name: "Security Cameras Product E", price: 279, currency: "USD", merchant: "Costco", imageUrl: null, href: "/search?q=security%20camera&country=us", brand: "Brand E", category: "Security Cameras" },
+    ],
+  },
 };
