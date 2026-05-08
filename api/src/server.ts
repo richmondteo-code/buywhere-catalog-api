@@ -22,6 +22,7 @@ import merchantsRouter from './routes/merchants';
 import ingestRouter from './routes/ingest';
 import catalogRouter from './routes/catalog';
 import keysRouter from './routes/keys';
+import webhooksRouter from './routes/webhooks';
 import { db, redis } from './config';
 
 export function createApp() {
@@ -208,6 +209,9 @@ export function createApp() {
 
   // Landing pages — homepage (en_SG) and US edition (en_US)
   app.use(landingRouter);
+
+  // Webhook relay — UptimeRobot → Paperclip issue creation
+  app.use('/webhooks', webhooksRouter);
 
   // 404 fallback
   app.use((_req, res) => {

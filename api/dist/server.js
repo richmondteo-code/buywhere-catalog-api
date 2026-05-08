@@ -28,6 +28,7 @@ const merchants_1 = __importDefault(require("./routes/merchants"));
 const ingest_1 = __importDefault(require("./routes/ingest"));
 const catalog_1 = __importDefault(require("./routes/catalog"));
 const keys_1 = __importDefault(require("./routes/keys"));
+const webhooks_1 = __importDefault(require("./routes/webhooks"));
 const config_1 = require("./config");
 function createApp() {
     const app = (0, express_1.default)();
@@ -189,6 +190,8 @@ function createApp() {
     });
     // Landing pages — homepage (en_SG) and US edition (en_US)
     app.use(landing_1.default);
+    // Webhook relay — UptimeRobot → Paperclip issue creation
+    app.use('/webhooks', webhooks_1.default);
     // 404 fallback
     app.use((_req, res) => {
         res.status(404).json({ error: 'Not found' });
