@@ -4,8 +4,10 @@ import { requireApiKey, checkRateLimit } from '../middleware/apiKey';
 import { queryLogMiddleware } from '../middleware/queryLog';
 import { buildErrorEnvelope, ErrorCode, ErrorCodeType } from '../middleware/errors';
 import { buildProduct, buildSearchResponse, COUNTRY_CURRENCY, CURRENCY_RATES } from '../lib/response';
+import { buildCompareProductsQuery, UUID_RE } from '../lib/compare-query';
 
 const router = Router();
+const PRODUCT_ID_RE = /^\d+$/;
 
 function extractProductId(args: Record<string, unknown>): string | null {
   const raw = args.id ?? args.product_id;
@@ -62,7 +64,7 @@ const TOOLS = [
       type: 'object',
       required: ['id'],
       properties: {
-        id: { type: 'string', description: 'Product UUID' },
+        id: { type: 'string', description: 'Numeric BuyWhere product ID returned by search_products' },
       },
     },
   },
@@ -181,8 +183,9 @@ async function handleSearchProducts(args: Record<string, unknown>) {
     conditions.push(`country_code = $${params.length}`);
   }
   if (category) {
-    params.push(`%${category}%`);
-    conditions.push(`category ILIKE $${params.length}`);
+    const normalizedCategory = category.toLowerCase();
+    params.push([normalizedCategory]);
+    conditions.push(`category_path @> $${params.length}::text[]`);
   }
 
   const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
@@ -259,21 +262,25 @@ async function handleSearchProducts(args: Record<string, unknown>) {
 
 async function handleGetProduct(args: Record<string, unknown>) {
   const t0 = Date.now();
-  const id = extractProductId(args);
-  if (!id) throw { code: -32602, message: 'id is required' };
-  let result;
-  try {
-    result = await db.query(
-      `SELECT id, sku AS source_id, source AS domain, url,
-              title, price, currency, image_url, metadata, updated_at,
-              region, country_code, created_at, description, brand, mpn, gtin,
-              category_path, category, merchant_id, avg_rating, review_count
-       FROM products WHERE id = $1`,
-      [id]
-    );
-  } catch {
-    throw { code: -32001, message: 'Product not found' };
+  const rawId = args.id ?? args.product_id;
+  const id = typeof rawId === 'number' && Number.isSafeInteger(rawId)
+    ? String(rawId)
+    : typeof rawId === 'string'
+      ? rawId.trim()
+      : '';
+
+  if (!PRODUCT_ID_RE.test(id)) {
+    throw { code: -32602, message: 'id must be a numeric BuyWhere product ID' };
   }
+
+  const result = await db.query(
+    `SELECT id, sku AS source_id, source AS domain, url,
+            title, price, currency, image_url, metadata, updated_at,
+            region, country_code, created_at, description, brand, mpn, gtin,
+            category_path, category, merchant_id, avg_rating, review_count
+     FROM products WHERE id = $1`,
+    [id]
+  );
   if (!result.rows.length) throw { code: -32001, message: 'Product not found' };
   const product = buildProduct(result.rows[0] as Record<string, unknown>, 'SGD', false);
   return buildSearchResponse([product], 1, 1, 0, Date.now() - t0, false);
@@ -283,15 +290,16 @@ async function handleCompareProducts(args: Record<string, unknown>) {
   const t0 = Date.now();
   const ids = extractProductIds(args);
   if (!ids || ids.length < 2) throw { code: -32602, message: 'Provide at least 2 product IDs' };
-  const result = await db.query(
-    `SELECT id, sku AS source_id, source AS domain, url,
-            title, price, currency, image_url, metadata,
-            category_path, brand, avg_rating AS rating, review_count, updated_at, region, country_code
-     FROM products
-     WHERE id = ANY($1::text[])
-     ORDER BY array_position($1::text[], id::text)`,
-    [ids]
-  );
+  if (ids.length > 10) throw { code: -32602, message: 'Maximum 10 product IDs allowed' };
+
+  const invalidIds = ids.filter((id) => !UUID_RE.test(id.trim()));
+  if (invalidIds.length > 0) {
+    throw { code: -32602, message: `Invalid product ID format: ${invalidIds.join(', ')}` };
+  }
+
+  const { text, values } = buildCompareProductsQuery(ids);
+  const result = await db.query(text, values);
+
   const products = result.rows.map((r: Record<string, unknown>) => buildProduct(r, 'SGD', false));
   const uniqueCurrencies = [...new Set(
     result.rows.map((r: Record<string, unknown>) => r.currency).filter((currency): currency is string => typeof currency === 'string' && currency.length > 0)
@@ -575,7 +583,7 @@ router.post('/', requireApiKey, checkRateLimit, queryLogMiddleware('mcp'), async
   } catch (err: unknown) {
     const e = err as { code?: number; message?: string };
     if (typeof e.code === 'number' && e.message) {
-      const envelopeCode = e.code === -32001 ? ErrorCode.NOT_FOUND
+      const envelopeCode = e.code === -32001 ? ErrorCode.ENDPOINT_NOT_FOUND
         : e.code === -32602 ? ErrorCode.INVALID_PARAMETER
         : ErrorCode.INTERNAL_ERROR;
       return res.json(jsonrpcErr(id, e.code, e.message, undefined, envelopeCode));
