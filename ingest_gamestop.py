@@ -32,9 +32,9 @@ REGION = "us"
 CURRENCY = "USD"
 CATEGORY_FALLBACK = "Gaming"
 
-BATCH_SIZE = 100
+BATCH_SIZE = 20
 MAX_PRODUCTS = 5000
-REQUEST_DELAY = 2.0
+REQUEST_DELAY = 1.5
 REQUEST_TIMEOUT = 45
 MAX_RETRIES = 3
 IMPERSONATE = "safari17_0"
@@ -372,7 +372,7 @@ def main():
     last_request = 0.0
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     output_ndjson = OUTPUT_DIR / f"products_{timestamp}.ndjson"
-    CHECKPOINT_EVERY = 20
+    CHECKPOINT_EVERY = 10
 
     with open(output_ndjson, "a") as ndjson_f:
         for idx, url in enumerate(product_urls):
