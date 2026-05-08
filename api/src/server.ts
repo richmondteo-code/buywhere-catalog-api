@@ -23,7 +23,7 @@ import ingestRouter from './routes/ingest';
 import catalogRouter from './routes/catalog';
 import keysRouter from './routes/keys';
 import webhooksRouter from './routes/webhooks';
-import { db } from './config';
+import { db, redis } from './config';
 
 export function createApp() {
   const app = express();
@@ -49,6 +49,24 @@ export function createApp() {
       status: 'ok',
       ts: new Date().toISOString(),
     });
+  });
+
+  app.get('/health/redis', async (_req, res) => {
+    try {
+      const pong = await redis.ping();
+      res.json({
+        status: pong === 'PONG' ? 'ok' : 'degraded',
+        redis: pong,
+        ts: new Date().toISOString(),
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'redis_unreachable';
+      res.status(503).json({
+        status: 'down',
+        error: message,
+        ts: new Date().toISOString(),
+      });
+    }
   });
 
   // MCP / OpenAI plugin discovery

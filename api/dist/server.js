@@ -29,6 +29,7 @@ const ingest_1 = __importDefault(require("./routes/ingest"));
 const catalog_1 = __importDefault(require("./routes/catalog"));
 const keys_1 = __importDefault(require("./routes/keys"));
 const webhooks_1 = __importDefault(require("./routes/webhooks"));
+const config_1 = require("./config");
 function createApp() {
     const app = (0, express_1.default)();
     app.use((0, cors_1.default)({
@@ -50,6 +51,24 @@ function createApp() {
             status: 'ok',
             ts: new Date().toISOString(),
         });
+    });
+    app.get('/health/redis', async (_req, res) => {
+        try {
+            const pong = await config_1.redis.ping();
+            res.json({
+                status: pong === 'PONG' ? 'ok' : 'degraded',
+                redis: pong,
+                ts: new Date().toISOString(),
+            });
+        }
+        catch (error) {
+            const message = error instanceof Error ? error.message : 'redis_unreachable';
+            res.status(503).json({
+                status: 'down',
+                error: message,
+                ts: new Date().toISOString(),
+            });
+        }
     });
     // MCP / OpenAI plugin discovery
     app.use('/.well-known', wellknown_1.default);
