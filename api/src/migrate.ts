@@ -104,6 +104,10 @@ CREATE TABLE IF NOT EXISTS affiliate_links (
 -- B-tree index on category_path[1] for fast GROUP BY / WHERE queries (BUY-8715)
 CREATE INDEX IF NOT EXISTS idx_products_category_path_first ON products USING btree ((category_path[1]));
 
+-- Index for category-only search using lower(category) = (BUY-14141)
+CREATE INDEX IF NOT EXISTS idx_products_category ON products (lower(category));
+CREATE INDEX IF NOT EXISTS idx_products_category_country_updated ON products (lower(category), country_code, updated_at DESC);
+
 -- Backfill empty category_path to prevent 0-category results (BUY-8715)
 UPDATE products SET category_path = ARRAY['Uncategorized']::text[]
 WHERE category_path = '{}' OR array_length(category_path, 1) = 0;
