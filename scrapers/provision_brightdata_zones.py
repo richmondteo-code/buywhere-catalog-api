@@ -73,7 +73,15 @@ def create_zone(token: str, name: str, zone_type: str, dry_run: bool = False) ->
         print(f"  [DRY RUN] Would create zone '{name}' of type '{zone_type}'")
         return 0
 
-    payload = {"name": name, "type": zone_type}
+    if zone_type == "datacenter":
+        plan = {"type": "static", "ips_type": "shared"}
+    elif zone_type == "residential":
+        plan = {"type": "resident"}
+    elif zone_type == "isp":
+        plan = {"type": "static", "pool_ip_type": "static_res", "ips_type": "shared", "country": "us"}
+    else:
+        plan = {"type": zone_type}
+    payload = {"zone": {"name": name}, "plan": plan}
     try:
         resp = httpx.post(
             f"{BRIGHTDATA_API_BASE}/zone",
