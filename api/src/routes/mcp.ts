@@ -340,6 +340,7 @@ async function handleGetDeals(args: Record<string, unknown>) {
 
   const conditions: string[] = [
     `currency = $1`,
+    `(metadata->>'original_price') ~ '^[0-9]+(\\.[0-9]+)?$'`,
     `(metadata->>'original_price')::numeric > price`,
     `(metadata->>'original_price')::numeric < price * 100`,
     `price > 0`,
@@ -357,10 +358,11 @@ async function handleGetDeals(args: Record<string, unknown>) {
   }
 
   const whereClause = conditions.join(' AND ');
+  const COUNT_CAP = 1001;
 
   const [countResult, dataResult] = await Promise.all([
     db.query(
-      `SELECT COUNT(*) FROM products WHERE ${whereClause}`,
+      `SELECT COUNT(*) FROM (SELECT 1 FROM products WHERE ${whereClause} LIMIT ${COUNT_CAP}) _sub`,
       params
     ),
     (() => {
@@ -374,7 +376,7 @@ async function handleGetDeals(args: Record<string, unknown>) {
                 ROUND((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100) AS discount_pct
          FROM products
          WHERE ${whereClause}
-         ORDER BY discount_pct DESC
+         ORDER BY (1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100 DESC, updated_at DESC
          LIMIT $${limitIdx} OFFSET $${offsetIdx}`,
         dataParams
       );
@@ -586,7 +588,7 @@ router.post('/', requireApiKey, checkRateLimit, queryLogMiddleware('mcp'), async
   } catch (err: unknown) {
     const e = err as { code?: number; message?: string };
     if (typeof e.code === 'number' && e.message) {
-      const envelopeCode = e.code === -32001 ? ErrorCode.ENDPOINT_NOT_FOUND
+      const envelopeCode = e.code === -32001 ? ErrorCode.NOT_FOUND
         : e.code === -32602 ? ErrorCode.INVALID_PARAMETER
         : ErrorCode.INTERNAL_ERROR;
       return res.json(jsonrpcErr(id, e.code, e.message, undefined, envelopeCode));

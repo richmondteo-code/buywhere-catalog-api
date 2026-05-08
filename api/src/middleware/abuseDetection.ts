@@ -25,10 +25,10 @@ export function abuseDetection() {
 
     try {
       const ipMinuteKey = `abuse:ip:${ip}:${minuteWindow}`;
-      const [ipMinuteCount] = await redis.pipeline()
+      const [, ipMinuteCount] = (await redis.pipeline()
         .incr(ipMinuteKey)
         .expire(ipMinuteKey, 120)
-        .exec();
+        .exec()) ?? [];
 
       const emptyQuery =
         req.query.q === '' ||
@@ -48,12 +48,12 @@ export function abuseDetection() {
       }
 
       const rapidFireKey = `abuse:rapid:${ip}:${req.path}:${JSON.stringify(req.query)}:${minuteWindow}`;
-      const [rapidFireCount] = await redis.pipeline()
+      const [, rapidFireCount] = (await redis.pipeline()
         .incr(rapidFireKey)
         .expire(rapidFireKey, ABUSE_LIMITS.RAPID_FIRE_WINDOW_SEC)
-        .exec();
+        .exec()) ?? [];
 
-      const rfCount = (rapidFireCount as number) || 0;
+      const rfCount = (rapidFireCount as unknown as number) || 0;
       if (rfCount > ABUSE_LIMITS.RAPID_FIRE_THRESHOLD) {
         await sendAbuseError(res, 60, 'Too many identical requests. Please slow down.');
         return;

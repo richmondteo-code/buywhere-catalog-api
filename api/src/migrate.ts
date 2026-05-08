@@ -36,6 +36,26 @@ CREATE INDEX IF NOT EXISTS idx_products_currency     ON products(currency);
 CREATE INDEX IF NOT EXISTS idx_products_category_path ON products USING GIN(category_path);
 CREATE INDEX IF NOT EXISTS idx_products_category ON products (lower(category));
 CREATE INDEX IF NOT EXISTS idx_products_category_updated ON products (lower(category), updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_products_deals_country ON products (
+  currency,
+  country_code,
+  (((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100)),
+  updated_at DESC
+) WHERE is_active = true
+    AND price > 0
+    AND (metadata->>'original_price') ~ '^[0-9]+(\\.[0-9]+)?$'
+    AND (metadata->>'original_price')::numeric > price
+    AND (metadata->>'original_price')::numeric < price * 100;
+CREATE INDEX IF NOT EXISTS idx_products_deals_region ON products (
+  currency,
+  region,
+  (((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100)),
+  updated_at DESC
+) WHERE is_active = true
+    AND price > 0
+    AND (metadata->>'original_price') ~ '^[0-9]+(\\.[0-9]+)?$'
+    AND (metadata->>'original_price')::numeric > price
+    AND (metadata->>'original_price')::numeric < price * 100;
 
 -- api_keys: create if not exists, then add any missing columns
 CREATE TABLE IF NOT EXISTS api_keys (

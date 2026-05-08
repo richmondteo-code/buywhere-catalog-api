@@ -235,7 +235,7 @@ router.get(
     const responseTimeMs = Date.now() - requestStart;
 
     const products = dataResult.rows.map((row) =>
-      buildProduct(row as Record<string, unknown>, currency, compact, true)
+      buildProduct(row as Record<string, unknown>, currency, compact)
     );
 
     // Apply field selection if `fields` param is specified
@@ -332,8 +332,10 @@ router.get(
     const dealParams: unknown[] = [currency];
     let dealIdx = 2;
 
+    dealConditions.push(`(metadata->>'original_price') ~ '^[0-9]+(\\.[0-9]+)?$'`);
     dealConditions.push(`(metadata->>'original_price')::numeric > price`);
     dealConditions.push(`(metadata->>'original_price')::numeric < price * 100`);
+    dealConditions.push(`price > 0`);
     dealConditions.push(`((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100) >= $${dealIdx}`);
     dealParams.push(minDiscount);
     dealIdx++;
@@ -345,10 +347,11 @@ router.get(
     }
 
     const dealWhere = dealConditions.join(' AND ');
+    const COUNT_CAP = 1001;
 
     const [countResult, dataResult] = await Promise.all([
       db.query(
-        `SELECT COUNT(*) FROM products WHERE ${dealWhere}`,
+        `SELECT COUNT(*) FROM (SELECT 1 FROM products WHERE ${dealWhere} LIMIT ${COUNT_CAP}) _sub`,
         dealParams
       ),
       db.query(
@@ -360,7 +363,7 @@ router.get(
                 ROUND(((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100)::numeric, 1) AS discount_pct
          FROM products
          WHERE ${dealWhere}
-         ORDER BY (1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) DESC, updated_at DESC
+         ORDER BY (1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100 DESC, updated_at DESC
          LIMIT $${dealIdx} OFFSET $${dealIdx + 1}`,
         [...dealParams, limit, offset]
       ),
@@ -405,10 +408,10 @@ router.get(
       id: row.id,
       source: row.source_id,
       domain: row.domain,
+      merchant: row.domain,
       url: row.url,
       title: row.title,
-      price: row.price ? parseFloat(row.price) : null,
-      currency: row.currency,
+      price: { amount: row.price ? parseFloat(row.price) : null, currency: row.currency },
       image_url: row.image_url,
       brand: row.brand,
       category_path: row.category_path,
@@ -420,7 +423,7 @@ router.get(
       updated_at: row.updated_at,
     }));
 
-    const uniqueCurrencies = [...new Set(products.map((p) => p.currency).filter(Boolean))];
+    const uniqueCurrencies = [...new Set(products.map((p) => p.price.currency).filter(Boolean))];
     const currenciesMixed = uniqueCurrencies.length > 1;
 
     const responseBody = buildSearchResponse(products, products.length, ids.length, 0, Date.now() - start, false);
@@ -890,10 +893,10 @@ router.post(
   }
 );
 
-function extractCategories(products: Array<{ domain?: string; merchant?: { id: string; name: string | null; domain: string }; metadata?: Record<string, unknown> | null }>): string[] {
+function extractCategories(products: Array<{ merchant: string; metadata?: Record<string, unknown> | null }>): string[] {
   const cats = new Set<string>();
   for (const p of products) {
-    const source = p.domain || (p.merchant?.domain) || '';
+    const source = p.merchant || '';
     if (source) {
       const domainName = source.replace('.sg', '').replace('.com', '');
       cats.add(domainName);

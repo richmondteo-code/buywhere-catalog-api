@@ -167,7 +167,7 @@ export function sendRateLimitError(
   res.set('X-RateLimit-Remaining', String(Math.max(0, remaining)));
   res.set('X-RateLimit-Reset', String(Math.ceil(Date.now() / 1000 + retryAfter)));
   const envelope = buildRateLimitEnvelope(retryAfter, limit, remaining, resetAt, message);
-  (envelope.rate_limit as Record<string, unknown>).retry_after_seconds = retryAfter;
+  (envelope.rate_limit as unknown as Record<string, unknown>).retry_after_seconds = retryAfter;
   res.status(429).json(envelope);
 }
 

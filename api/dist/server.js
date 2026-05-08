@@ -30,6 +30,8 @@ const catalog_1 = __importDefault(require("./routes/catalog"));
 const keys_1 = __importDefault(require("./routes/keys"));
 const webhooks_1 = __importDefault(require("./routes/webhooks"));
 const config_1 = require("./config");
+const abuseDetection_1 = require("./middleware/abuseDetection");
+const apiKey_1 = require("./middleware/apiKey");
 function createApp() {
     const app = (0, express_1.default)();
     const releaseSha = (process.env.RELEASE_SHA || process.env.IMAGE_TAG || 'dev').trim();
@@ -48,6 +50,12 @@ function createApp() {
         res.set('X-BuyWhere-Release', releaseSha || 'dev');
         next();
     });
+    // Abuse detection & IP rate limiting — applied to API routes only
+    // Skips health checks, static pages, sitemaps, robots.txt, etc.
+    const apiAbuse = (0, abuseDetection_1.abuseDetection)();
+    app.use('/v1', apiAbuse, apiKey_1.checkIpRateLimit);
+    app.use('/v2', apiAbuse, apiKey_1.checkIpRateLimit);
+    app.use('/mcp', apiAbuse, apiKey_1.checkIpRateLimit);
     // Sentry request context — attaches user/country/method for error tracking
     app.use(sentry_1.sentryRequestHandler);
     // Health check - fast in-process check as required by BUY-3280
