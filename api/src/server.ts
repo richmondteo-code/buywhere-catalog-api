@@ -24,6 +24,8 @@ import catalogRouter from './routes/catalog';
 import keysRouter from './routes/keys';
 import webhooksRouter from './routes/webhooks';
 import { db, redis } from './config';
+import { abuseDetection } from './middleware/abuseDetection';
+import { checkIpRateLimit } from './middleware/apiKey';
 
 export function createApp() {
   const app = express();
@@ -44,6 +46,13 @@ export function createApp() {
     res.set('X-BuyWhere-Release', releaseSha || 'dev');
     next();
   });
+
+  // Abuse detection & IP rate limiting — applied to API routes only
+  // Skips health checks, static pages, sitemaps, robots.txt, etc.
+  const apiAbuse = abuseDetection();
+  app.use('/v1', apiAbuse, checkIpRateLimit);
+  app.use('/v2', apiAbuse, checkIpRateLimit);
+  app.use('/mcp', apiAbuse, checkIpRateLimit);
 
   // Sentry request context — attaches user/country/method for error tracking
   app.use(sentryRequestHandler);
