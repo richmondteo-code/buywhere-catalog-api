@@ -4,15 +4,16 @@ Defines proxy zones and provides helpers for building proxy URLs,
 Playwright config, and zone lookups. All credentials come from
 environment variables so zones can be reconfigured without code changes.
 
-Zones:
-    DATACENTER_PROXY1 — datacenter proxy (fast, shared IPs)
-    RESIDENTIAL_PROXY1 — residential proxy (rotating IPs, anti-bot)
-    LEGACY_RESIDENTIAL — compat alias for the pre-BUY-10682 zone
+Zones (as of 2026-05-08):
+    RESIDENTIAL_PROXY1 — residential rotating proxy (active, working)
+    DATACENTER_PROXY1 — datacenter proxy (zone created but requires
+                        datacenter plan subscription to activate)
+    LEGACY_RESIDENTIAL — compat alias for the original residential zone
 
-Note: The BRIGHTDATA_API_KEY token (from SSM /buywhere/prod/BRIGHTDATA_API_KEY)
-is valid for auth but currently lacks zone management permissions (returns 403).
-Once zone management permissions are added to the token via BrightData dashboard,
-run `python -m scrapers.provision_brightdata_zones` to create the zones.
+Provisioning:
+    Use BrightData_Admin_Key env var + provision_brightdata_zones.py.
+    Datacenter: plan.type=static, plan.ips_type=shared
+    Residential: plan.type=resident
 """
 
 import os
@@ -60,14 +61,20 @@ ENV_MAP: dict[Zone, tuple[str, str, str, str]] = {
 
 DEFAULT_USERNAME = {
     Zone.DATACENTER_PROXY1: "brd-customer-hl_3ab737be-zone-datacenter_proxy1",
-    Zone.RESIDENTIAL_PROXY1: "brd-customer-hl_3ab737be-zone-residential_proxy1",
+    Zone.RESIDENTIAL_PROXY1: "brd-customer-hl_3ab737be-zone-residential_proxy_01",
     Zone.LEGACY_RESIDENTIAL: "brd-customer-hl_3ab737be-zone-residential",
+}
+
+DEFAULT_PASSWORD = {
+    Zone.DATACENTER_PROXY1: "",
+    Zone.RESIDENTIAL_PROXY1: "0sdt2q30mo7f",
+    Zone.LEGACY_RESIDENTIAL: "o3feuq72olm5",
 }
 
 DEFAULT_HOST = "brd.superproxy.io"
 
 DEFAULT_PORT = {
-    Zone.DATACENTER_PROXY1: 30000,
+    Zone.DATACENTER_PROXY1: 22225,
     Zone.RESIDENTIAL_PROXY1: 22225,
     Zone.LEGACY_RESIDENTIAL: 33335,
 }
@@ -82,7 +89,7 @@ def _load_zone_config(zone: Zone) -> ZoneConfig:
 
     user_key, pass_key, host_key, port_key = ENV_MAP[zone]
     username = os.environ.get(user_key) or DEFAULT_USERNAME[zone]
-    password = os.environ.get(pass_key) or ""
+    password = os.environ.get(pass_key) or DEFAULT_PASSWORD.get(zone, "")
     host = os.environ.get(host_key) or DEFAULT_HOST
     port = int(os.environ.get(port_key, str(DEFAULT_PORT[zone])))
 
