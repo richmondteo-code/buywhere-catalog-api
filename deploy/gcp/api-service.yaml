@@ -29,7 +29,7 @@ spec:
             - name: API_BASE_URL
               value: "https://api.buywhere.ai"
             - name: PG_POOL_MAX
-              value: "10"
+              value: "50"
             # Cloud SQL via Unix socket (PgBouncer not needed with Cloud SQL Proxy)
             - name: DATABASE_URL
               valueFrom:
