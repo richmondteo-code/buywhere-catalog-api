@@ -2,6 +2,7 @@ import { getAllBlogPosts } from "@/lib/blog";
 import { PRODUCT_TAXONOMY, US_CATEGORY_META } from "@/lib/taxonomy";
 import { getUSProducts, type USProductForSitemap } from "@/lib/us-products";
 import { getSGProducts, type SGProductForSitemap } from "@/lib/sg-products";
+import { seoLandingPages } from "@/lib/seo-landing-pages";
 import fs from "node:fs";
 
 function safeGetBlogPosts() {
@@ -73,11 +74,6 @@ const STATIC_SITEMAP_ROUTES = [
   { path: "/pricing/", priority: 0.8, changeFrequency: "monthly" as const },
   { path: "/about/", priority: 0.6, changeFrequency: "monthly" as const },
   { path: "/contact/", priority: 0.5, changeFrequency: "monthly" as const },
-  { path: "/best-gaming-laptops-us/", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/iphone-16-price-singapore/", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/laptop-singapore/", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/air-purifier-singapore/", priority: 0.9, changeFrequency: "weekly" as const },
-  { path: "/best-robot-vacuums-2026/", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/mcp-ecommerce/", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/challenge/", priority: 0.9, changeFrequency: "daily" as const },
   { path: "/privacy/", priority: 0.3, changeFrequency: "yearly" as const },
@@ -160,6 +156,12 @@ export function getStaticSitemapEntries(): SitemapUrlEntry[] {
       lastModified: new Date(post.publishedAt),
       changeFrequency: "monthly" as const,
       priority: 0.8,
+    })),
+    ...Object.keys(seoLandingPages).map((slug) => ({
+      url: `${SITEMAP_BASE_URL}/${slug}/`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
     })),
   ];
 }
