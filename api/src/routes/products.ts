@@ -132,7 +132,7 @@ router.get(
       idx += categoryPath.length;
     }
     if (merchantId) {
-      conditions.push(`merchant_id = $${idx}`);
+      conditions.push(`products.merchant_id = $${idx}`);
       params.push(merchantId);
       idx++;
     }
@@ -164,14 +164,14 @@ router.get(
 
     // Build ORDER BY for non-fts-ranking path
     function buildSortOrder(): string {
-      if (!effectiveSort || effectiveSort === 'relevance') return 'updated_at DESC';
+      if (!effectiveSort || effectiveSort === 'relevance') return 'products.updated_at DESC';
       switch (effectiveSort) {
-        case 'price_asc': return 'price ASC, updated_at DESC';
-        case 'price_desc': return 'price DESC, updated_at DESC';
-        case 'newest': return 'updated_at DESC';
-        case 'highest_rated': return 'avg_rating DESC NULLS LAST, updated_at DESC';
-        case 'most_reviewed': return 'review_count DESC NULLS LAST, updated_at DESC';
-        default: return 'updated_at DESC';
+        case 'price_asc': return 'products.price ASC, products.updated_at DESC';
+        case 'price_desc': return 'products.price DESC, products.updated_at DESC';
+        case 'newest': return 'products.updated_at DESC';
+        case 'highest_rated': return 'products.avg_rating DESC NULLS LAST, products.updated_at DESC';
+        case 'most_reviewed': return 'products.review_count DESC NULLS LAST, products.updated_at DESC';
+        default: return 'products.updated_at DESC';
       }
     }
 
@@ -180,18 +180,18 @@ router.get(
     // then return the top N. This gives relevance ordering at a fraction of the cost.
     // For small result sets (<= 1000 rows), ts_rank over all matches is fast.
     const CANDIDATE_LIMIT = Math.max(500, (limit + offset) * 10);
-    const specColumns = `created_at, description, brand, mpn, gtin, category_path, category, category_id, merchant_id, avg_rating, review_count`;
+    const specColumns = `products.created_at, description, brand, mpn, gtin, category_path, category, category_id, products.merchant_id, avg_rating, review_count`;
     let dataQuery: string;
     if (useFtsRanking && approxCount <= 1000) {
       dataQuery = `
-        SELECT id, sku AS source_id, source AS domain, url,
+        SELECT products.id, sku AS source_id, source AS domain, url,
                al.destination_url AS affiliate_url,
-               title, price, currency, image_url, metadata, updated_at,
+               title, price, currency, image_url, metadata, products.updated_at,
                region, country_code, ${specColumns}
         FROM products
         LEFT JOIN affiliate_links al ON al.product_id = products.id::text AND al.merchant_id = products.merchant_id
         ${whereClause}
-        ORDER BY ts_rank(search_vector, plainto_tsquery('english', $${ftsParamIdx})) DESC, updated_at DESC
+        ORDER BY ts_rank(search_vector, plainto_tsquery('english', $${ftsParamIdx})) DESC, products.updated_at DESC
         LIMIT $${idx} OFFSET $${idx + 1}
       `;
     } else if (useFtsRanking) {
@@ -201,9 +201,9 @@ router.get(
                title, price, currency, image_url, metadata, updated_at,
                region, country_code, ${specColumns}
         FROM (
-          SELECT id, sku AS source_id, source AS domain, url,
+          SELECT products.id, sku AS source_id, source AS domain, url,
                  al.destination_url AS affiliate_url,
-                 title, price, currency, image_url, metadata, updated_at,
+                 title, price, currency, image_url, metadata, products.updated_at,
                  region, country_code, ${specColumns},
                  ts_rank(search_vector, plainto_tsquery('english', $${ftsParamIdx})) AS rank
           FROM products
@@ -216,9 +216,9 @@ router.get(
       `;
     } else {
       dataQuery = `
-        SELECT id, sku AS source_id, source AS domain, url,
+        SELECT products.id, sku AS source_id, source AS domain, url,
                al.destination_url AS affiliate_url,
-               title, price, currency, image_url, metadata, updated_at,
+               title, price, currency, image_url, metadata, products.updated_at,
                region, country_code, ${specColumns}
         FROM products
         LEFT JOIN affiliate_links al ON al.product_id = products.id::text AND al.merchant_id = products.merchant_id
@@ -710,7 +710,7 @@ router.get(
         apiKey: hashKey(req.apiKeyRecord.key),
         productId: row.id,
         retailer: row.domain,
-        category: (row.category_path ? row.category_path.split(' > ')[0] : null) as string | null,
+        category: (Array.isArray(row.category_path) ? row.category_path[0] : (typeof row.category_path === 'string' ? row.category_path.split(' > ')[0] : null)) as string | null,
       });
     }
 
