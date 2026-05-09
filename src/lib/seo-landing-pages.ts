@@ -81,8 +81,8 @@ export type SeoLandingPageConfig = {
   advicePoints: string[];
   faqSectionTitle: string;
   faqs: Faq[];
-  shopperCta: Cta;
-  developerCta: Cta;
+  shopperCta?: Cta;
+  developerCta?: Cta;
   fallbackProducts: LandingProduct[];
 };
 
