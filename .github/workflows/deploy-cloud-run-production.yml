@@ -114,7 +114,7 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --add-cloudsql-instances ${{ env.CLOUD_SQL_INSTANCE }} \
-            --port 8000 \
+            --port 3000 \
             --set-env-vars "ENVIRONMENT=production" \
             --set-env-vars "DATABASE_URL=${{ secrets.CLOUD_SQL_PRODUCTION_CONNECTION_STRING }}" \
             --set-env-vars "REDIS_URL=${{ secrets.REDIS_PRODUCTION_URL }}" \

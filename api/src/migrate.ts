@@ -33,7 +33,20 @@ CREATE INDEX IF NOT EXISTS idx_products_region_active ON products(region, is_act
 CREATE INDEX IF NOT EXISTS idx_products_search_region  ON products USING gin(search_vector, region);
 CREATE INDEX IF NOT EXISTS idx_products_search_country ON products USING gin(search_vector, country_code);
 CREATE INDEX IF NOT EXISTS idx_products_currency     ON products(currency);
+CREATE INDEX IF NOT EXISTS idx_products_currency_price ON products(currency, price) WHERE price > 0;
 CREATE INDEX IF NOT EXISTS idx_products_category_path ON products USING GIN(category_path);
+
+-- BUY-14332: Generated discount_pct column for get_deals query performance.
+-- Stores ROUND((1 - price / NULLIF(original_price, 0)) * 100) pre-computed per row.
+-- NULL when original_price is absent, zero, or invalid (prevents divide-by-zero).
+ALTER TABLE products ADD COLUMN IF NOT EXISTS discount_pct NUMERIC
+  GENERATED ALWAYS AS (
+    ROUND((1 - price / NULLIF((metadata->>'original_price')::NUMERIC, 0)) * 100)
+  ) STORED;
+
+-- Index for get_deals: supports WHERE currency = $1 AND discount_pct >= $2 ORDER BY discount_pct DESC
+CREATE INDEX IF NOT EXISTS idx_products_deals ON products(currency, discount_pct DESC)
+  WHERE discount_pct IS NOT NULL;
 
 -- api_keys: create if not exists, then add any missing columns
 CREATE TABLE IF NOT EXISTS api_keys (
