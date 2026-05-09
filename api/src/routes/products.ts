@@ -9,6 +9,19 @@ import { buildCompareProductsQuery, UUID_RE } from '../lib/compare-query';
 
 const SEARCH_CACHE_TTL_SECONDS = 60;
 
+// Express 4 doesn't catch async rejections — unhandled errors crash the process.
+// This wrapper ensures all async route handlers return 500 instead of crashing.
+function asyncHandler(fn: (req: Request, res: Response) => Promise<unknown>) {
+  return (req: Request, res: Response) => {
+    fn(req, res).catch((err) => {
+      console.error(`[products] unhandled error on ${req.method} ${req.path}:`, err?.message || err);
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    });
+  };
+}
+
 const router = Router();
 
 // GET /v1/products/search
@@ -21,7 +34,7 @@ router.get(
   requireApiKey,
   checkRateLimit,
   queryLogMiddleware('products.search'),
-  async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const requestStart = Date.now();
     const q = (req.query.q as string) || '';
     const domain = req.query.domain as string | undefined;
@@ -297,7 +310,7 @@ router.get(
     }
 
     res.json(responseBody);
-  }
+  })
 );
 
 // GET /v1/products/deals
@@ -308,7 +321,7 @@ router.get(
   requireApiKey,
   checkRateLimit,
   queryLogMiddleware('products.deals'),
-  async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const start = Date.now();
     const currency = (req.query.currency as string) || 'SGD';
     const countryCode = ((req.query.country_code as string | undefined) || (req.query.country as string | undefined))?.toUpperCase() || undefined;
@@ -327,12 +340,30 @@ router.get(
       }
     } catch (_) {}
 
-    // Deals: use metadata->'original_price' if available
+    // Deals: prefer discount_pct generated column (BUY-14332), fall back to inline
+    // computation if the column doesn't exist yet (migration may not have run).
     const dealConditions: string[] = ['currency = $1', 'price > 0'];
     const dealParams: unknown[] = [currency];
     let dealIdx = 2;
+    let useDiscountCol = true;
 
-    dealConditions.push(`discount_pct >= $${dealIdx}`);
+    // Probe whether discount_pct column exists (cached per-process)
+    if (typeof (router as any)._hasDiscountPct === 'undefined') {
+      try {
+        await db.query(`SELECT discount_pct FROM products LIMIT 0`);
+        (router as any)._hasDiscountPct = true;
+      } catch {
+        (router as any)._hasDiscountPct = false;
+      }
+    }
+    useDiscountCol = (router as any)._hasDiscountPct;
+
+    if (useDiscountCol) {
+      dealConditions.push(`discount_pct >= $${dealIdx}`);
+    } else {
+      dealConditions.push(`(metadata->>'original_price')::numeric > price`);
+      dealConditions.push(`((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100) >= $${dealIdx}`);
+    }
     dealParams.push(minDiscount);
     dealIdx++;
 
@@ -343,6 +374,13 @@ router.get(
     }
 
     const dealWhere = dealConditions.join(' AND ');
+
+    const discountSelect = useDiscountCol
+      ? 'discount_pct'
+      : `ROUND(((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100)::numeric, 1) AS discount_pct`;
+    const discountOrder = useDiscountCol
+      ? 'discount_pct DESC'
+      : `(1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) DESC`;
 
     const COUNT_CAP = 1001;
     const [countResult, dataResult] = await Promise.all([
@@ -356,10 +394,10 @@ router.get(
                 currency, image_url, metadata, updated_at,
                 region, country_code, created_at, description, brand, mpn, gtin,
                 category_path, category, merchant_id, avg_rating, review_count,
-                discount_pct
+                ${discountSelect}
          FROM products
          WHERE ${dealWhere}
-         ORDER BY discount_pct DESC, updated_at DESC
+         ORDER BY ${discountOrder}, updated_at DESC
          LIMIT $${dealIdx} OFFSET $${dealIdx + 1}`,
         [...dealParams, limit, offset]
       ),
@@ -373,7 +411,7 @@ router.get(
     const responseBody = buildSearchResponse(deals, total, limit, offset, Date.now() - start, false);
     redis.set(cacheKey, JSON.stringify(responseBody), 'EX', SEARCH_CACHE_TTL_SECONDS).catch(() => {});
     res.json(responseBody);
-  }
+  })
 );
 
 // GET /v1/products/compare?ids=id1,id2,id3
@@ -383,7 +421,7 @@ router.get(
   requireApiKey,
   checkRateLimit,
   queryLogMiddleware('products.compare'),
-  async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const start = Date.now();
     const ids = ((req.query.ids as string) || '').split(',').filter(Boolean).slice(0, 10);
     if (ids.length < 2) {
@@ -415,7 +453,7 @@ router.get(
         currency_warning: `Products span multiple currencies (${uniqueCurrencies.join(', ')}). Prices are not comparable across currencies — do not aggregate or rank by price in comparison_summary.`,
       }),
     });
-  }
+  })
 );
 
 // GET /v1/products/:id/price-history — daily aggregated price history (BUY-2345)
@@ -426,7 +464,7 @@ router.get(
   requireApiKey,
   checkRateLimit,
   queryLogMiddleware('products.price-history'),
-  async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const start = Date.now();
     const { id } = req.params;
     const days = Math.min(parseInt((req.query.days as string) || '30'), 180);
@@ -480,7 +518,7 @@ router.get(
       },
       meta: { days, response_time_ms: Date.now() - start },
     });
-  }
+  })
 );
 
 // GET /v1/products/:id/prices — price history from price_snapshots
@@ -490,7 +528,7 @@ router.get(
   requireApiKey,
   checkRateLimit,
   queryLogMiddleware('products.prices'),
-  async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const start = Date.now();
     const { id } = req.params;
     const days = Math.min(parseInt((req.query.days as string) || '30'), 90);
@@ -535,7 +573,7 @@ router.get(
       },
       meta: { days, response_time_ms: Date.now() - start },
     });
-  }
+  })
 );
 
 // GET /v1/products/:id/similar — return up to 8 similar products for 'related products' widget
@@ -547,7 +585,7 @@ router.get(
   requireApiKey,
   checkRateLimit,
   queryLogMiddleware('products.similar'),
-  async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const start = Date.now();
     const { id } = req.params;
     const limit = Math.min(parseInt((req.query.limit as string) || '8'), 20);
@@ -639,7 +677,7 @@ router.get(
     }));
 
     res.json({ data, meta: { source_id: id, count: data.length, response_time_ms: Date.now() - start } });
-  }
+  })
 );
 
 // GET /v1/products/:id
@@ -649,7 +687,7 @@ router.get(
   requireApiKey,
   checkRateLimit,
   queryLogMiddleware('products.get'),
-  async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const start = Date.now();
     const { id } = req.params;
 
@@ -700,7 +738,7 @@ router.get(
 
     const responseBody = buildSearchResponse([product], 1, 1, 0, Date.now() - start, false);
     res.json(responseBody);
-  }
+  })
 );
 
 function inferQueryIntent(q: string, domain?: string, minPrice?: number, maxPrice?: number): string {
@@ -719,7 +757,7 @@ function inferQueryIntent(q: string, domain?: string, minPrice?: number, maxPric
 router.post(
   '/ingest',
   requireApiKey,
-  async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const start = Date.now();
     const items = req.body;
 
@@ -871,7 +909,7 @@ router.post(
       validation_errors: errors.length > 0 ? errors : undefined,
       duration_ms: Date.now() - start,
     });
-  }
+  })
 );
 
 function extractCategories(products: Array<{ domain?: string; merchant?: string | { id: string; name: string | null; domain: string }; metadata?: Record<string, unknown> | null }>): string[] {

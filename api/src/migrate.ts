@@ -36,17 +36,8 @@ CREATE INDEX IF NOT EXISTS idx_products_currency     ON products(currency);
 CREATE INDEX IF NOT EXISTS idx_products_currency_price ON products(currency, price) WHERE price > 0;
 CREATE INDEX IF NOT EXISTS idx_products_category_path ON products USING GIN(category_path);
 
--- BUY-14332: Generated discount_pct column for get_deals query performance.
--- Stores ROUND((1 - price / NULLIF(original_price, 0)) * 100) pre-computed per row.
--- NULL when original_price is absent, zero, or invalid (prevents divide-by-zero).
-ALTER TABLE products ADD COLUMN IF NOT EXISTS discount_pct NUMERIC
-  GENERATED ALWAYS AS (
-    ROUND((1 - price / NULLIF((metadata->>'original_price')::NUMERIC, 0)) * 100)
-  ) STORED;
-
--- Index for get_deals: supports WHERE currency = $1 AND discount_pct >= $2 ORDER BY discount_pct DESC
-CREATE INDEX IF NOT EXISTS idx_products_deals ON products(currency, discount_pct DESC)
-  WHERE discount_pct IS NOT NULL;
+-- BUY-14332: discount_pct generated column handled separately in runMigrations()
+-- with an extended statement_timeout (5 min) to avoid timeout on 14M row tables.
 
 -- api_keys: create if not exists, then add any missing columns
 CREATE TABLE IF NOT EXISTS api_keys (
@@ -314,6 +305,37 @@ export async function runMigrations() {
     console.log('Full migration completed.');
   } catch (err: any) {
     console.warn(`[migration] Full migration block failed (non-fatal): ${err.message?.slice(0, 200)}`);
+  }
+
+  // BUY-14350: discount_pct GENERATED STORED column on 14M row table may exceed
+  // the pool's statement_timeout. Run it with an extended timeout in its own connection.
+  try {
+    const hasCol = await db.query(
+      `SELECT 1 FROM information_schema.columns WHERE table_name = 'products' AND column_name = 'discount_pct' LIMIT 1`
+    );
+    if (hasCol.rows.length === 0) {
+      console.log('[migration] Adding discount_pct generated column (may take a while on large table)...');
+      // Use a dedicated client with extended timeout for this DDL
+      const client = await db.connect();
+      try {
+        await client.query('SET statement_timeout = 300000'); // 5 minutes for DDL
+        await client.query(`
+          ALTER TABLE products ADD COLUMN IF NOT EXISTS discount_pct NUMERIC
+            GENERATED ALWAYS AS (
+              ROUND((1 - price / NULLIF((metadata->>'original_price')::NUMERIC, 0)) * 100)
+            ) STORED
+        `);
+        await client.query(`
+          CREATE INDEX IF NOT EXISTS idx_products_deals ON products(currency, discount_pct DESC)
+            WHERE discount_pct IS NOT NULL
+        `);
+        console.log('[migration] discount_pct column and index created.');
+      } finally {
+        client.release();
+      }
+    }
+  } catch (err: any) {
+    console.warn(`[migration] discount_pct column creation failed (non-fatal): ${err.message?.slice(0, 200)}`);
   }
 
   // Separately ensure merchants tables exist — not blocked by failures above.

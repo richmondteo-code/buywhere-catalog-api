@@ -288,11 +288,27 @@ async function handleGetDeals(args: Record<string, unknown>) {
     }
   } catch (_) {}
 
+  // Probe whether discount_pct column exists (cached per-process)
+  if (typeof (handleGetDeals as any)._hasDiscountPct === 'undefined') {
+    try {
+      await db.query(`SELECT discount_pct FROM products LIMIT 0`);
+      (handleGetDeals as any)._hasDiscountPct = true;
+    } catch {
+      (handleGetDeals as any)._hasDiscountPct = false;
+    }
+  }
+  const useDiscountCol: boolean = (handleGetDeals as any)._hasDiscountPct;
+
   const conditions: string[] = [
     `currency = $1`,
     `price > 0`,
-    `discount_pct >= $2`,
   ];
+  if (useDiscountCol) {
+    conditions.push(`discount_pct >= $2`);
+  } else {
+    conditions.push(`(metadata->>'original_price')::numeric > price`);
+    conditions.push(`((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100) >= $2`);
+  }
   const params: unknown[] = [currency, minDiscount];
 
   if (region) {
@@ -306,6 +322,13 @@ async function handleGetDeals(args: Record<string, unknown>) {
 
   const whereClause = conditions.join(' AND ');
 
+  const discountSelect = useDiscountCol
+    ? 'discount_pct'
+    : `ROUND(((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100)::numeric, 1) AS discount_pct`;
+  const discountOrder = useDiscountCol
+    ? 'discount_pct DESC'
+    : `(1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) DESC`;
+
   const countResult = await db.query(
     `SELECT COUNT(*) FROM (SELECT 1 FROM products WHERE ${whereClause} LIMIT 1001) _sub`,
     params
@@ -318,10 +341,10 @@ async function handleGetDeals(args: Record<string, unknown>) {
     `SELECT id, sku AS source, source AS domain, url, title,
             price, (metadata->>'original_price')::numeric AS original_price,
             currency, image_url, metadata, updated_at, region, country_code,
-            discount_pct
+            ${discountSelect}
      FROM products
      WHERE ${whereClause}
-     ORDER BY discount_pct DESC
+     ORDER BY ${discountOrder}
      LIMIT $${limitIdx} OFFSET $${offsetIdx}`,
     dataParams
   );
