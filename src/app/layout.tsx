@@ -33,15 +33,15 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://buywhere.ai"),
-  title: "BuyWhere API — The Product Layer AI Shopping Agents Should Call",
+  title: "BuyWhere — MCP Server and Product Catalog API for AI Agents",
   description:
-    "BuyWhere is the normalized, cross-merchant product layer AI agents should call for live product discovery, comparison, and merchant handoff across Southeast Asia and growing.",
+    "BuyWhere is the MCP server and product catalog API that gives AI agents real-time product search, price comparison, and merchant handoff across Southeast Asia and the US.",
   openGraph: {
     type: "website",
     siteName: "BuyWhere",
-    title: "BuyWhere API — The Product Layer AI Shopping Agents Should Call",
+    title: "BuyWhere — MCP Server and Product Catalog API for AI Agents",
     description:
-      "BuyWhere is the normalized, cross-merchant product layer AI agents should call for live product discovery, comparison, and merchant handoff across Southeast Asia and growing.",
+      "BuyWhere is the MCP server and product catalog API that gives AI agents real-time product search, price comparison, and merchant handoff across Southeast Asia and the US.",
     images: [
       {
         url: "/og-image.png",
@@ -53,9 +53,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "BuyWhere API — The Product Layer AI Shopping Agents Should Call",
+    title: "BuyWhere — MCP Server and Product Catalog API for AI Agents",
     description:
-      "BuyWhere is the normalized, cross-merchant product layer AI agents should call for live product discovery, comparison, and merchant handoff across Southeast Asia and growing.",
+      "BuyWhere is the MCP server and product catalog API that gives AI agents real-time product search, price comparison, and merchant handoff across Southeast Asia and the US.",
     images: ["/og-image.png"],
     creator: "@buywhere",
   },
