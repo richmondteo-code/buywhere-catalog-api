@@ -103,6 +103,9 @@ CREATE TABLE IF NOT EXISTS affiliate_links (
 -- Note: idx_affiliate_links_slug intentionally omitted — affiliate_links table already
 -- exists in this DB without a slug column; the index is not applicable here.
 
+-- BUY-14356: index on (product_id, merchant_id) for the LEFT JOIN in product search/deals queries
+CREATE INDEX IF NOT EXISTS idx_affiliate_links_product_merchant ON affiliate_links(product_id, merchant_id);
+
 -- B-tree index on category_path[1] for fast GROUP BY / WHERE queries (BUY-8715)
 CREATE INDEX IF NOT EXISTS idx_products_category_path_first ON products USING btree ((category_path[1]));
 
