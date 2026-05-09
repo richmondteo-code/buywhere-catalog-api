@@ -308,28 +308,25 @@ async function handleGetDeals(args: Record<string, unknown>) {
 
   const whereClause = conditions.join(' AND ');
 
-  const [countResult, dataResult] = await Promise.all([
-    db.query(
-      `SELECT COUNT(*) FROM products WHERE ${whereClause}`,
-      params
-    ),
-    (() => {
-      const dataParams = [...params, limit, offset];
-      const limitIdx = dataParams.length - 1;
-      const offsetIdx = dataParams.length;
-      return db.query(
-        `SELECT id, sku AS source, source AS domain, url, title,
-                price, (metadata->>'original_price')::numeric AS original_price,
-                currency, image_url, metadata, updated_at, region, country_code,
-                ROUND((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100) AS discount_pct
-         FROM products
-         WHERE ${whereClause}
-         ORDER BY discount_pct DESC
-         LIMIT $${limitIdx} OFFSET $${offsetIdx}`,
-        dataParams
-      );
-    })(),
-  ]);
+  const countResult = await db.query(
+    `SELECT COUNT(*) FROM (SELECT 1 FROM products WHERE ${whereClause} LIMIT ${COUNT_CAP}) _sub`,
+    params
+  );
+
+  const dataParams = [...params, limit, offset];
+  const limitIdx = dataParams.length - 1;
+  const offsetIdx = dataParams.length;
+  const dataResult = await db.query(
+    `SELECT id, sku AS source, source AS domain, url, title,
+            price, (metadata->>'original_price')::numeric AS original_price,
+            currency, image_url, metadata, updated_at, region, country_code,
+            ROUND((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100) AS discount_pct
+     FROM products
+     WHERE ${whereClause}
+     ORDER BY discount_pct DESC
+     LIMIT $${limitIdx} OFFSET $${offsetIdx}`,
+    dataParams
+  );
 
   const products = dataResult.rows.map((r: Record<string, unknown>) =>
     buildProduct(r, currency, false)

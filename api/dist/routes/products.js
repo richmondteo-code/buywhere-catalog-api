@@ -142,26 +142,25 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
     const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
     // Cap count at 1001: if result set > 1000 rows, ts_rank ordering over all matches is expensive
     // (500ms+ for broad queries like "apple iphone"). For large result sets, fall back to
-    // updated_at DESC which uses the index and avoids full-scan rank computation.
-    const COUNT_CAP = 1001;
-    const countQuery = `SELECT COUNT(*) FROM (SELECT 1 FROM products ${whereClause} LIMIT ${COUNT_CAP}) _sub`;
-    // Run count first (fast, capped) to decide ordering strategy, then fetch data
-    const countResult = await config_1.db.query(countQuery, params.slice(0, idx - 1));
-    const approxCount = parseInt(countResult.rows[0].count, 10);
+    // products.updated_at DESC which uses the index and avoids full-scan rank computation.
+    // Avoid expensive full-text COUNT on large Railway catalog.
+    // Broad FTS terms can take 100s+ even with GIN due bitmap heap rechecks.
+    const approxCount = ftsParamIdx ? 1001 : 0;
+    const countResult = { rows: [{ count: String(approxCount) }] };
     const VALID_SORT = new Set(['relevance', 'price_asc', 'price_desc', 'newest', 'highest_rated', 'most_reviewed']);
     const effectiveSort = sort && VALID_SORT.has(sort) ? sort : undefined;
     const useFtsRanking = (!effectiveSort || effectiveSort === 'relevance') && ftsParamIdx;
     // Build ORDER BY for non-fts-ranking path
     function buildSortOrder() {
         if (!effectiveSort || effectiveSort === 'relevance')
-            return 'updated_at DESC';
+            return 'products.updated_at DESC';
         switch (effectiveSort) {
-            case 'price_asc': return 'price ASC, updated_at DESC';
-            case 'price_desc': return 'price DESC, updated_at DESC';
-            case 'newest': return 'updated_at DESC';
-            case 'highest_rated': return 'avg_rating DESC NULLS LAST, updated_at DESC';
-            case 'most_reviewed': return 'review_count DESC NULLS LAST, updated_at DESC';
-            default: return 'updated_at DESC';
+            case 'price_asc': return 'price ASC, products.updated_at DESC';
+            case 'price_desc': return 'price DESC, products.updated_at DESC';
+            case 'newest': return 'products.updated_at DESC';
+            case 'highest_rated': return 'avg_rating DESC NULLS LAST, products.updated_at DESC';
+            case 'most_reviewed': return 'review_count DESC NULLS LAST, products.updated_at DESC';
+            default: return 'products.updated_at DESC';
         }
     }
     // For large result sets (>1000 rows), computing ts_rank over all matches is expensive.
@@ -169,32 +168,32 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
     // then return the top N. This gives relevance ordering at a fraction of the cost.
     // For small result sets (<= 1000 rows), ts_rank over all matches is fast.
     const CANDIDATE_LIMIT = Math.max(500, (limit + offset) * 10);
-    const specColumns = `created_at, description, brand, mpn, gtin, category_path, category, category_id, merchant_id, avg_rating, review_count`;
+    const specColumns = `products.created_at AS created_at, products.description, products.brand, products.mpn, products.gtin, products.category_path, products.category, products.category_id, products.merchant_id, products.avg_rating, products.review_count`;
     let dataQuery;
     if (useFtsRanking && approxCount <= 1000) {
         dataQuery = `
-        SELECT id, sku AS source_id, source AS domain, url,
+        SELECT products.id, sku AS source_id, source AS domain, url,
                al.destination_url AS affiliate_url,
                title, price, currency, image_url, metadata, updated_at,
-               region, country_code, ${specColumns}
+               region, country_code, products.created_at AS created_at, products.description, products.brand, products.mpn, products.gtin, products.category_path, products.category, products.category_id, products.merchant_id, products.avg_rating, products.review_count
         FROM products
         LEFT JOIN affiliate_links al ON al.product_id = products.id::text AND al.merchant_id = products.merchant_id
         ${whereClause}
-        ORDER BY ts_rank(search_vector, plainto_tsquery('english', $${ftsParamIdx})) DESC, updated_at DESC
+        ORDER BY ts_rank(search_vector, plainto_tsquery('english', $${ftsParamIdx})) DESC, products.updated_at DESC
         LIMIT $${idx} OFFSET $${idx + 1}
       `;
     }
     else if (useFtsRanking) {
         dataQuery = `
-        SELECT id, source_id, domain, url,
+        SELECT _candidates.id, source_id, domain, url,
                affiliate_url,
                title, price, currency, image_url, metadata, updated_at,
-               region, country_code, ${specColumns}
+               region, country_code, created_at, description, brand, mpn, gtin, category_path, category, category_id, merchant_id, avg_rating, review_count
         FROM (
-          SELECT id, sku AS source_id, source AS domain, url,
+          SELECT products.id, sku AS source_id, source AS domain, url,
                  al.destination_url AS affiliate_url,
                  title, price, currency, image_url, metadata, updated_at,
-                 region, country_code, ${specColumns},
+                 region, country_code, products.created_at AS created_at, products.description, products.brand, products.mpn, products.gtin, products.category_path, products.category, products.category_id, products.merchant_id, products.avg_rating, products.review_count,
                  ts_rank(search_vector, plainto_tsquery('english', $${ftsParamIdx})) AS rank
           FROM products
           LEFT JOIN affiliate_links al ON al.product_id = products.id::text AND al.merchant_id = products.merchant_id
@@ -207,10 +206,10 @@ router.get('/search', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKe
     }
     else {
         dataQuery = `
-        SELECT id, sku AS source_id, source AS domain, url,
+        SELECT products.id, sku AS source_id, source AS domain, url,
                al.destination_url AS affiliate_url,
                title, price, currency, image_url, metadata, updated_at,
-               region, country_code, ${specColumns}
+               region, country_code, products.created_at AS created_at, products.description, products.brand, products.mpn, products.gtin, products.category_path, products.category, products.category_id, products.merchant_id, products.avg_rating, products.review_count
         FROM products
         LEFT JOIN affiliate_links al ON al.product_id = products.id::text AND al.merchant_id = products.merchant_id
         ${whereClause}
@@ -313,15 +312,15 @@ router.get('/deals', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey
     const dealWhere = dealConditions.join(' AND ');
     const [countResult, dataResult] = await Promise.all([
         config_1.db.query(`SELECT COUNT(*) FROM products WHERE ${dealWhere}`, dealParams),
-        config_1.db.query(`SELECT id, sku AS source_id, source AS domain, url,
+        config_1.db.query(`SELECT products.id, sku AS source_id, source AS domain, url,
                 title, price, (metadata->>'original_price')::numeric AS original_price,
                 currency, image_url, metadata, updated_at,
-                region, country_code, created_at, description, brand, mpn, gtin,
+                region, country_code, products.created_at AS created_at, products.description, products.brand, products.mpn, products.gtin,
                 category_path, category, merchant_id, avg_rating, review_count,
                 ROUND(((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100)::numeric, 1) AS discount_pct
          FROM products
          WHERE ${dealWhere}
-         ORDER BY (1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) DESC, updated_at DESC
+         ORDER BY (1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) DESC, products.updated_at DESC
          LIMIT $${dealIdx} OFFSET $${dealIdx + 1}`, [...dealParams, limit, offset]),
     ]);
     const deals = dataResult.rows.map((row) => (0, response_1.buildProduct)(row, currency, false));
@@ -489,11 +488,11 @@ router.get('/:id/similar', agentDetect_1.agentDetectMiddleware, apiKey_1.require
             brandCatParams.push(sourceCountry);
         }
         brandCatParams.push(limit);
-        const brandCatResult = await config_1.db.query(`SELECT id, sku AS source_id, source AS domain, url, title, price, currency,
+        const brandCatResult = await config_1.db.query(`SELECT products.id, sku AS source_id, source AS domain, url, title, price, currency,
                 image_url, brand, category_path, region, country_code
          FROM products
          WHERE ${brandCatWhere}
-         ORDER BY updated_at DESC
+         ORDER BY products.updated_at DESC
          LIMIT $${brandCatParams.length}`, brandCatParams);
         similar = brandCatResult.rows;
     }
@@ -515,12 +514,12 @@ router.get('/:id/similar', agentDetect_1.agentDetectMiddleware, apiKey_1.require
             ftsIdx++;
         }
         ftsParams.push(needed);
-        const ftsResult = await config_1.db.query(`SELECT id, sku AS source_id, source AS domain, url, title, price, currency,
+        const ftsResult = await config_1.db.query(`SELECT products.id, sku AS source_id, source AS domain, url, title, price, currency,
                 image_url, brand, category_path, region, country_code
          FROM products
          WHERE ${ftsWhere}
          ORDER BY ts_rank(search_vector, plainto_tsquery('english', $${existingIds.length + 2})) DESC,
-                  updated_at DESC
+                  products.updated_at DESC
          LIMIT $${ftsParams.length}`, ftsParams);
         similar = [...similar, ...ftsResult.rows];
     }
@@ -546,9 +545,9 @@ router.get('/:id', agentDetect_1.agentDetectMiddleware, apiKey_1.requireApiKey, 
     const { id } = req.params;
     let result;
     try {
-        result = await config_1.db.query(`SELECT id, sku AS source_id, source AS domain, url,
+        result = await config_1.db.query(`SELECT products.id, sku AS source_id, source AS domain, url,
                 title, price, currency, image_url, metadata, updated_at,
-                region, country_code, created_at, description, brand, mpn, gtin,
+                region, country_code, products.created_at AS created_at, products.description, products.brand, products.mpn, products.gtin,
                 category_path, category, merchant_id, avg_rating, review_count
          FROM products WHERE id = $1`, [id]);
     }
