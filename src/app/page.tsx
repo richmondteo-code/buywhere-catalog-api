@@ -161,9 +161,54 @@ products = response.json()["items"]
 for p in products:
     print(f"{p['name']} — {p['currency']} {p['price']} at {p['source']}")`;
 
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://buywhere.ai/#organization",
+      name: "BuyWhere",
+      url: "https://buywhere.ai",
+      logo: "https://buywhere.ai/logo.png",
+      sameAs: ["https://github.com/BuyWhere"],
+      description:
+        "BuyWhere is the MCP server and product catalog API that gives AI agents real-time product search, price comparison, and merchant handoff across Southeast Asia and the US.",
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://buywhere.ai/#software",
+      name: "BuyWhere MCP Server",
+      applicationCategory: "DeveloperApplication",
+      operatingSystem: "Any",
+      url: "https://buywhere.ai",
+      description:
+        "Model Context Protocol server for AI agents — search and compare products across Singapore, Southeast Asia, and US markets.",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      author: { "@id": "https://buywhere.ai/#organization" },
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://buywhere.ai/#website",
+      url: "https://buywhere.ai",
+      name: "BuyWhere",
+      publisher: { "@id": "https://buywhere.ai/#organization" },
+    },
+  ],
+};
+
 export default function HomePage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="flex flex-col min-h-screen">
       <Nav />
       <script
         type="application/ld+json"
@@ -400,5 +445,6 @@ export default function HomePage() {
 
       <Footer />
     </div>
+    </>
   );
 }

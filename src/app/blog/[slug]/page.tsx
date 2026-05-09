@@ -46,6 +46,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: canonical,
       publishedTime: post.publishedAt,
       authors: [post.author],
+      images: post.coverImage ? [{ url: post.coverImage }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: post.coverImage ? [post.coverImage] : undefined,
     },
   };
 }
