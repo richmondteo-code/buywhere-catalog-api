@@ -2,16 +2,17 @@ FROM node:20-slim
 
 WORKDIR /app
 
+# Install all deps (including devDependencies for tsc)
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm ci
 
-COPY dist/ dist/
+# Copy source and compile TypeScript
+COPY tsconfig.json ./
+COPY src/ src/
+RUN npx tsc
 
-# BUY-14329: Cap COUNT(*) queries to avoid statement_timeout on 14M row products table
-RUN sed -i "s|SELECT COUNT(\*) FROM products WHERE \${dealWhere}|SELECT COUNT(*) FROM (SELECT 1 FROM products WHERE \${dealWhere} LIMIT 1001) _sub|g" dist/routes/products.js && \
-    sed -i "s|SELECT COUNT(\*) FROM products \${where}|SELECT COUNT(*) FROM (SELECT 1 FROM products \${where} LIMIT 1001) _sub|g" dist/routes/mcp.js && \
-    sed -i "s|SELECT COUNT(\*) FROM products WHERE \${whereClause}|SELECT COUNT(*) FROM (SELECT 1 FROM products WHERE \${whereClause} LIMIT 1001) _sub|g" dist/routes/mcp.js && \
-    sed -i "s|SELECT COUNT(\*) FROM products'|SELECT reltuples::bigint AS count FROM pg_class WHERE oid = '\\\\''public.products'\\\\''::regclass'|g" dist/mcp-server.js
+# Remove devDependencies to slim the image
+RUN npm prune --omit=dev
 
 ENV NODE_ENV=production
 EXPOSE 3000

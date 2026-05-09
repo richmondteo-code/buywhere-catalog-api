@@ -290,10 +290,8 @@ async function handleGetDeals(args: Record<string, unknown>) {
 
   const conditions: string[] = [
     `currency = $1`,
-    `(metadata->>'original_price')::numeric > price`,
-    `(metadata->>'original_price')::numeric < price * 100`,
     `price > 0`,
-    `(1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100 >= $2`,
+    `discount_pct >= $2`,
   ];
   const params: unknown[] = [currency, minDiscount];
 
@@ -309,7 +307,7 @@ async function handleGetDeals(args: Record<string, unknown>) {
   const whereClause = conditions.join(' AND ');
 
   const countResult = await db.query(
-    `SELECT COUNT(*) FROM (SELECT 1 FROM products WHERE ${whereClause} LIMIT ${COUNT_CAP}) _sub`,
+    `SELECT COUNT(*) FROM (SELECT 1 FROM products WHERE ${whereClause} LIMIT 1001) _sub`,
     params
   );
 
@@ -320,7 +318,7 @@ async function handleGetDeals(args: Record<string, unknown>) {
     `SELECT id, sku AS source, source AS domain, url, title,
             price, (metadata->>'original_price')::numeric AS original_price,
             currency, image_url, metadata, updated_at, region, country_code,
-            ROUND((1 - price / NULLIF((metadata->>'original_price')::numeric, 0)) * 100) AS discount_pct
+            discount_pct
      FROM products
      WHERE ${whereClause}
      ORDER BY discount_pct DESC
