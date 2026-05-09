@@ -346,9 +346,10 @@ router.get(
 
     const dealWhere = dealConditions.join(' AND ');
 
+    const COUNT_CAP = 1001;
     const [countResult, dataResult] = await Promise.all([
       db.query(
-        `SELECT COUNT(*) FROM products WHERE ${dealWhere}`,
+        `SELECT COUNT(*) FROM (SELECT 1 FROM products WHERE ${dealWhere} LIMIT ${COUNT_CAP}) _sub`,
         dealParams
       ),
       db.query(

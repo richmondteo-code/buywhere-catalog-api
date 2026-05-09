@@ -164,10 +164,11 @@ async function handleSearchProducts(args: Record<string, unknown>) {
   let rows: unknown[];
   let total: number;
 
+  const COUNT_CAP = 1001;
   if (q) {
-    // Count matching rows to pick query strategy
+    // Count matching rows (capped) to pick query strategy
     const countResult = await db.query(
-      `SELECT COUNT(*) FROM products ${where}`,
+      `SELECT COUNT(*) FROM (SELECT 1 FROM products ${where} LIMIT ${COUNT_CAP}) _sub`,
       params
     );
     total = parseInt(countResult.rows[0].count, 10);
@@ -201,7 +202,7 @@ async function handleSearchProducts(args: Record<string, unknown>) {
       rows = candidateResult.rows.slice(offset, offset + limit);
     }
   } else {
-    const countResult = await db.query(`SELECT COUNT(*) FROM products ${where}`, params);
+    const countResult = await db.query(`SELECT COUNT(*) FROM (SELECT 1 FROM products ${where} LIMIT ${COUNT_CAP}) _sub`, params);
     total = parseInt(countResult.rows[0].count, 10);
     params.push(limit, offset);
     const result = await db.query(
