@@ -84,8 +84,8 @@ const DEFAULT_DEVELOPER_CTA = {
 };
 
 export async function SeoLandingPage({ config }: { config: SeoLandingPageConfig }) {
-  const shopperCta = shopperCta || DEFAULT_SHOPPER_CTA;
-  const developerCta = developerCta || DEFAULT_DEVELOPER_CTA;
+  const shopperCta = config.shopperCta || DEFAULT_SHOPPER_CTA;
+  const developerCta = config.developerCta || DEFAULT_DEVELOPER_CTA;
   const products = await getSeoLandingProducts(config);
   const schema = buildSeoLandingSchema(config, products);
 
