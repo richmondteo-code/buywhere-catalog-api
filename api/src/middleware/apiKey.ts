@@ -10,6 +10,7 @@ const TIER_LIMITS: Record<string, { rpm: number; daily: number }> = {
   free: FREE_TIER,
   pro: { rpm: 300, daily: 10000 },
   enterprise: { rpm: 1000, daily: 100000 },
+  internal: { rpm: 10000, daily: 999999 },
 };
 
 export function hashKey(rawKey: string): string {
@@ -136,8 +137,8 @@ export async function requireApiKey(req: Request, res: Response, next: NextFunct
         key,
         agentName: row.name,
         tier: row.tier,
-        rpmLimit: TIER_LIMITS.enterprise.rpm,
-        dailyLimit: TIER_LIMITS.enterprise.daily,
+        rpmLimit: (TIER_LIMITS[row.tier] ?? TIER_LIMITS.enterprise).rpm,
+        dailyLimit: (TIER_LIMITS[row.tier] ?? TIER_LIMITS.enterprise).daily,
         signupChannel: row.signup_channel,
         attributionSource: row.attribution_source,
       };
