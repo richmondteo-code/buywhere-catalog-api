@@ -1,4 +1,4 @@
-import { initSentry } from './sentry';
+import { initSentry, Sentry } from './sentry';
 import { createApp } from './server';
 import { PORT } from './config';
 import { shutdownPostHog } from './analytics/posthog';
@@ -6,6 +6,17 @@ import { runMigrations } from './migrate';
 
 // Initialize Sentry before anything else so all errors are captured
 initSentry();
+
+// Prevent process crashes from unhandled errors
+process.on('uncaughtException', (err) => {
+  console.error('[FATAL] uncaughtException:', err);
+  Sentry.captureException(err);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('[WARN] unhandledRejection:', reason);
+  Sentry.captureException(reason instanceof Error ? reason : new Error(String(reason)));
+});
 
 const app = createApp();
 

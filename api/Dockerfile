@@ -4,4 +4,4 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 COPY dist/ dist/
 EXPOSE 8080
-CMD ["node", "dist/index.js"]
+CMD ["node", "--max-old-space-size=450", "dist/index.js"]

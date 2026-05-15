@@ -7,6 +7,15 @@ const posthog_1 = require("./analytics/posthog");
 const migrate_1 = require("./migrate");
 // Initialize Sentry before anything else so all errors are captured
 (0, sentry_1.initSentry)();
+// Prevent process crashes from unhandled errors
+process.on('uncaughtException', (err) => {
+    console.error('[FATAL] uncaughtException:', err);
+    sentry_1.Sentry.captureException(err);
+});
+process.on('unhandledRejection', (reason) => {
+    console.error('[WARN] unhandledRejection:', reason);
+    sentry_1.Sentry.captureException(reason instanceof Error ? reason : new Error(String(reason)));
+});
 const app = (0, server_1.createApp)();
 (0, migrate_1.runMigrations)().catch(err => {
     console.error('Migration failed during startup:', err);
