@@ -96,6 +96,13 @@ class Settings(BaseSettings):
 
     scraper_api_key: str = Field(default="", validation_alias="SCRAPERAPI_KEY")
     scraper_refresh_url: str = Field(default="", validation_alias="SCRAPER_REFRESH_URL")
+
+    # Stripe integration
+    stripe_secret_key: str = ""
+    stripe_webhook_secret: str = ""
+    stripe_starter_price_id: str = ""
+    stripe_pro_price_id: str = ""
+
     model_config = {"env_file": ".env", "case_sensitive": False, "extra": "allow"}
 
 

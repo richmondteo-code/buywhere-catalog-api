@@ -1,3 +1,4 @@
+import asyncio
 import uuid
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
@@ -16,7 +17,7 @@ from app.config import get_settings
 from app.rate_limit import limiter, TierRateLimitMiddleware, RedisPerMinuteRateLimitMiddleware
 from app.request_logging import RequestLoggingMiddleware
 from app.usage_metering import UsageMeteringMiddleware
-from app.routers import products, categories, keys, deals, ingestion, ingest, search, status, catalog, agents, analytics, admin, developers, webhooks, metrics, alerts, images, changelog, feed, merchants, trending, export, enrichment, health, brands, watchlist, dedup, compare, billing, countries, sitemap, v2, merchant_analytics, affiliate, preferences, import_csv, saved_searches, usage, referrals, coupons, linkless_attribution, scraper_assignments, scraper_alerts, scraper_refresh, agent_native, newsletter, user_watchlist, user_alerts, users, referral_landing, push_notifications, user_notification_preferences, price_drops, growth, feature_flags, signup, stats, public_alerts, alertmanager_webhooks, auth_compat, demo, queries, mcp
+from app.routers import products, categories, keys, deals, ingestion, ingest, search, status, catalog, agents, analytics, admin, developers, webhooks, metrics, alerts, images, changelog, feed, merchants, trending, export, enrichment, health, brands, watchlist, dedup, compare, billing, countries, sitemap, v2, merchant_analytics, affiliate, preferences, import_csv, saved_searches, usage, referrals, coupons, linkless_attribution, scraper_assignments, scraper_alerts, scraper_refresh, agent_native, newsletter, user_watchlist, user_alerts, users, referral_landing, push_notifications, user_notification_preferences, price_drops, growth, feature_flags, signup, stats, public_alerts, alertmanager_webhooks, auth_compat, demo, queries, mcp, stripe_webhook
 from app import clickthrough
 from app.graphql import graphql_router
 from app.versioning import VersionRoutingMiddleware
@@ -211,6 +212,36 @@ settings = get_settings()
 MAX_QUERY_LENGTH = 500
 
 
+async def _daily_api_key_reset_loop() -> None:
+    """Run forever, resetting daily_request_count for all active keys at 00:00 UTC."""
+    while True:
+        now = datetime.now(timezone.utc)
+        # Seconds until next midnight UTC
+        next_midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        if next_midnight <= now:
+            from datetime import timedelta
+            next_midnight += timedelta(days=1)
+        sleep_seconds = (next_midnight - now).total_seconds()
+        await asyncio.sleep(sleep_seconds)
+        try:
+            from app.database import AsyncSessionLocal
+            from sqlalchemy import update as sa_update, text as sa_text
+            from app.models.product import ApiKey
+            async with AsyncSessionLocal() as db:
+                await db.execute(
+                    sa_update(ApiKey)
+                    .where(ApiKey.is_active == True)
+                    .values(
+                        daily_request_count=0,
+                        daily_reset_at=sa_text("NOW() + INTERVAL '1 day'"),
+                    )
+                )
+                await db.commit()
+            logger.info("Daily API key counters reset")
+        except Exception as exc:
+            logger.error(f"Daily API key reset failed: {exc}", exc_info=True)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     if settings.jwt_secret_key == "change-me-in-production":
@@ -223,7 +254,17 @@ async def lifespan(app: FastAPI):
         get_configmap_syncer()
     except Exception:
         pass
+
+    # Daily API key counter reset at midnight UTC
+    reset_task = asyncio.create_task(_daily_api_key_reset_loop())
+
     yield
+
+    reset_task.cancel()
+    try:
+        await reset_task
+    except asyncio.CancelledError:
+        pass
     try:
         from app.services.feature_flags_configmap import stop_configmap_syncer
         stop_configmap_syncer()
@@ -295,6 +336,7 @@ app.include_router(admin_comparison_pages_router, prefix="/v1")
 app.include_router(feature_flags.router)
 app.include_router(webhooks.router, prefix="/v1")
 app.include_router(alertmanager_webhooks.router)
+app.include_router(stripe_webhook.router)
 app.include_router(metrics.router, prefix="/v1")
 app.include_router(alerts.router, prefix="/v1")
 app.include_router(images.router, prefix="/v1")

@@ -1,6 +1,6 @@
 from sqlalchemy import (
     BigInteger, Boolean, Column, Date, DateTime, Numeric, String, Text,
-    func, UniqueConstraint, Integer, ARRAY, Index
+    func, UniqueConstraint, Integer, ARRAY, Index, text
 )
 from sqlalchemy.dialects.postgresql import JSONB, TSVECTOR
 from app.database import Base
@@ -218,7 +218,7 @@ class ApiKey(Base):
     key_hash = Column(String, nullable=False, unique=True)
     developer_id = Column(String, nullable=False)
     name = Column(String, nullable=False)
-    tier = Column(String, nullable=False, default="basic")
+    tier = Column(String, nullable=False, default="free")
     role = Column(String, nullable=True, server_default="developer")
     is_active = Column(Boolean, nullable=False, default=True)
     rate_limit = Column(Integer, nullable=True)
@@ -229,6 +229,16 @@ class ApiKey(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     last_used_at = Column(DateTime(timezone=True))
     signup_channel = Column(String, nullable=True, server_default=None)
+    # Stripe integration columns (migration 810)
+    stripe_customer_id = Column(String(255), nullable=True)
+    stripe_subscription_id = Column(String(255), nullable=True)
+    daily_request_count = Column(Integer, nullable=False, default=0, server_default="0")
+    daily_reset_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=text("NOW() + INTERVAL '1 day'"),
+    )
+    revoked_at = Column(DateTime(timezone=True), nullable=True)
 
     __table_args__ = (
         Index("idx_api_keys_developer_id", "developer_id"),
