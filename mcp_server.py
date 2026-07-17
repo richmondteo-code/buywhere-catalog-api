@@ -36,6 +36,10 @@ DEFAULT_LIMIT = 10
 if not API_KEY:
     logger.warning("BUYWHERE_API_KEY is not set — requests may be rejected")
 
+# Timeout for upstream API calls. Index-accelerated queries should complete
+# well within this window once the 810 migration (GIN indexes) has been applied.
+API_TIMEOUT_SECONDS = float(os.environ.get("BUYWHERE_API_TIMEOUT", "25.0"))
+
 mcp = FastMCP(
     "buywhere",
     host="0.0.0.0",
@@ -141,6 +145,7 @@ async def find_best_price(product_name: str, category: str | None = None) -> Tex
 @mcp.tool()
 async def get_deals(
     category: str | None = None,
+    country_code: str | None = None,
     min_discount_pct: float = 10,
     limit: int = 10,
 ) -> TextContent:
@@ -148,6 +153,8 @@ async def get_deals(
     params: dict[str, Any] = {"min_discount_pct": min_discount_pct, "limit": min(limit, 50)}
     if category:
         params["category"] = category
+    if country_code:
+        params["country_code"] = country_code.upper()
 
     try:
         data = await _api_get("/v1/deals", params)
@@ -172,14 +179,55 @@ async def get_deals(
     return TextContent(type="text", text="\n".join(lines))
 
 
+@mcp.tool()
+async def list_categories(country_code: str | None = None, limit: int = 50) -> TextContent:
+    """List available BuyWhere product categories with product counts."""
+    params: dict[str, Any] = {"limit": min(limit, 100)}
+    if country_code:
+        params["country_code"] = country_code.upper()
+
+    try:
+        data = await _api_get("/v1/categories", params)
+    except Exception as exc:
+        logger.exception("list_categories API error")
+        return TextContent(type="text", text=f"Categories fetch failed: {exc}")
+
+    categories = data.get("categories", []) if isinstance(data, dict) else []
+    if not categories:
+        return TextContent(type="text", text="No categories found.")
+
+    lines = [f"Found {len(categories)} categor(y/ies):\n"]
+    for i, category in enumerate(categories, 1):
+        name = category.get("name", "Unknown")
+        count = category.get("count", 0)
+        lines.append(f"{i}. **{name}** ({count} products)")
+    return TextContent(type="text", text="\n".join(lines))
+
+
 async def _api_get(path: str, params: dict[str, Any] | None = None) -> Any:
     headers: dict[str, str] = {"Accept": "application/json"}
     if API_KEY:
         headers["Authorization"] = f"Bearer {API_KEY}"
-    async with httpx.AsyncClient(base_url=API_BASE_URL, headers=headers, timeout=10.0) as client:
-        resp = await client.get(path, params=params or {})
-        resp.raise_for_status()
-        return resp.json()
+
+    last_exc = None
+    for attempt in range(2):
+        try:
+            timeout = httpx.Timeout(
+                connect=5.0 + attempt * 5.0,
+                read=API_TIMEOUT_SECONDS,
+                write=10.0,
+                pool=5.0,
+            )
+            async with httpx.AsyncClient(base_url=API_BASE_URL, headers=headers, timeout=timeout) as client:
+                resp = await client.get(path, params=params or {})
+                resp.raise_for_status()
+                return resp.json()
+        except (httpx.TimeoutException, httpx.TransportError) as exc:
+            last_exc = exc
+            logger.warning("API call %s attempt %d failed: %s", path, attempt + 1, exc)
+            await asyncio.sleep(0.5 * (attempt + 1))
+
+    raise httpx.RequestError(f"API call failed after 2 attempts: {last_exc}") from last_exc
 
 
 def _fmt_price(price: Any, currency: str = "SGD") -> str:
