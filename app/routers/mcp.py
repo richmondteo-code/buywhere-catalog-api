@@ -250,6 +250,8 @@ async def _handle_get_deals(args: dict[str, Any]) -> CallToolResult:
     params = {"min_discount_pct": min_discount_pct, "limit": limit}
     if args.get("category"):
         params["category"] = args["category"]
+    if args.get("country_code"):
+        params["country_code"] = args["country_code"]
 
     try:
         data = await _api_get("/v1/deals", params)
@@ -280,16 +282,52 @@ async def _handle_get_deals(args: dict[str, Any]) -> CallToolResult:
 
 
 async def _api_get(path: str, params: dict[str, Any] | None = None) -> Any:
+    """Call the internal catalog API with retry and separated timeouts.
+
+    The backend DB queries carry a SET LOCAL statement_timeout of 8s
+    (see categories.py, deals.py).  We set a generous read timeout here
+    so that transient contention / slow queries get a chance to complete
+    rather than being prematurely killed by the HTTP client.
+    """
+    import asyncio
+    import os
+
     import httpx
     from app.config import get_settings
+
     settings = get_settings()
-    API_BASE_URL = settings.app_base_url or "http://localhost:8000"
+    api_base = getattr(settings, "app_base_url", None) or os.environ.get("BUYWHERE_API_URL", "http://localhost:8000")
+    api_timeout = float(getattr(settings, "mcp_api_timeout", None) or os.environ.get("BUYWHERE_API_TIMEOUT", "25.0"))
 
     headers = {"Accept": "application/json"}
-    async with httpx.AsyncClient(base_url=API_BASE_URL, headers=headers, timeout=10.0) as client:
-        resp = await client.get(path, params=params or {})
-        resp.raise_for_status()
-        return resp.json()
+    last_exc: Exception | None = None
+
+    for attempt in range(3):
+        try:
+            timeout = httpx.Timeout(
+                connect=5.0 + attempt * 2.0,
+                read=api_timeout,
+                write=10.0,
+                pool=5.0,
+            )
+            async with httpx.AsyncClient(
+                base_url=api_base, headers=headers, timeout=timeout
+            ) as client:
+                resp = await client.get(path, params=params or {})
+                resp.raise_for_status()
+                return resp.json()
+        except (httpx.TimeoutException, httpx.TransportError) as exc:
+            last_exc = exc
+            logger.warning(
+                "MCP _api_get %s attempt %d/%d failed: %s",
+                path, attempt + 1, 3, exc,
+            )
+            if attempt < 2:
+                await asyncio.sleep(0.5 * (attempt + 1))
+
+    raise httpx.RequestError(
+        f"MCP _api_get {path} failed after 3 attempts"
+    ) from last_exc
 
 
 def _fmt_price(price: Any, currency: str = "SGD") -> str:
